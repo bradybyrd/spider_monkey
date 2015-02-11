@@ -1,0 +1,18 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<ul class='teamUserRoles'>
+  <li <%= tag_options({class: ('selected' if selected == 'add_user_to_team'), tab: 'team_users'}, false) %>>
+    <%= link_to I18n.t(:'team.add_group_to'), '#' %>
+  </li>
+  <% unless @team.new_record? %>
+      <li <%= tag_options({class: ('selected' if selected == 'edit_roles_for_team'), tab: 'team_roles'}, false) %>>
+        <%= link_to I18n.t(:'team.edit_roles_for_team'), '#' %>
+      </li>
+  <% end %>
+</ul>

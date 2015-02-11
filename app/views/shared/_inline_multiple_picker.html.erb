@@ -1,0 +1,43 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= static_javascript_include_tag 'multiple_picker'%>
+<%= stylesheet_link_tag 'multiple_picker'%>
+<div id="multiple_picker_container_for_<%= items_name %>" class='multiple-picker-container'>
+  <div class="multiple-picker-data" id="left_multiple_picker">
+    <%= text_field_tag :left_key, params[:key], placeholder: 'search', :size => '15', :class=>'search to-select', :style=>'padding-left: 15px' %>
+    <%= collection_select( :piker, 'multiple_picker_to_select', @items[:all], :id, :name,
+                           {disabled: lambda{|item| @items[:disabled_items].include?(item)} },
+                           {class: 'multiple_picker_to_select', multiple: '', size: '10' }) %>
+  </div>
+  <div class="multiple-picker-controls">
+        <%= button_tag '>', :class => 'select' %><br />
+        <%= button_tag '<', :class => 'deselect' %><br /><br />
+        <%= button_tag '>>', :class => 'select-all' %><br />
+        <%= button_tag '<<', :class => 'deselect-all' %>
+  </div>
+  <div class="multiple-picker-data" id="right_multiple_picker">
+    <%= text_field_tag :right_key, params[:key], placeholder: 'search', :size => '15', :class=>'search selected', :style=>'padding-left: 15px' %>
+    <select name="multiple_picker_selected" class="multiple_picker_selected" multiple size="10">
+       <% @items[:selected_items].each do |item| %>
+        <option value="<%= item.id%>"><%=item.name%></option>
+       <%end # each  %>
+    </select>
+  </div>
+  <% if items_name == 'environment' %>
+    <div class='field'><%= t(:'request.notices.disabled_environments') %></div>
+  <% end %>
+</div>
+<div class="button_bar" style="text-align:left;">
+  <div class="form_action_btns">
+    <%= button_to_function 'Select', 'selectItems(true)' %>
+    <%= button_to_function 'Cancel', 'selectItems(false)' %>
+    &nbsp;
+  </div>
+  <hr>
+</div>

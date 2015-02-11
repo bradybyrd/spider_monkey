@@ -1,0 +1,18 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Resources' %>
+<% content_for :page_section do %>
+  <%= render 'resources/tabs', :selected => (params[:action] == 'my_resources') ? 'my resources' : 'all resources' %>
+<% end %>
+<% content_for :sidebar do %>
+  <%= link_to image_tag('btn-add-placeholder-resource.png', :alt => 'Add Placeholder Resource'), new_resource_path, :rel => 'facebox' %>
+<% end %>
+<div id='groups'>
+  <%= render 'groups' %>
+</div>

@@ -1,0 +1,7 @@
+<% if true || @steps.count == 0 %>
+    $("#<%= dom_id(@installed_component) %>").html("<%= escape_javascript(render :partial => 'apps/installed_components_details', :locals => { :app => @app, :installed_component => @installed_component })%>");
+    $.facebox.close();
+<% else %>
+    $("#steps_using_components").html("<%= escape_javascript(render :partial => "installed_components/steps_using_components", :locals => {:steps => @steps}) %>");
+    $('#save_anyway').val(true);
+<% end %>

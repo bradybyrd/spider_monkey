@@ -1,0 +1,10 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= link_to_remote link, {:url => allocations_by_group_resource_path(group.id), :method => :get, :loading => "$('#loader_#{group.id}').show();", :complete => "$('#loader_#{group.id}').hide();"}, {:style => "border-bottom:medium none;float:left;", :id => "toggle_link_#{group.id}"} %>
+<img <%= tag_options({:src => "/images/loader.gif", :id => "loader_#{group.id}", :style => "display:none;margin-left:5px;margin-top:5px;"}, false) %>>

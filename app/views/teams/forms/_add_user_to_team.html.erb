@@ -1,0 +1,80 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table <%= tag_options({:id => "team_users", :cellspacing => "0", :padding => "5", :style =>"border:solid 1px #808080; padding:10px;"}, false) %>>
+  <tr>
+    <td width='22%'>
+      <p>
+        <!-- Select Group -->
+        <span>
+          <input id='user_from_userlist' name='users_radio' onClick="find_users('User')" type='radio'>Add users from user list</input>
+          <br>
+          <input checked='' id='user_from_groups' name='users_radio' onClick="find_users('Group')" type='radio'>Add users from groups</input>
+          <%= hidden_field_tag "team[user_selection]", "Group" %>
+          <!-- Multi-Select Group -->
+        </span>
+      </p>
+      <div id='users_select' style='display: none;'>
+        <strong>Users</strong>
+        <span id='add_users_from_user_list'>
+          <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @team, :collection => User.by_last_name.active, :object => "team", :method => "user_ids", :label => "name", :value => "id"} %>
+        </span>
+        <span>
+          <%= select_clear_chk('add_users_from_user_list') %>
+        </span>
+      </div>
+      <div id='groups_select' style='display: block;'>
+        <strong>Groups</strong>
+        <span id='add_groups_from_user_list'>
+          <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @team, :collection => Group.name_order.active, :object => "team", :method => "group_ids", :label => "name", :value => "id"} %>
+        </span>
+        <span>
+          <%= select_clear_chk('add_groups_from_user_list') %>
+        </span>
+      </div>
+      <p>
+        <%= label_tag "help_text", "Please select users from the list and then click on the black arrow" %>
+      </p>
+      <%= javascript_tag("team_user_list(#{@team.user_ids.join(',').to_json})") %>
+      <% unless @team.new_record? %>
+        <div id='lists_for_team'>
+          <%= hidden_field_tag "user_list_team", "#{@team.user_ids.join(',')}" %>
+          <%= hidden_field_tag "group_list_team", "#{@team.group_ids.join(',')}" %>
+        </div>
+        <% if @team_group.empty? %>
+          <%= javascript_tag("change_User_Selection()") %>
+        <% end %>
+      <% end %>
+    </td>
+    <td width='9%'>
+      <div style='padding-top:80px;'>
+        <%= link_to_function image_tag('arrow_indecation.gif', :border => "0", :alt => " Add to Team >>"), "getUserList('')", :style => "border-bottom:none;" %>
+      </div>
+    </td>
+    <td width='1%'>
+      <div style='padding-top:80px;'>&nbsp;</div>
+    </td>
+    <td id='user_list_of_groups'>
+      <% if @team.new_record? %>
+        <%= render :partial => 'teams/user_list_of_groups' unless @active_users.blank? %>
+      <% else %>
+        <% unless @pages.blank? %>
+          <% @pages.sort.reverse.each do |page| %>
+            <%= javascript_tag("getUserList('#{page[0]}', true)") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </td>
+    <td width='2%'>
+      <%= hidden_field_tag "all_user_list" %>
+      <%= hidden_field_tag "check_box_selection", "#{@team.user_ids.join(',')}" %>
+      <%= hidden_field_tag "unchecked_users" %>
+    </td>
+  </tr>
+</table>
+<%= javascript_tag("turnOnUserList()") %>

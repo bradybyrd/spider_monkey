@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% title = "Tickets" %>
+<% page_settings :title => title %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'tickets', 'filters' %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, Ticket.new %>
+    <%= button_to 'Create Ticket', new_ticket_path, :method => :get, :class => 'button' %>
+  <% end %>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br class='clear'/>
+<div id='ticket_content_section'>
+  <%= render :partial => 'tickets/tickets_list', :locals => {:tickets => @tickets, :actions => @actions, :plan => @plan} %>
+</div>

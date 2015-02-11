@@ -1,0 +1,103 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :view, :dashboard_calendar %>
+  <% if user_signed_in? %>
+    <div style='clear:left;text-align: right'>
+      <div id='toggleFilterLink'>
+        <% if params[:filter_block_collapse_state_flag] == '1' %>
+          <%= link_to "Close Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% else %>
+          <%= link_to "Open Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div id='filterSection' style='display:none'>
+    <%= render :partial => "dashboard/filters/filters" %>
+  </div>
+  <div id='request_calendar_sidebar' style='display:none'><%= render :partial => "calendars/smart_release/calendar_sidebar" %></div>
+  <% unless defined?(@list_view) %>
+    <% if params[:for_dashboard] || @calendar.plan %>
+      <div class='calendar_formate_links' style='padding:5px;'>
+        <label>Display Format:</label>
+        <%= select_tag :display_format, options_for_select(([['Month', 'month'], ["Rolling", "rolling"], ['Week', 'week'], ['Day', 'day']]).sort, params[:action]) %>
+        <% if params[:for_dashboard] %>
+          <%= link_to 'Today', ("#{context_root}/calendars/dashboard/" + params[:action] + "/" + Date.today.to_s), :ajax => true, :dom_path => "#request_and_calendar" %>
+        <% elsif @calendar.plan %>
+          <span id='planFlag'><%= link_to 'Today', ("#{context_root}/calendars/" + params[:action] + "/" + Date.today.to_s + "?plan_id=" + params[:plan_id]) %></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  <form class='activity'>
+    <div class='field'>
+      <label class='date_label'>Date:</label>
+      <% if @calendar.day? %>
+        <%= date_field_tag 'date', Date.generate_from(@calendar.first_day_date), :id => 'date' %>
+      <% elsif params[:action]=='upcoming_requests' %>
+        <%= date_field_tag 'date', Date.generate_from(@calendar.date), :id => 'date_upcoming_requests' %>
+      <% else %>
+        <%= date_field_tag 'date', Date.generate_from(@calendar.date), :id => 'date' %>
+      <% end %>
+    </div>
+  </form>
+  <div class='clear'></div>
+  <% if user_signed_in? %>
+    <div class='calendar_nav above'>
+      <%= link_to "&#171; previous".html_safe, previous_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+      <%= link_to "next &#187;".html_safe, next_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+    </div>
+  <% end %>
+  <h1 class='calender_header'>
+    <span class='month'>
+      <%= @calendar.title %>
+      <%= @calendar.first_day.to_date.strftime('%Y') %>
+    </span>
+  </h1>
+  <div class='clear'></div>
+  <% if params[:action] == 'upcoming_requests' %>
+    <%= render :partial => 'calendars/upcoming_requests' %>
+  <% else %>
+    <table cellspacing='0' class='calendar' id='calendar'>
+      <thead>
+        <tr>
+          <% @calendar.week_days.rotate(User.current_user.first_day_on_calendar).each do |day| %>
+            <td><%= day %></td>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render :partial => @calendar.type, :collection => [@calendar] %>
+      </tbody>
+    </table>
+  <% end %>
+  <% if user_signed_in? %>
+    <% session['calendar_session'] = remove_temp_filters(session['calendar_session'], @params) %>
+    <div class='calendar_nav'>
+      <%= link_to "&#171; previous".html_safe, previous_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+      <%= link_to "next &#187;".html_safe, next_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+    </div>
+  <% end %>
+  <% if params[:controller]=="calendars" %>
+    <span class='button'>
+      <%= link_to "Link to this calendar", this_calendar_url %>
+    </span>
+    <span class='button'>
+      <%= link_to "Calendar report", requests_for_coming_weeks_url %>
+    </span>
+  <% else %>
+    <span class='button'>
+      <%= link_to "Link to this calendar", "#{this_calendar_url}?&for_dashboard=true",:ajax => true, :dom_path => "#request_and_calendar" %>
+    </span>
+    <span class='button'>
+      <%= link_to "Calendar report", "#{requests_for_coming_weeks_url}?&for_dashboard=true",:ajax => true, :dom_path => "#request_and_calendar" %>
+    </span>
+  <% end %>
+  <%= javascript_tag("#{toggel_inbound_outbound_section_links}") %>
+<% end %>

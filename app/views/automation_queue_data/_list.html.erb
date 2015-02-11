@@ -1,0 +1,60 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% unless @delay_jobs.blank? %>
+    <% params[:page] = "1" if params[:page].nil? %>
+    <table cellspacing='0' class='index_table'>
+      <thead>
+      <tr>
+        <th>Run At</th>
+        <th>ID</th>
+        <th>Updated</th>
+        <th>Attempts</th>
+        <th>Last Error</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @delay_jobs.each do |dj| %>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td>
+              <%= link_to index_title(h(dj.run_at.try(:default_format_date_time))), automation_queue_datum_path(dj) %>
+            </td>
+            <td>
+              <%= h(dj.id.to_s) %>
+            </td>
+            <td>
+              <%= default_format_date(dj.updated_at) %>
+            </td>
+            <td>
+              <%= h(dj.attempts.to_s) %>
+            </td>
+            <td>
+              <%= h(dj.last_error.nil? ? "" : dj.last_error.slice(0..100)) %>
+            </td>
+            <td class='action_links'>
+              <%= link_to "Show", automation_queue_datum_path(dj) %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% else %>
+    <h4>
+      No Jobs in Queue
+    </h4>
+<% end %>
+<br>
+<strong>
+  Actions:
+</strong>
+
+<% if can?(:clear, AutomationQueueData.new) %>
+    <%= link_to I18n.t(:clear_job_queue), administration_automation_queue_data_path(:task => 'clear_queue') %>
+<% end %>
+

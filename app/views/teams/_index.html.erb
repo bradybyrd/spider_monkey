@@ -1,0 +1,105 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can?(:list, Team.new) %>
+<div id='teams'>
+  <div class='line_h_20px'>
+    <h2><%= I18n.t(:active) %></h2>
+    <%= render :partial => "shared/alphabetical_pagination", :locals => {:path => teams_path, :class_name => "teams"} %>
+  </div>
+  <table class='tablesorter team_list_sorter formatted_table four_columns'>
+    <thead>
+      <tr>
+        <th>Team</th>
+        <th>Applications</th>
+        <th>Groups</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% unless @active_teams.blank? %>
+        <% @active_teams.each do |team| %>
+          <tr id="team_<%= team.id %>" class='<%= cycle('', 'alt' ) %>'>
+            <td><strong>
+              <% if can?(:edit, team) %>
+                <%= link_to team.name, edit_team_path(team, page: params[:page], key: params[:key]) %>
+              <% else %>
+                <%= team.name %>
+              <% end %>
+            </strong></td>
+            <td title='<%= team.apps.map(&:name).to_sentence %>'>
+              <%= truncate(team.apps.map(&:name).to_sentence, length: 50) %>
+            </td>
+            <td title='<%= team.groups.map(&:name).to_sentence %>'>
+              <%= truncate(team.groups.map(&:name).to_sentence, length: 50) %>
+            </td>
+            <td>
+              <% if can?(:edit, team) %>
+                <%= link_to I18n.t(:edit), edit_team_path(team, page: params[:page], key: params[:key]), class: 'edit_team' %>
+                |
+              <% end %>
+              <% if team.default? %>
+                <span class='default_team'>Default</span>
+              <% else %>
+              	<% if can?(:make_active_inactive, team) %>
+                  <%= link_to 'Make Inactive', deactivate_team_path(team, page: params[:page], key: params[:key]), method: :put, class: 'make_inactive_team' %>
+              	<% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan='6'>
+            No Team Found
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => teams_path, :class_name => "teams"} %></div>
+  <br>
+  <table class="tablesorter team_list_sorter formatted_table four_columns">
+    <% unless @inactive_teams.blank? %>
+      <h2><%= I18n.t(:inactive) %></h2>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Applications</th>
+          <th>Groups</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (@inactive_teams || []).each do |team| %>
+          <tr class='<%= cycle('', 'alt' ) %>'>
+            <td><strong>
+              <% if can?(:edit, team) %>
+                  <%= link_to team.name, edit_team_path(team, page: params[:page], key: params[:key]) %>
+              <% else %>
+                  <%= team.name %>
+              <% end %>
+            </strong></td>
+            <td title='<%= team.apps.map(&:name).to_sentence %>'>
+              <%= truncate(team.apps.map(&:name).to_sentence, length: 50) %>
+            </td>
+            <td title='<%= team.groups.map(&:name).to_sentence %>'>
+              <%= truncate(team.groups.map(&:name).to_sentence, length: 50) %>
+            </td>
+            <td>
+              <% if can?(:make_active_inactive, team) %>
+                <%= link_to 'Make Active', activate_team_path(team, page: params[:page], key: params[:key]), method: :put, class: 'make_inactive_team' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+  </table>
+</div>
+<% end %>

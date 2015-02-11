@@ -1,0 +1,8 @@
+$('#step_<%= step.id %>').replaceWith('<%= j(render(partial: 'steps/step_rows/procedure',
+locals: {
+    step:              @step,
+    request:           @request,
+    step_headers:      step_headers,
+    step_preferences:  step_preferences,
+    steps_with_invalid_components: []
+}))%>');

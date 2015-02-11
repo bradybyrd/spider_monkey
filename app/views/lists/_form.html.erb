@@ -1,0 +1,56 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<%= static_javascript_include_tag "list_items" %>
+<%= form_for @list, :html => { :class => 'cssform', :id => "new_list" } do |f| %>
+  <%= f.error_messages %>
+  <div id='all_list_items'>
+    <div class='field'>
+      <%= f.label :name, "List Name", :class => "list" %>
+      <%= f.text_field :name, :disabled => false, :class => "#{'initialFocus' unless @list.required?}", :value => f.object.name, :readonly => @list.required? %>
+      <p><%= 'Note: Required system lists cannot be renamed.'if @list.required? %></p>
+    </div>
+    <% if @list.new_record? %>
+      <div class='field'>
+        <%= f.label :is_text, 'Is Text', class: 'list' %>
+        <%= check_box(:list, :is_text, {:class => "w_14 #{'initialFocus' if @list.required?}"}, 1, 0) %>
+      </div>
+      <div class='field'>
+        <%= f.label :is_text, 'With Title', class: 'list' %>
+        <%= f.check_box :is_hash, {class: 'w_14'}, 1, 0 %>
+      </div>
+    <% end %>
+    <% unless @list.new_record? %>
+      <div class='field'>
+        <%= f.label :list_item_ids, "Active List items", :class => "list" %>
+        <%= render :partial => 'list_items/list_items' , :locals => { :list => @list } %>
+        <%= button_to_function "Archive", "find_value('Archive')", :style => "width: 115px"; %>
+      </div>
+      <br>
+      <div class='field'>
+        <%= f.label :list_item_ids, "Inactive List items", :class => "list" %>
+        <%= render :partial => 'list_items/inactive_list_items' , :locals => { :list => @list } %>
+        <%= button_to_function "Unarchive", "find_value('Unarchive')", :style => "width: 115px"; %>
+      </div>
+      <br>
+      <div class='field'>
+        <%= f.label :list_item_ids, "Add List Item", :class => "list" %>
+        <%= text_field_tag('value_item_key', nil, placeholder: 'title') if @list.is_hash %>
+        <%= text_field_tag('value_item', nil, :class => 'value_item', placeholder: "#{@list.is_text ? 'text value' : 'integer value' }") %>
+        <%= button_to_function('Add Item', "find_value('NewItem')", { :class => "list_item", :style => "width: 115px;" }) %>
+      </div>
+      <p>
+        <%= @list.view_object.description %>
+      </p>
+      <%= hidden_field_tag 'isText', @list.is_text %>
+      <%= hidden_field_tag 'isHash', @list.is_hash %>
+      <%= hidden_field_tag "active_list_items" %>
+      <%= hidden_field_tag "inactive_list_items" %>
+    <% end %>
+    <div class='button_bar'><%= f.submit class: 'button' %></div>
+  </div>
+<% end %>
+

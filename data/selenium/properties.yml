@@ -1,0 +1,392 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+properties_007: 
+  entry_during_step_execution: 
+  name: App Server Name
+  default_value: 
+  updated_at: <%= -1124333.979103.seconds.ago %>
+  id: 149
+  active: true
+  created_at: <%= -1124333.979046.seconds.ago %>
+properties_018: 
+  entry_during_step_execution: 
+  name: Size of OFAC Update
+  default_value: 
+  updated_at: <%= -1124334.979011.seconds.ago %>
+  id: 160
+  active: true
+  created_at: <%= -1124334.978979.seconds.ago %>
+properties_029: 
+  entry_during_step_execution: 
+  name: Network Connections
+  default_value: 
+  updated_at: <%= -1124334.978948.seconds.ago %>
+  id: 172
+  active: true
+  created_at: <%= -1124334.978917.seconds.ago %>
+properties_040: 
+  entry_during_step_execution: 
+  name: InstanceID
+  default_value: 
+  updated_at: <%= -1124334.978886.seconds.ago %>
+  id: 183
+  active: true
+  created_at: <%= -1124334.978855.seconds.ago %>
+properties_008: 
+  entry_during_step_execution: 
+  name: App Server Console URL
+  default_value: 
+  updated_at: <%= -1124333.978825.seconds.ago %>
+  id: 150
+  active: true
+  created_at: <%= -1124333.978794.seconds.ago %>
+properties_019: 
+  entry_during_step_execution: 
+  name: LUN Size Required
+  default_value: 
+  updated_at: <%= -1124334.978763.seconds.ago %>
+  id: 161
+  active: true
+  created_at: <%= -1124334.978733.seconds.ago %>
+properties_030: 
+  entry_during_step_execution: 
+  name: Source Server IP Address
+  default_value: 
+  updated_at: <%= -1124334.978703.seconds.ago %>
+  id: 173
+  active: true
+  created_at: <%= -1124334.978673.seconds.ago %>
+properties_041: 
+  entry_during_step_execution: 
+  name: VHOST_ID
+  default_value: 
+  updated_at: <%= -1124334.978642.seconds.ago %>
+  id: 184
+  active: true
+  created_at: <%= -1124334.978612.seconds.ago %>
+properties_009: 
+  entry_during_step_execution: 
+  name: App Server Login
+  default_value: 
+  updated_at: <%= -1124333.978581.seconds.ago %>
+  id: 151
+  active: true
+  created_at: <%= -1124333.978551.seconds.ago %>
+properties_020: 
+  entry_during_step_execution: 
+  name: Image File Location/Name
+  default_value: 
+  updated_at: <%= -1124334.978519.seconds.ago %>
+  id: 162
+  active: true
+  created_at: <%= -1124334.978489.seconds.ago %>
+properties_031: 
+  entry_during_step_execution: 
+  name: VM RAM Amount
+  default_value: 
+  updated_at: <%= -1124334.978458.seconds.ago %>
+  id: 174
+  active: true
+  created_at: <%= -1124334.978428.seconds.ago %>
+properties_042: 
+  entry_during_step_execution: 
+  name: ALIAS_NAME_01
+  default_value: 
+  updated_at: <%= -1124334.978397.seconds.ago %>
+  id: 185
+  active: true
+  created_at: <%= -1124334.978367.seconds.ago %>
+properties_010: 
+  entry_during_step_execution: 
+  name: App Server Password
+  default_value: 
+  updated_at: <%= -1124333.978337.seconds.ago %>
+  id: 152
+  active: true
+  created_at: <%= -1124333.978306.seconds.ago %>
+properties_021: 
+  entry_during_step_execution: 
+  name: VM Name
+  default_value: 
+  updated_at: <%= -1124334.978275.seconds.ago %>
+  id: 164
+  active: true
+  created_at: <%= -1124334.978245.seconds.ago %>
+properties_032: 
+  entry_during_step_execution: 
+  name: VM CPU Amount
+  default_value: 
+  updated_at: <%= -1124334.978214.seconds.ago %>
+  id: 175
+  active: true
+  created_at: <%= -1124334.978183.seconds.ago %>
+properties_043: 
+  entry_during_step_execution: 
+  name: ALIAS_PORT_01
+  default_value: 
+  updated_at: <%= -1124334.978153.seconds.ago %>
+  id: 186
+  active: true
+  created_at: <%= -1124334.978122.seconds.ago %>
+properties_011: 
+  entry_during_step_execution: 
+  name: Event Mon Port
+  default_value: 
+  updated_at: <%= -1124333.978091.seconds.ago %>
+  id: 153
+  active: true
+  created_at: <%= -1124333.978061.seconds.ago %>
+properties_022: 
+  entry_during_step_execution: 
+  name: IP Address
+  default_value: 
+  updated_at: <%= -1124334.978031.seconds.ago %>
+  id: 165
+  active: true
+  created_at: <%= -1124334.978001.seconds.ago %>
+properties_033: 
+  entry_during_step_execution: 
+  name: VM Disk Amount
+  default_value: 
+  updated_at: <%= -1124334.977969.seconds.ago %>
+  id: 176
+  active: true
+  created_at: <%= -1124334.977939.seconds.ago %>
+properties_044: 
+  entry_during_step_execution: 
+  name: ALIAS_NAME_02
+  default_value: 
+  updated_at: <%= -1124334.977909.seconds.ago %>
+  id: 187
+  active: true
+  created_at: <%= -1124334.977879.seconds.ago %>
+properties_001: 
+  entry_during_step_execution: 
+  name: db_password
+  default_value: 
+  updated_at: <%= -1124333.977848.seconds.ago %>
+  id: 141
+  active: true
+  created_at: <%= -1124333.977817.seconds.ago %>
+properties_012: 
+  entry_during_step_execution: 
+  name: Event Mon Login
+  default_value: 
+  updated_at: <%= -1124333.977786.seconds.ago %>
+  id: 154
+  active: true
+  created_at: <%= -1124333.977756.seconds.ago %>
+properties_023: 
+  entry_during_step_execution: 
+  name: Local Admin ID
+  default_value: 
+  updated_at: <%= -1124334.977725.seconds.ago %>
+  id: 166
+  active: true
+  created_at: <%= -1124334.977695.seconds.ago %>
+properties_034: 
+  entry_during_step_execution: 
+  name: Network Time Protocol Setting
+  default_value: 
+  updated_at: <%= -1124334.977664.seconds.ago %>
+  id: 177
+  active: true
+  created_at: <%= -1124334.977634.seconds.ago %>
+properties_045: 
+  entry_during_step_execution: 
+  name: ALIAS_PORT_02
+  default_value: 
+  updated_at: <%= -1124334.977604.seconds.ago %>
+  id: 188
+  active: true
+  created_at: <%= -1124334.977574.seconds.ago %>
+properties_002: 
+  entry_during_step_execution: 
+  name: db_user
+  default_value: 
+  updated_at: <%= -1124333.977544.seconds.ago %>
+  id: 142
+  active: true
+  created_at: <%= -1124333.977514.seconds.ago %>
+properties_013: 
+  entry_during_step_execution: 
+  name: Event Mon Password
+  default_value: 
+  updated_at: <%= -1124333.977483.seconds.ago %>
+  id: 155
+  active: true
+  created_at: <%= -1124333.977452.seconds.ago %>
+properties_024: 
+  entry_during_step_execution: 
+  name: Local Admin Password
+  default_value: 
+  updated_at: <%= -1124334.977422.seconds.ago %>
+  id: 167
+  active: true
+  created_at: <%= -1124334.977391.seconds.ago %>
+properties_035: 
+  entry_during_step_execution: 
+  name: Verify Windows Services
+  default_value: 
+  updated_at: <%= -1124334.977359.seconds.ago %>
+  id: 178
+  active: true
+  created_at: <%= -1124334.977329.seconds.ago %>
+properties_046: 
+  entry_during_step_execution: 
+  name: ROOT_DIR
+  default_value: 
+  updated_at: <%= -1124334.977298.seconds.ago %>
+  id: 189
+  active: true
+  created_at: <%= -1124334.977267.seconds.ago %>
+properties_003: 
+  entry_during_step_execution: 
+  name: Step Description
+  default_value: 
+  updated_at: <%= -1124333.977237.seconds.ago %>
+  id: 143
+  active: true
+  created_at: <%= -1124333.977207.seconds.ago %>
+properties_014: 
+  entry_during_step_execution: 
+  name: Database SID
+  default_value: 
+  updated_at: <%= -1124334.977176.seconds.ago %>
+  id: 156
+  active: true
+  created_at: <%= -1124334.977146.seconds.ago %>
+properties_025: 
+  entry_during_step_execution: 
+  name: Virtual Center Instance
+  default_value: 
+  updated_at: <%= -1124334.977116.seconds.ago %>
+  id: 168
+  active: true
+  created_at: <%= -1124334.977087.seconds.ago %>
+properties_036: 
+  entry_during_step_execution: 
+  name: P2V Image Location/Name
+  default_value: 
+  updated_at: <%= -1124334.977056.seconds.ago %>
+  id: 179
+  active: true
+  created_at: <%= -1124334.977026.seconds.ago %>
+properties_047: 
+  entry_during_step_execution: 
+  name: App Server Staging Area
+  default_value: 
+  updated_at: <%= -1124334.976995.seconds.ago %>
+  id: 190
+  active: true
+  created_at: <%= -1124334.976965.seconds.ago %>
+properties_004: 
+  entry_during_step_execution: 
+  name: DB Location
+  default_value: 
+  updated_at: <%= -1124333.976935.seconds.ago %>
+  id: 146
+  active: true
+  created_at: <%= -1124333.976905.seconds.ago %>
+properties_015: 
+  entry_during_step_execution: 
+  name: Report Server Port
+  default_value: 
+  updated_at: <%= -1124334.976873.seconds.ago %>
+  id: 157
+  active: true
+  created_at: <%= -1124334.976843.seconds.ago %>
+properties_026: 
+  entry_during_step_execution: 
+  name: VC/ESX Host - IP Address/DNS
+  default_value: 
+  updated_at: <%= -1124334.976812.seconds.ago %>
+  id: 169
+  active: true
+  created_at: <%= -1124334.976783.seconds.ago %>
+properties_037: 
+  entry_during_step_execution: 
+  name: Change Tickets
+  default_value: 
+  updated_at: <%= -1124334.976752.seconds.ago %>
+  id: 180
+  active: true
+  created_at: <%= -1124334.976723.seconds.ago %>
+properties_048: 
+  entry_during_step_execution: 
+  name: Backup File Path/Name
+  default_value: 
+  updated_at: <%= -1124334.976692.seconds.ago %>
+  id: 191
+  active: true
+  created_at: <%= -1124334.976662.seconds.ago %>
+properties_005: 
+  entry_during_step_execution: 
+  name: Description
+  default_value: 
+  updated_at: <%= -1124333.976632.seconds.ago %>
+  id: 147
+  active: true
+  created_at: <%= -1124333.976601.seconds.ago %>
+properties_016: 
+  entry_during_step_execution: 
+  name: Report Server Folder
+  default_value: 
+  updated_at: <%= -1124334.976571.seconds.ago %>
+  id: 158
+  active: true
+  created_at: <%= -1124334.97654.seconds.ago %>
+properties_027: 
+  entry_during_step_execution: 
+  name: VC/ESX Host
+  default_value: 
+  updated_at: <%= -1124334.976478.seconds.ago %>
+  id: 170
+  active: true
+  created_at: <%= -1124334.976439.seconds.ago %>
+properties_038: 
+  entry_during_step_execution: 
+  name: ClusterName
+  default_value: 
+  updated_at: <%= -1124334.976404.seconds.ago %>
+  id: 181
+  active: true
+  created_at: <%= -1124334.976373.seconds.ago %>
+properties_006: 
+  entry_during_step_execution: 
+  name: Location
+  default_value: 
+  updated_at: <%= -1124333.976342.seconds.ago %>
+  id: 148
+  active: true
+  created_at: <%= -1124333.976311.seconds.ago %>
+properties_017: 
+  entry_during_step_execution: 
+  name: Date of Migration
+  default_value: 
+  updated_at: <%= -1124334.97628.seconds.ago %>
+  id: 159
+  active: true
+  created_at: <%= -1124334.97625.seconds.ago %>
+properties_028: 
+  entry_during_step_execution: 
+  name: Storage LUN
+  default_value: 
+  updated_at: <%= -1124334.976219.seconds.ago %>
+  id: 171
+  active: true
+  created_at: <%= -1124334.976189.seconds.ago %>
+properties_039: 
+  entry_during_step_execution: 
+  name: AppServerName
+  default_value: 
+  updated_at: <%= -1124334.976158.seconds.ago %>
+  id: 182
+  active: true
+  created_at: <%= -1124334.976128.seconds.ago %>

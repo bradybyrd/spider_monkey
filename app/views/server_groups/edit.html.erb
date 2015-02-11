@@ -1,0 +1,34 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Edit Server Group \"#{h @server_group.name}\"" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => {:selected => "servers"} %>
+<% end %>
+<%= render :partial => "servers/sidebar" %>
+<% content_for :sidebar do %>
+  <p></p>
+  <%= link_to "Add new server group", new_server_group_path(:page => params[:page], :key => params[:key] ) %>
+<% end %>
+<div class='pageSection'>
+  <%= render :partial => 'servers/tabs', :locals => { :selected => 'server_groups' } %>
+</div>
+<div id='server_container'>
+  <h2>
+    <%= "Edit Server Group \"#{h @server_group.name}\"" %>
+  </h2>
+  <%= form_for @server_group, :remote => true,:html => { :class => 'cssform' } do |f| %>
+    <%= render :partial => 'form', :locals => { :f => f, :environments => @environments, :servers => @servers, :server_levels => @server_levels } %>
+    <p>
+      <%= f.submit "Update",:class => 'button' %>
+      or
+      <%= link_to 'cancel', server_groups_path(:page => params[:page], :key => params[:key]), :class => 'ajax' %>
+    </p>
+  <% end %>
+
+</div>

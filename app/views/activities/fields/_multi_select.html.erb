@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<span class='selected_values' <%= tag_options({:id => "selected_values_#{attr.id}"}, false) %>>
+  <span class='selected' <%= tag_options({:title => field_name.include?('deliverable') ? @deliverable.custom_attrs_array.join(', ') : field_value.map { |val| h custom_value_name(val) }.join(', ')}, false) %>>
+    <% if field_name.include?('deliverable') %>
+      <%= truncate(@deliverable.custom_attrs_array.join(', '), :length => 50) %>
+    <% else %>
+      <%= truncate(field_value.map { |val| h custom_value_name(val) }.join(', '), :length => 50) %>
+    <% end %>
+  </span>
+  <% if current_user.present? %>
+    <%= link_to 'edit', '#', 'data-attr-id' => attr.id, :class => 'ignore-pending' %>
+  <% end %>
+</span>
+<% if current_user.present? %>
+  <%= hidden_field_tag field_name %>
+  <span class='values_to_select' <%= tag_options({:id => "values_to_select_#{attr.id}", :style => 'display: none'}, false) %>>
+    <%= select_tag field_name, activity_options_for_select(field_name.include?('deliverable') ? @deliverable : activity, activity_category, attr), :multiple => true, :size => 5 %>
+    <%= link_to 'clear', '#', :class => 'clear ignore-pending' %>
+    <%= link_to 'done', '#', :class => 'hide ignore-pending', 'data-attr-id' => attr.id %>
+  </span>
+<% end %>

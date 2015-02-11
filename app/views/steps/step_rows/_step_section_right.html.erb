@@ -1,0 +1,58 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<div style="float:left;width:50%">
+<div class="">
+	<dl>
+		<dt>
+			Component
+		</dt>
+		<dd>
+			<% if step.component.nil? %>
+			n/a
+			<% else %>
+			<%= step_attribute_value(step.component_name) %>
+			<span class="component_version" style="margin-left: 35px;">&nbsp; Version: <%= "#{step.installed_component.nil? ? "":step.installed_component.version.blank? ? "":step.installed_component.version} #{step.component_version.blank? ? "" : "(step-#{step.component_version})" }" %> </span>
+			<% end %>
+		</dd>
+		<% if GlobalSettings.limit_versions? && step.component %>
+			<dd>
+				<span class="component_version" style="margin-left: 95px;">&nbsp; Artifact URL: <%= "#{(step.version_tag && step.version_tag.artifact_url) ? raw(link_to step.version_tag.artifact_url, step.version_tag.artifact_url, :target => "_blank") : ""}".html_safe %>
+				</span>
+			</dd>
+		<% end %>
+	</dl>
+</div>
+<!--uploades moved to bottom-->
+<div class="">
+	<dl>
+		<dt>
+			Estimate
+		</dt>
+		<dd>
+			<%= step_attribute_value(step.estimate && hour_minute_estimate(step.estimate)) %>
+		</dd>
+
+		<dt>
+			Start By
+		</dt>
+		<dd>
+			<%= step_attribute_value(step.start_by && step.start_by.to_s(:simple_with_time)) %>
+		</dd>
+
+		<dt>
+			Complete By
+		</dt>
+		<dd>
+			<%= step_attribute_value(step.complete_by && step.complete_by.to_s(:simple_with_time)) %>
+		</dd>
+	</dl>
+</div>
+</div>
+<br class="clear" />
+

@@ -1,0 +1,48 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr>
+  <% if @run.blank? %>
+    <%= sortable_th 'Status', :column => "request_aasm_state" %>
+    <%= sortable_th 'Id', :column => 'request_id' %>
+    <%= sortable_th 'Name', :column => 'request_name' %>
+    <%= sortable_th 'Owner', :column => 'request_owner_name' %>
+    <%= sortable_th 'Release', :column => 'release', :class => 'hideRelease' %>
+    <%= sortable_th 'App', :column => 'request_app' %>
+    <%= sortable_th 'Env', :column => 'request_environment' %>
+    <%= sortable_th 'Scheduled', :column => "request_scheduled_at", :class => "scheduled" %>
+    <%= sortable_th 'Duration', :column => 'request_duration' %>
+    <%= sortable_th 'Due', :column => 'request_target_completion_at' %>
+    <%= sortable_th 'Steps', :column => "executable_step_count" %>
+    <%= sortable_th 'Created', :column => 'request_created_at' %>
+    <th data_column='participants'>Participants</th>
+    <%= sortable_th 'Runs', :column => 'run_name', :class => "last" %>
+    <th class='check_all'>
+      <% check_box_dom=( stage_id=="0" ? "#table_unassigned.requestList tbody tr td" :"#plan_stage_#{stage_id} .requestList tbody tr td" ) %>
+      <%= check_box_tag :select_all_chk, "1", false, :check_box_dom => check_box_dom, :id => "select_all_check_stage_#{stage_id}", :class => "check_all_input" %>
+    </th>
+  <% else %>
+    <th><%= 'Status' %></th>
+    <th><%= 'Id' %></th>
+    <th><%= 'Name' %></th>
+    <th><%= 'Owner' %></th>
+    <th class='hideRelease'><%= 'Release' %></th>
+    <th><%= 'App' %></th>
+    <th><%= 'Env' %></th>
+    <th class='scheduled'><%= 'Scheduled' %></th>
+    <th><%= 'Duration' %></th>
+    <th><%= 'Due' %></th>
+    <th><%= 'Steps' %></th>
+    <th><%= 'Created' %></th>
+    <th data_column='participants'>Participants</th>
+    <th class='last'><%= 'Runs' %></th>
+    <th class='check_all'>
+      <%= check_box_tag :select_all_chk, "1", false, :check_box_dom => "#plan_stage_#{stage_id} .requestList tbody tr td", :id => "select_all_check_stage_#{stage_id}", :class => "check_all_input" %>
+    </th>
+  <% end %>
+</tr>

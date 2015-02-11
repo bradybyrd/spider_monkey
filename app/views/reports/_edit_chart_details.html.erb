@@ -1,0 +1,79 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<div id='edit_chart_details'>
+  <% form_tag generate_charts_reports_path, :class => 'cssform ajax' do %>
+    <h2>edit: Report</h2>
+    <div class='left_column'>
+      <div class='field toggles'>
+        <label>Criteria</label>
+        <% # TODO: Get rid of the hidden field and enable the select tag for use %>
+        <%= select_tag :criterion_type, options_for_select(@criterion_types), :disabled => true %>
+        <%= hidden_field_tag :criterion_type, "app" %>
+      </div>
+      <span class='app_fields'>
+        <div class='field'>
+          <label>Application</label>
+          <%= select_tag :criterion_id, options_from_collection_for_select(current_user.accessible_apps, :id, :name), :id => 'app_criterion' %>
+        </div>
+      </span>
+      <span class='environment_fields'>
+        <div class='field'>
+          <label>Environment</label>
+          <%= select_tag :criterion_id, options_from_collection_for_select(current_user.accessible_environments, :id, :name), :id => 'environment_criterion', :disabled => true %>
+        </div>
+      </span>
+      <span class='process_fields'>
+        <div class='field'>
+          <label>Process</label>
+          <%= select_tag :criterion_id, options_from_collection_for_select(BusinessProcess.active, :id, :name), :id => 'process_criterion', :disabled => true %>
+        </div>
+      </span>
+      <span class='release_fields'>
+        <div class='field'>
+          <label>Release</label>
+          <%= select_tag :criterion_id, options_from_collection_for_select(Release.active, :id, :name), :id => 'release_criterion', :disabled => true %>
+        </div>
+      </span>
+      <div class='field'>
+        <label>Display by</label>
+        <%= select_tag :display_by, options_for_select(@display_types) %>
+      </div>
+      <div class='field'>
+        <label>Period</label>
+        <%= select_tag :period, options_for_select([['Week', 'week'], ['Day', 'day']]) %>
+      </div>
+      <span class='environment_fields process_fields release_fields'>
+        <div class='field'>
+          <label for='app_id'>Applications</label>
+          <%= select_tag 'filters[app_id]', options_from_collection_for_select(App.all, :id, :name), :multiple => true %>
+        </div>
+      </span>
+      <span class='app_fields process_fields release_fields'>
+        <div class='field'>
+          <label for='environment_id'>Environment</label>
+          <%= select_tag 'filters[environment_id]', '', :multiple => true, :class => 'use_remote_options', :rel => 'app_criterion' %>
+          <%= hidden_field_tag 'filters_environment_id_url', environment_options_reports_path %>
+        </div>
+      </span>
+      <span class='environment_fields app_fields release_fields'>
+        <div class='field'>
+          <label for='business_process_id'>Process</label>
+          <%= select_tag 'filters[business_process_id]', options_from_collection_for_select(BusinessProcess.all, :id, :name), :multiple => true %>
+        </div>
+      </span>
+      <span class='environment_fields process_fields app_fields'>
+        <div class='field'>
+          <label for='release_id'>Release</label>
+          <%= select_tag 'filters[release_id]', options_from_collection_for_select(Release.all, :id, :name), :multiple => true %>
+        </div>
+      </span>
+    </div>
+    <br class='clear'/>
+    <%= hidden_field_tag :chart_path, @chart_path %>
+    <%= submit_tag 'Generate',:class =>'button' %>
+  <% end %>
+</div>

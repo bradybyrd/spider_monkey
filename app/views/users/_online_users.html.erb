@@ -1,0 +1,22 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<h3 style='float:left;'>Users Online</h3>
+<br>
+<div class='clear'></div>
+<% if @request_dashboard[:current_users].size == 0 -%>
+    <div id='no_users' style='display:block;height:10px;'>Currently there are no online users.</div>
+<% else -%>
+    <div id='user_list'>
+      <% @request_dashboard[:current_users].each do |user| %>
+          <div <%= tag_options({:id => "user_#{user.id}" , :class => "online_user"}, false) %>>
+            <%= mail_to user.email, "#{user.to_label}", :class => "user_ol_icon" %>
+          </div>
+      <% end %>
+    </div>
+<% end -%>

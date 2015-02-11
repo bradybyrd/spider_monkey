@@ -1,0 +1,36 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='uploads_steps_links'>
+  <div id='uploads_list' <%= tag_options({:class => request.uploads.blank? ? '' : 'uploads_fl_wrap'}, false) %>>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Remove
+          </th>
+          <th>
+            Attachment Filename
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% request.uploads.each do %>
+          <tr>
+            <td>
+              Remove
+            </td>
+            <td>
+              Attachment Filename
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

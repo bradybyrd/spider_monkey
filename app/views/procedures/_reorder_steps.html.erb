@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='step'>
+  <div class='subheader'>
+    <%= link_to image_tag("done_reordering.png"), edit_procedure_path(procedure) %>
+    <h3 class='no_margin'><%= "Reorder steps for #{procedure.name}" %></h3>
+  </div>
+  <div>
+    <div class='step_phase_divider'>
+      <p></p>
+    </div>
+    <% procedure.each_step_phase do |steps| %>
+      <div class='step_phase'>
+        <% steps.each do |step| %>
+          <%= render :partial => 'procedures/step_for_reorder', :locals => { :step => step, :procedure => procedure } %>
+        <% end %>
+      </div>
+      <div class='step_phase_divider'>
+        <p></p>
+      </div>
+    <% end %>
+    <div style='clear:both'></div>
+  </div>
+</div>

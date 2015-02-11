@@ -1,0 +1,35 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+standard_operating_procedures_001: 
+  name: ss-qa-opt - SOP
+  updated_at: <%= -90075.644067.seconds.ago %>
+  url: http://cnet.com
+  id: 6
+  installed_component_id: 183
+  filename: 
+  active: true
+  created_at: <%= 3020743.355995.seconds.ago %>
+standard_operating_procedures_002: 
+  name: Portal Deploy SOP
+  updated_at: <%= -89770.643973.seconds.ago %>
+  url: ""
+  id: 8
+  installed_component_id: 182
+  filename: ss-installation instructions.doc
+  active: true
+  created_at: <%= -89770.643931.seconds.ago %>
+standard_operating_procedures_003: 
+  name: ESB Deploy SOP
+  updated_at: <%= -89979.643903.seconds.ago %>
+  url: ""
+  id: 9
+  installed_component_id: 184
+  filename: ss-installation instructions.doc
+  active: true
+  created_at: <%= -89979.643861.seconds.ago %>

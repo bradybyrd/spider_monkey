@@ -1,0 +1,9 @@
+<div class="request_hold_button">
+	<p>
+		<% if request.notify_on_request_hold? %>
+		  <%= link_to image_tag("btn-hold-request.png"), add_message_request_path(request, 'hold'), :rel => 'facebox', :focusOn => '#message_subject' %>
+		<% else %>
+		  <%= link_to image_tag("btn-hold-request.png"), update_state_request_path(request, 'hold'), :method => :put %>
+		<% end %>
+	</p>
+</div>

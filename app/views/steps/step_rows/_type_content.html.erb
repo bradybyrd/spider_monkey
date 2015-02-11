@@ -1,0 +1,9 @@
+<% if "component".eql?(related_object_type) %>
+    <label>Component</label>
+    <%= hidden_field_tag 'no_package_template', '1' if @request.has_no_available_package_templates? %>
+    <!-- FIX ME : Dirty code. It has to re-factored.-->
+    <%= component_select_tag(step, cannot?(:select_step_component, step.request)) %>
+<% elsif "package".eql?(related_object_type) %>
+    <label>Package</label>
+    <%= package_select_tag(step, cannot?(:select_step_package, step.request)) %>
+<% end %>

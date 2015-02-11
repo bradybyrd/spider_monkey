@@ -1,0 +1,62 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+groups_002: 
+  name: Deploy Ops
+  updated_at: <%= 6569798.829473.seconds.ago %>
+  id: 2
+  created_at: <%= 6569798.829521.seconds.ago %>
+  email: 
+groups_003: 
+  name: Infrastructure
+  updated_at: <%= 6569798.829557.seconds.ago %>
+  id: 3
+  created_at: <%= 6569798.829588.seconds.ago %>
+  email: 
+groups_004: 
+  name: Monitoring
+  updated_at: <%= 6569798.829622.seconds.ago %>
+  id: 4
+  created_at: <%= 6569798.829651.seconds.ago %>
+  email: 
+groups_005: 
+  name: Testing
+  updated_at: <%= 6569798.829686.seconds.ago %>
+  id: 5
+  created_at: <%= 6569798.829716.seconds.ago %>
+  email: 
+groups_006: 
+  name: SS Dev
+  updated_at: <%= 6569798.829749.seconds.ago %>
+  id: 6
+  created_at: <%= 6569798.829779.seconds.ago %>
+  email: 
+groups_007: 
+  name: EDI
+  updated_at: <%= 6569798.829813.seconds.ago %>
+  id: 7
+  created_at: <%= 6569798.829842.seconds.ago %>
+  email: 
+groups_008: 
+  name: Sales and BD
+  updated_at: <%= 6569798.829875.seconds.ago %>
+  id: 8
+  created_at: <%= 6569798.829905.seconds.ago %>
+  email: 
+groups_009: 
+  name: Bladelogic
+  updated_at: <%= 5900409.829939.seconds.ago %>
+  id: 1054583401
+  created_at: <%= 5900409.829968.seconds.ago %>
+  email: 
+groups_001: 
+  name: ITSG
+  updated_at: <%= 3581504.830002.seconds.ago %>
+  id: 1
+  created_at: <%= 6569798.830031.seconds.ago %>
+  email: clyde3@gmail.com

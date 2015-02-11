@@ -1,0 +1,21 @@
+<%= f.error_messages %>
+<div class='field'>
+  <%= label_tag :package, 'Package' %>
+  <%= text_field_tag :package, @package.name, disabled: true %>
+</div>
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= label_tag :reference_method, 'Method' %>
+  <%= select_tag :reference_method, options_for_select(['File', nil]), disabled: true %>
+</div>
+<div class='field'>
+  <%= f.label :server_id %>
+  <%= f.collection_select :server_id, servers, :id, :name, include_blank: '-' %>
+</div>
+<div class='field'>
+  <%= f.label :uri %>
+  <%= f.text_field :uri %>
+</div>

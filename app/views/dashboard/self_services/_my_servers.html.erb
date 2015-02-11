@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :view, :my_servers %>
+  <div id='my_servers'>
+    <%= render :partial => "dashboard/self_services/tables/my_servers" %>
+  </div>
+<% end %>

@@ -1,0 +1,57 @@
+<%
+   # #############################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   # #############################################################################
+%>
+
+<% page_settings title: @request_dashboard[:title] %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'dashboard' %>
+  <%= stylesheet_link_tag 'dashboard' %>
+<% end %>
+
+<% content_for :page_section do %>
+  <% draw_tabs selected: "request", class: "dashboard_request_tab my_dashboard_tabs offset" do %>
+    <% if @request_dashboard[:can_view_requests_list] %>
+      <li class="current">
+        <%= link_to 'Requests', requests_tab_path(@request_dashboard[:show_all]), class: 'current' %>
+      </li>
+    <% end %>
+
+    <% if @request_dashboard[:can_view_calendar] %>
+      <%= sub_tab 'Calendar', path: (@request_dashboard[:show_all] ? my_all_calendar_path : my_calendar_path) %>
+    <% end %>
+
+    <% if @request_dashboard[:can_view_currently_running_steps] %>
+      <li>
+        <%= link_to 'Currently Running Steps', currently_running_steps_path(params_for_currently_running_steps) %>
+      </li>
+    <% end %>
+  <% end %>
+
+  <% if @request_dashboard[:can_view_requests_list] %>
+    <%= form_tag request_dashboard_path, class: 'searchform', search_requests: true, method: :get do %>
+      <%= text_field_tag :q, params[:q], class: 'searchbox' %>
+      <%= submit_tag 'Search', class: 'searchButton' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <div id="requests_sidebar">
+    <%= link_to image_tag('btn-create.png', :border => 0), new_request_path if @request_dashboard[:can_create_request] %>
+    <br/>
+    <br/>
+    <%= link_to 'Import Request', import_xml_requests_path, rel: 'facebox' if @request_dashboard[:can_import_request] %>
+    <%= render partial: 'shared/process_map',
+               locals: {show_map: (@request_dashboard[:requests_total_count] <= 2)}
+    %>
+  </div>
+<% end %>
+
+<%= render partial: 'dashboard/self_services/requests' %>
+

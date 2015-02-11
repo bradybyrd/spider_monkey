@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table class='user_setting_table'>
+  <tr>
+    <td></td>
+  </tr>
+  <tr>
+    <td width='42%'>
+      <div class='field'>
+        <%= label_tag :group_ids, 'Groups' %>
+        <span id='groups'>
+          <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @user, :collection => Group.name_order.active, :object => "user", :method => "group_ids", :label => "name", :value => "id"} %>
+        </span>
+        <span class='sl_links'>
+          <%= select_clear_chk('groups') %>
+        </span>
+      </div>
+    </td>
+    <td width='44%'>
+      <div class='field'>
+        <%= label_tag :team_ids, 'Teams', :style => "width:50px" %>
+        <span id='teams'>
+          <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @user, :collection => Team.active.name_order, :object => "user", :method => "team_ids", :label => "name", :value => "id"} %>
+        </span>
+        <span class='sl_links' style='margin-left:262px'>
+          <%= select_clear_chk('teams') %>
+        </span>
+      </div>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,38 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% skip_deletion ||= false %>
+<% if !model_with_uploads.uploads.blank? %>
+  <div>
+    <p>
+      <% if skip_deletion %>
+        <%= link_to_upload_list(model_with_uploads).join('<br/>') %>
+      <% else %>
+        <%= link_to_upload_list_with_deletion model_with_uploads %>
+      <% end %>
+    </p>
+  </div>
+<% end %>
+<div class="field" style="text-align: left">
+  <span class="uploads dynamic_fields">
+    <h2>Uploads</h2><!--h2 added for facebox title. if this breaks UI other places, we can remove h2 element and keep place text-->
+    <br/>
+    <%= file_field_tag "uploads[]", :style => "width: auto" %> |
+    <%= link_to 'clear', '#', :id => 'clear_field' %>
+    <%= link_to "more", '#', :id => "add_field" %>
+    <br/>
+
+    <span id="field_for_clone" style="display: none">
+      <p>
+        <%= file_field_tag "uploads[]", :style => "width: auto" %> |
+        <%= link_to "remove", "#", :class => "remove_field" %>
+      </p>
+    </span>
+  </span>
+</div>
+

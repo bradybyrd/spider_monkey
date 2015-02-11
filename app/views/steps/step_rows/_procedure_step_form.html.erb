@@ -1,0 +1,83 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="step_form" id="step_form_holder_tr_div">
+  <h2><%= raw(procedure_step_form_header(step, procedure)) %></h2>
+  <%= form_for step, :url => step.new_record? ? create_procedure_step_steps_path : update_procedure_step_step_path, :html => {:id => "new_step_form", :class => "new_procedure_step", :multipart => true} do |f| %>
+    <%#= hidden_field_tag "new_procedure_path_url", new_procedure_step_request_step_path(@request, @step) if local_assigns[:procedure] %>
+    <%= hidden_field_tag :id, step.try(:id) %>
+    <%= hidden_field_tag "server_aspect_ids", step.server_aspect_ids.join(',').to_s %>
+    <%= hidden_field_tag "server_ids", step.server_ids.join(',').to_s %>
+    <%= hidden_field_tag "step[procedure_id]", step.procedure_id %>
+    <div class="facebox_stepform_container" >
+      <% if step.parent %>
+        <%= f.hidden_field :parent_id %>
+      <% end %>
+      <fieldset class="top_fields_area" >
+        <div class="form_column left left_column">
+          <div class="field">
+            <label >Name</label>
+            <%= f.text_field :name, :disabled => false%>
+          </div>
+
+          <div class="field" style="overflow:auto;">
+            <label>Component</label>
+            <%= application_component_select_list(step, !can?(:select_step_component, Request.new)) %>
+          </div>
+        </div>
+        <div class="form_column" style="padding-top:10px;">
+          <div class="field">
+            <label>Owner</label>
+            <%= f.select :owner_id,
+                         options_for_users_groups_from_collection_for_select(@users,@groups,step),
+                         {include_blank: 'Select'},
+                         disabled: !can?(:edit_step_owner, Request.new) %>
+            <%= hidden_field_tag 'step[owner_type]', user_owner_chosen_for(step) ? "User" : "Group"  %>
+          </div>
+
+          <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:380px;">
+
+            <% if step.installed_component %>
+              <%= render :partial => 'steps/property_installed_components',
+              :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
+            <% end %>
+          </div>
+        </div>
+      </fieldset>
+      <%= render 'steps/step_tabs', procedure: procedure,
+                                    step: step,
+                                    f: f,
+                                    disable_fields: false,
+                                    request: Request.new %>
+      <br/>
+    </div>
+    <% if step.new_record? %>
+      <div class="button_bar options" style="text-align:right;">
+        <div style="float:left">&nbsp;
+          <label><%= f.check_box :execute_anytime, :disabled => false,:style=>"vertical-align: middle;" %> Execute Anytime</label>
+        </div>
+        <div class="form_action_btns">
+          <%= button_to_function t('step.buttons.add_and_continue'), "submitStepFormFromFacebox($(this))" %>
+          <%= button_to_function t('step.buttons.add_and_close'), "submitStepFormFromFacebox($(this))" %>
+          &nbsp;
+        </div>
+        <%= hidden_field_tag 'upload_link', add_uploads_via_ajax_request_steps_path(request) %>
+      </div>
+    <% else %>
+      <div class="button_bar options" style="text-align:right;">
+        <div style="float:left">&nbsp;
+          <label><%= f.check_box :execute_anytime, :disabled => false ,:style=>"vertical-align: middle;"%> Execute Anytime</label>
+        </div>
+        <div class="form_action_btns">
+          <%= button_to_function t('step.buttons.save'), "submitStepFormFromFacebox($(this))" %>
+          &nbsp;
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

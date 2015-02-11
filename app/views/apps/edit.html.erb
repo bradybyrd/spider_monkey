@@ -1,0 +1,31 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+
+<%= render :partial => "apps/application_container", :locals => {:subtitle => (@page_tab_selected.try(:capitalize) || 'App'), :app => @app }   %>
+
+<%= render :partial => "apps/sub_tabs", :locals => {:selected => @page_tab_selected.try(:downcase) || 'app', :app => @app} %>
+
+<div id='app_edit_container'>
+
+  <div class="content">
+    <%= render :partial => 'apps/app_header', :locals => {:record => @app, :path_back_to => 'none'} %>
+
+    <% if @page_tab_selected == 'routes' -%>
+        <%= render :partial => "routes/index", :locals => {:routes => @routes, :archived_routes => @archived_routes, :app => @app} %>
+    <% else -%>
+        <%= error_messages_for :app %>
+        <div id="apps_view">
+          <%= render :partial => 'apps/environment_components', :locals => {:app => @app, :show_package_tab => params[:show_package_tab]} %>
+        </div>
+        <div id="packageTemplates" style="display:none;">
+          <%= render :partial => 'package_templates/templates' %>
+        </div>
+    <% end -%>
+  </div>
+</div>

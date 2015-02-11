@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id="<%= dom_id(step) %>" 
+     title="<%= step_reorder_title(step) %>" 
+     class="<%= step_type_class(step) %> <%= completion_class(step) %> <%= class_for_component_color(step, local_assigns[:step_number]) %>"
+     data-color-id="<%= step.component_id || step.name %>">
+
+ <span class=<%= step.not_movable? ? 'not_movable' : '' %>>
+  <p>
+    <span class="step_number"><%= step.number %></span>
+    <%= h step.name %>
+  </p>
+</span>
+
+  <!-- form is used for drag and drop steps -->
+  <%= form_tag abstract_update_position_request_step_path(request, step), :method => :put do %>
+  <% end %>
+</div>

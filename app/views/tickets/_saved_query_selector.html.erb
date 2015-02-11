@@ -1,0 +1,11 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<%= label_tag :queries, "OR" %>
+<%= select_tag :query_id, options_from_collection_for_select(saved_queries, "id", "select_label"),
+'data-path' => filter_arguments_tickets_path, 'data-plan-id' => plan.try(:id), :prompt => "Reload a recent query..." %> 

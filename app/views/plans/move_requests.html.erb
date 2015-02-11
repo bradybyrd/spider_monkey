@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :move_requests, @plan %>
+  <%= form_for @plan, :url => move_requests_plan_path(@plan), :html => { :method => :post, :class => 'cssform' } do |f| %>
+    <h2><%= "Move Requests" %></h2>
+    <% unless @request_ids.blank? %>
+      <div class='move_request_text'><%= "Select stage where you would like to move request to." %></div>
+      <% @plan.stages.each_with_index do |stage, index| %>
+        <%= radio_button_tag :stage_id, stage.id, false ,:style => "vertical-align:bottom;" %>
+        <%= sanitize "&nbsp;#{stage.name}" %>
+        <div class='clear'></div>
+      <% end %>
+      <% @request_ids.each do |request_id| %>
+        <%= hidden_field_tag "request_ids[]", request_id %>
+      <% end %>
+      <% if @run_requests_purged > 0 %>
+        <h3>
+          <%= "Note: #{pluralize(@run_requests_purged, 'Request') } could not be moved as part of this action." %>
+          <br>
+            Requests must be dropped from a run before moving to a new stage.
+          </br>
+        </h3>
+      <% end %>
+      <div class='button_bar'><%= submit_tag "Update" %></div>
+    <% else %>
+      <h3>
+        <strong>
+          Sorry
+        </strong>
+      </h3>
+      <div>
+        All of the requests you selected to move are assigned to a Run.
+      </div>
+      <div>
+        Please drop the requests from their associated run before trying to move them to a new stage.
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

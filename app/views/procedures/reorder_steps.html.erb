@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Reorder Steps for #{@procedure.name}" %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/object_group_drop_zone',  'drag_and_drop/expandable_procedures', 'drag_and_drop/helpers' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+  <%= stylesheet_link_tag 'request' %>
+<% end %>
+<div id='steps_container'>
+  <%= render :partial => 'procedures/reorder_steps', :locals => { :procedure => @procedure } %>
+</div>

@@ -1,0 +1,58 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings :title => 'Statistics' %>
+<% content_for :page_section do %>
+    <%= render :partial => 'users/tabs', :locals => {:selected => 'settings', :tab_view => true} %>
+<% end %>
+<% content_for :sidebar do %>
+    <!-- No content -->
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render :partial => 'account/tabs', :locals => {:selected => 'statistics'} %>
+  </div>
+  <div class='content'>
+    <% if can?(:view, :statistics) %>
+
+        <table class='formatted_table' id='Statistics'>
+          <thead>
+          <tr>
+            <th>Entity</th>
+            <th>Count</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td>Application</td>
+            <td><%= App.count %></td>
+          </tr>
+          <% [Component, User, Environment, Server, ServerLevel, Property, PropertyValue, InstalledComponent].each do |mod| %>
+              <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                <td><%= mod.to_s.titleize %></td>
+                <td><%= mod.count %></td>
+              </tr>
+          <% end %>
+          <% ActivityCategory.all.each do |cat| %>
+              <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                <td><%= h cat.name %></td>
+                <td><%= cat.activities.count %></td>
+              </tr>
+          <% end %>
+          <% ServerLevel.all.each do |level| %>
+              <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                <td><%= h level.name %></td>
+                <td><%= level.server_aspects.count %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
+
+  </div>
+</div>

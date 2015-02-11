@@ -1,0 +1,62 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% unless script.automation_type == "ResourceAutomation" %>
+    <td class="name" title="<%= script.name %>">
+      <% if can? :edit, :automation %>
+          <%= link_to "<div class='truncated' style='font-weight: bold;'>#{h(script.name)}</div>".html_safe,
+                      edit_script_path(script,
+                                       page: params[:page],
+                                       key: params[:key],
+                                       inline: "yes"),
+                      class: 'append_row' %>
+      <% else %>
+          <%= h(script.name) %>
+      <% end %>
+    </td>
+
+    <td class="description" title='<%= script.description %>'>
+      <div class='truncated'><%= h script.description %></div>
+    </td>
+    <% if !script.archived? %>
+        <%= render :partial => 'object_state/td_state', :locals => {:passed_obj => script} %>
+    <% end %>
+    <td class="automation_category truncated"><%= h(script.automation_category) %></td>
+    <td class="automation_type truncated"><%= h(script.automation_type) %></td>
+    <td> <%= default_format_date(script.updated_at) %> </td>
+    <td class="render_as">  <%= h(script.render_as) %></td>
+    <% if !script.archived? %>
+        <td>
+          <%= h(script.in_use_by) %>
+    <% end %>
+    </td>
+    <td class='action_links'>
+      <% if script.archived? && can?(:update_state, :automation) %>
+          <%= link_to 'Unarchive', unarchive_script_path(script, :page => params[:page]), :method => :put %>
+      <% else %>
+          <% if can? :edit, :automation %>
+              <div style="float:left;">
+                <%= link_to 'Edit', edit_script_path(script, page: params[:page], key: params[:key]), class: 'append_row' %>
+              </div>
+          <% end %>
+      <% end %>
+      <% if script.archived? && can?(:delete, :automation) %>
+            |
+            <%= link_to 'Delete', script_path(script, page: params[:page], key: params[:key]), method: :delete, data: {confirm: 'Are you sure?'} %>
+      <% end %>
+      <% if prepared_to_test?(script) && !script.archived? && can?(:test, :automation) %>
+          <div style="float:left;">
+            | <%= link_to 'Test', test_run_script_path(script, page: params[:page], key: params[:key]), class: 'append_row' %>
+          </div>
+      <% end %>
+      <% if !script.archived? && script.can_change_aasm_state? && can?(:update_state, :automation) %>
+          <%= render :partial => 'object_state/state_list', :locals => {:passed_obj => script} %>
+      <% end %>
+    </td>
+
+<% end %>

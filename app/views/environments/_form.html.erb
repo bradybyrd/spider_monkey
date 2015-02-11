@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :environment_type %>
+  <%= f.collection_select(:environment_type_id, @environment_types, :id, :short_name, {:include_blank => 'None'}) %>
+</div>
+<div class='field'>
+  <%= f.label :deployment_policy %>
+  <%= f.select(:deployment_policy, @environment_states) %>
+</div>
+<div class='field'>
+  <%= f.label :server_ids, "Servers" %>
+  <%# f.collection_select :server_ids, servers.blank? ? Server.active.all : servers, :id, :name, {}, :multiple => true, :size => ( servers.blank? ? ( Server.active.all.size > 25 ? 25 : Server.active.all.size ) : (servers.size > 25 ? 25 : servers.size) ), :class => 'env_server_select' %>
+  <span id='servers'>
+    <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @environment, :collection => Server.active.all, :object => "environment", :method => "server_ids", :label => "name", :value => "id"} %>
+  </span>
+  <span class='sl_links' id='servers_select_links'>
+    <%= select_clear_chk('servers') %>
+  </span>
+</div>
+<div class='field'>
+  <%= f.label :server_group_ids, "Server Groups" %>
+  <span id='server_groups'>
+    <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @environment, :collection => ServerGroup.active.all, :object => "environment", :method => "server_group_ids", :label => "name", :value => "id"} %>
+  </span>
+  <span class='sl_links' id='servergrp_select_links'>
+    <%= select_clear_chk('server_groups') %>
+  </span>
+</div>
+<p></p>
+<%= hidden_field_tag 'env_server_select_url', update_server_selects_environments_url %>
+<%= hidden_field_tag 'page', params[:page] %>
+<%= hidden_field_tag 'key', params[:key] %>

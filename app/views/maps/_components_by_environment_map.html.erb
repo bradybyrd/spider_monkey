@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table>
+  <thead>
+    <tr>
+    <th>&nbsp;</th>
+    <% selected_environment.apps.each do |app| %>
+      <th><%= app.name %></th>
+    <% end %>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% selected_servers.each do |server| %>
+      <tr>
+        <td><%= server.name %></td>
+        <% selected_environment.apps.each do |app| %>
+          <td><%= components_on_steps(steps[app.id]) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

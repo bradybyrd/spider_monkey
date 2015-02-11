@@ -1,0 +1,22 @@
+<div id="request_notes_section" class="div">
+  <% all_request_notes = request.notes.includes(:user).all %> 
+  <% if all_request_notes.length > 2 %>
+    <a href='#' id="more_request_notes" request_id="<%= request.number %>">More (<%= all_request_notes.length - 2 %>)</a>
+    <a style="display:none" href='#' id="close_request_notes" request_id="<%= request.number %>">Close (<%= all_request_notes.length - 2 %>)</a>
+  <% end %>
+  <br/>
+  <div id="all_request_notes">
+  </div>
+  <div id="last_two_notes">
+    <% (all_request_notes.sort! { |a, b|  a.created_at <=> b.created_at }.last 2).each do |note| %>
+      <p style="width:400px;">
+        <span class="user_date">
+          <%= note.user.name %>
+          <%= note.updated_at.default_format %>
+          <br/>
+        </span>
+        <%= auto_link ensure_space(note.content), :all, :target => '_blank' %>
+      </p>
+    <% end %>
+  </div>
+</div>

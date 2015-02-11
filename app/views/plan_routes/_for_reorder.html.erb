@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="plan_stage_instance component_color_1" <%= colorized_tag_options(route_gate.environment_type.try(:label_color)) %> title="<%= route_gate.full_label %>">
+  <p>
+    <%= truncate_middle(route_gate.environment.name, :max => 20, :position => 0.6) %>
+    <% if constraint.can_be_deleted? && can?(:configure, constraint) -%>
+      <% unless constraint.governable.plan.archived? %>
+        <span class="delete_route_gate">
+          <%= link_to 'x', constraint_path(constraint), :title => 'Remove constraint', :method => :delete, :confirm => "Are you sure you want to remove this constraint?" %>
+        </span>
+      <% end -%>
+    <% end -%>
+  </p>
+
+  <!-- form is used for drag and drop environments -->
+  <!-- TODO: Is this alive? -->
+  <%= form_for [constraint], :url => constraint_path(constraint) do |f| %>
+      <%= f.error_messages %>
+  <% end %>
+</div>
+

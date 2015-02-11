@@ -1,0 +1,65 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div class='top_div' id='plan_route_list_table_div' rel='plan_route'>
+  <%= hidden_field_tag 'current_page_url', plan_plan_routes_path(:filters => @filters, :actions => @actions, :per_page => @per_page, :page => @page, :id => 'current_page_url') %>
+  <% if plan_routes.blank? -%>
+      <div class='blank_data_msg'>
+        <%= "There are no associated plan routes." %>
+      </div>
+  <% else -%>
+      <table class='plan_routeList formatted_table tablesorter' <%= tag_options({:id => "plan_routes_#{@page || 1}", :style => "width:100%;"}, false) %>>
+        <thead>
+        <tr>
+          <%= sortable_th 'App Name', :column => 'apps.name' %>
+          <%= sortable_th 'Route Name', :column => 'routes.name' %>
+          <th>Environments</th>
+          <th>Other Active Plans</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% plan_routes.each do |plan_route| -%>
+            <tr <%= tag_options({:id => "plan_route_#{plan_route.id}", :class => cycle('even', 'odd')}, false) %>>
+              <td title="<%= plan_route.route_app_name %>">
+                <%= link_to_if can?(:inspect, plan_route), truncate(plan_route.route_app_name), plan_plan_route_path(@plan, plan_route) %>
+              </td>
+              <td title="<%= plan_route.route_name %>">
+                <%= link_to_if can?(:inspect, plan_route), truncate(plan_route.route_name), plan_plan_route_path(@plan, plan_route) %>
+              </td>
+              <td title="<%= plan_route.route_environments_list %>">
+                <%= truncate(plan_route.route_environments_list, :length => 50) %>
+              </td>
+              <td title="<%= plan_route.other_active_plans_list %>">
+                <%= truncate(plan_route.other_active_plans_list, :length => 50) %>
+              </td>
+
+              <td class='plan_route_action'>
+                <% if @plan.archived? %>
+                  -
+                <% else %>
+                  <% if can? :configure, Constraint.new %>
+                    <%= link_to 'Configure', plan_plan_route_path(@plan, plan_route) %> |
+                  <% end %>
+
+                  <% if can? :delete_from_plan, plan_route %>
+                    <%= link_to image_tag('bin_empty.png'),
+                                plan_plan_route_path(@plan, plan_route),
+                                :method => :delete,
+                                :data => {:confirm => "Are you sure you want to remove unassign this route from the plan?"},
+                                :class => "destroy_plan_route"%>
+                  <% end %>
+                <% end %>
+
+              </td>
+            </tr>
+        <% end -%>
+        </tbody>
+      </table>
+  <% end -%>
+</div>

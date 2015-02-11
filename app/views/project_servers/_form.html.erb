@@ -1,0 +1,52 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :server_name_id, "*Server Type" %>
+  <%= f.select :server_name_id, ProjectServer::SERVER.sort %>
+</div>
+<div class='field'>
+  <%= f.label :name, "*Server Name" %>
+  <%= f.text_field :name %>
+</div>
+<div class='field'>
+  <%= f.label :ip %>
+  <%= f.text_field :ip %>
+</div>
+<div class='field'>
+  <%= f.label :server_url, "*Server URL" %>
+  <%= f.text_field :server_url %>
+</div>
+<div class='field'>
+  <%= f.label :port %>
+  <%= f.text_field :port %>
+</div>
+<div class='field'>
+  <%= f.label :username, "*Username" %>
+  <%= f.text_field :username %>
+</div>
+<div class='field'>
+  <%= f.label :password %>
+  <%= f.password_field :password, :value => @project_server.password %>
+</div>
+<div class='field'>
+  <%= f.label :details %>
+  <%= f.text_area :details, :size => '25x6' %>
+</div>
+<div class='p'>
+  <% if @project_server.new_record? %>
+    <%= submit_tag "Add Server", class: 'button create_server' %>
+    or
+    <%= link_to 'cancel', project_servers_path(:page => params[:page], :key => params[:key]) %>
+  <% else %>
+    <%= submit_tag "Update Server", class: 'button update_server' %>
+    or
+    <%= link_to 'cancel', project_servers_path(:page => params[:page], :key => params[:key]) %>
+  <% end %>
+</div>

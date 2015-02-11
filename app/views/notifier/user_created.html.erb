@@ -1,0 +1,32 @@
+<p>Hi <%= @user.present? ? @user.login : @params['SS_user_login'] %>,</p>
+
+<p>Welcome to BMC Release Process Management.<br />
+Application Release Management just got a whole lot easier.</p>
+
+
+<p>KEEP THIS EMAIL<br />
+===============<br />
+This email contains important information about your account
+so you'll want to keep it for future reference should you have any
+questions.</p>
+
+
+<p>YOUR ACCOUNT<br />
+============</p>
+
+<p>Login: <%= @params['SS_user_login'] %><br />
+Password: <%= @params['SS_user_password'] %></p>
+
+
+<p>LOGGING IN TO BMC Release Process Management<br />
+============================================<br />
+Everyone who has an account will log in at:<br />
+<%= @params['SS_login_url'] %></p>
+
+<p>ISSUES<br />
+==============================<br />
+<%= DEFAULT_SUPPORT_EMAIL_FOOTER %></p>
+
+<p>Thanks and welcome to BMC Release Process Management,</p>
+
+<p>BMC RPM Admin</p>

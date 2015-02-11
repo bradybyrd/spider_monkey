@@ -1,0 +1,48 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3><%= duration_of_week(week) %></h3>
+<% week.days.each do |day| %>
+  <b>
+    <i><%= day.strftime('%A') %></i>
+  </b>
+  <div class='cls'></div>
+  <% if day.releases.empty? %>
+    <p style='margin-top:1px;'>There are no releases scheduled for this time</p>
+  <% else %>
+    <table cellspacing='0' class='calendar'>
+      <thead>
+        <tr>
+          <td style='width:5% !important;'>Leading Group</td>
+          <td style='width:5% !important;'>Project</td>
+          <td style='width:5% !important;'>Deliverable</td>
+          <td style='width:5% !important;'>Delivery Highlights</td>
+          <td style='width:5% !important;'>Deployment Contact</td>
+          <td style='width:20% !important;'>Organizational Impact</td>
+          <td style='width:5% !important;'>Activity</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% day.releases.each do |release| %>
+          <tr>
+            <td><%= release.activity.leading_group.try(:name) %></td>
+            <td><%= release.activity.name %></td>
+            <td><%= release.name %></td>
+            <td <%= tag_options({:title => release.delivery_highlights}, false) %>><%= ensure_string(truncate(release.delivery_highlights, :length => 50), "&nbsp;") %></td>
+            <td><%= release.deployment_contact.try(:name_for_index) %></td>
+            <td <%= tag_options({:title => release.organization_impact_values}, false) %>>
+              <%= ensure_string(truncate(release.organization_impact_values, :length => 50), "&nbsp;") %>
+            </td>
+            <td><%= ensure_string(release.activity.activity_type_name, "&nbsp;") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  <% end %>
+<% end %>

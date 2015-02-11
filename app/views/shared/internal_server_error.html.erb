@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <style>
+    /*<![CDATA[*/
+      .dialog {
+        width: 25em;
+        padding: 0 4em;
+        margin: 4em auto;
+        border: 1px solid #ccc;
+        border-right-color: #999;
+        order-bottom-color: #999;
+      }
+      h1 { font-size: 100%; line-height: 1.5em; }
+    /*]]>*/
+  </style>
+  <% content_for :sidebar do %>
+    <span>&nbsp;</span>
+  <% end %>
+<% end %>
+<div class='dialog'>
+  <h1 <%= tag_options({:style => "font-size:14px; color:#f00"}, false) %>>We're sorry, but something went wrong.</h1>
+  <p>We've been notified about this issue and we'll take a look at it shortly.</p>
+</div>

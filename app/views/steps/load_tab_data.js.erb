@@ -1,0 +1,20 @@
+<% obj_name = ActiveModel::Naming.param_key(@step) %>
+<% builder_obj = instantiate_builder(obj_name, @step, {}) %>
+<% @disable_fields = disable_all_form_fields(@step) %>
+<% if params[:li_id].eql?('st_automation') %>
+  <%= render :partial => 'steps/step_form_tabs/automation', :locals => { :f => builder_obj, :request => @request, :step => @step, :cur_user_id => @current_user_id, :disable_fields => @disable_fields } %>
+<% elsif params[:li_id].eql?('st_notes') %>
+  <%= render :partial => 'steps/step_form_tabs/notes', :locals => { :f => builder_obj, :step => @step, :request =>  @request} %>
+<% elsif params[:li_id].eql?('st_documents') %>
+	<%= render :partial => 'steps/step_form_tabs/documents', :locals => { :f => builder_obj, :step => @step, :request =>  @request} %>
+<% elsif params[:li_id].eql?('st_properties') %>
+  <%= render :partial => 'steps/step_form_tabs/properties', :locals => { :request => @request, :step => @step, :installed_component => @step.installed_component, :work_task => @step.work_task } %>
+<% elsif params[:li_id].eql?('st_server_properties') %>
+  <%= render :partial => 'steps/step_form_tabs/server_properties', :locals => { :request => @request, :step => @step, :installed_component => @step.installed_component, :server_collection => @server_collection } %>
+<% elsif params[:li_id].eql?('st_content') %>
+  <%= render partial: 'steps/step_form_tabs/content', locals: { request: @request, step: @step, related_object_type: @related_object_type } %>
+<% elsif params[:li_id].eql?('st_design') %>
+  <%= render :partial => 'steps/step_form_tabs/design', :locals => {  :f => builder_obj, :request => @request, :step => @step, :installed_component => @step.installed_component, :server_collection => @server_collection } %>
+<%# elsif params[:li_id].eql?('st_promotion') %>
+<%#=# render :partial => 'steps/step_form_tabs/promotion', :locals => {  :f => builder_obj, :request => @request, :step => @step, :installed_component => @step.installed_component, :server_collection => @server_collection } %>
+<% end %>

@@ -1,0 +1,1194 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+/* Make sure the table cells show the right font */
+td {
+    font-family: Arial, Tahoma, sans-serif;
+}
+FORM {
+    padding: 0;
+    margin: 0;
+}
+/* Layout */
+#Wrapper {
+    font-size: 11px;
+    clear: both;
+    position: absolute;
+    top: 70px;
+    bottom: 50px;
+    left: 0;
+    width: 99.95%;
+    overflow-y: auto;
+    overflow-x:hidden;
+    border-top-color:#858585;
+    border-left-color:#858585;
+    border-top-width:1px;
+    background-color:#DEE0E0;
+    }
+#WrapperPDF {
+    font-size: 11px;
+    clear: both;
+    position: absolute;
+    top: 70px;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    border-top-color:#858585;
+    border-left-color:#858585;
+    border-top-width:1px;
+    /* background-color:#DEE0E0; */
+    min-width:960px;
+}
+
+table.layout {
+    width: 100%;
+}
+table.layout td {
+    vertical-align: top;
+}
+
+table.layout td.left {
+    width: 80%;
+    text-align: left;
+}
+table.layout td.right {
+    text-align: left;
+    width: 15%;
+}
+.Left
+{
+    width : 80%;
+    float:left;
+    clear:left;
+}
+.Left , .Full  {
+    background: #dee0e0;
+    position: relative;
+}
+.Left .bottom {
+    font-size:8px;
+}
+.Right
+{
+    width : 19%;
+    float : right;
+    padding-top: 30px;
+}
+.Right  h1 {
+    background-color:#EDF3FE;
+    border-bottom:1px solid #DCDCDC;
+    color:#333333;
+    font-size:13px;
+    margin:0pt 0pt 5px;
+    padding:6px 8px;
+}
+.Right  .options {
+    margin: 10px 0 0 0;
+}
+.Right  .list {
+    margin: 10px 0 0 0;
+}
+body.components .Right div#sidebar,
+body.packages .Right div#sidebar,
+body.package_instances .Right div#sidebar,
+body.environments  .Right div#sidebar,
+body.app_environments  .Right div#sidebar,
+body.notification_templates .Right div#sidebar,
+body.maps  .Right div#sidebar,
+body.dashboard .Right div#sidebar #requests_sidebar,
+body.calendars .Right div#sidebar,
+body.categories .Right div#sidebar,
+body.plan_templates .Right div#sidebar,
+body.lists .Right div#sidebar,
+body.package_contents .Right div#sidebar,
+body.phases .Right div#sidebar,
+body.business_processes .Right div#sidebar,
+body.releases .Right div#sidebar,
+body.work_tasks .Right div#sidebar,
+body.environment_types .Right div#sidebar,
+body.deployment_window_series .Right div#sidebar form, body.deployment_window_occurrences .Right div#sidebar form{
+  margin-top: 10px;
+}
+
+.list ul {
+    font-size: 11px;
+}
+.list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 15px;
+}
+.list ul li {
+    margin: 5px 0 0 0;
+}
+/* General */
+.pageSection {
+    position: relative;
+    /* background-color:#e8ebef; */
+    margin: 0;
+    /*padding: 5px; */
+    zoom: 1;
+}
+.pageSection h1 {
+padding-left:10px;
+}
+.pageSection ul li.right_align {
+    float: right;
+}
+.pageSection ul.server_tabs,.pageSection ul.automation_subtabs,.pageSection ul.metadata_tab
+{
+    clear:left;
+}
+
+.pageSection ul.package_tabs li.first
+{margin-left:0 !important;}
+
+
+.pageSection ul.component_tabs li.first
+{margin-left:0 !important;}
+.logo {
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    margin: 0 auto 0 auto;
+}
+.options a:hover {
+    background: none;
+}
+.content h2 {
+    font-size:14px;
+    font-weight:normal;
+    margin: 10px 0 8px 0px;
+    padding: 0;
+    text-align:left;
+    display:block;
+}
+.content h2.line {
+    padding: 5px;
+    border-bottom: 1px solid #999;
+}
+.sub {
+    font-size: 90%;
+}
+.error {
+    color: #f00;
+    font-weight: bold;
+}
+
+.bg-warning {
+    background-color: #fcf8e3;
+    border: 1px solid #fceec1;
+    border-radius: 4px;
+    padding: 0px 14px;
+    margin: 0 0 14px 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    line-height: 12px;
+    color: #404040;
+}
+
+.bg-warning {
+    background-color: #fcf8e3;
+    border: 1px solid #fceec1;
+    border-radius: 4px;
+    padding: 0 14px;
+    margin: 0 0 14px 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    line-height: 12px;
+    color: #404040;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.pos_fix {
+    position: relative;
+}
+.hoverEdit {
+    display: block;
+    width: 40px;
+    background: #ccc;
+    position: absolute;
+    top: -4px;
+    left: -42px;
+    padding: 4px 0 4px 0;
+}
+.clear {
+    clear: left;
+}
+a.simple {
+    margin-left: 5px;
+    color: #000;
+    text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 11px;
+}
+.grey_background { background:none repeat scroll 0 0 #F7F7F7!important; border-bottom:1px solid #CCCCCC!important;}
+/* Status Tables */
+.trelease_table_th_bg {
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    text-transform: uppercase;
+    vertical-align: top;
+    font-size: 10px;
+}
+#edit_roles_for_team thead tr:first-child th,
+#smart_release thead tr:first-child th,
+#map thead tr:first-child th{text-transform: none!important;}
+.content thead.resource_head tr th {
+    padding:4px 1px;
+}
+.content thead.resource_head tr th a.asc {
+    background-image:url(<%= asset_path 'asc.gif' %>);
+    background-repeat:no-repeat;
+    background-position:45px 5px;
+    display:block;
+    border:medium none;
+}
+.content thead.resource_head tr th a.desc {
+    background-image:url(<%= asset_path 'desc.gif' %>);
+    background-repeat:no-repeat;
+    background-position:45px 5px;
+    display:block;
+    border:medium none;
+}
+.content thead tr th a {
+    color: #000;
+    text-decoration: none;
+}
+.content thead tr th a:hover {
+    text-decoration: underline;
+}
+.content tbody tr td a:hover {
+    text-decoration: underline;
+    color:#009;
+}
+.alt, .content .alt td.status, .content .alt td {background: #ebebeb;}
+.content td a {
+    text-decoration: none;
+    /* border-bottom: 1px solid #ccc; */
+}
+.content td a:hover {
+    color: #009;
+    text-decoration: underline;
+}
+.content td.status .state {
+    padding: 2px 4px;
+}
+.content td.flag {
+    text-align: right;
+    color: #aaa;
+}
+.content td.date {
+    width: 50px;
+}
+.content td.time {
+    width: 60px;
+}
+.blue {
+    background:#0000FF;
+    color: #fff;
+}
+.red {
+    background: #FF3300;
+    color: #fff;
+}
+/* Side Bar */
+#sidebar h2 {
+    font-size: 16px;
+}
+#sidebar h3 {
+    margin: 0.75em 0 0.75em 0;
+    font-size: 11px;
+}
+#sidebar td, #sidebar th {
+    font-size: 11px;
+    padding: 4px;
+}
+#sidebar .formatted_table td,#sidebar .formatted_table th
+{
+    padding:3px 7px;
+}
+#sidebar table {
+                width: 100%;
+}
+/*#sidebar thead tr th {
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+#sidebar .formatted_table thead tr th
+{
+    background: none;
+    border-bottom:none;
+} disabled for IE7, should be removed after cross browser verification*/
+#sidebar thead tr th a {
+    text-decoration: none;
+}
+#sidebar thead tr th a:hover {
+    text-decoration: underline;
+}
+.Right .customLogo {
+    background: #fff;
+    width: 200px;
+    height: auto;
+    min-height: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+.Right .customLogo img {
+    max-width: 200px;
+}
+.Right .section {
+    border-top: 1px solid #ccc;
+    margin: 4px 0 4px 0;
+    padding: 1px;
+    padding-top:8px;
+}
+.Right .section h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 5px;
+    text-align: left;/*color: #fff;
+  background: #4c555a;*/
+}
+.Right .section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #555;
+}
+.Right .section ul p {
+    margin-bottom: 5px;
+}
+.Right .section ul strong {
+    margin-bottom: 3px;
+    border-bottom: 1px solid #ccc;
+    color: #333;
+}
+.Right .section ul ul {
+    list-style-type: circle;
+    margin: 0 10px 8px 15px;
+}
+.Right .section ul ul li {
+    /*width: 263px;*/
+    overflow: hidden;
+    margin-bottom: 8px;
+    padding-left: 5px;
+}
+.Right .section ul ul li span {
+    display: block;
+    color: #777;
+    font-style: italic;
+    text-align: right;
+}
+.Right .note {
+    color: #888;
+    font-size: 90%;
+}
+/* New Requests */
+.requestNumber {
+    color: #006;
+    /*font-size: .8em; */
+}
+/*.cssform p {
+    clear: left;
+    margin: 0;
+    font-size:12px;
+    padding: 3px 0 5px 0;
+    padding-left: 115px;
+    height: 1%;
+    line-height: 14px;
+    color: #000;
+}*/
+.alpha_pagination { text-align:justify; clear:both}
+.cssform p label {
+    float: left;
+    display: block;
+    width: 105px;
+    text-align: right;
+    font-size: 11px;
+    margin-left: -115px;
+    color: #666;
+    font-weight:bold;
+}
+.cssform .options {
+    clear: left;
+    border-top: 1px solid #ccc;
+    margin: 10px 0 5px;
+    padding: 10px 0;
+}
+.cssform input[type=text].date {width:78px; float:left;}
+.settingsform, .cssform
+{
+    margin-left: 10px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+#promotion_form input[type=checkbox]{width: 25px;}
+#promotion_form input[type=button]{width: 114px !important;}
+.normal_font_label {font-weight:normal !important; font-size:11px !important;}
+/*input[type=text]{width: 180px;}*/
+/* Handles setting some of the ajdustments back to "normal */
+.cssform .normal {
+    float: left;
+    width: auto;
+}
+.cssform p label.normal {
+    float: none;
+    display: inline;
+    width: auto;
+    text-align: left;
+    font-size: 100%;
+    margin: auto;
+}
+#resource_ids,#group_resource_ids
+{
+    width:242px!important;
+}
+
+
+
+div.field input[type='checkbox'], div.field input[type='radio'] {margin:0px 5px 0 0;}
+
+/*
+* Override for one partic
+*/
+
+.cssform div.field label.parent{float: left; display: block; width: 90px;font-size: 14px; font-weight: bold;text-align:left;margin-left:65px;}
+.cssform div.field label.inline { float: none; display: inline; text-align: left; font-size: 12px; margin-left: 0; }
+.cssform div.field input.small_time_field { width: 3em; }
+/*.cssform input[type=radio],*/
+.cssform input.auto_width,
+form.cssform div.field textarea { width: 350px; font-family: Arial, Tahoma, sans-serif; }
+form.cssform div.field textarea.parent { width: 250px;}
+form.cssform.property_form p input,
+form.cssform.property_form p select,
+form.cssform.property_form p textarea {
+    width: 400px;
+}
+textarea.expand {
+    width: 90%;
+    height: 40px!important;
+}
+textarea.expanded {
+    width: 90%;
+    height: 160px!important;
+}
+
+/*
+ * turning off Firefox and Safari style resizing handles since design cannot accomdate them
+ * especially faceboxes
+ *
+ */
+
+textarea.noResize { resize:none; }
+textarea.textareaResize { resize:none;}
+textarea {resize:none}
+
+.contentCol1 {
+    width: 50%;
+    float: left;
+}
+.contentCol2 {
+    width: 50%;
+    float: left;
+}
+/*.request table.layout td.left { width: 99%; }*/
+input[type=text],input[type=password], #facebox .cssform .field input[type=text],#facebox .cssform .field input[type=password],#facebox .cssform .field  select, textarea{
+    font-size: 11px;
+    font-family: Arial, Tahoma;
+    border: 1px solid #6B7479;
+    border-right: 1px solid #BBC4C9;
+    border-bottom: 1px solid #BBC4C9;
+ }
+
+input[type=text],input[type=password]{
+    height: 17px;
+    font-size: 11px;
+}
+select{
+  font-size: 11px;
+}
+.content .section {
+    margin: 20px 10px 20px 10px;
+    border: 1px solid #ccc;
+}
+.content .section .subheader {
+    color: #fff;
+    background-color: #666;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+.content .section .subheader h2 {
+    padding: 0;
+    margin: 0;
+}
+.content .section .subheader a {
+    float: right;
+    color: #fff;
+    line-height: 18px;
+}
+.content .section TABLE {
+    padding: 0 10px 0 10px;
+}
+.content .section .subfooter {
+    padding: 10px;
+}
+#request_options {
+    text-align: right;
+    padding: 0px 0 5px 0;
+}
+.request_options {
+    text-align: right;
+    padding: 0px 0 5px 0;
+}
+.reorder_steps {
+    text-align: right;
+    padding: 0px 0 5px 0;
+}
+/* Processes */
+#process .graph {
+    float: left;
+    width: 300px;
+    background: #eee;
+    border: 1px solid #ccc;
+    height: 200px;
+}
+#process .vars {
+    float: left;
+}
+/* Versions */
+TR.lvldivider TD {
+    border-top: 2px solid #999;
+}
+#evn_compare TH {
+    text-align: center;
+}
+TR.version_section TD {
+    border-top: 2px solid #999;
+    font-weight: bold;
+}
+#evn_compare TD {
+    border-bottom: 1px solid #eee;
+}
+TD.version_item {
+    padding-left: 20px;
+}
+TD.version_detail {
+    text-align: center;
+    border-left: 2px solid #eee;
+}
+#compare {
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    border: 1px solid #ccc;
+}
+#compare UL {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#compare .options {
+    clear: left;
+    margin: 10px 20px 5px 20px;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+/* Standard Forms */
+form div.field,.request.cssform div.field,.calendar_option_field
+{
+    text-align: left;
+    clear: left;
+    margin: 0;
+    padding: 0px 0 5px 0;
+    overflow: hidden;
+}
+form div.field label,.request.cssform .field label,.calendar_option_field label,.additional_info .form_column .field label
+{
+    float: left;
+    display: block;
+    width: 85px;
+    text-align: left;
+    font-size: 11px;
+    padding: 0 15px 0 0;
+}
+.calendar_option_field label
+{
+    width:70px!important;
+}
+
+form div.field label.required
+{
+    margin-left:0px;
+}
+form#new_user div.field label
+{width: 92px;}
+form#new_group div.field label
+{width:95px;}
+form.show_request div.field label
+{width:80px}
+.plans .request.cssform div.field label
+{width:97px}
+#new_plan.cssform div.field label
+{width:100px;}
+form.edit_user div.field label
+{width:140px;}
+form#login_box div.field label
+{
+    color:#fff;
+    font-size: 12px;
+}
+form#login_box.account_settings div.field label
+{
+    color:#000;
+    font-size: 11px;
+}
+form#login_box.account_settings div.field span
+{
+    font-size: 11px;
+    font-weight: bold;
+
+}
+.settingsform div.field label
+{
+    width: 180px;
+}
+form#update_req_form div.field label
+{
+    width :105px;
+}
+form#new_user
+{
+    padding-left:10px;
+}
+form#update_req_form
+{
+    padding-top :10px;
+    padding-left:5px;
+}
+#settings_id.settingsform h3
+{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.users DIV.field LABEL.normal, FORM.edit_user DIV.field LABEL.normal, FORM.new_user DIV.field LABEL.normal, FORM#login_box DIV.field LABEL.normal {
+    float: none;
+    display: inline;
+    width: auto;
+    text-align: left;
+    font-size: 100%;
+}
+.helperText {
+    font-size: .9em;
+    font-style: italic;
+    padding-left: 195px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin:0;
+}
+/* Login Box */
+#login_logo_box {
+    text-align: center;
+    padding: 0 20px 0 20px;
+}
+/* Settings */
+.section_tab {
+    margin-top: 10px;
+}
+.section_tab h2 {
+    background: #808080;
+    color: #fff;
+    float: left;
+    padding: 4px 20px 0 10px;
+    margin: 0;
+}
+.section_tab .tab_line {
+    background: #808080;
+    height: 8px;
+    clear: left;
+}
+#tbl_current_db {
+    margin-left: 10px;
+    width: 300px;
+}
+.content .tbl_settings {
+    margin-left: 150px;
+    width: 300px;
+}
+.settings .cssform P {
+    padding-left: 150px;
+    color: #333;
+    font-size: 14px;
+    line-height: normal;
+}
+.settings .cssform P LABEL {
+    width: 145px;
+    margin-left: -150px;
+}
+H3.cas_authentication {
+    border-top: 1px solid #999;
+    padding-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+/* Messaging */
+.flash_messages span {
+    display:block;
+    font-weight: bold;
+}
+.sessions .flash_messages span {
+    display:inline!important;
+}
+.flash_messages {
+    position:absolute;
+    top:0;
+    left:40%;
+    min-width:15%;
+    max-width:30%;
+    text-align:center;
+    padding: 7px 0 8px 0;
+    white-space:normal;
+}
+#flash_success{color:#33cc00;}
+#flash_notice{color:#33cc00;}
+#flash_error { color:#ff0000!important; }
+#flash_warning{color:#FCD116;}
+/* Overrides */
+.content .hour {
+    width: 50px;
+}
+.content .minute {
+    width: 50px;
+}
+.content .meridian {
+    width: 52px;
+}
+select#hour {
+    width: 50px;
+}
+h3 {
+    font-size: 11px;
+    color: #004376;
+}
+/* End of the CSS File */
+p.environments_and_components select {
+    width: 100%;
+}
+.content {
+    zoom: 1;
+
+}
+
+#apps_view {
+    overflow-x: auto;
+}
+/*
+.content li{float:left!important; clear:left!important;}
+*/
+.content td.under {
+    color: green;
+}
+.content td.over {
+    color: red;
+    font-weight: bold;
+}
+#transaction_reports_menu .month {
+    padding-left: 5px;
+}
+#transaction_reports_menu .file_name {
+    padding-left: 10px;
+}
+.loader_sortable {
+    display:none;
+    margin-bottom:-2px;
+    margin-left:60px;
+    margin-top:-15px;
+}
+.cssform div.field label.list {
+    width:100px;
+}
+.value_item {
+    margin-left:0px;
+}
+#new_list div.field input {
+    width:200px;
+}
+#new_list div.field select {
+    width:205px;
+}
+#new_list div.field input.list_item {
+    width:100px;
+}
+#chart{float:left !important; margin-bottom:15px!important;}
+#requests_list { clear:left !important;}
+.process_performance #requests_list table{ margin-top:0px!important;}
+.customize{
+    background:transparent url(<%= asset_path 'btn-customize-table.png' %>) no-repeat scroll 0 0;
+    border:medium none;
+    display:block;
+    height:23px;
+    width:120px
+}
+#loader-close{display:none;margin-left:60px;float:left;margin-top:-15px;}
+#loader-expand{display:none;margin-left:75px;float:left;margin-top:-15px;}
+.total-right{margin-left:10px;text-align:right;}
+#moreFilters{display:none;}
+#wait {display:none; position:fixed; bottom:10px;left:50%; top:50%; z-index: 900;}
+/* Filters */
+#financials_filters {
+    /*float: right;*/
+    border: 1px solid #CCD5E1;
+    padding: 5px 10px 2px 10px;
+    background: #e5effd;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.inside_tab #financials_filters {
+    /*float: right;*/
+    border: 1px solid #CCD5E1;
+    margin-top: 20px;
+    padding: 5px 10px 2px 10px;
+    background: #e5effd;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+#toggleFilterLink a {
+    float:right;
+    position:relative;
+    margin: 0 18px 0 15px;
+    z-index:2;
+}
+#tickets_list_div #external_ticket_filters a {
+    float:left;
+    position:relative;
+    margin: 0 15px 10px 5px;
+    z-index:2;
+}
+#tickets_list_div #toggleFilterLink a {
+    float:right;
+    position:relative;
+    margin: 0 45px 10px 15px;
+    z-index:2;
+}
+
+#financials_filters div {
+    margin-bottom: 8px;
+}
+#financials_filters div input {
+    margin: 0 10px 0 0px;
+}
+#financials_filters label {
+    /*float: left;*/
+    display: block;
+    /*width: 80px;*/
+    padding-right: 5px;
+    /*text-align: right;*/
+}
+#financials_filters select {
+    width: 150px;
+}
+#financials_filters select#filter_group_id {
+    width: 180px;
+}
+#financials_filters h1 {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    color: #444;
+    font-size: 12px;
+    font-weight: bold;
+}
+.enroll_btn {
+    text-align: right;
+    float:right;
+    right:10px;
+    margin-top: -21px;
+    position:absolute;
+}
+.helper_label {
+    text-align:right;
+    padding-right:18px;
+    padding-bottom:2px;
+    width:400px;
+    float:left;
+    display:block;
+}
+.property_label
+{
+    text-align:right;
+    padding-right:18px;
+    height:20px;
+    line-height:20px;
+    /*width:180px;*/
+    width:auto;
+    float:left;
+}
+.add_stage_link
+{
+    width:150px;
+    margin-bottom:5px;
+    float:left;
+}
+#functional_tablesorter-demo th
+{
+    padding:5px 20px;
+}
+.move_request_text{ height:25px;}
+.content #new_request_template label{ margin-left:50px; font-weight:bolder; font-size:12px;}
+.content #new_request_template #btn-create-template {
+    /*
+    margin-left:331px;
+    top:158px;
+    position:absolute;
+    */
+}
+.content #new_request_template input[type=text] {width:250px; margin-left:4px}
+.label_align{text-align:right;  float:right}
+.create_procedure_btn
+{
+    margin-left:433px;
+    margin-top:33px;
+    position:absolute;
+}
+
+
+
+#facebox .filterForm table
+{table-layout:auto;}
+
+.file_links{text-align:right; margin-right:32%;}
+.file_links_step{text-align:right; margin-left:26%; clear:both; float:left}
+.height_68{height: 68px; }
+.height_40{height: 40px; }
+/* p #update_req_form a:link, a:visited{color:#000; text-decoration:none;}*/
+.form_button_mid { width:100px!important;}
+/*input[type=button]{min-width:80px;}*/
+.or{margin:0 0 0 8px;}
+.field toggles .property_label{margin:5px 0; }
+.width_auto{margin-top:10px; min-width:140px!important;}
+.width_380{width:380px!important;}
+/* end Filters */
+.login {
+    font-weight:bold;
+    font-size:14px;
+    text-align:left;
+    color:#666;
+    margin-left:33px;
+}
+#login_box input[type=text],#login_box input[type=password] {
+    width:160px;
+}
+#login_box label {font-weight:normal;}
+#login_box input[type=checkbox] {
+    width:25px;
+}
+.Left p{font-weight:normal; text-align:left;}
+ul.pagination {
+    list-style: none;
+    color: LightGray;
+    padding: 1em 0.5em;
+}
+ul.pagination strong {
+    color: black;
+}
+ul.pagination li {
+    display: inline;
+    font-size: 1.1em;
+    padding: 0;
+    margin:0;
+}
+.content .fl{line-height:20px;}
+.w_88 { width:88px!important;}
+.step_box {
+    border: 2px solid #699;
+}
+#app_properties_mapping label{ line-height:8px!important; min-width:140px;}
+#server_properties_mapping label { line-height:14px!important; }
+#filterSection { margin-bottom:8px; }
+/*Styling for projects*/
+.content #request_projects,
+.plan_templates .content,
+.account .content,
+.requests .content,
+.project_servers .content,
+.notification_templates .content,
+.users .content,
+.groups .content,
+.package_contents .content,
+#request_and_calendar,
+.servers .content,
+.servers #server_container,
+.server_groups #server_container,
+.components .content,
+.packages .content,
+.references .content,
+.package_instances .content,
+.environments .content,
+.automation_content,
+.hudson_scripts .content,
+.capistrano_scripts .content,
+.bladelogic_scripts .content,
+.basic_form, .apps .content,
+#application_components,
+.categories .content,
+.lists .content,
+.phases .content,
+.work_tasks .content,
+.environment_types .content,
+.releaseslists .content,
+.procedures .content,
+.business_processes .content,
+.releases .content,
+#resources_and_steps,
+.activities .content,
+.properties .content,
+.integration_projects .content,
+.reports .content,
+.process_performance .content,
+.maps .content,
+.teams .content,
+.security_questions .content,
+.security_questions .content,
+.plans .content,
+.integrations .content,
+.request_templates .content,
+.activities .content,
+.server_groups .content,
+.delay_jobs .content,
+#automation_monitor,
+#request_header_collapse,
+#request_header_expanded,
+.version_tags .content,
+.tickets .content,
+.runs .content,
+.plans #plans_container,
+.properties #properties_data_container,
+.server_aspect_groups .content,
+.server_aspect_groups #server_container,
+.server_levels .content,
+.server_levels #server_container,
+.runs #plans_container,
+div#app_edit_container .content,
+.routes .content,
+.plan_routes .content,
+.deployment_window_series .content,
+body.deployment_window_occurrences .content,
+body .content.mainContent {
+    background-color:#FFFFFF;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px;
+    border-style: solid;
+    border-color: #aebac1;
+    clear:left;
+    padding: 10px;
+}
+#request_and_calendar{ overflow: auto}
+
+#request_header_collapse{ padding: 1px 3px 3px; margin: 0px;}
+
+#resources_and_steps
+{
+    padding-left: 5px;
+}
+#application_components
+{
+    margin-top: -5px;
+}
+.basic_form
+{
+    padding-left: 5px;
+    padding-top: 10px;
+}
+#content_box .basic_form h3
+{
+    margin-top:5px;
+}
+.servers #content_box
+{
+    clear:left;
+    margin-left:10px;
+    margin-top:10px;
+}
+.smaller {
+    font-size: smaller;
+}
+
+form.change_password div.field label{
+    color: #000 !important;
+    width: 100px !important;
+}
+
+/*
+ * Plan templates has some large content areas in its faceboxes
+ * like request templates
+ */
+#facebox .plan_template_request_template_preview {
+	max-height: 500px;
+    overflow-y: scroll;
+}
+
+/*
+ * When there are no request templates, the stage multi-select is too narrow
+ */
+select#plan_stage_request_template_ids { min-width: 143px;}
+
+#content_box .automation_content{
+    padding-bottom:20px;
+}
+
+#content_box .automation_content #financials_filters{
+  margin-top: 20px;
+}
+
+select[multiple=multiple],select[multiple=true]{
+     height: auto;
+}
+ul.dashboard_request_tab.my_dashboard_tabs.offset
+{
+    padding-left: 5px;
+}
+.filter_done
+{
+margin-left:5px;
+}
+
+#ui-datepicker-div{
+display:none;
+}
+
+div#facebox .planned-start-wrapper{
+    white-space: nowrap;
+    width: 376px;
+}
+
+div#all_list_items .field{
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.request_deployment_window_controls {
+    display: inline;
+}
+
+.request_deployment_window_controls input.button{
+    height: 19px;
+    vertical-align: middle;
+}
+
+#popup_select_deployment_window {
+    width: 395px;
+}
+
+#facebox_overlay {
+   /*z-index: 999;*/
+}

@@ -1,0 +1,26 @@
+/* Remove unwanted elements */
+div.pageSection, #topBar, .noprint {
+	display: none;
+}
+/* Ensure the content spans the full width */
+#content_box {
+	width: 100%;
+	margin: 0;
+	float: none;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+table, th, td {
+	border: 1px solid gray;
+}
+/* Change text colour to black (useful for light text on a dark background) */
+.lighttext {
+	color: #000
+}
+/* Improve colour contrast of links */
+a:link, a:visited {
+	color: #781351
+}
+

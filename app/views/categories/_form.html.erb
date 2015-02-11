@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :categorized_type %>
+  <%= f.select :categorized_type, [['Request', 'request'], ['Step', 'step']] %>
+</div>
+<div class='field'>
+  <%= f.label :associated_events %>
+  <%= f.select :associated_events, [], {}, { :class => 'use_remote_options multiselectbox', :rel => 'category_categorized_type', :multiple => true } %>
+  <%= hidden_field_tag 'category_associated_events_url', associated_event_options_categories_path %>
+  <%= hidden_field_tag 'multiple_selected_category_associated_events', f.object.associated_events.to_json %>
+</div>

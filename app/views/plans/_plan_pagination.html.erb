@@ -1,0 +1,18 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div <%= tag_options({:id => "plan_pagination_#{position}"}, false) %>>
+  <table <%= tag_options({:id => "plan_pagination_#{position}_#{@page || 1}"}, false) %>>
+    <tr>
+      <td align='char' width='42%'>
+        <strong><%= paginate_range('Plan', plans, plans.total_entries) %></strong>
+      </td>
+      <td <%= tag_options({:colspan => 2, :width => 476, :align => :right}, false) %>><%= will_paginate(plans, :id => "pagination_plan_#{position}") %></td>
+    </tr>
+  </table>
+</div>

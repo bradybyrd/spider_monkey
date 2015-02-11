@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% package_template.template_items.each do |template| %>
+  <h4>
+    <%= link_to_function template.name, "loadTemplateItemProperties($(this))", :id => "properties_heading", :rel => "template_item_#{template.id}", :class => "open" %>
+    <div <%= tag_options({:id => "template_item_#{template.id}"}, false) %>></div>
+  </h4>
+<% end %>

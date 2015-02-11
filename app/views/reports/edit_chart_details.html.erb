@@ -1,0 +1,23 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<%= javascript_include_tag "reports" %>
+<div <%= tag_options({:style => "text-align:center;font-weight:bold;font-size:12px;color:#004376"}, false) %>>
+  By default reports will be generated with all the data
+</div>
+<% if @chart_path == '/reports/time_to_deploy' %>
+  <%= render :partial => 'reports/time_to_deploy' %>
+<% elsif @chart_path == '/reports/problem_count' %>
+  <%= render :partial => 'reports/problem_count' %>
+<% elsif @chart_path == '/reports/problem_time' %>
+  <%= render :partial => 'reports/problem_time' %>
+<% elsif @chart_path == '/reports/completed_report' %>
+  <%= render :partial => 'reports/completed_report' %>
+<% elsif @chart_path == '/reports/volume_report' %>
+  <%= render :partial => 'reports/volume_report' %>
+<% else %>
+  <%= render :partial => 'reports/edit_chart_details' %>
+<% end %>

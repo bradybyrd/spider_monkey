@@ -1,0 +1,37 @@
+<div class="field">
+  <label for="activity_note">Notes</label>
+  <br>
+  <% if current_user.present? %>
+    <%= text_area_tag 'activity[new_note][contents]', '', :class => "expand" %>
+  <% end %>
+</div>
+<div class="field">
+  <div class="expand_textarea_link">
+    [ <a href="javascript:toggleTextarea('activity_new_note_contents', 'note_textarea')" id="note_textarea">expand</a> ]
+  </div>
+</div>
+<% if current_user.present? %>
+    <%= hidden_field_tag 'activity[new_note][user_id]', current_user.id %>
+<% end %>
+
+<% unless @activity.notes.empty? %>
+  <table cellspacing="0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @activity.notes.each do |note| %>
+        <tr class="<%= cycle '', 'alt' %>">
+          <td><%= note.created_at.present? ? note.created_at.try(:default_format_date) : "" %></td>
+          <td><%= h note.user_name %></td>
+          <td class="project_notes_wraping_w600"><%= is_web(note.contents) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+

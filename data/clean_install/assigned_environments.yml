@@ -1,0 +1,15 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+---
+assigned_environments_000003: 
+  created_at: 2011-04-29 04:13:51
+  updated_at: 2011-04-29 04:13:51
+  assigned_app_id: "2"
+  role: deployment_coordinator
+  id: "3"
+  environment_id: "0"

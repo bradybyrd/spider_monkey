@@ -1,0 +1,2 @@
+$("#error_messages").replaceWith("<div id='errorExplanation' class='errorExplanation'><h3><%= pluralize(@request_template.errors.size, 'error')
+%> prohibited this request template from being saved</h3><ul><%= @validation_errors %></ul></div>");

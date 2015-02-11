@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3><%= "Edit Package Template - #{@package_template.name}" %></h3>
+<%= form_for(@package_template, :url => app_package_template_path(@app, @package_template),:remote => true, :html => { :id => "edit_package_template_form", :method => :put }) do |f| %>
+  <%= render :partial => 'package_templates/form', :locals => { :f => f } %>
+<% end %>
+

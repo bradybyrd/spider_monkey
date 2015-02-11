@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3><%= "Update Component Template - #{@component_template.name}" %></h3>
+<%= form_for(@component_template, :url => component_template_path(@component_template),:remote => true, :html => { :method => :put, :class => 'cssform' }) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <div class='button_bar'><%= f.submit "Update" %></div>
+<% end %>
+

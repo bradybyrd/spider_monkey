@@ -1,0 +1,38 @@
+// Place all the styles related to the occurrences controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body.deployment_window_occurrences  {
+  td.environments {
+    max-width: 200px;
+    white-space: normal;
+  }
+  .hidden {
+    display: none;
+  }
+
+  td.past-deployment-window-series {
+    text-decoration: line-through;
+  }
+
+  .content {
+    @import 'filters';
+  }
+  .values_to_select {
+  	.control-links {
+  		margin-left: 20px;
+  	}
+	  .calendar {
+	  	img {
+	  		margin-right: 5px;
+	  	}
+	  }
+  }
+
+  .occurrences_ready_warning {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+  }
+}

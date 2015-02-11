@@ -1,0 +1,68 @@
+<tbody>
+<% request_templates.each do |request_template| %>
+    <tr id='request_template_<%= request_template.id %>' <%= tag_options({class: cycle('', 'alt')}, false) %>>
+      <td <%= tag_options({:title => h(request_template.name)}, false) %>>
+        <%= link_to_if can?(:inspect, request_template), 
+                       index_title(truncate(request_template.name, length: 35)),
+                       request_template.request.present? ? request_path(request_template.request, page: @page, key: @keyword) : request_template.request %>
+      </td>
+      <td <%= tag_options({:title => (request_template.request.present? ? request_template.request.app_name.join(", ") : "")}, false) %>>
+        <%= truncate(request_template.request.app_name.join(", "), length: 20) if request_template.request.present? %>
+      </td>
+      <% unless archived %>
+          <% if  can? :inspect, request_template %>
+              <%= render partial: 'object_state/td_state', locals: {passed_obj: request_template} %>
+          <% else %>
+              <td>&nbsp;</td>
+          <% end %>
+      <% end %>
+      <td><%= request_template.created_at.try(:default_format_date_time) %></td>
+      <td><%= truncate(request_template.request.business_process_name, length: 20) if request_template.request.present? %></td>
+      <td <%= tag_options({:title => request_template.request.steps.count.to_s}, false) %>><%= request_template.request.steps.count.to_s %></td>
+      <td><%= request_template.count_of_plan_templates_through_request_templates.to_s %></td>
+      <td class="actions">
+        <% if can? :inspect, request_template %>
+            <div style="float:left;">
+              <%= link_to 'View', request_template.request.present? ? request_path(request_template.request, page: @page, key: @keyword) : request_template.request %>
+            </div>
+            <% unless archived %>
+                <% if request_template.can_change_aasm_state? && can?(:update_state, request_template) %>
+                    <%= render partial: 'object_state/state_list', locals: {passed_obj: request_template} %>
+                <% end %>
+            <% end %>
+            <% if archived && can?(:update_state, request_template) %>
+                |
+                <%= link_to I18n.t(:unarchive), unarchive_request_template_path(request_template, page: params[:page]), method: :put, class: 'archive_request_template' %>
+            <% end %>
+            <% if request_template.destroyable? && can?(:delete, request_template) %>
+                |
+                <%= link_to I18n.t(:delete), request_template_path(request_template, page: params[:page], key: params[:key]), method: :delete, class: 'delete_request_template', confirm: "Are you sure you want to delete this request template?" %>
+            <% end %>
+        <% end %>
+      </td>
+      <% unless archived %>
+          <td>
+            <% if request_template.archive_number.nil? && can?(:create, request_template.request) %>
+                <%= form_tag create_from_template_requests_path, class: 'create_request_from_template', id: "rt_#{request_template.id}", remote: true do %>
+                    <%= hidden_field_tag :request_template_id, request_template.id %>
+                    <% if @request.present? %>
+                        <% @request.merge({:request_template_id => request_template.id}).keys.delete_if { |k| k=="package_content_ids" || k == "plan_member_attributes" || k == "uploads_attributes" }.each do |k| %>
+                            <%= hidden_field_tag "request[#{k}]", @request[k] %>
+                        <% end %>
+                        <% unless @request['package_content_ids'].blank? %>
+                            <%= hidden_field_tag "request[package_content_ids][]", @request['package_template_ids'] %>
+                        <% end %>
+                    <% end %>
+                    <% if @params.present? %>
+                        <%= hidden_field_tag "plan_id", @params[:plan_id] %>
+                        <%= hidden_field_tag "plan_stage_id", @params['plan_stage_id'] %>
+                    <% end %>
+                <%= render partial: 'object_state/create_request', locals: {passed_obj: request_template,request_id: @request_id} %>
+                <%= render partial: 'preserve_checkbox', locals: {template: request_template} %>
+                <% end %>
+            <% end %>
+          </td>
+      <% end %>
+    </tr>
+<% end %>
+</tbody>

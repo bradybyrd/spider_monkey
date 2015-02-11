@@ -1,0 +1,38 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings title: 'Applications' %>
+<% content_for :page_section do %>
+  <% unless params[:controller] == 'activities' && params[:action] == 'request_projects' %>
+    <% if can? :list, App.new %>
+      <div class = "server_search search_no_pad">
+        <%= search_box("/apps") %>
+      </div>
+      <% draw_tabs selected: "applications" do %>
+        <%= sub_tab_with_name "Applications", { path: apps_path } %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <% if can? :create, App.new %>
+    <p><%= link_to image_tag("create_application.png"), new_app_path(page: params[:page], key: params[:key]) %></p>
+    <%= link_to "Add default", create_default_apps_path, method: :post unless App.has_default? %>
+  <% end %>
+  <% if can? :import, App.new %>
+    <%= link_to t('import_application'), import_app_apps_path, rel: 'facebox' %>
+  <% end %> 
+<% end %>
+
+<% if can? :list, App.new %>
+  <div id = "search_result" >
+    <%= render partial: "index" %>
+  </div>
+<% end %>

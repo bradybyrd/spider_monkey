@@ -1,0 +1,18 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Maps' %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+<% end %>

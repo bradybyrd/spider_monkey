@@ -1,0 +1,78 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= find_and_preserve(Haml::Filters::Javascript.render_with_options(
+"$(document).ready(function() {
+  var start_phase = \"#{params[:start_phase]}\".split('/');
+  var last_phase = \"#{params[:last_phase]}\".split('/');
+  if (start_phase != \"\"){ var defaultDateVal = new Date(start_phase[0], start_phase[1]-1, 1); }
+  else{ var defaultDateVal = null }
+
+  var minDateVal = new Date(start_phase[0], start_phase[1]-1, start_phase[2]);
+  var maxDateVal = new Date(last_phase[0], last_phase[1]-1, last_phase[2]);
+  if (last_phase == \"\"){
+    $('.delivery').datepicker({dateFormat: $('#datepicker_format').val(), defaultDate: defaultDateVal, minDate: minDateVal});
+  }
+  else{
+    $('.delivery').datepicker({dateFormat: $('#datepicker_format').val(), defaultDate: defaultDateVal, minDate: minDateVal, maxDate: maxDateVal});
+  }
+  $('.delivered').datepicker({dateFormat: $('#datepicker_format').val(), defaultDate: defaultDateVal});
+});
+\n", _hamlout.options)) %>
+<h2>Add/Modify Deliverable</h2>
+<%= error_messages_for :deliverable %>
+<%= form_for @deliverable, :url => save_deliverable_activity_path(@activity), :html => { :class => 'cssform activity_deliverable ajax' } do |f| %>
+  <div class='field'>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div class='field'>
+    <%= f.label :description %>
+    <%= f.text_area :description, :class => "expand", :style => "magin-left:205px;width:250px;" %>
+  </div>
+  <p class='expand_textarea_link' style='padding-right:63px'>
+    [
+    <a href="javascript:toggleTextarea('activity_deliverable_description', 'delivery_desc')" id='delivery_desc'>expand</a>
+    ]
+  </p>
+  <div class='field'>
+    <%= f.label :release_deployment, "Release/Deployment", :style => "margin-left:154px;" %>
+    <%= f.check_box :release_deployment, :style => "width:15px;", :onchange => "display_contact_impact_section($(this));" %>
+  </div>
+  <div class='activity_deliverable_release_deployment field' style='display:none;'>
+    <%= f.label :deployment_contact_id %>
+    <%= f.collection_select :deployment_contact_id, User.by_last_name, :id, :name_for_index, { :prompt => true } %>
+  </div>
+  <div class='activity_deliverable_release_deployment field' style='display:none;'>
+    <%= label_tag :organizational_impact %>
+    <%= display_activity_attribute_field(@activity, ActivityDeliverable.organizational_impact, @activity.activity_category, false, 'activity_deliverable') if ActivityDeliverable.organizational_impact %>
+  </div>
+  <div class='field'>
+    <%= f.label :projected_delivery_on, "Projected Delivery" %>
+    <%= f.date_field 'projected_delivery_on', {:value => @deliverable.projected_delivery_on.try(:to_s, :simple)}, true %>
+    <small id='project_delivery_date' style='display:none;'><%= "required" %></small>
+  </div>
+  <div class='field'>
+    <%= f.label :delivered_on, "Delivered" %>
+    <%= f.date_field 'delivered_on', {:value => @deliverable.delivered_on.try(:to_s, :simple)}, false, true %>
+  </div>
+  <div class='field'>
+    <%= f.label :highlights, "Delivery Highlights" %>
+    <%= f.text_area :highlights, :class => "expand", :style => "magin-left:205px;width:250px;" %>
+  </div>
+  <p class='expand_textarea_link' style='padding-right:63px'>
+    [
+    <a href="javascript:toggleTextarea('activity_deliverable_highlights', 'delivery_h')" id='delivery_h'>expand</a>
+    ]
+  </p>
+  <%= hidden_field_tag :deliverable_id, @deliverable.id %>
+  <%= hidden_field_tag :phase_id, @phase.try(:id) %>
+  <%= submit_tag 'Save', :class => "once" %>
+<% end %>
+
+<%= javascript_tag("display_contact_impact_section($('#activity_deliverable_release_deployment'))") if @deliverable.release_deployment %>

@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless @placeholder_resources[group.id].blank? %>
+  <h4 class='resources' style='margin-top:15px;'>Placeholder Resources</h4>
+  <table cellspacing='0'>
+    <thead class='resource_head'>
+      <tr>
+        <th>Resource</th>
+        <th>Portfolio Level</th>
+        <th>Roles</th>
+        <th>Location</th>
+        <%# %th= sortable("Location","location",group,"placeholder") %>
+        <%# %img{:src => "/images/loader.gif", :id => "location_placeholder_loader_#{group.id}", :class => "loader_sortable"} %>
+        <th>Group</th>
+        <th>Max Allocation</th>
+        <th><%= activity_or_project?('pluralize') %></th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @placeholder_resources[group.id].each do |placeholder| %>
+        <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <td><%= placeholder.first_name + " " + placeholder.last_name %></td>
+          <td><%= activity_or_project? %></td>
+          <td><%= h placeholder.role_names %></td>
+          <td><%= h placeholder.location_name %></td>
+          <td><%= h placeholder.group_names %></td>
+          <td><%= "#{h placeholder.max_allocation}%" %></td>
+          <td <%= tag_options({:title => h(placeholder.workstream_names)}, false) %>><%= ensure_space h(truncate(placeholder.workstream_names, :length => 25)) %></td>
+          <td>
+            <% if current_user.manages? group %>
+              <nobr>
+                <%= link_to 'allocate', allocate_resource_path(placeholder), :rel => 'facebox[.refresh]' %>
+                |
+                <%= link_to "edit", edit_resource_path(placeholder), :rel => 'facebox' %>
+                |
+                <%= link_to image_tag('bin_empty.png', :alt => 'delete'), placeholder, :method => :delete, :confirm => 'Are you sure?' %>
+              </nobr>
+            <% else %>
+              &nbsp;
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% unless group == @groups.last %>
+        <tr class='spacer' <%= tag_options({:class => dom_id(group), :style => "display:none"}, false) %>>
+          <td <%= tag_options({:colspan => 9}, false) %>></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

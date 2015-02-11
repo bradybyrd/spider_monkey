@@ -1,0 +1,18 @@
+<% if can? :view_step_server_properties_tab, association_or_new_instance(step, :request) %>
+  <!--h4><a href="#" id="server_properties_heading" class="collapsible_section_heading">Server Properties</a></h4-->
+
+  <div id="server_properties_section" ><!--style="display:none;"-->
+    <div id="server_properties_container">
+      <%= render :partial => 'steps/server_properties_in_facebox',
+                 :locals => { :step => step,
+                              :request => request,
+                              :server_collection => @server_collection,
+                              :installed_component => step.installed_component
+                 }
+      %>
+    </div>
+    <br class="clear" />
+  </div>
+  <!-- /div#properties_section -->
+  <%= javascript_tag("updateforall_loaded_properties()") %>
+<% end %>

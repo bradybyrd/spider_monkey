@@ -1,0 +1,1 @@
+$("#error_messages").html("<div id='errorExplanation' class='errorExplanation'><h3><%=pluralize(@errors.size, 'error').html_safe%> prohibited versions from being created</h3><ul><%=@error_tags.html_safe%></ul></div>")

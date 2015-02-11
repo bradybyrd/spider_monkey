@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% requests_available_to_current_user(grouped_members, stage, run).each do |request| %>
+  <%= render 'plans/request_row', plan: plan,
+                                  recent_request: request,
+                                  plan_view: true,
+                                  stage: stage,
+                                  member: request.plan_member if can? :view_requests_list, request %>
+<% end %>
+<tr class='plan_row'>
+  <td colspan='13'>
+    <span class='no_value'>
+      <%= 'No requests for plan stage' if  members_for_stage(grouped_members, stage).blank? %>
+    </span>
+  </td>
+  <td style='display: none'>
+    <span class='plan'>
+      <%= image_tag 'drag.gif' %>
+    </span>
+  </td>
+</tr>

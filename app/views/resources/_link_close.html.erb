@@ -1,0 +1,1 @@
+<%= link_to_remote "[ close all ]", :url => group_allocations_resources_path(:status => "close"), :method => :get, :loading => "$('#loader-close').show();", :complete => "$('#loader-close').hide();" %>

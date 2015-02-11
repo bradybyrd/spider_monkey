@@ -1,0 +1,57 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% previous_calendar = @beginning_of_calendar - 1.send(@timescale) %>
+<% next_calendar = @beginning_of_calendar + 1.send(@timescale) %>
+<div class='calendar_nav'>
+  <%= link_to "&#171; previous", "#{stringify_filters(:beginning_of_calendar => previous_calendar)}" %>
+  <%= link_to "next &#187;", "#{stringify_filters(:beginning_of_calendar => next_calendar)}" %>
+</div>
+<h1 class='calender_header'>
+  <span class='year'>
+    <%= @beginning_of_calendar.strftime('%Y') %>
+  </span>
+  <span class='month'>
+    <%= @beginning_of_calendar.strftime('%B') %>
+  </span>
+</h1>
+<table cellspacing='0' class='calendar'>
+  <thead>
+    <tr>
+      <% calendar.first.each do |day| %>
+        <td><%= day.strftime("%a") %></td>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% calendar.each do |week| %>
+      <tr>
+        <% week.each do |day| %>
+          <% content_tag :td, :class => day_classes_for(day, :in => month), :style => day_height_for(requests_by_date[day]) do %>
+            <span class='number'>
+              <%= day.day %>
+            </span>
+            <% if requests_by_date[day] %>
+              <% ordered_requests_for_day(requests_by_date[day]).each do |req| %>
+                <%= show_request req %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div class='calendar_nav'>
+  <%= link_to "&#171; previous", "#{stringify_filters(:beginning_of_calendar => previous_calendar)}" %>
+  <%= link_to "next &#187;", "#{stringify_filters(:beginning_of_calendar => next_calendar)}" %>
+</div>
+<div>
+  <p>Link to this page</p>
+  <%= link_to url_for(params.merge(:only_path => false)), url_for(params.merge(:only_path => false)) %>
+</div>

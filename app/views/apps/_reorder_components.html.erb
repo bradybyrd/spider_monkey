@@ -1,0 +1,34 @@
+<div id="component">
+
+  <div class="subheader">
+    <h2>
+      <%= link_to "Applications", apps_path %> -
+      <%= link_to app.name, edit_app_path(app) %> -
+      Components
+    </h2>
+    <%= link_to 'done grouping', edit_app_path(app) %>
+  </div>
+
+  <div>
+
+    <div class="component_level_divider"><p></p></div>
+
+    <% app.each_component_level do |component_level, level| %>
+      <div class="component_level">
+        <div class="level_number"><%= level %></div>
+
+        <% component_level.each do |component| %>
+          <%= render :partial => 'application_components/for_reorder', :locals => { :app => app, :component => component } %>
+        <% end %>
+
+      </div>
+
+      <div class="component_level_divider"><p></p></div>
+    <% end %>
+
+    <div style="clear:both"></div>
+
+  </div>
+</div>
+
+<%= link_to 'done grouping', edit_app_path(app, :page => params[:page], :key => params[:key]) %>

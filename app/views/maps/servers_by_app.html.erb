@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% content_for :head do %>
+	<%= static_javascript_include_tag 'maps' %>
+<% end %>
+
+<% page_settings :title => 'Servers by Application Map' %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+<% end %>
+<h3>Servers by Application</h3>
+<%= @map.generate_servers_by_app_map(current_user.accessible_apps) %>

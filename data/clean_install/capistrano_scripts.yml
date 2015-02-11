@@ -1,0 +1,105 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+---
+capistrano_scripts_000006:
+  name: Direct_execute
+  created_at: 2011-04-29 04:20:22
+  template_script_type:
+  tag_id: "1"
+  template_script_id:
+  updated_at: 2011-04-29 04:20:22
+  id: "6"
+  aasm_state: "released"
+  integration_id:
+  script_type:
+  content: |-
+    ###
+    # command:
+    #   name: Name of command
+    # success:
+    #   name: Term or Phrase to indicate success
+    ###
+    # Flag the script for direct execution
+    params["direct_execute"] = true
+
+    #==============  User Portion of Script ==================
+
+    # Run the command directly on the localhost
+    result = run_command(params, params["command"], '')
+
+    params["success"] = params["success"] || ""
+
+    # Apply success or failure criteria
+    if result.index(params["success"]).nil?
+      write_to "Command_Failed - term not found: [#{params["success"]}]\n"
+    else
+      write_to "Success - found term: #{params["success"]}\n"
+    end
+
+  script_class:
+  description: Runs a command locally
+capistrano_scripts_000007:
+  name: SSH_Execute
+  created_at: 2011-04-29 04:20:22
+  template_script_type:
+  tag_id: "1"
+  template_script_id:
+  updated_at: 2011-04-29 04:20:22
+  id: "7"
+  aasm_state: "released"
+  integration_id:
+  script_type:
+  content: |-
+    ###
+    # hosts:
+    #   description: IP address remote server - leave blank for step servers
+    # user:
+    #   description: Login for remote server
+    # password:
+    #   description: Password for remote server - leave blank for public key
+    #   private: yes
+    # command:
+    #   description: Name of command
+    # sudo:
+    #   description: Use sudo? (yes or no/blank)
+    # arguments:
+    #   description: Arguments to script
+    ###
+
+    hosts = params["hosts"]
+
+    if hosts.length < 2 # use server list
+      # Get a list of the servers and properties
+      # List is [server_name, {property1=>value1, propery2=>value2 }]
+      hosts = []
+      servers = get_server_list(params)
+      write_to "Targeting Servers:"
+      servers.each do |server|
+        write_to "  #{server[0]}"
+        hosts << server[0]
+      end
+    end
+
+    write_to "Executing on Hosts: #{hosts.inspect}"
+     role :all do # This tells Capistrano to perform the action on an array of hosts
+       hosts
+     end
+
+    # Run the command on the server
+    results = run_command(params, params["command"], params["arguments"])
+
+    # Test the results for success or failure
+    success = "a" # Note: add your success term here
+    unless results.include?(success)
+      write_to "Success test, looking for #{success}: Command_Failed"
+    else
+      write_to "Success test, looking for #{success}: Success (term not found)"
+    end
+
+  script_class:
+  description: Runs a command on a host via SSH

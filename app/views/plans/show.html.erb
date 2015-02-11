@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<%=
+  render(
+    partial: "plans/show", 
+    locals: {
+      page_tab_selected: @page_tab_selected || "#{@plan.name} - #{@plan.plan_template.template_type_label}".underscore,
+      selected: "stages",
+      plan: @plan
+    }
+  )
+%>

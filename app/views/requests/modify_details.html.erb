@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<%= form_for(@request, remote: true, :html => { :class => 'request cssform', :multipart => true }) do |f| %>
+  <h2>Edit Request <%= @request.number %></h2>
+  <%= f.error_messages %>
+  <div id="error_messages"></div>
+  
+  <%= render :partial => 'requests/form', :locals => { :f => f, :request => @request, :human_date_format => @human_date_format } %>
+  <div class="button_bar">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>

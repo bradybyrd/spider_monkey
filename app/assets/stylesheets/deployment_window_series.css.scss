@@ -1,0 +1,212 @@
+body.deployment_window_series {
+  .content {
+    @import 'filters';
+
+    overflow: auto;
+
+    .searchform {
+      margin-right: 30px;
+    }
+    #deployment_window_series_list, #archived_deployment_window_series_list{
+      clear: left;
+        table{
+          tbody{
+            tr{
+              .series-name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                display: inline-block;
+                padding-right: 75px;
+                float: left;
+                max-width: 200px;
+                -ms-text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              .occurrences-link {
+                display: inline-block;
+                margin-left: -72px;
+              }
+              td.name {
+                width: 200px;
+              }
+              td.environments{
+                span.hidden{
+                  display: none;
+                }
+                span{
+                  white-space: normal;
+                }
+              }
+            }
+          }
+        }
+      }
+
+    .recurrence span.time{
+      display: block;
+    }
+
+    #deployment_window_series_frequency{
+      max-width: 190px;
+      text-overflow: ellipsis;
+    }
+
+    .stitched_date{
+      overflow: hidden;
+    }
+
+    .stitched_date span.prefix{
+      margin-left: 4px;
+    }
+
+    .recurrence span.prefix{
+      float: left;
+      display: block;
+      width: 85px;
+      text-align: left;
+      font-size: 11px;
+      padding: 0 15px 0 0;
+    }
+
+    .recurrence #duration_result{
+      color: #808080;
+      margin-left: 4px;
+    }
+
+    #deployment_window_series_recurrent_time {
+      span {
+        padding-bottom: 5px;
+      }
+    }
+  }
+
+    /* close button on the top-right corner */
+  .rs_dialog h1 a{
+    background-image: url(facebox/dialogClose-whiteX.png) !important;
+    /*padding-left: 0px;*/
+    /*padding-right: 10px;*/
+    /*padding-bottom: 10px;*/
+    /*padding-top: 3px;*/
+    text-decoration: none;
+    height: 12px !important;
+  }
+
+  .rs_dialog h1 {
+    background: url(facebox/fb-header-tile.png);
+
+    text-align: left;
+    font-size: 11px !important;
+    font-weight: bold;
+    color: #FFF;
+
+    /*height: 20px !important;*/
+
+    padding: 4px 0px 4px 10px !important;
+    margin: 0 !important;
+    text-align: left;
+    display: block;
+  }
+
+  .rs_dialog {
+    -webkit-box-shadow: 1px 1px 10px rgba(0,0,0,.4);
+    box-shadow: 1px 1px 10px rgba(0,0,0,.4);
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    overflow: hidden;
+
+    background-color: white;
+
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+
+    border: none;
+    /*padding: 0;*/
+  }
+
+  .rs_dialog .rs_dialog_content {
+    padding: 0;
+  }
+
+  .rs_dialog .rs_dialog_content > p,
+  .rs_dialog .rs_dialog_content > div{
+    padding: 4px 10px;
+  }
+
+  .rs_dialog_holder{
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .rs_dialog_holder input[type=button] {
+    position: relative;
+    overflow: visible;
+
+    font-size: 10px;
+    font-family: Tahoma;
+    font-weight: normal;
+
+    background: url(buttons/button_background.gif) repeat-x scroll left center #E6E6E6;
+    border-color: #BBC4C9 #6B7479 #6B7479 #BBC4C9;
+    border-style: solid;
+    border-width: 1px;
+    color: #000;
+    line-height: 18px;
+    text-align: center;
+
+    outline: none;
+
+    height: 18px;
+    width: 45px !important;
+
+    padding: 0px 4px !important;
+    margin: 5px ;
+
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+  }
+
+  .rs_dialog_holder .controls{
+    background-color: #dee0e0!important;
+
+    height: 30px;
+
+    padding: 0 !important;
+    margin: 4px 0px 12px 0 !important;
+  }
+
+  .rs_dialog_holder .rs_dialog .rs_dialog_content .controls input.rs_cancel[type="button"]{
+    margin-right: -85px;
+    margin-top: 5px;
+    color: #333;
+  }
+
+  .rs_dialog_holder .rs_dialog .rs_dialog_content .freq_option_section .day_holder a{
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+
+  .rs_dialog_holder .rs_dialog .rs_dialog_content .rs_summary{
+    /*padding: 10px !important;*/
+    margin-top: 0 !important;
+  }
+
+  .rs_dialog_holder .rs_dialog .rs_dialog_content .rs_summary span{
+    padding: 5px !important;
+  }
+
+  table.occurrences thead th{
+    background-color: #1E90FF;
+  }
+
+  .bg-warning > p.bold{
+    font-weight: bold !important;
+  }
+}
+
+.create_deployment_window_series_button_wrapper input {
+  width: 18em;
+}

@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <ul>
+    <li <%= tag_options({:class => "#{'selected' unless %w(summary activity_summary property_summary).include?(params[:action]) }"}, false) %>>
+      <%= link_to lock_icon_for_requestor(@request) + request_edit_page_title_for(@request), request_path(@request), :id => 'request_title', :title => "#{@request.name.present? ? "#{@request.number} - #{@request.name}" : "#{@request.number}"}" %>
+    </li>
+    <% if @request.request_template_id.nil? %>
+      <% if can? :view_coordination_summary, @request %>
+        <li <%= tag_options({:class => "#{'selected' if params[:action] == 'summary'}"}, false) %>>
+          <%= link_to 'Coordination Summary', summary_request_path(@request), :id => 'coordination_summary' %>
+        </li>
+      <% end %>
+      <% if can? :view_activity_summary, @request %>
+        <li <%= tag_options({:class => "#{'selected' if params[:action] == 'activity_summary'}"}, false) %>>
+          <%= link_to 'Activity Summary', activity_summary_request_path(@request), :id => 'activity_summary' %>
+        </li>
+      <% end %>
+      <% if can? :view_property_summary, @request %>
+        <li <%= tag_options({:class => "#{'selected' if params[:action] == 'property_summary'}"}, false) %>>
+          <%= link_to 'Property Summary', property_summary_request_path(@request), :id => 'property_summary' %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

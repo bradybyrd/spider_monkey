@@ -1,0 +1,48 @@
+# Creates a package template from parts in SS
+
+# ========================================================================
+# MAIN SCRIPT 
+# ========================================================================
+
+bl_profile_name = os.environ["_SS_PROFILE"]
+bl_role_name	= os.environ["_SS_ROLENAME"] 
+
+common_manager = common.CommonManager()
+
+# Load the input parameters file and parse as yaml
+params = load_input_params(os.environ["_SS_INPUTFILE"]) 
+
+# Input params need to include
+#   Application
+# Open the output file and note it in the return message: sets FHandle
+FHandle = open(params["output_file"], "a")
+
+# ========================================================================
+# User Script
+# ========================================================================
+params["SS_package_name"] = name
+params["SS_version"] = version
+params["SS_application"] = app.name
+params["SS_user"] = active_user
+
+# Run the command on the server
+writeTo("Creating new Bladelogic Package")
+writeTo("  Based on: application: " + params["SS_application"])
+writeTo("  Using Package Template: " + params["SS_package_name"])
+writeTo("  CREATING: package: " + params["SS_package_name"])
+writeTo("    on server " + params["target_server"])
+ss_object = streamstep.Streamstep(bl_profile_name,bl_role_name)
+#ss_component = ss_object.createStreamstepComponent(params["application"],params["component"])
+#ss_component.addTemplateToPackage(params["package"], params["component_template"])
+#ss_component.createJobFromPackage(params["package"],params["target_server"])
+for key, val in params.items():
+	if key[0:6] == "SS_item" # a template item
+	   item_no = key[7]
+	
+for k in range(5):
+	chk = "SS_item%s" %(k) 
+
+
+	
+FHandle.close()
+sys.exit(0)

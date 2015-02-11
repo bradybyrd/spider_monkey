@@ -1,0 +1,30 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<label for="step_version" style="width:85px;font-size:11px;text-align:left;float:left;padding: 0 15px 0 0;">Version</label>
+<div class="field in_data_area" id="commit_version_div">
+	<span style="">
+	<% if GlobalSettings.limit_versions? %>
+  		<%= version_select(step, 'step[version]') %>
+	<% else %>
+		<%= text_field_tag 'step[version]', step.version_name,
+                       id: 'step_version', style: '',
+                       disabled: disabled_step_per_permission_editing?(step, :edit_step_component_versions) %>
+	<% end %>
+	</span>
+  <%= check_box :step, :own_version, style: 'margin-left:5px;', checked: step.own_version,
+                disabled: disabled_step_per_permission_editing?(step, :edit_step_component_versions) %>
+  Commit on completion
+</div>
+<div class="field out_data_area" id="commit_version_div">
+  <span title="" class="component_version"> (Current version: <%= installed_component && installed_component.version %>)<br/>
+  	<span id="version_artifact_url" style="white-space: pre-line;">
+		<%= (step.version_tag.nil? || step.version_tag.artifact_url.nil?) ? '' : raw('Artifacts: ' + raw(link_to step.version_tag.artifact_url, step.version_tag.artifact_url, :target => '_blank')) %>
+  	</span>
+  </span>
+</div>

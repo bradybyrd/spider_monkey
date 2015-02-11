@@ -1,0 +1,5 @@
+require 'granters/permission_granter'
+require 'granters/global_permission_granter'
+require 'granters/application_permission_granter'
+require 'granters/environment_permission_granter'
+require 'granters/multiple_environments_permission_granter'

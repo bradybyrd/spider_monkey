@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<ul style="padding-top:5px;">
+  <% note_groups.each do |note_group| %>
+	  <% cur_step = note_group[0] %>
+      <li>
+      <p><strong>Step <%= (cur_step.number + "&ndash;").html_safe << (cur_step.name.present? ? cur_step.name : '')  %>:</strong>
+		<%= ("<br>&nbsp;&nbsp;Component: <strong>" + cur_step.installed_component.name + "</strong>").html_safe unless cur_step.installed_component.nil? %>
+		<%= ("<br>&nbsp;&nbsp;" + cur_step.script.get_script_type.humanize + ": <strong>" + cur_step.script.name + "</strong>").html_safe if (cur_step.auto? && cur_step.script) %></p>
+      <ul>
+	     <% if note_group[1].blank? %>
+			  <li>No notes added <%= " - manual step" unless cur_step.auto? %></li>
+		 <% else %>
+	        <% note_group[1].each do |note| %>
+	          <li>
+	            <span style="font-style:italic">
+	              <%= note.user.name %> - <%= note.updated_at.default_format %>
+	            </span>
+				<br>
+	            <% if cur_step.auto? %>
+					<span class="script_output">
+					<pre>
+						<%= wrap_text(auto_link(note.content, :all, :target => '_blank'), 120) %>
+					</pre>
+					</span>
+					<span class="output_link">
+					<%= ("Results: " + results_hyperlink(note)).html_safe %>
+					</span>
+				<% else %>
+					<span class="text"><%= note.content %></span>
+				<% end %>
+	          </li>
+			  <hr>
+	        <% end %>
+		<% end %>
+      </ul>
+    </li>
+    <% end %>
+</ul>
+

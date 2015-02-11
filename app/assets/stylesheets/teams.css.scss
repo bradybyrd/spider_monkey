@@ -1,0 +1,43 @@
+#team_users{
+  border:   solid 1px #808080;
+  padding:  10px;
+}
+
+#appList{
+  #development_teams{
+    tbody > td{
+      height: 20px !important;
+    }
+  }
+}
+
+.groups_alphabetic_pagination{
+  margin: 10px 0px 10px 0px;
+}
+
+.team_roles{
+  border:   solid 1px #808080;
+  padding:  10px;
+  display:  none;
+
+  .expand_team_application{
+    margin: 5px;
+  }
+
+  .app_edit_label{
+    color:        #999;
+    font-weight:  normal;
+    padding-left: 2px;
+  }
+}
+.default_team{
+  color: #999;
+}
+
+.top_margin {
+  margin-top: 30px;
+}
+
+.right_short_margin {
+  margin-right: 10px;
+}

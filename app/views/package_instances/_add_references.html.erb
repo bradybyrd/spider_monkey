@@ -1,0 +1,29 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id="all_references">
+  <h2>Add References from Package</h2>
+
+  <%= form_tag url_for(package_instance_path(package_instance)), :remote =>true, :method => :put, :class => 'add_remove cssform' do %>
+    <% if not package_instance.available_package_references.empty? %>
+      <table>
+        <% package_instance.available_package_references.each do |package_reference| %>
+          <tr>
+            <td>
+              <%= check_box_tag 'package_reference_ids[]', package_reference.id, false, :id => dom_id(package_reference) %>
+              <label for="<%= dom_id(package_reference) %>"><%= package_reference.name %></label>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+      <div class="button_bar"><%= button_to_function 'Save', "save_add_references_clicked(); return false;"  %></div>
+    <% else %>
+      <div>No package references available</div>
+    <% end %>
+  <% end %>
+</div>

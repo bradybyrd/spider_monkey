@@ -1,0 +1,11 @@
+/ \################################################################################
+/ \# BMC Software, Inc.
+/ \# Confidential and Proprietary
+/ \# Copyright (c) BMC Software, Inc. 2001-2014
+/ \# All Rights Reserved.
+/ \################################################################################
+
+table#team_users
+  tr
+    td#user_list_of_groups
+      = render partial: 'teams/user_list_of_groups', locals: {f: f} unless @groups.blank?

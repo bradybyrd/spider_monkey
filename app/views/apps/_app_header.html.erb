@@ -1,0 +1,43 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<h2 id='app_header'>
+  <span><%= record.class.name %>:</span>
+
+  <div class="edit_in_place">
+    <span class="show"><%= h(record.name) %></span>
+    <%= form_for record, :html => {:class => 'editable inline'} do |f| %>
+        <%= f.text_field :name, :size => 15 %>
+        <%= hidden_field_tag "name_update", "yes" %>
+        <%= hidden_field_tag "index_page", params[:letter] %>
+        <%= hidden_field_tag "key", params[:key] %>
+        <%= hidden_field_tag "page", params[:page] %>
+        <%= f.submit 'Save', :class => "button" %>
+        <span style="font-size:10px;color:#999999;">or <%= link_to "cancel", "#", :class => 'cancel' %></span>
+    <% end %>
+
+    <% if can? :update, record %>
+      <%= link_to "edit", '#', :class => 'activate small' %>
+    <% end %>
+  </div>
+    <%= pipe_separator %>
+    <span class="smaller" style="display: inline;">
+      <%= render :partial => 'apps/version', :locals => {:record => record} %>
+    </span>
+    <%= pipe_separator %>
+    <span class="smaller" style="display: inline;">
+      <%= render :partial => 'apps/strict_plan_control', :locals => {:record => record} %>
+    </span>
+    <%= pipe_separator %>
+    <span class="smaller" style="display: inline;">
+      <%= render :partial => 'apps/alpha_sort', :locals => {:record => record} %>
+    </span>
+
+</h2>
+
+<br class="clear"/>

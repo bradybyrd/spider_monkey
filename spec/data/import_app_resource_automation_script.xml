@@ -1,0 +1,664 @@
+<app_import team="[default]">
+  <app>
+    <a-sorting-comps type="boolean">false</a-sorting-comps>
+    <a-sorting-envs type="boolean">false</a-sorting-envs>
+    <active type="boolean">true</active>
+    <app-version nil="true"/>
+    <name>import_app_resource_automation_script</name>
+    <strict-plan-control type="boolean">false</strict-plan-control>
+    <requests-for-export-with-automations type="array">
+      <requests-for-export-with-automation>
+        <aasm-state>created</aasm-state>
+        <additional-email-addresses type="array"/>
+        <auto-start type="boolean">false</auto-start>
+        <description></description>
+        <estimate nil="true"/>
+        <name>Request_1</name>
+        <notify-group-only type="boolean">true</notify-group-only>
+        <notify-on-request-cancel nil="true"/>
+        <notify-on-request-complete type="boolean">false</notify-on-request-complete>
+        <notify-on-request-hold type="boolean">false</notify-on-request-hold>
+        <notify-on-request-participiant type="boolean">false</notify-on-request-participiant>
+        <notify-on-request-planned type="boolean">false</notify-on-request-planned>
+        <notify-on-request-problem type="boolean">false</notify-on-request-problem>
+        <notify-on-request-resolved type="boolean">false</notify-on-request-resolved>
+        <notify-on-request-start type="boolean">false</notify-on-request-start>
+        <notify-on-request-step-owners type="boolean">false</notify-on-request-step-owners>
+        <notify-on-step-block type="boolean">false</notify-on-step-block>
+        <notify-on-step-complete type="boolean">false</notify-on-step-complete>
+        <notify-on-step-participiant type="boolean">false</notify-on-step-participiant>
+        <notify-on-step-problem nil="true"/>
+        <notify-on-step-ready nil="true"/>
+        <notify-on-step-requestor-owner type="boolean">false</notify-on-step-requestor-owner>
+        <notify-on-step-start type="boolean">false</notify-on-step-start>
+        <notify-on-step-step-owners type="boolean">false</notify-on-step-step-owners>
+        <rescheduled type="boolean">false</rescheduled>
+        <scheduled-at nil="true"/>
+        <target-completion-at nil="true"/>
+        <wiki-url></wiki-url>
+        <request-template>
+          <aasm-state>released</aasm-state>
+          <name>RT_1</name>
+          <automation-scripts-for-export type="array">
+            <automation-scripts-for-export>
+              <aasm-state>released</aasm-state>
+              <automation-category>RLM Deployment Engine</automation-category>
+              <automation-type>Automation</automation-type>
+              <content>###
+                # Repo:
+                #   name: RLM Repositories
+                #   position: A1:B1
+                #   type: in-external-single-select
+                #   external_resource: rlm_repos
+                #   required: yes
+                # Instance Name:
+                #   name: Instance Name
+                #   position: E1:F1
+                #   type: in-text
+                #   required: no
+                # Locked:
+                #   name: Lock instances to prevent changes
+                #   type: in-list-single
+                #   list_pairs: 0,No|1,Yes|
+                #   position: A3:B3
+                #   required: yes
+                # Log Format:
+                #   name: Log Format
+                #   type: in-list-single
+                #   list_pairs: 0,Old Format|1,New Format
+                #   position: A4:B4
+                #   required: yes
+                # Set Properties:
+                #   name: Set Properties
+                #   type: in-external-single-select
+                #   external_resource: rlm_repo_properties
+                #   position: A5:F5
+                #   required: no
+                # Repo Instance:
+                #   name: Repo instance id
+                #   type: out-text
+                #   position: A1:F1
+                # Repo Instance Log:
+                #   name: Repo instance Logs
+                #   type: out-file
+                #   position: A2:F2
+                # Repo Instances:
+                #   name: Repo instances
+                #   type: out-url
+                #   position: A3:F3
+                ###
+
+                #=== RLM Deployment Engine Integration Server: rpd ===#
+                # [integration_id=10000]
+                SS_integration_dns = "http://10.128.36.168/brlm"
+                SS_integration_username = "admin"
+                SS_integration_password = "-private-"
+                SS_integration_details = ""
+                SS_integration_password_enc = "__SS__CkFGRE1zZEdkM2RYWQ=="
+                #=== End ===#
+                begin
+
+                require 'lib/script_support/rlm_utilities'
+                require 'yaml'
+                require 'uri'
+                require 'active_support/all'
+
+                params["direct_execute"] = true
+
+                RLM_USERNAME = SS_integration_username
+                RLM_PASSWORD = decrypt_string_with_prefix(SS_integration_password_enc)
+                RLM_BASE_URL = SS_integration_dns
+                RESULT_DIR = params['SS_automation_results_dir']
+                LOG_FORMAT = params['Log Format']
+
+                def attach_logs(object_id, command, results_command)
+                logs = RlmUtilities.get_logs(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, object_id, command, LOG_FORMAT)
+                if logs
+                log_file_path = RlmUtilities.write_logs_to_file(object_id, RESULT_DIR, logs)
+                pack_response results_command, log_file_path
+                end
+                end
+
+                repo_id = params['Repo']
+
+                #####################Set Q prop values from BRPM####################################################
+                begin
+                params.each_pair do |k,v|
+                prop_name = k.gsub('DE_', '')
+                if (k =~ /^#{'DE_'}/) &amp;&amp; !v.blank? &amp;&amp; params['Set Properties'].present? &amp;&amp; params['Set Properties'].split(',').include?(prop_name)
+                write_to("Setting value for property: #{prop_name}")
+                encrypt = params["#{k}_encrypt"]
+                RlmUtilities.rlm_set_q_property_value(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_id, 'repo property add', prop_name, v, encrypt)
+                end
+                end
+                rescue Exception =&gt; e1
+                write_to("Could not set property values: #{e1.message}")
+                raise 'Error while setting property values.'
+                end
+
+                ########################Create Repo instance#################################################
+                repo_instance_response = RlmUtilities.create_repo_instance(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_id, params['Locked'], params['Instance Name'])
+                repo_instance_id = repo_instance_response[0]['id'] rescue nil
+                if repo_instance_id.nil?
+                write_to('Operation failed: repo instance creation failed.')
+                raise 'Error while creating the repo instance.'
+                else
+                pack_response 'Repo Instance', repo_instance_id
+                write_to('Repo instance created successfully...')
+                end
+
+                ########################Check the status of repo instance created###############################
+                delay = 5 # This delay is required as after creating the instance, status may not immediately go to constructing
+                begin
+                sleep(delay)
+                repo_instance_status = RlmUtilities.get_repo_instance_status(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_instance_id)
+                delay = 10
+                end while (repo_instance_status != 'Ready' &amp;&amp; repo_instance_status != 'Error')
+
+                pack_response 'Repo Instances', "#{RLM_BASE_URL}/index.php/delivery/wiz_app_actions/instances/#{repo_id}/Artifact"
+                attach_logs(repo_instance_id, 'instance log', 'Repo Instance Log')
+
+                if repo_instance_status == 'Error' || repo_instance_status != 'Ready'
+                write_to 'Operation failed: There were some problem while creating the repo instance.'
+                exit(1)
+                else
+                write_to('repo instance is now in Ready state.')
+                end
+
+                rescue Exception =&gt; e
+                write_to("Operation failed: #{e.message}, Backtrace:\n#{e.backtrace.inspect}")
+                end</content>
+              <description>Imported from library</description>
+              <name>Rlm create repo instance</name>
+              <project-server>
+                <details></details>
+                <ip>10.128.36.168</ip>
+                <name>rpd</name>
+                <password>awwtgl01@</password>
+                <port type="integer">80</port>
+                <server-name-id type="integer">10</server-name-id>
+                <server-url>http://10.128.36.168/brlm</server-url>
+                <username>admin</username>
+              </project-server>
+            </automation-scripts-for-export>
+          </automation-scripts-for-export>
+        </request-template>
+        <environment>
+          <name>Env_01</name>
+        </environment>
+        <notes type="array"/>
+        <owner>
+          <name>Administrator, John</name>
+        </owner>
+        <requestor>
+          <name>Administrator, John</name>
+        </requestor>
+        <email-recipients type="array"/>
+        <package-contents type="array"/>
+        <steps type="array">
+          <step>
+            <aasm-state>locked</aasm-state>
+            <complete-by nil="true"/>
+            <component-version nil="true"/>
+            <create-new-package-instance type="boolean">false</create-new-package-instance>
+            <default-tab nil="true"/>
+            <description></description>
+            <different-level-from-previous type="boolean">true</different-level-from-previous>
+            <estimate type="integer">5</estimate>
+            <execute-anytime type="boolean">false</execute-anytime>
+            <latest-package-instance type="boolean">false</latest-package-instance>
+            <name>step_01</name>
+            <own-version type="boolean">false</own-version>
+            <owner-type>User</owner-type>
+            <procedure type="boolean">false</procedure>
+            <protected-step type="boolean">false</protected-step>
+            <script-type>RLM Deployment Engine</script-type>
+            <should-execute type="boolean">true</should-execute>
+            <start-by nil="true"/>
+            <suppress-notification type="boolean">false</suppress-notification>
+            <resource-automation-script type="array">
+              <resource-automation-script>
+                <aasm-state>released</aasm-state>
+                <automation-category>RLM Deployment Engine</automation-category>
+                <automation-type>ResourceAutomation</automation-type>
+                <content>
+                  #=== RLM Deployment Engine Integration Server: rpd ===#
+                  # [integration_id=10000]
+                  SS_integration_dns = "http://10.128.36.168/brlm"
+                  SS_integration_username = "admin"
+                  SS_integration_password = "-private-"
+                  SS_integration_details = ""
+                  SS_integration_password_enc = "__SS__CkFGRE1zZEdkM2RYWQ=="
+                  #=== End ===#
+                  require 'yaml'
+                  require 'script_support/rlm_utilities'
+
+                  RLM_USERNAME = SS_integration_username
+                  RLM_PASSWORD = decrypt_string_with_prefix(SS_integration_password_enc)
+                  RLM_BASE_URL = SS_integration_dns
+
+                  def execute(script_params, parent_id, offset, max_records)
+                  rlm_packages = RlmUtilities.get_all_repos(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD)
+                  select_hash = {}
+                  select_hash["Select"] = ""
+                  rlm_packages.unshift(select_hash)
+                  return rlm_packages
+                  end
+
+                  def import_script_parameters
+                  { "render_as" =&gt; "List" }
+                  end</content>
+                <description>Imported from library</description>
+                <maps-to nil="true"/>
+                <name>Rlm repos</name>
+                <render-as>List</render-as>
+                <tag-id nil="true"/>
+                <template-script-type nil="true"/>
+                <unique-identifier>rlm_repos</unique-identifier>
+                <arguments type="array"/>
+                <project-server>
+                  <details nil="true"/>
+                  <ip>10.128.36.168</ip>
+                  <name>rpd123</name>
+                  <password>awwtgl01@</password>
+                  <port type="integer">80</port>
+                  <server-name-id type="integer">10</server-name-id>
+                  <server-url>http://10.128.36.168/brlm/</server-url>
+                  <username>admin</username>
+                </project-server>
+              </resource-automation-script>
+              <resource-automation-script>
+                <aasm-state>draft</aasm-state>
+                <automation-category>RLM Deployment Engine</automation-category>
+                <automation-type>ResourceAutomation</automation-type>
+                <content>###
+                  # Repo:
+                  #   name: RLM Repo
+                  #   position: A1:F1
+                  #   type: in-external-single-select
+                  #   external_resource: rlm_repos
+                  #   required: yes
+                  ###
+
+                  #=== RLM Deployment Engine Integration Server: rpd ===#
+                  # [integration_id=10000]
+                  SS_integration_dns = "http://10.128.36.168/brlm"
+                  SS_integration_username = "admin"
+                  SS_integration_password = "-private-"
+                  SS_integration_details = ""
+                  SS_integration_password_enc = "__SS__CkFGRE1zZEdkM2RYWQ=="
+                  #=== End ===#
+
+                  require 'yaml'
+                  require 'script_support/rlm_utilities'
+
+                  RLM_USERNAME = SS_integration_username
+                  RLM_PASSWORD = decrypt_string_with_prefix(SS_integration_password_enc)
+                  RLM_BASE_URL = SS_integration_dns
+
+                  def execute(script_params, parent_id, offset, max_records)
+                  rlm_package_properties = RlmUtilities.get_repo_properties( RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, script_params["Repo"])
+                  return rlm_package_properties
+                  end
+
+                  def import_script_parameters
+                  { "render_as" =&gt; "Table" }
+                  end</content>
+                <description>Imported from library</description>
+                <maps-to nil="true"/>
+                <name>Rlm repo properties</name>
+                <render-as>Table</render-as>
+                <tag-id nil="true"/>
+                <template-script-type nil="true"/>
+                <unique-identifier>rlm_repo_properties</unique-identifier>
+                <arguments type="array">
+                  <argument>
+                    <argument>Repo</argument>
+                    <argument-type>in-external-single-select</argument-type>
+                    <name>RLM Repo</name>
+                    <position>A1:F1</position>
+                  </argument>
+                </arguments>
+                <project-server>
+                  <details nil="true"/>
+                  <ip>10.128.36.168</ip>
+                  <name>rpd123</name>
+                  <password>awwtgl01@</password>
+                  <port type="integer">80</port>
+                  <server-name-id type="integer">10</server-name-id>
+                  <server-url>http://10.128.36.168/brlm/</server-url>
+                  <username>admin</username>
+                </project-server>
+              </resource-automation-script>
+            </resource-automation-script>
+            <component>
+              <name>Comp_01</name>
+            </component>
+            <owner>
+              <name>Administrator, John</name>
+            </owner>
+            <notes type="array"/>
+            <temporary-property-values type="array"/>
+            <script>
+              <automation-category>RLM Deployment Engine</automation-category>
+              <automation-type>Automation</automation-type>
+              <content>###
+                # Repo:
+                #   name: RLM Repositories
+                #   position: A1:B1
+                #   type: in-external-single-select
+                #   external_resource: rlm_repos
+                #   required: yes
+                # Instance Name:
+                #   name: Instance Name
+                #   position: E1:F1
+                #   type: in-text
+                #   required: no
+                # Locked:
+                #   name: Lock instances to prevent changes
+                #   type: in-list-single
+                #   list_pairs: 0,No|1,Yes|
+                #   position: A3:B3
+                #   required: yes
+                # Log Format:
+                #   name: Log Format
+                #   type: in-list-single
+                #   list_pairs: 0,Old Format|1,New Format
+                #   position: A4:B4
+                #   required: yes
+                # Set Properties:
+                #   name: Set Properties
+                #   type: in-external-single-select
+                #   external_resource: rlm_repo_properties
+                #   position: A5:F5
+                #   required: no
+                # Repo Instance:
+                #   name: Repo instance id
+                #   type: out-text
+                #   position: A1:F1
+                # Repo Instance Log:
+                #   name: Repo instance Logs
+                #   type: out-file
+                #   position: A2:F2
+                # Repo Instances:
+                #   name: Repo instances
+                #   type: out-url
+                #   position: A3:F3
+                ###
+
+                #=== RLM Deployment Engine Integration Server: rpd ===#
+                # [integration_id=10000]
+                SS_integration_dns = "http://10.128.36.168/brlm"
+                SS_integration_username = "admin"
+                SS_integration_password = "-private-"
+                SS_integration_details = ""
+                SS_integration_password_enc = "__SS__CkFGRE1zZEdkM2RYWQ=="
+                #=== End ===#
+                begin
+
+                require 'lib/script_support/rlm_utilities'
+                require 'yaml'
+                require 'uri'
+                require 'active_support/all'
+
+                params["direct_execute"] = true
+
+                RLM_USERNAME = SS_integration_username
+                RLM_PASSWORD = decrypt_string_with_prefix(SS_integration_password_enc)
+                RLM_BASE_URL = SS_integration_dns
+                RESULT_DIR = params['SS_automation_results_dir']
+                LOG_FORMAT = params['Log Format']
+
+                def attach_logs(object_id, command, results_command)
+                logs = RlmUtilities.get_logs(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, object_id, command, LOG_FORMAT)
+                if logs
+                log_file_path = RlmUtilities.write_logs_to_file(object_id, RESULT_DIR, logs)
+                pack_response results_command, log_file_path
+                end
+                end
+
+                repo_id = params['Repo']
+
+                #####################Set Q prop values from BRPM####################################################
+                begin
+                params.each_pair do |k,v|
+                prop_name = k.gsub('DE_', '')
+                if (k =~ /^#{'DE_'}/) &amp;&amp; !v.blank? &amp;&amp; params['Set Properties'].present? &amp;&amp; params['Set Properties'].split(',').include?(prop_name)
+                write_to("Setting value for property: #{prop_name}")
+                encrypt = params["#{k}_encrypt"]
+                RlmUtilities.rlm_set_q_property_value(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_id, 'repo property add', prop_name, v, encrypt)
+                end
+                end
+                rescue Exception =&gt; e1
+                write_to("Could not set property values: #{e1.message}")
+                raise 'Error while setting property values.'
+                end
+
+                ########################Create Repo instance#################################################
+                repo_instance_response = RlmUtilities.create_repo_instance(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_id, params['Locked'], params['Instance Name'])
+                repo_instance_id = repo_instance_response[0]['id'] rescue nil
+                if repo_instance_id.nil?
+                write_to('Operation failed: repo instance creation failed.')
+                raise 'Error while creating the repo instance.'
+                else
+                pack_response 'Repo Instance', repo_instance_id
+                write_to('Repo instance created successfully...')
+                end
+
+                ########################Check the status of repo instance created###############################
+                delay = 5 # This delay is required as after creating the instance, status may not immediately go to constructing
+                begin
+                sleep(delay)
+                repo_instance_status = RlmUtilities.get_repo_instance_status(RLM_BASE_URL, RLM_USERNAME, RLM_PASSWORD, repo_instance_id)
+                delay = 10
+                end while (repo_instance_status != 'Ready' &amp;&amp; repo_instance_status != 'Error')
+
+                pack_response 'Repo Instances', "#{RLM_BASE_URL}/index.php/delivery/wiz_app_actions/instances/#{repo_id}/Artifact"
+                attach_logs(repo_instance_id, 'instance log', 'Repo Instance Log')
+
+                if repo_instance_status == 'Error' || repo_instance_status != 'Ready'
+                write_to 'Operation failed: There were some problem while creating the repo instance.'
+                exit(1)
+                else
+                write_to('repo instance is now in Ready state.')
+                end
+
+                rescue Exception =&gt; e
+                write_to("Operation failed: #{e.message}, Backtrace:\n#{e.backtrace.inspect}")
+                end</content>
+              <description>Imported from library</description>
+              <name>Rlm create repo instance</name>
+            </script>
+            <step-script-arguments type="array">
+              <step-script-argument>
+                <script-argument-id type="integer">10003</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value type="array">
+                  <value type="array">
+                    <value>No</value>
+                  </value>
+                </value>
+                <script-argument>
+                  <argument>Locked</argument>
+                  <argument-type>in-list-single</argument-type>
+                  <name>Lock instances to prevent changes</name>
+                  <position>A3:B3</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10004</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value type="array">
+                  <value type="array">
+                    <value>Old Format</value>
+                  </value>
+                </value>
+                <script-argument>
+                  <argument>Log Format</argument>
+                  <argument-type>in-list-single</argument-type>
+                  <name>Log Format</name>
+                  <position>A4:B4</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10005</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value type="array">
+                  <value type="array">
+                    <value></value>
+                  </value>
+                </value>
+                <script-argument>
+                  <argument>Set Properties</argument>
+                  <argument-type>in-external-single-select</argument-type>
+                  <name>Set Properties</name>
+                  <position>A5:F5</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10006</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value nil="true"/>
+                <script-argument>
+                  <argument>Repo Instance</argument>
+                  <argument-type>out-text</argument-type>
+                  <name>Repo instance id</name>
+                  <position>A1:F1</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10007</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value nil="true"/>
+                <script-argument>
+                  <argument>Repo Instance Log</argument>
+                  <argument-type>out-file</argument-type>
+                  <name>Repo instance Logs</name>
+                  <position>A2:F2</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10008</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value nil="true"/>
+                <script-argument>
+                  <argument>Repo Instances</argument>
+                  <argument-type>out-url</argument-type>
+                  <name>Repo instances</name>
+                  <position>A3:F3</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10001</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value type="array">
+                  <value type="array">
+                    <value>742</value>
+                  </value>
+                </value>
+                <script-argument>
+                  <argument>Repo</argument>
+                  <argument-type>in-external-single-select</argument-type>
+                  <name>RLM Repositories</name>
+                  <position>A1:B1</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+              <step-script-argument>
+                <script-argument-id type="integer">10002</script-argument-id>
+                <script-argument-type>ScriptArgument</script-argument-type>
+                <value type="array">
+                  <value type="array">
+                    <value></value>
+                  </value>
+                </value>
+                <script-argument>
+                  <argument>Instance Name</argument>
+                  <argument-type>in-text</argument-type>
+                  <name>Instance Name</name>
+                  <position>E1:F1</position>
+                  <script>
+                    <name>Rlm create repo instance</name>
+                    <template-script-type nil="true"/>
+                  </script>
+                </script-argument>
+              </step-script-argument>
+            </step-script-arguments>
+          </step>
+        </steps>
+      </requests-for-export-with-automation>
+    </requests-for-export-with-automations>
+    <components type="array">
+      <component>
+        <active type="boolean">true</active>
+        <name>Comp_01</name>
+        <active-properties type="array"/>
+      </component>
+    </components>
+    <environments type="array">
+      <environment>
+        <active type="boolean">true</active>
+        <deployment-policy>opened</deployment-policy>
+        <name>Env_01</name>
+        <active-server-groups type="array"/>
+      </environment>
+    </environments>
+    <active-packages type="array"/>
+    <installed-components type="array">
+      <installed-component>
+        <location nil="true"/>
+        <version nil="true"/>
+        <find-properties type="array"/>
+        <server-aspects type="array"/>
+        <server-aspect-groups type="array"/>
+        <application-component>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <component>
+            <active type="boolean">true</active>
+            <name>Comp_01</name>
+          </component>
+        </application-component>
+        <application-environment>
+          <name>Env_01</name>
+        </application-environment>
+      </installed-component>
+    </installed-components>
+    <active-routes type="array"/>
+    <active-business-processes type="array"/>
+    <version-tags type="array"/>
+    <application-packages type="array"/>
+    <active-procedures type="array"/>
+    <brpm_version>4.6.00.01</brpm_version>
+  </app>
+</app_import>
+
+
+

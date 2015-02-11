@@ -1,0 +1,86 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :sidebar do %>
+  <% if can? :consolidate_requests, Request.new %>
+    <p>
+      <%= link_to image_tag("btn-consolidate-requests.png", alt: "Consolidate Selected Requests"), '#', id: "create_consolidated_request" %>
+    </p>
+    <%= form_tag create_consolidated_requests_path, id: 'create_consolidated_request_form' do; end %>
+  <% end %>
+
+  <% if can? :create, Request.new %>
+    <p>
+      <%=
+        link_to(
+          image_tag("btn-create.png"),
+          new_request_path(activity_id: @activity.id, activity_app_id: @activity.app_id)
+        )
+      %>
+    </p>
+  <% end %>
+<% end %>
+
+<% if can? :view_requests_list, Request.new %>
+  <table class='tablesorter project_requests_and_automation_sorter requestList formatted_table' style='margin:0 !important;'>
+    <thead>
+      <tr>
+        <th colspan='2'>Request</th>
+        <th colspan='2'>Step</th>
+        <th>Name</th>
+        <th>App</th>
+        <th>Requestor</th>
+        <th>Phase</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% widget_requests(activity).each do |req| %>
+        <tr <%= tag_options({:class => "#{cycle '', 'alt'}#{can?(:inspect, req) ? ' request_row' : ''}"}, false) %>>
+          <td class='request_id'><%= req.number %></td>
+          <td <%= tag_options({:class => "request_status status#{' person_cell' if current_user.involved_with_request?(req)}"}, false) %>>
+            <%= link_to_if can?(:inspect, req),
+                           content_tag( :div,
+                                        h(req.aasm.current_state.to_s.humanize),
+                                        :class => "#{req.aasm.current_state}RequestStep state"),
+                           req %>
+          </td>
+          <% if req.current_step %>
+            <td class='step_id'>
+              <%= link_to_request_with_open_step req, req.current_step %>
+            </td>
+            <td <%= tag_options({:class => "step_status status#{' person_cell' if current_user.involved_with_step?(req.current_step)} step_status_#{req.current_step.aasm.current_state}"}, false) %>>
+              <%= link_to_request_with_open_step req, req.current_step, content_tag(:div, h(req.current_step.aasm.current_state.to_s.humanize), :class => "state") %>
+            </td>
+          <% else %>
+            <td class='step_id'>&nbsp;</td>
+            <td class='step_status status'>&nbsp;</td>
+          <% end %>
+          <td><%= ensure_space h(req.name) %></td>
+          <td><%= ensure_space(req.app_name.to_sentence) %></td>
+          <td><%= ensure_space h(name_of(req.requestor)) %></td>
+          <td><%= ensure_space req.current_phase_name(false) %></td>
+          <td class='date'><%= req.scheduled_at.to_s(:simple) if req.scheduled_at %></td>
+          <td class='date'><%= req.target_completion_at.to_s(:simple) if req.target_completion_at %></td>
+          <td class='last'>
+            <% if can? :schedule_request, req %>
+              <%= ensure_space(link_to("schedule", setup_schedule_activity_request_path(activity, req), :rel => 'facebox')) %>
+            <% end %>
+            <% if can? :consolidate_requests, req %>
+              <%= check_box_tag 'request_ids[]', req.id, false, :id => "request_ids_#{req.id}", :class => 'request_ids auto_width no_confirmation' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= hidden_field_tag "request_button", "hide_update_button" %>

@@ -1,0 +1,14 @@
+<div style="clear:left;text-align: right">
+  <div id="toggleFilterLink">
+    <% if @open_filter %>
+      <%= link_to "Close Filters", "#", :id => "hide_script_filter",:class => "filterSection" %>
+    <% else %>
+      <%= link_to "Open Filters","#", :id => "show_script_filter",:class => "filterSection" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="filterSection">
+  <%= render :partial => 'account/script_filter' , :locals => { :filters => @filters, :open_filter => @open_filter}%>
+</div>
+

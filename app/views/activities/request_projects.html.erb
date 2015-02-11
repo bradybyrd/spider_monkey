@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'project' %>
+<% end %>
+<% page_settings :title => activity_or_project?('pluralize') %>
+<% content_for :sidebar do %>
+  <% if can?(:create, Activity.new) %>
+    <p><%= link_to activity_or_project_image?, new_activity_path(ActivityCategory.request_compatible.first) %></p>
+  <% end %>
+<% end %>
+<%= render 'activity_categories/tabs', :selected => 'request projects' %>
+<div id='request_projects'>
+  <%= render :partial => "activities/request_projects" %>
+</div>

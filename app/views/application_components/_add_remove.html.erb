@@ -1,0 +1,56 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id="all_components">
+  <h2>Add/Remove Components</h2>
+  <%= form_tag url_for(update_all_app_application_components_path(app)), :remote =>true, :method => :put, :class => 'add_remove cssform' do %>
+    <% if @new_component.present? %>
+      <div id="errorExplanation">
+        <h2><%= pluralize(new_component.errors.count, "error") %>
+            prohibited this component from being saved </h2>
+        <ul>
+        <% new_component.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <table>
+      <% components.each do |component| %>
+        <tr>
+          <td>
+            <%= check_box_tag 'component_ids[]', component.id, app.components.include?(component), :id => dom_id(component) %>
+            <label for="<%= dom_id(component) %>"><%= component.name %></label>
+          </td>
+          <td id="component_<%= component.id %>">
+            <% if component.application_components.empty? && can?(:make_active_inactive, component)%>
+              <%= link_to_function image_tag('bin_empty.png', :title => 'Remove component', :border => 0), "removeComponent('#component_#{component.id}', '#{deactivate_component_path(component)}')" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if can? :create, Component.new %>
+        <tr class="new_item">
+          <td align="left">
+            <%= check_box_tag '', '', true, disabled: :disabled %>
+            <%= text_field_tag 'new_components[][name]', '', disabled: :disabled, size: 25 %>
+          </td>
+        </tr>
+        <tr class="create_item">
+          <td><%= link_to t('app.component.create'), '#' %></td>
+        </tr>
+      <% end %>
+
+      <%= hidden_field_tag "page", params[:page]  %>
+      <%= hidden_field_tag "key", params[:key]  %>
+      <%= hidden_field_tag "new_components[][not_from_rest]", true  %>
+    </table>
+     <div class="button_bar"><%= submit_tag 'Save', :class =>'button' %></div>
+  <% end %>
+</div>

@@ -1,0 +1,13 @@
+<% if deployment_window_series.archived? %>
+    <%= link_to I18n.t(:unarchive), unarchive_deployment_window_series_path(deployment_window_series), :method => :put %>
+    <span class="delimeter"> | </span>
+    <% if deployment_window_series.destroyable? %>
+        <%= link_to(I18n.t(:delete), deployment_window_series, :method => :delete,
+                    :confirm => "Are you sure you want to delete this deployment window series?")
+        %>
+    <% end %>
+<% else %>
+    <% if deployment_window_series.can_be_archived? %>
+        <%= link_to I18n.t(:archive), archive_deployment_window_series_path(deployment_window_series.id), :method => :put %>
+    <% end %>
+<% end %>

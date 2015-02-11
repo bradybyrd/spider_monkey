@@ -1,0 +1,64 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => "Servers Map" %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'multi_select', 'maps' %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+
+  <%= form_tag servers_maps_path, :class => 'properties_maps_server_form' do %>
+  	<div class="section">
+	  	<label for="environment_ids">Environments</label>
+	    <p id="environments">
+	      <%= select_tag :environment_ids, options_from_collection_for_select(current_user.accessible_default_environments, :id, :name, @environment_ids), :class => "customize_multiselect", :multiple => true %>
+	      <br/>
+	      <%= select_clear_links('environment_ids')%>
+	    </p>
+			<label for="server_ids">Servers</label>
+	    <p id="servers">
+	      <%= select_tag :server_ids, options_from_collection_for_select(current_user.accessible_servers.active, :id, :name, @server_ids), :class => "customize_multiselect", :multiple => true %>
+	      <br/>
+	      <%= select_clear_links('server_ids')%>
+	    </p>
+			<label for="server_level_ids">Server Levels</label>
+	    <p id="server_levels">
+	      <%= select_tag :server_level_ids, options_from_collection_for_select(ServerLevel.name_order, :id, :name, @server_level_ids), :class => "customize_multiselect", :multiple => true %>
+	      <br/>
+	      <%= select_clear_links('server_level_ids')%>
+	    </p>
+	    <p><%= submit_tag "Map" %></p>
+	  </div>
+  <% end %>
+<% end %>
+
+<% if @environment_for_select.blank? %>
+  Please select environments, servers, and server levels to the right.
+<% else %>
+	<h3>Servers</h3>
+  <ul>
+    <% @environment_for_select.each do |env| %>
+      <li><%= h env.name %></li>
+      <ul>
+        <% (env.servers & @servers).each do |server| %>
+          <li><%= server.name %></li>
+          <%= render_server_aspects_tree server.server_aspects, @filter_proc, @server_level_ids %>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+<% end %>
+

@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<p>Ldap authentication process</p>
+<%= form_tag session_path, { :id => 'login_box' } do %>
+  <%= hidden_field_tag 'authentication', 'ldap' %>
+  <div class='field'>
+    <label for='login'>Login</label>
+    <%= text_field_tag 'login', '', { :tabindex => 1, :class => 'initialFocus', :autocomplete => 'off' } %>
+  </div>
+  <div class='field'>
+    <label for='password'>Password</label>
+    <%= password_field_tag 'password', '', { :tabindex => 2 } %>
+  </div>
+  <div class='field'>
+    <label></label>
+    <input id='remember_me' <%= tag_options({:name => "remember_me", :tabindex => "3", :type => "checkbox", :checked => true, :value => "yes"}, false) %>>
+    <label class='normal' for='remember_me'>Remember Me</label>
+  </div>
+  <div class='field submit'>
+    <label></label>
+    <%= succeed "&nbsp;" do %>
+      <input tabindex='4' type='submit' value='Log In'>
+    <% end %>
+
+    <%= link_to_forgot_password %>
+  </div>
+<% end %>
+
+<br>
+<br>
+<%= link_to 'Basic Authentication?', "/login" %>

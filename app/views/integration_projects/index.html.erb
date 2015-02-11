@@ -1,0 +1,50 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Manage Projects - #{@project_server.name}" %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'integrations',:tab_view => true } %>
+  <%# = render :partial => 'account/tabs', :locals => {:selected => 'integrations'} %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <% if can?(:create, IntegrationProject.new) %>
+    <p>
+      <%= link_to image_tag('btn-create-project.png', alt: 'Add Project'), new_project_server_integration_project_path(@project_server), class: 'create_integration_project' %>
+    </p>
+  <% end %>
+<% end %>
+
+<div id='integration_projects'>
+  <h3>Active Projects</h3>
+
+  <% pagination_links = will_paginate @active_projects %>
+  <% if pagination_links %>
+    <table>
+      <tr>
+        <td>
+          <strong>
+            <%= page_entries_info  @active_projects, :entry_name => "Projects" %>
+          </strong>
+        </td>
+        <td class='my_data_pagination'>
+          <%= pagination_links %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <%= render :partial => "integration_projects/index", locals: {active: true, project_server: @project_server, projects: @active_projects} %>
+
+  <% if @inactive_projects.any? %>
+    <h3>Inactive Projects</h3>
+    <%= render :partial => "integration_projects/index", locals: {active: false, project_server: @project_server, projects: @inactive_projects} %>
+  <% end %>
+</div>
+
+<%= link_to "Back", project_servers_path(:page => params[:page_no], :key => params[:key]) %>

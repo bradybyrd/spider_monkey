@@ -1,0 +1,34 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% task_title = "Deployment Window Series" %>
+<% page_settings title: task_title %>
+
+<% content_for :page_section do %>
+    <%= render 'account/environment_tabs', selected: 'metadata' %>
+<% end %>
+<%= render "shared/dws_sidebar" %>
+<%= render "environments/metadata_heading", backlink: backlink, title: task_title %>
+<% content_for :page_section do %>
+  <%= render 'shared/search_form', path: deployment_window_series_index_path, key: @filter_params[:q] %>
+<% end %>
+
+<%= render 'filters' %>
+
+<% if can?(:list, DeploymentWindow::Series.new)  %>
+  <div id="series-lists">
+    <% if @deployment_window_series.blank? %>
+        <div class='blank_data_msg'>
+          There are no deployment windows series at this time.
+        </div>
+    <% else %>
+        <%= render 'lists' %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,20 @@
+<% @apps.each do |app| %>
+  <% if params[:optgroup]%>
+    <optgroup id='<%= app.id %>' class='app' label='<%= app.name %>' >
+  <% end %>
+
+  <%
+  if !current_user.has_global_access? && !current_user.admin?
+    environments = app.environments_visible_to_user
+  else
+    environments = app.environments.active
+  end
+  %>
+  <% environments.each do |env| %>
+    <option value="<%= env.id %>" data-deployment-policy="<%= env.deployment_policy %>"><%= env.name %></option>
+  <% end %>
+
+  <% if params[:optgroup]%>
+    </optgroup>
+  <% end %>
+<% end %>

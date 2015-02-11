@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Step List Preferences' %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= render :partial => "users/profile_tabs",:locals => {:step_list_pref=>'selected'} %>
+<%= render :partial => "users/step_list_preferences" %>

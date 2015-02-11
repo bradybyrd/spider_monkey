@@ -1,0 +1,9 @@
+= form_tag reports_access_roles_map_report_path(format: 'csv'), id: 'export_to_csv_roles_map_form' do
+  - teams.each do |team|
+    = hidden_field_tag('team_ids[]', team.id)
+  - groups.each do |group|
+    = hidden_field_tag('group_ids[]', group.id)
+  - users.each do |user|
+    = hidden_field_tag('user_ids[]', user.id)
+
+  p= submit_tag t('reports.view_access.roles_map.export_to_csv'), class: 'button'

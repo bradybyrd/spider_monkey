@@ -1,0 +1,52 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+/* self-services */
+.search_dash{background-image:url(<%= asset_path 'self_services/search_dash.gif' %>); background-repeat:no-repeat; width:193px; height:35px;  padding:5px 0px 0px 5px; margin-top:-3px; display:inline-block;}
+.search_btn_dash{background-image:url(<%= asset_path 'self_services/search_btn_dash.gif' %>); background-repeat:no-repeat; background-position:left; width:80px; height:25px;  cursor:pointer; float:left; border:0px solid #fff; background-color:transparent;margin:-1px 0px 0px 2px; padding:5px 0px;}
+.self_p{ margin:5px 0px; width:175px; text-align:left;}
+.self_help{background-image:url(<%= asset_path 'self_services/question-mark.png' %>); background-repeat:no-repeat; width:18px; height:22px; float:right;}
+.bottomLine {height:11px; background:#9cabc2; margin-top:36px;}
+#bottomLine_mt_20 {margin-top:20px!important;}
+/* CHKME: adding padding to the inside of these tables too
+ * to avoid left right collisions.
+ */
+.app_env_srvr_content
+{
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px;
+    border-style: solid;
+    border-color: #aebac1;
+    clear:left;
+    background-color:#ffffff;
+    padding: 10px;
+}
+#adjustMargin{margin:0px; padding-top:5px}
+/*#toggleFilterLink moved to extra.css */
+#filterSection{display:none;}
+#my_applications .button-to div,#my_environments .button-to div,#my_servers .button-to div
+{
+    float:right;
+}
+table.my_dashboard_pagination
+{
+    margin-bottom: 0;
+}
+table.my_dashboard_pagination td
+{
+    padding-bottom: 0;
+}
+
+#inbound_outbound_request_links.self_p {
+  margin: 2px 0 0 5px;
+  display: inline-block;
+}
+
+#inbound_outbound_request_links.self_p a {
+  color: #3030ff;
+}

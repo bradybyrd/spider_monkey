@@ -1,0 +1,23 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+apps_000000:
+  name: "[default]"
+  created_at: 2011-04-29 04:12:12
+  default: "1"
+  updated_at: 2011-04-29 04:12:12
+  id: "0"
+  active: "1"
+apps_000001: 
+  name: SmartRelease
+  created_at: 2011-04-29 04:12:12
+  default: "0"
+  updated_at: 2011-04-29 04:12:12
+  app_version: 2.0.4
+  id: "1"
+  active: "1"

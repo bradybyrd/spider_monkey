@@ -1,0 +1,2 @@
+$('#request_notes_section').html("<%= escape_javascript(render :partial => "requests/request_note", :locals => {:request => @request}) %>")
+$('#request_notes').val('')

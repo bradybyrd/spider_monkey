@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="pageSection">
+<ul>
+    <% activity.activity_tabs.each do |tab| %>
+      <% if can? "edit_#{tab.name.downcase}".to_sym, activity %>
+        <%= activity_tab tab, selected_id, activity %>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

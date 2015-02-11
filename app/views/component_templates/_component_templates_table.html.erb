@@ -1,0 +1,32 @@
+<thead>
+	<tr>
+		<td colspan="3" align="left" class="no_hover">
+      <% if can? :add, ComponentTemplate.new %>
+        <%= link_to t('app.component_template.add'), new_component_template_path(app_id: @app.id), rel: 'facebox' %>
+      <% end %>
+			|
+      <% if can? :sync, ComponentTemplate.new %>
+        <%= link_to t('app.component_template.sync'), sync_component_templates_path(app_id: @app.id), id: "sync_link" %>
+      <% end %>
+			<%= image_tag 'spinner.gif', :style => "display:none;", :id => "sync_loader" %>
+		</td>
+	</tr>
+    <tr>
+      <th>Active</th>
+      <th>Name</th>
+      <th>Version</th>
+    </tr>
+</thead>
+<tbody>
+	<% @app.component_templates.each do |ct| %>
+		<tr class=<%= cycle('', 'alt') %>>
+		  <td align="left">
+		  	<%= form_for ct, :url => component_template_path(ct), :html => { :method => :put, :class => 'inline no_direct_submit' } do |f| %>
+      			<%= f.check_box :active %>
+    	  	<% end %>
+		  </td>
+	      <td align="left"><%= link_to index_title(ct.name), edit_component_template_path(ct.id), :rel => 'facebox' %></td>
+	      <td align="left"><%= ct.version %></td>
+	    </tr>
+	<% end %>
+</tbody>

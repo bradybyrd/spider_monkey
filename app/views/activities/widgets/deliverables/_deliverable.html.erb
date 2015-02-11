@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+  <td class='first'><%= h deliverable.name %></td>
+  <td><%= h deliverable.description %></td>
+  <td><%= h default_format_date(deliverable.projected_delivery_on) %></td>
+  <td><%= h default_format_date(deliverable.delivered_on) %></td>
+  <td><%= h deliverable.highlights %></td>
+  <% if current_user.present? %>
+    <td class='last'>
+      <%= link_to "Edit", modify_deliverable_activity_path(@activity, :phase_id => local_assigns[:phase].try(:id), :deliverable_id => deliverable.id), :rel => 'facebox' %>
+      |
+      <%= link_to "Delete", destroy_deliverable_activity_path(@activity, :phase_id => local_assigns[:phase].try(:id), :deliverable_id => deliverable.id),  'data-form-method' => 'delete', 'data-use-ajax' => true, 'data-restore-form' => true,  'confirm-delete' => true, :class => 'submit_form' %>
+    </td>
+  <% end %>
+</tr>

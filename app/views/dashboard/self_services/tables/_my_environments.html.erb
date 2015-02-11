@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<table class='tablesorter four_column_sorter self_service_app_table formatted_table' <%= tag_options({:id => "my_environments_#{@page_no || 1}"}, false) %>>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Applications</th>
+      <th>Releases</th>
+      <th>Recent Activity</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @my_environments.blank? %>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    <% end %>
+    <% @my_environments.each_with_index do |env, _| %>
+      <% requests = current_user.decorate.visible_recent_activity_requests(env) %>
+      <% request_ids = requests.map(&:number) %>
+      <tr <%= tag_options({:class => cycle('alt', '')}, false) %>>
+        <td><%= env.name %></td>
+        <td <%= tag_options({:title => current_user.accessible_visible_applications_for_env(env).map(&:name).to_sentence}, false) %>><%= ensure_string(truncate(current_user.accessible_visible_applications_for_env(env).map(&:name).to_sentence)) %></td>
+        <td>
+          <% if can? :inspect, Plan.new %>
+            <%= find_releases(requests, env) %>
+          <% end %>
+        </td>
+        <td <%= tag_options({:title => format_to_sentence(request_ids)}, false) if can? :inspect, Request.new %>>
+            <%= latest_requests(requests) %>
+        </td>
+        <td>
+          <% if can? :edit, env %>
+            <%= link_to "Edit", edit_environment_path(env) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<table class='my_dashboard_pagination' <%= tag_options({:id => "my_environments_pagination_#{@page_no || 1}"}, false) %>>
+  <tr>
+    <td <%= tag_options({:colspan => 2, :width => 476}, false) %>><%= will_paginate(@my_environments, :class => "my_data_pagination", :rel => "my_environments") %></td>
+    <% if can? :create, Environment.new %>
+      <td><%= button_to "Create Environment", new_environment_url, :method => :get,:class => 'button' %></td>
+    <% end %>
+  </tr>
+</table>

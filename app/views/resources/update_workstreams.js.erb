@@ -1,0 +1,5 @@
+<% if @close_facebox %>
+  $.facebox.close();
+<% else %>
+  $('#facebox div.resource_allocation').html(<%= render('workstreams').to_json %>);
+<% end %>

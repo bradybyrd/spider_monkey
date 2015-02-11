@@ -1,0 +1,25 @@
+<% if can? :view_step_notes_tab, association_or_new_instance(step, :request) %>
+  <!--h4><a href="#" id="notes_area_heading" class="collapsible_section_heading" style="<%#= step.new_record? ? 'display:none' : '' %>">Notes</a></h4-->
+  <div id="notes_area_section" style="<%= step.new_record? ? 'display:none' : '' %>">
+    <% unless step.notes.empty? %>
+      <% step.notes.each do |note| %>
+        <%= display_note(note) %>
+      <% end %>
+    <% end %>
+    <% unless step.new_record? %> <div id ="new_note"></div>
+      <% if step.commentable_by?(current_user) %>
+        <div class="field textarea" style="padding-right:10px;">
+          <strong><label style="vertical-align: top;">Add Note</label></strong>
+          <%= f.text_area :note, :class => 'expand', :rows => 0 %>
+        </div>
+        <div class="expand_textarea_link fl" style ="padding:0 10px 0 5px; font-size:11px; float:right;margin-right:20px">
+          [ <a href="javascript:toggleTextarea('step_note', 'step_nt')" id="step_nt">expand</a> ]
+        </div>
+        <div style="float:right;margin-bottom:10px;">
+          <%= button_to_function 'Add Note', "submitStepNotes($(this))", :path => add_note_request_step_path(request,step) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <!-- /div# notes_area_section -->
+<% end %>

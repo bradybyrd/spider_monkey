@@ -1,0 +1,53 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<%= render :partial => "plans/tabs", :locals => {:selected => page_tab_selected, :plan => @plan} %>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'plans', 'dashboard' %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object',
+                                    'drag_and_drop/table_drop_zone',
+                                    'drag_and_drop/jquery.ui.core',
+                                    'drag_and_drop/jquery.ui.widget',
+                                    'drag_and_drop/jquery.ui.mouse',
+                                    'drag_and_drop/jquery.ui.draggable',
+                                    'plans', 'ie/resolution_fixes',
+                                    'tickets', 'filters', 'request_form' %>
+<% end %>
+
+<%= render partial: 'plans/sidebar', locals: {plan: @plan} %>
+
+<div id='plans_container'>
+  <% if @page_tab_selected == 'tickets' %>
+    <% if can? :list_plan_tickets, Ticket.new %>
+      <div class='content'>
+        <%= render :partial => "tickets/tickets_list", :locals => {:tickets => @tickets, :plan => @plan} %>
+      </div>
+    <% end %>
+  <% elsif @page_tab_selected == 'routes' %>
+    <% if can? :list, PlanRoute.new %>
+      <div class='content'>
+        <%= render :partial => "plan_routes/index", :locals => {:plan_routes => @plan_routes, :plan => @plan} %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= render :partial => "plans/header_information", :locals => {:selected => selected, :plan => @plan, :read_only => @plan.archived?} %>
+    <%= render :partial => "plans/sub_tabs", :locals => {:selected => selected, :plan => @plan} %>
+    <div class='content horizontal_scroll'>
+      <div class='horizontal_scroll_1'>
+        <%= render partial: 'plans/stages', locals: {
+                                              plan: @plan,
+                                              grouped_members: @grouped_members,
+                                              default_stage: @default_stage,
+                                              plan_stages: @plan_stages
+                                          }
+        %>
+      </div>
+    </div>
+  <% end %>
+</div>

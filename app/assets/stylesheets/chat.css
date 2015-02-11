@@ -1,0 +1,41 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+
+.chat_ul
+{
+ height:140px;
+ overflow:auto;
+ background-color:#FFFFFF;
+ border:2px ridge #0680A8;
+ width:238px;
+ margin-left:-4px;
+}
+
+ul { list-style-type:none; list-style-position:inside;}
+.chat_ul li
+{
+ margin-left:3px;
+ font-size:12px;
+ padding:0px;
+ margin:0px 0px 0px -36px;
+ background:none;
+ text-align:left;
+}
+
+.ui-widget-overlay
+{
+height:auto !important;
+width:auto !important;
+}
+.chat_input_box
+{
+height:37px;
+margin-left:-5px;
+margin-top:-20px;
+width:278px
+}
+.ui-dialog-content{height:200px !important;}

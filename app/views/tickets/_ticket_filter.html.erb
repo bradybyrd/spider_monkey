@@ -1,0 +1,14 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<hr>
+<h3><%= project_server.name %>: <%= script.title %></h3>
+<%= content_tag :p, script.description unless script.description.blank? %>
+<div id="script_section">
+	<%= render :partial => 'steps/step_script', :locals => { :script => script, :step => Step.new, :installed_component => nil, :argument_values => step.script_argument_values_display } %>
+</div>

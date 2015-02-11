@@ -1,0 +1,22 @@
+<% if @activity.workstreams.empty? %>
+  <h2>No resources are currently assigned to this activity.</h2>
+<% else %>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Roles</th>
+        <%= ResourceAllocation.month_range_names(5, 6).map { |name| "<th>#{name}</th>" } %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @activity.workstreams.each do |stream| %>
+        <tr>
+          <td><%= h stream.resource_name %></td>
+          <td><%= h stream.resource_role_names %></td>
+          <%= Date.act_on_month_range(5, 6) { |m, y| "<td>#{stream.allocation_for_year_and_month y, m} %</td>" } %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

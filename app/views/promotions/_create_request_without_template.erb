@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_tag requests_path, :method => :post , :class => "create_request_from_template", :id => "template_none"  do -%>
+  <%= hidden_field_tag :app_id, @selected_values[:app_id] %>
+  <%= hidden_field_tag :target_env, @selected_values[:target_env] %>
+  <%= hidden_field_tag :target_env_group, @selected_values[:target_env_group] %>
+  <%= hidden_field_tag :environment_id, @selected_values[:target_env] %>
+  <%= hidden_field_tag :source_env, @selected_values[:source_env] %>
+  <%= hidden_field_tag :from_promotion, true %>
+  <%= button_to_function "Create Request", "saveRequestPromotion('none')", :style => "position:relative; right: 0px; bottom: 0px;" if can? :create, Request.new %>
+  <% Request.column_names.each do |column| %>
+    <%= hidden_field_tag "request[#{column}]" %>
+  <% end %>
+  <%= hidden_field_tag "request[selected_components]", @selected_values[:component].join(',') %>
+  <%= hidden_field_tag "request[promotion_source_env]", @selected_values[:source_env] %>
+<% end -%>
+

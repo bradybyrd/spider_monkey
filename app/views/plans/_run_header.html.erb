@@ -1,0 +1,79 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'runs' %>
+<% end %>
+<% content_for :sidebar do %>
+  <p>
+    <%= button_to 'Version Conflict Report', version_conflict_report_plan_run_path(@plan, @run), :method => :get, :class => 'button' %>
+  </p>
+<% end %>
+<div class='run_detail' id='run_detail' <%= tag_options({'data-run-id' => run.id, 'data-plan-id' => plan.id}, false) %>>
+  <div class='run_info'>
+    <div class='run_title'>
+      <span class='run_name'>
+        <h4><%= "Run: #{run.name}" %></h4>
+      </span>
+      <span class='edit_run_link'>
+        <%= link_to plan.archived? ? t(:view_run_details) : t(:edit_run_details), edit_plan_run_path(plan, run), :rel => "facebox" if can? :edit_runs, plan %>
+      </span>
+    </div>
+    <p class='run_detail_row'>
+      <span class='run_dates'>
+        <strong>
+          Start/End:
+        </strong>
+        <%= run.date_label %>
+      </span>
+      <span class='run_duration'>
+        <strong>
+          Duration:
+        </strong>
+        <%= run.duration || raw('&nbsp;') %>
+      </span>
+      <span class='run_requestor'>
+        <strong>
+          Requestor:
+        </strong>
+        <%= run.requestor.name %>
+      </span>
+      <span class='run_owner'>
+        <strong>
+          Owner:
+        </strong>
+        <%= run.owner.name %>
+      </span>
+      <span class='run_auto_promote'>
+        <strong>
+          Auto Promote:
+        </strong>
+              <%= ( run.auto_promote? ? 'Yes' : 'No' ) %>
+      </span>
+    </p>
+    <% unless run.description.blank? %>
+      <p>
+        <span class='run_description' <%= tag_options({:title => run.description}, false) %>>
+		  <strong>Description:</strong>
+          <%= truncate(run.description, :length => 120) %>
+        </span>
+      </p>
+    <% end %>
+  </div>
+  <p class='run_detail_row'>
+   <div class='run_buttons'>
+     <span <%= tag_options({:class=>"clear run_status round_box_lc_#{run.aasm_state}"}, false) %>>
+       <%= run.aasm_state.humanize %>
+     </span>
+     <span class='run_state_buttons'>
+       <%= raw available_state_buttons_for_run(run) %>
+     </span>
+   </div>
+  </p>
+</div>
+<div class="errorExplanation"></div>

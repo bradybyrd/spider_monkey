@@ -1,0 +1,63 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+div.event_popups_container {
+	font-family:arial;
+	background-color: #FFF;
+	width: 95%;
+	text-align: left;
+    padding: 10px;
+    float:left;
+    vertical-align: middle;
+    padding: 10px;
+
+    #move-state, #move-reason {
+        width: 200px;
+    }
+
+    .error {
+        margin-bottom: 10px;
+
+        li {
+            margin-left: 15px;
+        }
+
+        .notification {
+            padding: 5px;
+            background-color: #F5C9C9;
+            border-radius: 5px;
+        }
+    }
+
+    .event_popups_container_warnings{
+      width: 450px;
+      line-height: 15px;
+    }
+}
+
+div.event_popups_container .actions {
+    float: right;
+    
+    .button {
+        margin-left: 5px;
+        font-size: 12px;
+        font-family: sans-serif;
+        float: left;
+        /*width: 50px;*/
+        height: 20px;
+    }
+}
+
+.ui-corner-all {
+    border-radius: 4px;
+}
+
+.ui-state-active{
+/*    background: url("images/") repeat-x scroll 50% 50% #FFFFFF;*/
+    border: 1px solid #FBD850;
+    color: #EB8F00;
+    font-weight: bold;
+}

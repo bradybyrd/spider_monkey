@@ -1,0 +1,42 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table <%= tag_options({:id => "cmd_pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}", :rel => "pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}", :class => "templateItemforms"}, false) %>>
+  <tbody <%= tag_options({:class => "1_pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}"}, false) %>>
+    <tr>
+      <td align='right' width='150'><%= f.label :command %></td>
+      <td><%= f.text_area :command, :cols => 40, :rows => 3, :value => f.object[:commands][:command] %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :undo_command %></td>
+      <td><%= f.text_area :undo_command, :cols => 40, :rows => 3, :value => f.object[:commands][:undo_command] %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :single_user_mode %></td>
+      <td><%= f.select :single_user_mode, PackageTemplateItem::SingleUserMode, {:include_blank => 'Select'}, {:class => 'single_user_mode'} %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :reboot %></td>
+      <td><%= f.select :reboot, PackageTemplateItem::Reboot, {:include_blank => 'Select'}, {:class => 'reboot'} %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :action_on_fail %></td>
+      <td><%= f.select :action_on_fail, PackageTemplateItem::ActionOnFail, {:include_blank => 'Select'}, {:class => 'action_on_fail'} %></td>
+    </tr>
+    <tr <%= tag_options({:class => "newTemplateItem_pkg_#{@package_template.id}"}, false) %>>
+      <td <%= tag_options({:colspan => 3}, false) %>>
+        <%= submit_tag f.object.new_record? ? 'Add Item' : 'Update Item',:class =>'button' %>
+        &nbsp;
+        or
+        &nbsp;
+        <%= link_to_function "Cancel", "CanceladdNewItem('.newTemplateItem_pkg_#{@package_template.try(:id)}')", :class => "default_link" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<%= javascript_tag("setCommandOptions(#{f.object[:commands].to_json}, 'pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}')") %>

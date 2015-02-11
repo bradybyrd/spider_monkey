@@ -1,0 +1,22 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+
+.content {
+  max-width: 900px;
+  margin: 3em 10em;
+}
+.unauthenticated_content {
+  max-width: 900px;
+  margin-left:1em;
+}
+
+.unauthenticated_content a {
+  color:#000;
+ /* text-decoration:none;*/
+}
+
+#moreFilters{display:none;}

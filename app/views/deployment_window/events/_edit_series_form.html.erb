@@ -1,0 +1,13 @@
+<div class="event_popups_container">
+  <h2>Edit Deployment Window</h2>
+  <p><b>Name:</b> <%= series.name %></p>
+  <p><b>Behavior:</b> <%= series.behavior %></p>
+  <p><b>DWS Date Range:</b> <%= series.start_at.strftime('%d/%m/%Y %l:%M %p') %> - <%= series.finish_at.strftime('%d/%m/%Y %l:%M %p') %></p>
+  <% if series.recurrent? %>
+    <p><b>Frequency:</b> <%= series.schedule.rrules.first.to_s %></p>
+  <% end %>
+  <p><b>Environments:</b> <%= series.environments.map(&:name).join(', ') %></p>
+  <span id="edit-series-link">
+    <%= link_to 'Edit Series', edit_deployment_window_series_path(series, return_to: 'calendar') %>
+  </span>
+</div>

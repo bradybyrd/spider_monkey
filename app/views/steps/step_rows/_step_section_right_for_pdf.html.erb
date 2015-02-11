@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="estimates">
+  <dl>
+    <dt>Component</dt>
+    <dd>
+    <% if step.component.nil? %>
+      n/a
+    <% else %>
+      <%= step_attribute_value(step.component_name) %>
+      <span class="component_version" style="margin-left: 35px;">
+        <div>
+          Version:
+          <%= step.component_version %>
+          <%= "(current version: #{step.installed_component.version})" if step.installed_component.try(:version).present? %>
+        </div>
+      </span>
+    <% end %>
+    </dd>
+    <% if GlobalSettings.limit_versions? && step.component %>
+      <dd>
+        <span class="component_version">Artifact URL: <%= "#{(step.version_tag && step.version_tag.artifact_url) ? "<a href="+step.version_tag.artifact_url+" target=\"_blank\" >"+step.version_tag.artifact_url+"</a>" : ""}".html_safe %>
+        </span>
+      </dd>
+    <% end %>
+  </dl>
+</div>
+<div class="uploads">
+  <%- unless @only_preview %>
+  <%= form_for [step.request, step], :html => {:id => "additional_uploads_form", :multipart => true } do |f| %>
+  <div class="field">
+    <%= render :partial => 'uploads/add_uploads_form', :locals => { :owner => step, :f => f } %>
+    <%= submit_tag 'Update Uploads', :class=>"btn" %>
+  </div>
+  <% end -%>
+  <% end -%>
+</div>
+<div class="estimates">
+  <dl>
+    <dt>Estimate</dt>
+    <dd><%= step_attribute_value(step.estimate && hour_minute_estimate(step.estimate)) %></dd>
+
+    <dt>Start By</dt>
+    <dd><%= step_attribute_value(step.start_by && step.start_by.to_s(:simple_with_time)) %></dd>
+
+    <dt>Complete By</dt>
+    <dd><%= step_attribute_value(step.complete_by && step.complete_by.to_s(:simple_with_time)) %></dd>
+  </dl>
+</div>
+
+<br class="clear" />
+

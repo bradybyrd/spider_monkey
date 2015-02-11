@@ -1,0 +1,318 @@
+<app_import team="[default]">
+  <app>
+    <a-sorting-comps type="boolean">false</a-sorting-comps>
+    <a-sorting-envs type="boolean">false</a-sorting-envs>
+    <active type="boolean">true</active>
+    <app-version>2.0.4</app-version>
+    <name>SomeRelease</name>
+    <strict-plan-control type="boolean">false</strict-plan-control>
+    <active-business-processes type="array">
+      <active-business-process>
+        <label-color>#9ACD32</label-color>
+        <name>Standard Release 1</name>
+      </active-business-process>
+    </active-business-processes>
+    <components type="array">
+      <component>
+        <active type="boolean">true</active>
+        <name>AppContainer</name>
+        <active-properties type="array">
+          <active-property>
+            <active type="boolean">true</active>
+            <default-value>AppContProp1</default-value>
+            <is-private type="boolean" nil="true"/>
+            <name>AppContProp1</name>
+          </active-property>
+        </active-properties>
+      </component>
+    </components>
+    <environments type="array">
+      <environment>
+        <active type="boolean">true</active>
+        <deployment-policy>closed</deployment-policy>
+        <name>production</name>
+        <active-server-groups type="array"/>
+      </environment>
+    </environments>
+    <installed-components type="array">
+      <installed-component>
+        <location nil="true"/>
+        <version nil="true"/>
+        <find-properties type="array"/>
+        <server-aspects type="array"/>
+        <server-aspect-groups type="array"/>
+        <application-component>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <component>
+            <active type="boolean">true</active>
+            <name>AppContainer</name>
+          </component>
+        </application-component>
+        <application-environment>
+          <name>production</name>
+        </application-environment>
+      </installed-component>
+    </installed-components>
+    <version-tags type="array">
+      <version-tag>
+        <artifact-url>www.yahoo.com</artifact-url>
+        <name>version tag austin</name>
+        <component-name>AppContainer</component-name>
+        <environment-name>production</environment-name>
+      </version-tag>
+    </version-tags>
+    <active-packages type="array">
+      <active-package>
+        <instance-name-format>0.0.0.[#]</instance-name-format>
+        <name>p1</name>
+        <properties type="array">
+          <property>
+            <active type="boolean">true</active>
+            <default-value>12def</default-value>
+            <is-private type="boolean">false</is-private>
+            <name>p1</name>
+          </property>
+          <property>
+            <active type="boolean">true</active>
+            <default-value nil="true"/>
+            <is-private type="boolean" nil="true"/>
+            <name>p</name>
+          </property>
+        </properties>
+      </active-package>
+    </active-packages>
+    <requests-for-export type="array">
+      <requests-for-export>
+        <aasm-state>created</aasm-state>
+        <additional-email-addresses type="array"/>
+        <auto-start type="boolean">false</auto-start>
+        <description></description>
+        <estimate type="integer" nil="true"/>
+        <name>AustinRequest</name>
+        <notify-group-only type="boolean">true</notify-group-only>
+        <notify-on-request-cancel type="boolean" nil="true"/>
+        <notify-on-request-complete type="boolean">false</notify-on-request-complete>
+        <notify-on-request-hold type="boolean">false</notify-on-request-hold>
+        <notify-on-request-participiant type="boolean">false</notify-on-request-participiant>
+        <notify-on-request-planned type="boolean">false</notify-on-request-planned>
+        <notify-on-request-problem type="boolean">false</notify-on-request-problem>
+        <notify-on-request-resolved type="boolean">false</notify-on-request-resolved>
+        <notify-on-request-start type="boolean">false</notify-on-request-start>
+        <notify-on-request-step-owners type="boolean">false</notify-on-request-step-owners>
+        <notify-on-step-block type="boolean">false</notify-on-step-block>
+        <notify-on-step-complete type="boolean">false</notify-on-step-complete>
+        <notify-on-step-participiant type="boolean">false</notify-on-step-participiant>
+        <notify-on-step-problem type="boolean" nil="true"/>
+        <notify-on-step-ready type="boolean" nil="true"/>
+        <notify-on-step-requestor-owner type="boolean">false</notify-on-step-requestor-owner>
+        <notify-on-step-start type="boolean">false</notify-on-step-start>
+        <notify-on-step-step-owners type="boolean">false</notify-on-step-step-owners>
+        <rescheduled type="boolean">false</rescheduled>
+        <scheduled-at type="datetime">2014-10-30T14:02:00-04:00</scheduled-at>
+        <target-completion-at type="datetime">2014-10-31T15:02:00-04:00</target-completion-at>
+        <wiki-url>www.yahoo.com</wiki-url>
+        <request-template>
+          <aasm-state>released</aasm-state>
+          <name>AustinRequestTemplate</name>
+          <automation-scripts-for-export type="array">
+            <automation-scripts-for-export>
+              <aasm-state>released</aasm-state>
+              <automation-type>Automation</automation-type>
+              <content>###
+                # command:
+                #   name: Name of command
+                # success:
+                #   name: Term or Phrase to indicate success
+                ###
+                # Flag the script for direct execution
+                params["direct_execute"] = true
+
+                #==============  User Portion of Script ==================
+
+                # Run the command directly on the localhost
+                result = run_command(params, params["command"], '')
+
+                params["success"] = params["success"] || ""
+
+                # Apply success or failure criteria
+                if result.index(params["success"]).nil?
+                write_to "Command_Failed - term not found: [#{params["success"]}]\n"
+                else
+                write_to "Success - found term: #{params["success"]}\n"
+                end</content>
+              <description>Runs a command locally</description>
+              <name>Direct_execute</name>
+              <automation-category>General</automation-category>
+            </automation-scripts-for-export>
+            <automation-scripts-for-export nil="true"/>
+          </automation-scripts-for-export>
+        </request-template>
+        <environment>
+          <name>production</name>
+        </environment>
+        <release>
+          <name>suryarelease</name>
+        </release>
+        <activity>
+          <name>project 1</name>
+        </activity>
+        <notes type="array"/>
+        <business-process>
+          <name>Standard Release 1</name>
+        </business-process>
+        <owner type="User">
+          <name>Smith_2, Jane_2</name>
+        </owner>
+        <requestor type="User">
+          <name>Smith_2, Jane_2</name>
+        </requestor>
+        <email-recipients type="array"/>
+        <package-contents type="array"/>
+        <steps type="array">
+          <step>
+            <aasm-state>locked</aasm-state>
+            <complete-by type="datetime">2014-10-30T14:02:00-04:00</complete-by>
+            <component-version>4</component-version>
+            <description>This is NOT a step description</description>
+            <different-level-from-previous type="boolean">false</different-level-from-previous>
+            <estimate type="integer">45520</estimate>
+            <owner-type>User</owner-type>
+            <name>StepRaccha</name>
+            <own-version type="boolean">true</own-version>
+            <start-by type="datetime">2014-07-31T15:02:00-04:00</start-by>
+            <component>
+              <name>AppContainer</name>
+            </component>
+            <owner type="User">
+              <name>Smith_2, Jane_2</name>
+            </owner>
+            <work-task>
+              <name>WorkTask2</name>
+            </work-task>
+            <phase>
+              <archive-number nil="true"/>
+              <archived-at type="datetime" nil="true"/>
+              <name>Phase example</name>
+              <position type="integer">1</position>
+            </phase>
+            <runtime-phase>
+              <name>Runtime Phase example</name>
+              <position type="integer">1</position>
+            </runtime-phase>
+            <temporary-property-values type="array">
+              <temporary-property-value>
+                <original-value-holder-type>InstalledComponent</original-value-holder-type>
+                <value>7689</value>
+                <property-name>AppContProp1</property-name>
+                <holder-name>AppContainer</holder-name>
+              </temporary-property-value>
+            </temporary-property-values>
+            <step-script-arguments type="array"/>
+           </step>
+          <step>
+            <aasm-state>locked</aasm-state>
+            <complete-by type="datetime">2014-10-30T14:02:00-04:00</complete-by>
+            <component-version>4</component-version>
+            <description>This is NOT a step description</description>
+            <different-level-from-previous type="boolean">false</different-level-from-previous>
+            <estimate type="integer">45520</estimate>
+            <owner-type>User</owner-type>
+            <name>StepRaccha123</name>
+            <own-version type="boolean">true</own-version>
+            <start-by type="datetime">2014-07-31T15:02:00-04:00</start-by>
+            <package>
+              <name>p1</name>
+            </package>
+            <owner type="User">
+              <name>Smith_2, Jane_2</name>
+            </owner>
+            <work-task>
+              <name>WorkTask2</name>
+            </work-task>
+            <phase>
+              <archive-number nil="true"/>
+              <archived-at type="datetime" nil="true"/>
+              <name>Phase example</name>
+              <position type="integer">1</position>
+            </phase>
+            <runtime-phase>
+              <name>Runtime Phase example</name>
+              <position type="integer">1</position>
+            </runtime-phase>
+            <temporary-property-values type="array">
+              <temporary-property-value>
+                <original-value-holder-type>ApplicationPackage</original-value-holder-type>
+                <value>7689</value>
+                <property-name>p1</property-name>
+                <holder-name>p1</holder-name>
+              </temporary-property-value>
+            </temporary-property-values>
+            <step-script-arguments type="array"/>
+          </step>
+          <step>
+            <aasm-state>locked</aasm-state>
+            <complete-by type="datetime" nil="true"/>
+            <component-version nil="true"/>
+            <create-new-package-instance type="boolean">false</create-new-package-instance>
+            <default-tab nil="true"/>
+            <description></description>
+            <different-level-from-previous type="boolean">true</different-level-from-previous>
+            <estimate type="integer">5</estimate>
+            <execute-anytime type="boolean">false</execute-anytime>
+            <latest-package-instance type="boolean">false</latest-package-instance>
+            <name>no_owner</name>
+            <own-version type="boolean">false</own-version>
+            <owner-type nil="true"/>
+            <procedure type="boolean">false</procedure>
+            <protected-step type="boolean">false</protected-step>
+            <script-type nil="true"/>
+            <should-execute type="boolean">true</should-execute>
+            <start-by type="datetime" nil="true"/>
+            <suppress-notification type="boolean">false</suppress-notification>
+            <component>
+              <name>SS_MySQL</name>
+            </component>
+            <notes type="array"/>
+            <temporary-property-values type="array"/>
+            <step-script-arguments type="array"/>
+          </step>
+          <step>
+            <aasm-state>locked</aasm-state>
+            <complete-by type="datetime" nil="true"/>
+            <component-version nil="true"/>
+            <create-new-package-instance type="boolean">false</create-new-package-instance>
+            <default-tab nil="true"/>
+            <description></description>
+            <different-level-from-previous type="boolean">true</different-level-from-previous>
+            <estimate type="integer">5</estimate>
+            <execute-anytime type="boolean">false</execute-anytime>
+            <latest-package-instance type="boolean">false</latest-package-instance>
+            <name>bogus_group</name>
+            <own-version type="boolean">false</own-version>
+            <owner-type>Group</owner-type>
+            <procedure type="boolean">false</procedure>
+            <protected-step type="boolean">false</protected-step>
+            <script-type nil="true"/>
+            <should-execute type="boolean">true</should-execute>
+            <start-by type="datetime" nil="true"/>
+            <suppress-notification type="boolean">false</suppress-notification>
+            <component>
+              <name>SS_MySQL</name>
+            </component>
+            <owner type="Group">
+              <name>Bogus</name>
+              <name>Bogus</name>
+            </owner>
+            <notes type="array"/>
+            <temporary-property-values type="array"/>
+            <step-script-arguments type="array"/>
+          </step>
+        </steps>
+      </requests-for-export>
+    </requests-for-export>
+  </app>
+</app_import>
+
+
+

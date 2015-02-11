@@ -1,0 +1,33 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Notification Template: New" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'settings',:tab_view => true } %>
+<% end %>
+<% content_for :sidebar do %>
+  <%= render :partial => 'help_tokens' %>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render :partial => 'account/tabs', :locals => { :selected => 'notification templates' } %>
+  </div>
+  <div class='content'>
+    <h2 class='no_margin servers_h2'>
+      Notification Template: New
+    </h2>
+    <%= form_for @notification_template, :html => { :class => 'cssform' } do |f| %>
+      <%= render :partial => 'form', :locals => { :f => f } %>
+      <p>&nbsp;</p>
+      <%= f.submit I18n.t(:create), :class => "button" %>
+      or
+      <%= link_to I18n.t(:cancel), notification_templates_path() %>
+    <% end %>
+
+  </div>
+</div>

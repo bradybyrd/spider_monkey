@@ -1,0 +1,49 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Component Versions By Application' %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'multi_select', 'maps' %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<%= "<h3>Component Versions By Application - #{App.find(params[:app_id]).name}</h3>".html_safe if params[:app_id].present? %>
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+
+  <%= form_tag versions_by_app_maps_path, :id => 'apps_map_form' do %>
+    <div class="section">
+      <label for="app_id">Applications</label><br/>
+      <%= select_tag 'app_id', options_from_collection_for_select(@apps, :id, :name, @selected_app_id) %>
+      <p>
+      	<label for="application_environment_ids">Environments</label>
+        <%= select_tag 'application_environment_ids[]', [], :class => 'use_remote_options w100 customize_multiselect', :id => 'application_environment_ids', :rel => 'app_id', :multiple => true %>
+        <br/>
+        <%= select_clear_links('application_environment_ids') %>
+      </p>
+      <%= hidden_field_tag 'application_environment_ids_url', application_environment_options_for_app_maps_path %>
+      <%= hidden_field_tag 'multiple_selected_application_environment_ids', @selected_application_environment_ids.to_json %>
+    </div>
+
+    <%= submit_tag 'Compare' %>
+  <% end %>
+<% end %>
+<br class="clear">
+<div id="versions_by_app_map">
+  <% if @selected_app && !@selected_application_environments.empty? %>
+    <%= render :partial => 'versions_by_app_map', :locals => { :selected_app => @selected_app, :selected_application_environments => @selected_application_environments } %>
+  <% else %>
+    No components found
+  <% end %>
+</div>
+

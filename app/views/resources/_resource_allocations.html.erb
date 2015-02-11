@@ -1,0 +1,69 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% last_type = 'zzzzzz' %>
+<% unless @resources[group.id].blank? %>
+  <% @resources[group.id].each do |resource| %>
+    <% unless resource.type == last_type %>
+      <thead <%= tag_options({:class => "#{dom_id(group)} resource_head"}, false) %>>
+        <tr class='heading'>
+          <td colspan='9'>
+            <h4 class='resources'><%= "#{resource.type.nil? ? 'Resources' :'Placeholder Resources'}" %></h4>
+          </td>
+        </tr>
+        <tr>
+          <th <%= tag_options({:colspan => 2}, false) %>>Name</th>
+          <%# %th List Name %>
+          <th>Type</th>
+          <th>Roles</th>
+          <th>Location</th>
+          <th>Groups</th>
+          <th>Max <br>Allocation</th>
+          <th>Activities</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody <%= tag_options({:class => dom_id(group), :style => "display:block"}, false) %>></tbody>
+      <% last_type = resource.type %>
+    <% end %>
+    <tr class='resource_alloc' <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+      <td <%= tag_options({:colspan => 2}, false) %>><%= "<strong>#{h resource.name_for_index}</strong>" %></td>
+      <%# %td= h resource.last_name %>
+      <td><%= resource.type.nil? ? h(resource.employment_type_name) : "&nbsp;" %></td>
+      <td><%= h resource.role_names %></td>
+      <td><%= h resource.location_name %></td>
+      <td><%= h resource.group_names %></td>
+      <td class='percentage'><%= h(resource.max_allocation.to_s + "%") + '&nbsp;&nbsp;&nbsp;&nbsp;' %></td>
+      <td <%= tag_options({:title => h(resource.workstream_names)}, false) %>><%= ensure_space h(truncate(resource.workstream_names, :length => 25)) %></td>
+      <td>
+        <% if current_user.manages? group %>
+          <% unless resource.type.nil? %>
+            |
+            <%= link_to "edit", edit_resource_path(resource), :rel => 'facebox' %>
+            |
+            <%= link_to image_tag('bin_empty.png', :alt => 'delete'), resource, :method => :delete, :confirm => 'Are you sure?' %>
+          <% end %>
+          <%= link_to 'allocate', allocate_resource_path(resource), :rel => 'facebox[.refresh]' %>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <tr <%= tag_options({:class => dom_id(group)}, false) %>>
+    <%# %td{ :colspan => 9 }= render 'team_allocations', :team_allocations => group.resources.with_workstreams %>
+    <td <%= tag_options({:colspan => 9}, false) %>><%= render 'team_allocations', :group => group %></td>
+  </tr>
+  <tr <%= tag_options({:class => dom_id(group)}, false) %>>
+    <td <%= tag_options({:colspan => 9}, false) %>>&nbsp;</td>
+  </tr>
+<% else %>
+  <tr>
+    <td <%= tag_options({:colspan => 9}, false) %>>No Resources Present</td>
+  </tr>
+<% end %>

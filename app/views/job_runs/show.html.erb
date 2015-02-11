@@ -1,0 +1,62 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Job Run: #{h(@job_run.job_request)}" %>
+<% content_for :head do %>
+
+<% end %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/tabs', :locals => { :selected => 'automation monitor' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<div id='automation_monitor'>
+  <%= link_to '<< cancel', automation_monitor_path(:page => params[:page]) %>
+  <table>
+    <tr>
+      <th>Request/Step:</th>
+      <td><%= link_to index_title(h(@job_run.job_request)), edit_request_path(@job_run.step.request.nil? ? @job_run.step.parent.request : @job_run.step.request) unless @job_run.step.blank?%></td>
+    </tr>
+    <tr>
+      <th>Script:</th>
+      <td><%= h(@job_run.step.script.name) unless @job_run.step.blank? || @job_run.step.script.blank?%></td>
+    </tr>
+    <tr>
+      <th>Status:</th>
+      <td><%= h(@job_run.status) %></td>
+    </tr>
+    <tr>
+      <th>Run At:</th>
+      <td><%= h(@job_run.started_at.to_s) %></td>
+    </tr>
+    <tr>
+      <th>Results Path:</th>
+      <td>
+        <%= link_to("Output results file", "#{ContextRoot::context_root}#{@job_run.results_hyperlink_path}", :onclick => "open_script_result_window(this.href);return false;") unless @job_run.results_path.nil? %>
+      </td>
+    </tr>
+    <tr>
+      <th>Output:</th>
+      <td>
+        <%= simple_format(h(word_wrap(@job_run.display_output))) unless @job_run.results_path.nil? %>
+      </td>
+    </tr>
+    <!-- As error description is too long to view on Jobs listing page, adding field to show error log on this page -->
+    <% if !@job_run.stderr.nil? %>
+        <tr>
+          <th>Job Error:</th>
+          <td>
+            <%= simple_format(h(word_wrap(@job_run.stderr)))  %>
+          </td>
+        </tr>
+    <% end %>
+  </table>
+  <%= link_to '<< cancel', automation_monitor_path(:page => params[:page]) %>
+</div>
+

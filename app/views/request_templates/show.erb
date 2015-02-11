@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= render :partial => "requests/expanded_header", :locals => {:request => @request} %>
+<table class='formatted_table' id='steps_list'>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Status</th>
+      <th>Name</th>
+      <th>Component</th>
+      <th>Server</th>
+      <th>Task</th>
+      <th>Version</th>
+      <th>Assigned To</th>
+      <th>Estimate</th>
+      <th>Complete By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @request.steps.each do |step| %>
+      <%= render :partial => "steps/step_for_request_template", :locals => {:step => step, :invalid_component => nil} %>
+    <% end %>
+  </tbody>
+</table>

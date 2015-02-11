@@ -1,0 +1,58 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+
+
+<%= render :partial => 'plans/plan_container',
+           :locals => {:subtitle => "Plan Route: #{h(truncate(@plan_route.route_name))}",
+                       :plan => @plan, :page_tab_selected => @page_tab_selected} %>
+
+<div id='plans_container'>
+  <div class='content'>
+    <h3>
+      <%= render :partial => "environments/metadata_heading",
+                 :locals => {:backlink => plan_plan_routes_path(@plan),
+                             :title => plan_route_title(@plan_route)} %>
+    </h3>
+    <br class='clear'/>
+    <% if @plan_route.other_active_plans_list != 'None' -%>
+        <p>
+          <strong>
+            Notice</strong> - This route has also been assigned to the following active
+            plans:  <%= h(@plan_route.other_active_plans_list) %>
+
+        </p>
+    <% end -%>
+
+    <br class='clear'/>
+    <hr/>
+
+    <h2>
+      Route Gate Assignments to Plan Stages
+    </h2>
+
+
+    <div id="plan_route_gates_container">
+      <%= render :partial => 'plan_routes/reorder_route_gates',
+                 :locals => {:plan_route => @plan_route,
+                             :app => @plan_route.route.app,
+                             :route => @plan_route.route,
+                             :plan => @plan_route.plan,
+                             :plan_stage_instances => @plan_stage_instances} %>
+    </div>
+
+    <br class='clear'/>
+
+    <div id="environments_list">
+      <%= render :partial => 'plan_routes/available_environments',
+                 :locals => {:plan_route => @plan_route,
+                             :route_gates => @plan_route.route_gates.in_order} %>
+    </div>
+
+  </div>
+</div>

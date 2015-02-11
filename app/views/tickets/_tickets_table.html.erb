@@ -1,0 +1,98 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% disable_fields = params[:disable_fields] == "true" ? true : false %>
+<div class='top_div' id='ticket_list_table_div' rel='ticket'>
+  <% exta_prm = local_assigns[:step_facebox] ? 'step_facebox=true' : ''  %>
+  <%= hidden_field_tag 'current_page_url', tickets_path(:filters =>@filters, :actions => @actions, :per_page => @per_page, :page => @page).concat(exta_prm), :id => 'current_page_url' %>
+  <% if tickets.blank? %>
+    <div class='blank_data_msg'>
+      <%= "There are no associated tickets." %>
+    </div>
+  <% else %>
+    <table class='ticketList formatted_table tablesorter' <%= tag_options({:id =>"tickets_#{@page || 1}",:style => "width:100%;"}, false) %>>
+      <thead>
+        <tr>
+          <%= sortable_th 'Id', :column => 'foreign_id' %>
+          <%= sortable_th 'Ticket Name', :column => 'name' %>
+          <%= sortable_th 'Status', :column => 'status' %>
+          <% if (params[:filters][:plan_id].blank? && !@actions.include?('select')) %>
+            <%= sortable_th 'Plan', :column =>'plan_id' %>
+          <% end %>
+          <%= sortable_th 'Application', :column => 'app_id' %>
+          <%= sortable_th 'Type', :column => 'ticket_type' %>
+          <%= sortable_th 'Integration', :column => 'project_server_id' %>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tickets.each do |ticket| %>
+              <tr <%= tag_options({:id => "ticket_#{ticket.id}", :class => cycle('even', 'odd')}, false) %>>
+                <td title="<%= h(ticket.url.blank? ? ticket.foreign_id : ticket.foreign_id + ' [' + ticket.url + ']') %>">
+                  <% if ticket.url.blank? %>
+                      <%= index_title(h(truncate(ticket.foreign_id, :length => 25))) %>
+                  <% else  %>
+                      <%= link_to index_title(h(truncate(ticket.foreign_id, :length => 25))), ticket.url, :target => "_blank" %>
+                  <% end %>
+                </td>
+                <td title="<%= h(ticket.name) %>">
+                  <% trunc_len = local_assigns[:step_facebox] ? 25 : 50 %>
+                  <%= link_to_if can?(:edit, ticket), index_title(h(truncate(ticket.name,:length => trunc_len))), edit_ticket_path(ticket) %>
+                </td>
+                <td title="<%= h(ticket.status) %>">
+                  <%= h(truncate(ticket.status, :length => 25)) %>
+                </td>
+                <% if (params[:filters][:plan_id].blank? && !@actions.include?('select')) %>
+                  <td title="<%= h(ticket.plans.first.try(:name)) %>">
+                    <%= h(truncate(ticket.plans.first.try(:name),:length =>25)) %>
+                  </td>
+                <% end %>
+                <td title="<%= h(ticket.try(:app).try(:name)) %>">
+                  <%= ticket.app.nil? ? "" : h(truncate(ticket.app.name,:length => 25)) %>
+                </td>
+                <td title="<%= ticket.try(:ticket_type) %>">
+                  <%= ticket.ticket_type.blank? ? "" : h(truncate(ticket.ticket_type,:length => 25)) %>
+                </td>
+                <td title="<%= h(ticket.try(:project_server).try(:name)) %>">
+                  <%= h(ticket.project_server.nil? ? "" : truncate(ticket.project_server.name,:length => 25)) %>
+                </td>
+                <td class='ticket_action' nowrap='' style='text-align: center'>
+                  <% pipe = nil %>
+                  <% if actions.include?('refresh') %>
+                    <%= image_tag('icons/arrow_refresh.png', :height => '12px') %>
+                    <% pipe = true %>
+                  <% end %>
+                  <% if actions.include?('delete') %>
+                    <% if pipe %>
+                      |
+                    <% end %>
+                    <% unless @plan.present? && @plan.foreign_id.present? && @plan.project_server_id.present? && @plan.project_server_id == ticket.project_server_id -%>
+                      <% if can? :delete, ticket %>
+                        <%= link_to image_tag('bin_empty.png'), ticket_path(ticket, :plan_id => @plan),
+                            :remote => @plan.blank?, :method => :delete,
+                            :data => { :confirm => "The ticket association will be removed from steps it is referenced in.\nAre you sure you want to delete this ticket?" },
+                            :class => "destroy_ticket" %>
+                      <% end %>
+                    <% end -%>
+                    <% pipe = true %>
+                    <% pipe = true %>
+                  <% end %>
+                  <% if actions.include?('select') %>
+                    <% if pipe %>
+                      |
+                    <% end %>
+                    <%# already_exists = local_assigns[:current_tickets] && local_assigns[:current_tickets].include?(ticket.id) %>
+                    <%= check_box_tag "select_ticket", "", false, { :id => "select_ticket_#{ticket.id}", :autocomplete => "off", :disabled => disable_fields } %>
+                  <% end %>
+                </td>
+                </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>

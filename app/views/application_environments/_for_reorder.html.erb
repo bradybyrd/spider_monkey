@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="environment component_color_1" <%= colorized_tag_options(environment.try(:environment_type).try(:label_color)) %> title="<%= environment.environment.try(:full_label) %>">
+  <p><%= truncate_middle(environment.name, :max => 20, :position => 0.6 ) %></p>
+
+  <!-- form is used for drag and drop environments -->
+  <%= form_for [app, environment], :url => app_application_environment_path(app, environment) do |f| %>
+  <% end %>
+</div>
+

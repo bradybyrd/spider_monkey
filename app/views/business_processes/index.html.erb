@@ -1,0 +1,96 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<% backlink = manage_metadata_path %>
+<% title = "Business Processes" %>
+<% page_settings :title => title %>
+<% page_settings :title => 'Process' %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, BusinessProcess.new %>
+    <%= button_to 'Create Business Process', new_process_path, :method => :get, :class => 'button' %>
+  <% end %>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br class='clear'/>
+<% if  @business_processes.blank? %>
+  <div class='blank_data_msg'>
+    <%= "No business processes are present" %>
+  </div>
+<% else %>
+  <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => @business_processes,:metadata_type =>'business_process', :position => 'unarchived' } %>
+<table class='tablesorter two_column_sorter formatted_table'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Applications</th>
+        <th title='Count of associated Requests and Request Templates'>#Requests | #Request Templates</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+      <% @business_processes.each do |process| %>
+      <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+        <td>
+          <%= colorized_label(process.try(:label_color),
+                              link_to_if(can?(:edit, process),
+                                         index_title(h(truncate(process.name))),
+                                         edit_process_path(process))) %>
+        </td>
+        <td width='60%'><%= process.apps.map(&:name).uniq.sort.to_sentence %></td>
+          <td><%= "#{process.count_of_associated_requests} | #{process.count_of_associated_request_templates}" %></td>
+        <td>
+          <% if can? :edit, process %>
+            <%= link_to I18n.t(:edit), edit_process_path(process) %>
+          <% end %>
+          <% if can? :archive_unarchive, process %>
+            &nbsp;|&nbsp;
+            <%= link_to I18n.t(:archive), archive_process_path(process), :method => :put %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+<% unless @archived_business_processes.blank? %>
+  <h3><%= I18n.t(:archived) %></h3>
+  <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => @archived_business_processes,:metadata_type =>'business_process', :position => 'archived' } %>
+  <table class='tablesorter one_column_sorter formatted_table'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Applications</th>
+        <th title='Count of associated Requests and Request Templates'>#Requests | #Request Templates</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @archived_business_processes.each do |process| %>
+        <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <td <%= colorized_tag_options(process.label_color) %>>
+            <%= link_to_if can?(:edit, process),
+                           h(process.name),
+                           edit_process_path(process) %>
+          </td>
+          <td width='60%'><%= process.apps.map(&:name).uniq.sort.to_sentence %></td>
+          <td><%= "#{process.count_of_associated_requests} | #{process.count_of_associated_request_templates}" %></td>
+          <td>
+            <% if can? :archive_unarchive, process %>
+              <%= link_to I18n.t(:unarchive), unarchive_process_path(process), :method => :put %>
+            <% end %>
+            <% if can? :delete, process %>
+              &nbsp;|&nbsp;
+              <%= link_to I18n.t(:delete), process, :method => :delete, :confirm => "Are you sure that you want to delete this business process?" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

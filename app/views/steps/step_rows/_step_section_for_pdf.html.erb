@@ -1,0 +1,136 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<td colspan="10" class="additional_info first_full_width last">
+  <h2>Step: <%= step_attribute_value(step.number) %> &ndash; Details: <%= h(step.name)%></h2>
+
+  <%= render :partial => 'steps/step_rows/step_section_left_for_pdf.html', :locals => { :step => step } %>
+  <%@only_preview = true%>
+  <%= render :partial => 'steps/step_rows/step_section_right_for_pdf.html', :locals => { :step => step } %>
+  <div class="expandable_textarea step_description">
+    <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;" />
+    <dt>Step Description</dt>
+    <dd>
+      <% if step.description.blank? %>
+        <p class="no_value">No description provided</p>
+      <% else %>
+        <span class="right">
+        </span>
+        <span>
+            <div id="step_description_<%= step.id %>" style="width: 30%;word-wrap: break-word;">
+              <%= auto_link(step.description,:urls, :target => "_blank")  %>
+            </div>
+        </span>
+      <% end %>
+    </dd>
+  </div>
+  <br class="clear" />
+
+  <% if step.script %>
+    <div class="script_arguments">
+      <hr style="width:100%;color:#efefef;margin-left:0;margin-right:auto;">
+      <h4>Automation: <%= h truncate(step.script.name, :length => 25) %></h4>
+      <strong>&nbsp;&nbsp;Script Arguments:</strong><br/>
+      <table class="argument_table">    	
+        <% step.script.arguments.each do |argument| %>
+          <tr>
+            <th>
+          <div><%= argument.argument %></div>	
+          </th>
+          <% if step.script_argument_value(argument).blank? %>
+            <td class="no_value">No value provided</td>
+          <% else %>     	  		  
+            <td><%= argument.is_private ? "&lt;private&gt;" : [step.script_argument_value(argument)].flatten.join(", ")  %></td>
+          <% end %>
+          </tr>			
+        <% end %>
+      </table>
+    </div>
+  <% end %>        
+
+  <% unless step.editable_by?(current_user, request) %>
+    <div class="results" style="float: none; clear: both;">
+      <% unless step.installed_component.nil? || step.installed_component.properties.active.select { |field| field.entry_during_step_execution_on_task?(step.work_task) }.empty? %>
+        <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;" />
+        <h4>Property Value Results</h4>
+        <div id="view_property_results<%= step.id %>_section" class="view_properties_section" >
+          <%= render :partial => 'steps/step_rows/property_results_for_pdf.html', :locals => { :step => step, :request => request } %>
+        </div>
+      <% end %>
+    </div>
+  <%end%>
+
+    <%= form_tag abstract_update_status_request_step_path(request, step), :id => 'update_step_status' do  %>
+
+    <% if step.installed_component %>
+      <% step.installed_component.properties.active.each do |property| %>
+        <% if property.entry_during_step_execution_on_task?(step.work_task) %>
+          <%= hidden_field_tag "property_values[installed_component][#{step.installed_component.id}][#{property.id}]", step.literal_property_value_for(property, step.installed_component,false,request),
+            :class => 'property_field step_property_value', :id => "hidden_step_property_values_#{property.id}_#{step.id}" %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if step.plan && !step.tickets.blank? %>
+      <br class="clear" />
+      <div class="tickets_runtime">
+        <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;margin-top:30px;" />
+        <h4>Tickets</h4>
+        <%= render :partial => 'tickets/unpaged_tickets_table',
+          :locals => { :request => request, :step => step, :tickets => step.tickets } %>
+      </div>
+    <% end %>
+
+    <div class="notes_99">
+      <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;" />
+      <h4>Notes</h4>
+      <% step.notes.each do |note| %>
+        <%= display_note(note) %>
+      <% end %>
+    </div>
+    <% if step.editable_by?(current_user, request) %>
+      <br class="clear" />
+      <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;" />
+      <h4>Component Properties</h4>
+      <div id="view_properties<%= step.id %>_section" class="view_properties_section">
+        <dl>
+          <!-- ensure_space is needed to avoid style issues with empty dd/dt tags -->
+           <%  if !name_list_sentence(step.servers).nil? && !name_list_sentence(step.servers).blank? %>
+              <dt>Server</dt>
+              <dd><%= ensure_space name_list_sentence(step.servers) %></dd>
+             <%end%>
+            <%  if !h(step.version_name).nil? && !h(step.version_name).blank? %>
+              <dt>Version</dt>
+              <dd><%= (ensure_space h(step.version_name)).html_safe %></dd>
+          <%end%>
+          <% if step.installed_component %>
+            <% step.installed_component.properties.active.each do |property| %>
+              <dt><%= ensure_space h(property.name) %></dt>
+
+              <dd><%= ensure_space auto_link(step.literal_property_value_for(property, step.installed_component, true), :all, :target => '_blank') %><br class="clear" /></dd>
+            <% end %>
+          <% end %>
+        </dl>
+
+      </div>
+    <% end %>
+    <br class="clear" />
+    <hr style="width:100%;height:1px;color:#666;margin-left:0;margin-right:auto;" />
+    <h4>Server Properties</h4>
+    <div id="server_properties<%=step.id%>_section">
+
+      <div id="server_properties_container">
+        <%= render :partial => 'steps/server_properties_for_pdf.html', :locals => { :step => step, :request => request, :installed_component => step.installed_component } %>
+      </div>
+      <br class="clear" />
+    </div>
+
+    <br class="clear" />
+  <% end %><!-- Form -->
+</td>
+

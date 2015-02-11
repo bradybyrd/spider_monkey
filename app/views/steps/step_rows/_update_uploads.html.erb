@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%if  step.uploads.blank?  %>
+  <%= link_to_upload_list_with_deletion step %>
+<%  else  %>
+  <p class="mark_uploads_for_delete_step">
+    <%= link_to_upload_list_with_deletion step %>
+  </p>
+<%  end %>
+

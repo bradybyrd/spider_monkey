@@ -1,0 +1,1 @@
+$('#server_groups').html("<%= escape_javascript(render(:partial => "shared/checkbox_select_list",:locals => {:form_object => @server_aspect, :collection => @available_environments, :object => "server_aspect", :method => "environment_ids", :label => "name", :value => "id"})) %>");

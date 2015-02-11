@@ -1,0 +1,11 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<li class='available_column' <%= tag_options({'data-activity-attribute-column' => available_index_column}, false) %>>
+  <%= h truncate(ActivityIndexColumn::AvailableAttributes[available_index_column], :length => 20) %>
+</li>

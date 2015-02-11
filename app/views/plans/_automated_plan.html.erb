@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div <%= tag_options({:id => "plan_#{@page || 1}", :class => 'top_div', :rel => "plan"}, false) %>>
+  <table class='tablesorter formatted_table' <%= tag_options({:id =>"plans_#{@page || 1}"}, false) %>>
+    <thead>
+      <tr>
+        <%= sortable_th 'Status', :column => 'aasm_state' %>
+        <%= sortable_th 'Name', :column => 'name' %>
+        <%= sortable_th 'Release', :column => 'release_name' %>
+        <%= sortable_th 'Release Date', :column => 'release_date' %>
+        <%= sortable_th 'Template', :column => 'plan_template_name' %>
+        <%= sortable_th 'Template Type', :column => 'plan_template_type' %>
+        <th>Stages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => "plan", :collection => plans %>
+    </tbody>
+  </table>
+</div>
+<%= render :partial => 'plans/plan_pagination', :locals => {:plans => plans, :position => "bottom"} %>
+<%= hidden_field "search", "key",:value => params[:key] %>

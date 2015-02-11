@@ -1,0 +1,453 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+
+html {
+    /* hides the main document scrollbar */
+    height: 100%;
+}
+body {
+    height: 100%;
+    /*overflow: hidden;*/
+    font-family: Arial, Tahoma, sans-serif;
+    background: #DEE0E0;
+    margin: 0;
+    padding: 0;
+    font-size: 62.5%; /* scales the text size down so that 10px = 1.0em */
+    /*min-width:1015px;*/
+}
+a {
+    color: #076B9B;
+}
+a img {
+    border: 0;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+th a {
+    color: #fff;
+    text-decoration: none;
+}
+td {
+    padding: 0;
+    vertical-align: top;
+    font-size: 1.0em;
+}
+form {
+    padding: 0;
+    margin: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #004376;
+}
+h2 {
+    display: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.4em; /* ~14px */
+}
+.pageSection h2 {
+    display:block;
+    margin:0 0 5px 10px;
+}
+h3 {
+    font-size: 1.2em; /* ~12px */
+    padding: 0px;
+    margin: 1.2em 0 0.6em;
+}
+h4 {
+    font-size: 11px; /* ~13px */
+    color:#004376;
+}
+hr {
+    border: none;
+    border-bottom: 1px solid #BBC4C9;
+    height: 1px;
+    margin: 10px 0;
+}
+label.AuralContent {
+    display: none;
+}
+/* MAIN PAGE SECTIONS */
+#topBar {
+    font-size: 1.1em; /* everything at ~11px by default */
+    height: 70px;
+    width: 100%;
+    background: #004679 url(<%= asset_path 'banner/top_bar_background.gif' %>) repeat-x 0 0;
+    z-index: 100; /* on top, no matter what */
+    min-width: 700px;
+}
+#topBar.withOverflow {
+    height: 87px;
+    width: 100%;
+    background-image: url(<%= asset_path 'banner/top_bar_background_with_overflow.gif' %>);
+}
+#topBar.withMessage {
+    height: 127px;
+    width: 100%;
+    background-image: url(<%= asset_path 'banner/top_bar_background_with_message.gif' %>);
+}
+#banner {
+    font-size: 1.0em;
+    height: 28px;
+    width: 100%;
+}
+#primaryNav {
+    font-size: 1.0em;
+    height: 33px;
+    margin: 0;
+    width: 100%;
+    background: url(<%= asset_path 'logo.gif' %>) no-repeat top right;
+}
+#primaryNav.withOverflow {
+    height: 49px;
+}
+#messages {
+    z-index: 1000000000;
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    font-size: 1.1em;
+}
+#container {
+    font-size: 1.0em;
+    clear: both;
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+#container.withOverflow {
+    top: 87px;
+}
+#container.withMessage {
+    top: 127px;
+}
+#wideContainer{
+    min-width: 1000px;
+    width:expression(document.body.clientWidth < 1000? "1000px": "auto" );
+}
+#mainDisplay {
+    font-size: 1.1em; /* everything at ~11px by default */
+    background: #DEE0E0;
+    border-left: 2px solid #858585;
+    border-top: 1px solid #858585;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 208px;
+    right: 0;
+    overflow: auto;
+    height: 100%;
+}
+#mainDisplay.fixed {
+    left: 0px;
+    border: 0px;
+}
+#aboveContent {
+    padding: 0 0 0 15px;
+}
+#content {
+    background-color: #fff;
+    border-bottom: 1px solid #bbb;
+    /* border-top: 1px solid #bbb; */
+    padding: 10px 10px 15px 15px;
+}
+#belowContent {
+    border: none;
+    padding: 0 0 15px 15px;
+}
+/* PAGE HEADER (#topBar) */
+img.softwareTitle {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+img.softwareTitleNoNav {
+    position: absolute;
+    top: 16px;
+    left: 0;
+}
+img.bmc_logo {
+    position: absolute;
+    top: 30px;
+    right: 0;
+}
+span.instance_name
+{
+    font-size: 1.0em;
+    float: right;
+    }
+
+ul.userMenu {
+    font-size: 1.0em; /* ~11px */
+    margin: 0px;
+    text-align: right;
+    float: right;
+    background: url(<%= asset_path 'banner/user_menu_background.gif' %>) 0px 0 no-repeat;
+    height: 20px;
+    padding:0px 0px 0px 20px ;
+    line-height:14px;
+    }
+ul.userMenu li {
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    display: inline;
+    position: relative;
+    top: 2px;
+    padding-right: 10px;
+
+}
+ul.userMenu li.transparent_image
+{
+    background: url(<%= asset_path 'spacer.gif' %>) repeat;
+    padding-right:20px;
+}
+ul.userMenu li a {
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+}
+ul.userMenu li a:hover {
+    font-weight: bold;
+    color: #BCDDEC;
+    text-decoration: none;
+}
+/* PRIMARY NAVIGATION (#primaryNav) */
+#primaryNav ul {
+    font-size: 1.0em; /* ~11px */
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 30px;
+    list-style-type: none;
+    float: left;
+}
+#primaryNav li {
+    float: left;
+    height: 24px;
+    position: relative;
+    top: 6px;
+    text-align: center;
+    border-right: 1px solid #86c6ec;
+    background: url(<%= asset_path 'tabs/primary_nav_background_middle.gif' %>) repeat-x 0 0;
+    white-space: nowrap;
+}
+#primaryNav li a:visited {
+    color: #ffffff;
+}
+#primaryNav li a:hover {
+    color: #BCDDEC;
+}
+#primaryNav li a:active {
+    color: #BCDDEC;
+}
+#primaryNav li.first {
+    margin-left: 10px !important;
+    background: url(<%= asset_path 'tabs/primary_nav_background_left.gif' %>) no-repeat 0 0;
+}
+#primaryNav li.last {
+    background: url(<%= asset_path 'tabs/primary_nav_background_right.gif' %>) no-repeat right top;
+    border: none;
+}
+#primaryNav li.last a {
+    border: none;
+}
+#primaryNav li a {
+    margin: 0;
+    float: left;
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    color: #ffffff;
+    height: 24px;
+    line-height: 24px;
+    display: block;
+    border-right: 1px solid #014983;
+}
+#primaryNav li.current {
+    background: url(<%= asset_path 'tabs/primary_nav_on.gif' %>) top left no-repeat;
+    text-align: center;
+    padding: 0 0 0 0;
+    margin: 0 0 0 -2px ;
+    position: relative;
+    top: 2px;
+    height: 30px;
+    border: none;
+}
+#primaryNav li.current a {
+    margin: 0;
+    border: none;
+    background:  url(<%= asset_path 'tabs/primary_nav_on_rightedge.gif' %>) top right no-repeat;
+    padding: 0 15px;
+    font-weight: bold;
+    color: #004376;
+    height: 30px;
+    line-height: 30px;
+    font-size: 11px;
+}
+#primaryNav li.current a:link {
+    color: #004376;
+}
+#primaryNav li.current a:visited {
+    color: #004376;
+}
+
+/*Drop down related css goes here*/
+.drop_down{
+    position:absolute;
+    z-index:999;
+    margin-top: 24px;
+    display:none;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+}
+li.current .drop_down {
+  margin-top: 28px;
+}
+.drop_down ul
+{
+    margin:0!important;
+    padding:0!important;
+    height:auto!important;
+    border-left: 1px solid #aebac1!important;
+    border-top: 1px solid #aebac1!important;
+    border-bottom: 1px solid #92a2a7!important;
+    border-right: 1px solid #92a2a7!important;
+    -moz-box-shadow: 3px 3px 3px rgba(146,162,167,.3);
+    -moz-box-shadow:3px 3px 3px rgba(146,162,167,.3);
+    -webkit-box-shadow:3px 3px 3px rgba(146,162,167,.3);
+    -webkit-box-shadow:3px 3px 3px rgba(146,162,167,.3);
+    box-shadow: 3px 3px 3px rgba(146,162,167,.3);
+    box-shadow:3px 3px 3px rgba(146,162,167,.3);
+    opacity:92%;
+    background-color: #fff;
+}
+.drop_down ul li {
+    display:block!important;
+    clear:left;
+    width:100%;
+    float:left;
+    margin:0!important;
+    padding:0!important;
+    background:none!important;
+    height:auto!important;
+    position:static!important;
+    border-right:none!important;
+}
+.drop_down ul li a, .drop_down_list {
+    color:#000!important;
+    height:20px!important;
+    width:100%!important;
+    background-color:white!important;
+    padding:3px 10px 0 10px!important;
+    margin:0!important;
+    text-align:left!important;
+    font-weight:normal!important;
+    font-size:11px!important;
+    border:none!important;
+    background:none!important;
+    line-height: normal!important;
+}
+.drop_down.reports ul li
+{
+    min-width:75px;
+}
+.drop_down.users ul li
+{
+ min-width: 63px;
+}
+.drop_down ul li:hover{
+    background-color:#c1e1f5!important;
+}
+
+
+.plans .server_tabs .drop_down { margin-top:0px!important;}
+
+.scrl { height:188px!important; overflow-x:hidden; overflow-y:auto; border-bottom:solid 1px #C0C0C0!important; }
+.scrl a { margin-right:10px; }
+
+.drop_down .nextLevelSubMenu{
+    background: url(<%= asset_path 'right_arrow.png' %>) top right transparent no-repeat;
+    margin-right: 10px;
+}
+.drop_down ul li ul{
+    display: none;
+    left:80px;
+    position:absolute !important;
+}
+.drop_down ul li:hover ul {
+   display:block;
+}
+.hide{
+    display:none;
+}
+.clear{
+    clear: both;
+}
+.float_left{
+    float: left;
+}
+.float_right{
+    float: right;
+}
+.display_block{
+    display: block;
+}
+.margin_left_20{
+    margin-left: 20px !important;
+}
+.margin_bottom_20{
+    margin-bottom: 20px !important;
+}
+.margin_bottom_0{
+    margin-bottom: 0px !important;
+}
+.border_left{
+    border-left: 1px solid #ccc;
+    padding-left: 20px;
+}
+.small_btn{
+    width: 30px;
+    font-size: 10px;
+    padding: 2px;
+}
+.message{
+    color: #000;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 9px;
+
+}
+
+/*Drop down related css ends here*/
+
+
+/* For content that should not be displayed in a visual browser, but should
+ * still be read by a screen reader.  This technique was found at
+ * http://www.access-matters.com/2005/09/13/quiz-529a-screen-reader-test-9a/
+ * It appears to work correctly with all major browsers and screen readers.
+*/
+.AuralContent {
+    position: absolute;
+    margin-left: -9000px;
+}
+.transparent_image {
+    color: #FFFFFF;
+    font-weight: bold;
+    line-height: 18px;
+    margin-right: 138px;
+    position: absolute;
+    right: 0;
+    text-decoration: none;}
+

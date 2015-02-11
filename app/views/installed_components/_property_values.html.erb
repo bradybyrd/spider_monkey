@@ -1,0 +1,20 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% app = installed_component.app %>
+<% installed_component.properties.active.sorted.vary_by_environment_for(app).each do |property| %>
+  <div class="field">
+    <%= property_value_input 'property_values', property, installed_component.literal_property_value_for(property, current_user), :class => 'property_field' %> 
+  </div>
+<% end %>
+<% installed_component.properties.active.static_for(app).sorted.each do |property| %>
+  <div class="field">
+    <% value = property.value_for_installed_component(installed_component) %>
+    <%= property_value_input 'property_values', property, installed_component.literal_property_value_for(property, current_user), :class => 'property_field' %>
+  </div>
+<% end %>

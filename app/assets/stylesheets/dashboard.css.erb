@@ -1,0 +1,39 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+form#dashboard_range input.date { float: left; width: 80px; }
+#financials_filters form#dashboard_range input[type=submit] { margin-top: 1px; }
+form#dashboard_range input[type=submit] { margin-top: 1px;  margin-left:11px; margin-top:13px; }
+form#dashboard_range label { display: block; }
+form#dashboard_range label.calendar { width: auto; }
+form#dashboard_range label.calendar img { float: right; padding-top:1px; }
+form#dashboard_range div { float: left; padding-right: 5px; }
+
+#moreFilters{display:none;}
+.add_request_filters{padding-left:4px!important;}
+div.pagination { float: right; }
+.promotion_create {float:right;}
+.user_ol_icon { 
+	background:url(<%= asset_path 'self_services/user_online.png' %>) left top no-repeat;  
+	line-height:25px; 
+	color:#3030ff!important;
+	padding-top:5px;
+	padding-left:25px;
+}
+.dashboard #component_list #map input { margin:0; padding:0}
+.dashboard #component_list #map td, #component_list #map th { vertical-align:top!important; }
+.dashboard #component_list #map td { padding-top:4px; }
+
+/*Styling for promotions tab*/
+#source_env{float:left;}
+#promotionForm .field label{width:100px;}
+/*#target_env{float:right;}*/
+#generate_promotions{display:none;clear:both;}
+#promotion_table{clear:both;}
+#check_all{text-align:center!important;}
+
+div#generate_promotions{float:left !important;}
+div#target_env{clear:both;float:left !important;}

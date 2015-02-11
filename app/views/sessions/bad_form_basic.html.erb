@@ -1,0 +1,97 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_tag session_path, { :id => 'login_box', :class => "cssform" } do %>
+  <%= hidden_field_tag 'authentication', 'basic' %>
+  <table>
+    <% if GlobalSettings.cas_enabled? %>
+      <tr>
+        <td <%= tag_options({:colspan => "2", :style => "font-size:12px;color:#666;font-weight:bold;"}, false) %>>
+          CAS Authentication is enabled, click below to login on the CAS server
+          <br>
+            <br>
+              <%= link_to image_tag("cas_login.gif"), @cas_login_url %>
+              <br>
+                <br>
+                  <span style='font-size:11px'>You will be redirected to the CAS server, then returned to BMC Release Process Management on login</span>
+                  <hr>
+                </br>
+              </br>
+            </br>
+          </br>
+        </td>
+      </tr>
+    <% end %>
+    <% if request_sso_enabled? %>
+      <tr>
+        <td <%= tag_options({:colspan => "2", :style => "font-size:12px;color:#666;font-weight:bold;"}, false) %>>
+          Single Sign-On Authentication is enabled, click below to proceed to the application
+          <br>
+            <br>
+              <%= link_to "Go to Dashboard", dashboard_path %>
+              <br>
+                <br>
+                  <span style='font-size:11px'>With Single Sign-On you should already have been authenticated, continue to the application.</span>
+                  <hr>
+                </br>
+              </br>
+            </br>
+          </br>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <% if request_sso_enabled? || GlobalSettings.cas_enabled? %>
+    <div id='toggleLink' style='float:right;'>
+      <%= link_to_function "", "toggleSection($(this))", :rel => "(hide)", :class => "auth_section" %>
+    </div>
+    <div id='auth_section' style='display: none'>
+      <table>
+        <tr>
+          <td <%= tag_options({:colspan => "2", :style => "font-size:12px;color:#666;font-weight:bold;"}, false) %>>
+            Password Authentication (always enabled)
+          </td>
+        </tr>
+      </table>
+    </div>
+  <% else %>
+    <table>
+      <tr>
+        <td colspan='2'>
+          <div class='field'>
+            <label for='login'>Login</label>
+            <%= text_field_tag 'login', '', { :tabindex => 1, :class => 'initialFocus', :autocomplete => 'off' } %>
+          </div>
+          <div class='field'>
+            <label for='password'>Password</label>
+            <%= password_field_tag 'password', '', { :tabindex => 2 , :class => "pass_field"} %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='chkbox_login'>
+          <input id='remember_me' name='remember_me' tabindex='3' type='checkbox' value='yes'>
+          <span>Remember me for 24 hours</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style='padding-left:124px'>
+          <div class='field submit'>
+            <label></label>
+            <input tabindex='4' type='submit' value='Login'>
+            <%= link_to_forgot_password %>
+          </div>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  <% end %>
+  <% if request_sso_enabled? || GlobalSettings.cas_enabled? %>
+<% end %>
+

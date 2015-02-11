@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings title: 'Users' %>
+<% content_for :page_section do %>
+  <%= render partial: 'tabs', locals: { selected: 'users',tab_view: true } %>
+<% end %>
+<% content_for :sidebar do %>
+    <% if can? :create, User.new %>
+        <p><%= link_to(image_tag('btn-add-new-user.png'), new_user_path(page: params[:page], key: params[:key]),  title: 'Add New User') %></p>
+    <% end %>
+    <% if can? :view, :roles_map_report %>
+      <p><%= link_to t('reports.view_access.roles_map.accessibility_report'), reports_access_roles_map_path %></p>
+    <% end %>
+<% end %>
+<div class='fr'><%= params[:controller] == "users" ? render(partial: 'search_box') : search_box(params[:controller]) %></div>
+
+<% if can? :list, User.new %>
+    <div id='active_users'>
+      <h3>Active</h3>
+      <%= render partial: 'list', locals: { active: true, users: @active_users } %>
+    </div>
+    <% if @inactive_users.present? %>
+        <h3>Inactive</h3>
+        <%= render partial: 'list', locals: { active: false, users: @inactive_users } %>
+    <% end %>
+<% end %>

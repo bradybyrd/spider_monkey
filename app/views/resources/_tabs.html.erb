@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% user_group_id_params = {} %>
+<% user_group_id_params[:user_id] = @selected_user.id unless @selected_user.nil? %>
+<% user_group_id_params[:group_id] = @selected_group.id unless @selected_group.nil? %>
+<% user_group_id_params[:should_user_include_groups] = true unless @should_user_include_groups.nil? %>
+<ul class='dashboard_request_tab my_dashboard_tabs'>
+  <li <%= tag_options({:class=> selected=='request resources'?'current':''}, false) %>><%= link_to 'Request Resources',request_resources_path %></li>
+  <li <%= tag_options({:class => class_per_page_path("currently_running_steps")}, false) %>><%= link_to 'Currently running steps', currently_running_steps_path(user_group_id_params), :id => 'viewCurrentStepsResources' %></li>
+</ul>

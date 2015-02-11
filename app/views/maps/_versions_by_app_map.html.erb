@@ -1,0 +1,39 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="vscroll_960 version_report_scroll">
+	<table cellspacing="0" id="map" class="formatted_table">
+	  <thead>
+	    <tr class="first_header">
+	      <th colspan="2"></th>
+	      <% column_width = selected_application_environments.size == 0 ? 0 : 80 / selected_application_environments.size %>
+	      <% selected_application_environments.each do |app_env| %>
+	        <th colspan="2" style="text-align:center;" width="<%= column_width %>%"><%= h(app_env.name_label) %></th>
+	      <% end %>
+	    </tr>
+	    <tr class="second_theader">
+	      <th width="5%">Lvl</th>
+	      <th width="15%">Component</th>
+	      <% selected_application_environments.each do |app_env| %>
+	        <!--th class="<%#= class_for_environment_color(app_env) %>">Version</th-->
+              <th>Version</th>
+					<!--th class="leftBorder <%#= class_for_environment_color(app_env) %>">Last deploy</th-->
+              <th class="leftBorder">Last deploy</th>
+	      <% end %>
+	    </tr>
+	  </thead>
+	  <% unless selected_application_environments.empty? %>
+	    <tfoot>
+	      <%= render :partial => 'maps/table_footer', :locals => { :selected_app => selected_app, :selected_application_environments => selected_application_environments } %>
+	    </tfoot>
+	  <% end %>
+	  <tbody>
+	    <%= render :partial => 'maps/app_component_by_level', :locals => { :selected_app => selected_app, :selected_application_environments => selected_application_environments } %>
+	  </tbody>
+	</table>
+</div>

@@ -1,0 +1,7 @@
+page.replace_html "select_list_for_plans_templates", :partial => "updated_plan_templates_list"
+page.replace_html "select_list_for_members", :partial => "updated_plan_member_list"
+page.hide "members_list" if params[:template_type].eql?('multi_item')
+page.show "members_list" unless params[:template_type].eql?('multi_item')
+page << "change_plan_template_type();"
+page << "change_plan_template_id();"
+#page.replace_html "select_list_for_plans_templates", select_list_for_plans_templates(@plan_templates)

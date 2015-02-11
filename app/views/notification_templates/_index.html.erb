@@ -1,0 +1,86 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='project_servers'>
+
+  <% if can?(:list, NotificationTemplate.new) %>
+      <h2><%= I18n.t(:'notification_template.titles.notification_templates') %></h2>
+
+      <div>
+        <table class='tablesorter two_column_sorter formatted_table'>
+          <thead>
+          <tr>
+            <th>Template Title</th>
+            <th>Format</th>
+            <th>Event</th>
+            <th>Description</th>
+            <th>Active</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% unless @notification_templates.blank? %>
+              <% @notification_templates.each do |template| %>
+                  <tr <%= tag_options({:class => "#{cycle('', 'alt')}"}, false) %>>
+                    <td <%= tag_options({:title => template.title}, false) %>>
+                      <% if can?(:show, template) %>
+                          <%= link_to index_title(truncate(template.title, :length => 30)), template %>
+                      <% else %>
+                          <%= index_title truncate(template.title, length: 30) %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= template.format %>
+                    </td>
+                    <td>
+                      <%= template.event %>
+                    </td>
+                    <td>
+                      <%= truncate(template.description, :length => 30) %>
+                    </td>
+                    <td>
+                      <%= template.active ? "Yes" : "No" %>
+                    </td>
+                    <td>
+
+                      <% if can?(:show, template) %>
+                          <%= link_to I18n.t(:show), template %>
+                      <% end %>
+
+                      <% if can?(:edit, template) %>
+                          <%= '|' if can?(:show, template) %>
+                          <%= link_to I18n.t(:edit), edit_notification_template_path(template) %>
+                      <% end %>
+
+                      <% if can?(:delete, template) %>
+                          <%= '|' if can?(:show, template) || can?(:edit, template) %>
+                          <%= link_to I18n.t(:delete), template,
+                                      confirm: I18n.t(:'notification_template.confirmations.delete'),
+                                      method: :delete,
+                                      title: I18n.t(:'notification_template.titles.delete')
+                          %>
+                      <% end %>
+
+                    </td>
+                  </tr>
+              <% end %>
+          <% else %>
+              <tr>
+                <th colspan='6'>
+                  No Notification Templates Found
+                </th>
+              </tr>
+          <% end %>
+
+          </tbody>
+        </table>
+      </div>
+      <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => notification_templates_path, :class_name => "notification_templates"} %></div>
+  <% end %>
+
+</div>

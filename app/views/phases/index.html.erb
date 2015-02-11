@@ -1,0 +1,68 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% title = "Phases" %>
+<% page_settings :title => title %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+<% end %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, Phase.new %>
+    <%= button_to 'Create Phase', new_phase_path, :method => :get, :class => 'button' %>
+  <% end %>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br class='clear'/>
+<% if  @phases.blank? %>
+  <div class='blank_data_msg'>
+    <%= "No phases are present" %>
+  </div>
+<% else %>
+  <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => @phases,:metadata_type =>'phase', :position => 'unarchived' } %>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th width='20'></th>
+        <th>Name</th>
+        <th title='Count of associated requests,request templates and procedures'>#Requests | #Req. Templates | #Procedures</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @phases.each do |phase| %>
+        <%= render :partial => 'phase', :locals => { :phase => phase,:archived => false } %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form_tag reorder_phases_path, :method => :put, :id => 'reorder_phases' do %>
+
+  <% end %>
+<% end %>
+<% unless @archived_phases.blank? %>
+  <h3><%= I18n.t(:archived) %></h3>
+  <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => @archived_phases,:metadata_type =>'phase', :position => 'archived' } %>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th title='Count of associated requests,request templates and procedures'>#Requests | #Req. Templates | #Procedures</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @archived_phases.each do |phase| %>
+        <%= render :partial => 'phase', :locals => { :phase => phase,:archived =>true } %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

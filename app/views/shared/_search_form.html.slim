@@ -1,0 +1,4 @@
+= form_tag path, class: 'searchform', method: :get, remote: true do
+  = text_field_tag :q, key, class: 'searchbox', id: nil, placeholder: 'Search'
+  = submit_tag 'Search', class: 'searchButton'
+  = link_to 'clear'

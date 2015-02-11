@@ -1,0 +1,12 @@
+-# #############################################################################
+-# BMC Software, Inc.
+-# Confidential and Proprietary
+-# Copyright (c) BMC Software, Inc. 2001-2012
+-# All Rights Reserved.
+-# #############################################################################
+-if metadata_model.total_pages > 1
+  %div{:id => "#{metadata_type}_pagination_#{position}"}
+    %table{ :id => "#{metadata_type}_pagination_#{position}_#{@page || 1}", :style => "width:100%;"}
+      %tr
+        %td{:colspan => 2, :width => 476, :align => :right}= will_paginate(metadata_model, :id => "pagination_#{metadata_type}_#{position}", :params => {:per_page => @per_page}})
+

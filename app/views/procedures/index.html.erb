@@ -1,0 +1,109 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% task_title = "Procedures" %>
+<% page_settings title: task_title %>
+<% content_for :sidebar do %>
+  <!-- No content... -->
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', selected: 'metadata' %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <% if can?(:create, Procedure.new) %>
+    <%= button_to 'Create Procedure', new_procedure_path, method: :get, class: 'button create_procedure' %>
+  <% end %>
+<% end %>
+
+<%= render partial: "environments/metadata_heading", locals: { backlink: backlink, title: task_title } %>
+
+<br class='clear'/>
+<% if can?(:list, Procedure.new) %>
+  <div id="procedures">
+    <% if @procedures.blank? %>
+      <div class='blank_data_msg'>
+        <%= "No procedures are present" %>
+      </div>
+    <% else %>
+      <%= render partial: 'environments/metadata_pagination', locals: { metadata_model: @procedures, metadata_type: 'procedure', position: 'unarchived' } %>
+    <table class='tablesorter four_column_sorter formatted_table'>
+      <thead>
+        <tr>
+          <th>Procedure Name</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Steps</th>
+          <th>Applications</th>
+          <th width = '180'>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @procedures.each do |procedure| %>
+          <tr id='procedure_<%= procedure.id %>' <%= tag_options({class: cycle('', 'alt')}, false) %>>
+            <td><%= link_to_if can?(:edit, procedure), index_title(h(procedure.name)), edit_procedure_path(procedure) %></td>
+            <td><%= h procedure.description %></td>
+		        <%= render partial: 'object_state/td_state', locals: { passed_obj: procedure } %>
+            <td><%= procedure.steps.count %></td>
+            <td><%= name_list_sentence(procedure.apps) %></td>
+            <td nowrap="" style="valign: top">
+  	          <% if can?(:edit, procedure) %>
+                <div style="float:left;">
+                  <%= link_to I18n.t(:edit), edit_procedure_path(procedure), id: "procedure_edit_#{procedure.id}", class: 'edit_procedure' %>
+                </div>
+              <% end %>
+
+              <% if procedure.can_be_archived? && can?(:update_state, procedure) && procedure.can_change_aasm_state? %>
+                <%= render partial: 'object_state/state_list', locals: { passed_obj: procedure } %>
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+    <% unless @archived_procedures.blank? %>
+      <h3><%= I18n.t(:archived) %></h3>
+      <%= render partial: 'environments/metadata_pagination', locals: { metadata_model: @archived_procedures, metadata_type: 'procedure', position: 'archived' } %>
+      <table class='tablesorter four_column_sorter formatted_table'>
+        <thead>
+          <tr>
+            <th>Procedure Name</th>
+            <th>Description</th>
+            <th>Steps</th>
+            <th>Applications</th>
+            <th width = '180'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @archived_procedures.each do |procedure| %>
+            <tr id='procedure_<%= procedure.id %>' <%= tag_options({class: cycle('', 'alt')}, false) %>>
+              <td><%= link_to_if can?(:edit, procedure), index_title(h(procedure.name)), edit_procedure_path(procedure) %></td>
+              <td><%= h procedure.description %></td>
+              <td><%= procedure.steps.count %></td>
+              <td><%= name_list_sentence(procedure.apps) %></td>
+              <td>
+                <% if can?(:update_state, procedure) %>
+                  <%= link_to I18n.t(:unarchive), unarchive_procedure_path(procedure), method: :put, class: 'archive_procedure' %>
+                <% end %>
+
+                <% if can?(:delete, procedure) %>
+                  &nbsp;|&nbsp;
+                  <%= link_to I18n.t(:delete), procedure_path(procedure), confirm: 'Are you sure you want to delete this procedure?', method: :delete, class: 'delete_procedure' %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+  <% end %>
+</div>

@@ -1,0 +1,47 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Automation - BladeLogic' %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag "automation", "shared_resource_automation" %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'bmc blade_logic' } %>
+<% end %>
+
+<div class='wrapper_togglelink'>
+  <div class='fr'></div>
+</div>
+
+
+<% content_for :sidebar do %>
+  <% if can? :create, :automation %>
+    <p>
+      <%= link_to image_tag("create_automation.png"), new_shared_script_path(:page => params[:page], :key => params[:key], :script => 'bmc blade_logic') %>
+    </p>
+  <% end %>
+  <% if can? :import, :automation %>
+    <p>
+      <%= link_to "Import from Library", import_local_scripts_list_scripts_path(:folder => 'bladelogic'), :rel => 'facebox', :class => "underline" %>
+    </p>
+  <% end %>
+  <%= render :partial => 'shared_scripts/help', :locals => { :script_type => "bladelogic" } %>
+<% end %>
+
+<div class='automation_content'>
+  <div id='toggleFilterLink'>
+    <%= link_to_function "Show Bladelogic Authentication", "toggleSection($(this))", :rel => "Hide Bladelogic Authentication", :class => "filterSection" %>
+  </div>
+  <div id='filterSection' style='display: none;'><%= render :partial => 'account/bladelogic_form' %></div>
+  <%= error_messages_for :script %>
+  <div id = "automation_content">
+    <%= render :partial => 'shared_scripts/bladelogic/list', :locals => {:scripts => @scripts, :path => bladelogic_path, :script => "bmc blade_logic"} %>
+  </div>
+</div>

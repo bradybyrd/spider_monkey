@@ -1,0 +1,92 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+servers_010: 
+  name: AIX_002
+  updated_at: <%= 1573657.349312.seconds.ago %>
+  id: 12
+  active: true
+  created_at: <%= 1573657.349371.seconds.ago %>
+servers_011: 
+  name: WAS_100
+  updated_at: <%= 1573546.349402.seconds.ago %>
+  id: 13
+  active: true
+  created_at: <%= 1573546.349433.seconds.ago %>
+servers_001: 
+  name: bas_xp_4
+  updated_at: <%= 1573562.349462.seconds.ago %>
+  id: 1
+  active: false
+  created_at: <%= 3021668.349489.seconds.ago %>
+servers_012: 
+  name: WAS_200
+  updated_at: <%= 1573536.349517.seconds.ago %>
+  id: 14
+  active: true
+  created_at: <%= 1573536.349547.seconds.ago %>
+servers_002: 
+  name: bas_xp_3
+  updated_at: <%= 1573559.349575.seconds.ago %>
+  id: 2
+  active: false
+  created_at: <%= 3021650.349602.seconds.ago %>
+servers_013: 
+  name: AIX_100
+  updated_at: <%= 1573522.34963.seconds.ago %>
+  id: 15
+  active: true
+  created_at: <%= 1573522.34966.seconds.ago %>
+servers_003: 
+  name: db1
+  updated_at: <%= 1573561.349687.seconds.ago %>
+  id: 3
+  active: false
+  created_at: <%= 3021637.349713.seconds.ago %>
+servers_014: 
+  name: Solaris_100
+  updated_at: <%= 1573509.349742.seconds.ago %>
+  id: 16
+  active: true
+  created_at: <%= 1573509.349771.seconds.ago %>
+servers_004: 
+  name: WAS_014
+  updated_at: <%= 1573724.3498.seconds.ago %>
+  id: 6
+  active: true
+  created_at: <%= 1573724.34983.seconds.ago %>
+servers_005: 
+  name: WAS_015
+  updated_at: <%= 1573713.349859.seconds.ago %>
+  id: 7
+  active: true
+  created_at: <%= 1573713.349889.seconds.ago %>
+servers_006: 
+  name: WAS_013
+  updated_at: <%= 1573703.349917.seconds.ago %>
+  id: 8
+  active: true
+  created_at: <%= 1573703.349947.seconds.ago %>
+servers_007: 
+  name: Solaris_011
+  updated_at: <%= 1573689.349976.seconds.ago %>
+  id: 9
+  active: true
+  created_at: <%= 1573689.350006.seconds.ago %>
+servers_008: 
+  name: Solaris_010
+  updated_at: <%= 1573679.350034.seconds.ago %>
+  id: 10
+  active: true
+  created_at: <%= 1573679.350063.seconds.ago %>
+servers_009: 
+  name: AIX_001
+  updated_at: <%= 1573667.350091.seconds.ago %>
+  id: 11
+  active: true
+  created_at: <%= 1573667.350121.seconds.ago %>

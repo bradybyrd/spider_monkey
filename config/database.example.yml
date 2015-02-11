@@ -1,0 +1,41 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+development: # example of mysql database .. FYI this will vanish after BRPM v2.5
+  adapter: jdbcmysql
+  database: stream_step_dev
+  host: localhost
+  socket: /tmp/mysql.sock
+  encoding: utf8
+  pool: 12
+  wait_timeout: 10
+test: # example of postgres database
+  adapter: jdbcpostgresql
+  database: stream_step_test
+  host: localhost
+  username: brpm_user
+  password: <<password>>
+  encoding: utf8
+  pool: 12
+  wait_timeout: 10
+production: #example of oracle database
+  adapter: oracle_enhanced
+  database: <<sid>>
+  host: localhost
+  username: brpm_user
+  password: <<password>>
+  encoding: utf8
+  pool: 12
+  wait_timeout: 10
+development: # example of MsSQL/Sql Server database
+  adapter: jdbcmssql
+  database: <<database_name>>
+  username: <<username>>
+  password: <<password>>
+  host: <<host_name>>
+
+

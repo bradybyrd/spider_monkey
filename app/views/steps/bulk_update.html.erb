@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @request%>
+	<%= form_tag bulk_update_request_steps_path(@request.number, :step_ids => @step_ids, :apply_action => @operation), :method => :put, :class => "cssform",  :id =>  'bulk_update_form' do %>
+	  <h2><%= bulk_update_page_title %></h2>
+	  <b><%= @instruction %></b>
+	  <%= count_of_steps_selected_for_bulk_edit %>
+	  <%= render :partial => "steps/bulk_update/#{@operation}" %>
+	  <div class='button_bar'><%= submit_tag "Update",:class =>'button', :id => 'bulk_update_submit' %></div>
+	<% end %>
+<% else %>
+	<%= form_tag bulk_update_request_steps_path(:step_ids => @step_ids, :apply_action => @operation), :method => :put, :class => "cssform",  :id =>  'bulk_update_form' do %>
+	  <h2><%= bulk_update_page_title %></h2>
+	  <b><%= @instruction %></b>
+	  <%= count_of_steps_selected_for_bulk_edit %>
+	  <%= render :partial => "steps/bulk_update/#{@operation}" %>
+	  <div class='button_bar'><%= submit_tag "Update",:class =>'button', :id => 'bulk_update_submit' %></div>
+	<% end %>	
+<%end%>
+

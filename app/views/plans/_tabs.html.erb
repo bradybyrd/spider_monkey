@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <%= render :partial => 'plans/top_tabs', :locals => {:selected => 'plans'} %>
+<% end %>
+<div class='pageSection inspection_tabs'>
+  <% draw_tabs :selected => selected do %>
+    <%= sub_tab "#{plan.name} - #{plan.plan_template.template_type_label}", :path => plan_path(plan) %>
+
+    <% if can? :list_plan_tickets, Ticket.new %>
+      <%= sub_tab "Tickets", { :path => tickets_plan_path(plan) } %>
+    <% end %>
+
+    <% if can? :list, PlanRoute.new %>
+      <%= sub_tab "Routes", { :path => plan_plan_routes_path(plan) } %>
+    <% end %>
+  <% end %>
+</div>

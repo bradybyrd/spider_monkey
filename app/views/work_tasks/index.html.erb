@@ -1,0 +1,95 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% task_title = I18n.t(:'work_task.work_tasks') %>
+<% page_settings :title => task_title %>
+<% content_for :head do %>
+    <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone' %>
+    <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget',
+                                      'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable'
+    %>
+<% end %>
+
+<% content_for :page_section do %>
+    <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+
+<% content_for :sidebar do %>
+    <% if can?(:create, WorkTask.new) %>
+        <%= button_to I18n.t(:'work_task.buttons.add_new'), new_work_task_path, :method => :get, :class => 'button' %>
+    <% end %>
+<% end %>
+
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => task_title} %>
+
+<br class='clear'/>
+
+<% if can?(:list, WorkTask.new) %>
+
+    <% if @work_tasks.empty? %>
+        <div class='blank_data_msg'>
+          <%= I18n.t(:none_at_this_time, model: I18n.t('work_task.work_tasks')) %>
+        </div>
+    <% else %>
+        <%= form_tag reorder_work_tasks_path, :method => :put, :id => 'reorder_work_tasks' do %>
+            <%= render :partial => "environments/metadata_pagination",
+                       :locals => {:metadata_model => @work_tasks,
+                                   :metadata_type => 'WorkTask',
+                                   :position => 'unarchived'}
+            %>
+            <table class='formatted_table'>
+              <thead>
+              <tr>
+                <th width='20'></th>
+                <th><%= I18n.t(:'table.name') %></th>
+                <th title="<%= I18n.t(:'table.titles.count_of_r_rt_p') %>">
+                  <%= I18n.t(:'table.r_rt_p') %>
+                </th>
+                <th><%= I18n.t(:'table.properties') %></th>
+                <th><%= I18n.t(:'table.actions') %></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @work_tasks.each do |work_task| %>
+                  <%= render :partial => 'work_task', :locals => {:work_task => work_task, :archived => false} %>
+              <% end %>
+              </tbody>
+            </table>
+        <% end %>
+    <% end %>
+
+    <% unless @archived_work_tasks.blank? %>
+        <h3><%= I18n.t(:archived) %></h3>
+        <%= render :partial => 'environments/metadata_pagination',
+                   :locals => {:metadata_model => @archived_work_tasks,
+                               :metadata_type => 'WorkTask',
+                               :position => 'archived'}
+        %>
+        <table class='formatted_table'>
+          <thead>
+          <tr>
+            <th width='20'></th>
+            <th><%= I18n.t(:'table.name') %></th>
+            <th title="<%= I18n.t(:'table.titles.count_of_r_rt_p') %>">
+              <%= I18n.t(:'table.r_rt_p') %>
+            </th>
+            <th><%= I18n.t(:'table.properties') %></th>
+            <th><%= I18n.t(:'table.actions') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @archived_work_tasks.each do |work_task| %>
+              <%= render :partial => 'work_task', :locals => {:work_task => work_task, :archived => true} %>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
+
+<% end %>
+

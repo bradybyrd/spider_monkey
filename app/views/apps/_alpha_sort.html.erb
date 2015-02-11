@@ -1,0 +1,47 @@
+<div class='edit_in_place'>
+  <span class='show'>
+    <span class='grey_text'>
+      Alpha Sort for Environments:
+    </span>
+    <span class='show'>
+      <%= h(record.a_sorting_envs) %>
+    </span>
+
+    <% if can? :update, record %>
+      <%= link_to t('actions.edit'), '#', class: 'activate small', id: 'environments_alpha_sorting' %>
+    <% end %>
+
+    <%= pipe_separator %>
+    <span class='grey_text'>
+      Alpha Sort for Components:
+    </span>
+    <span class='show'>
+      <%= h(record.a_sorting_comps) %>
+    </span>
+  </span>
+
+  <% if can? :update, record %>
+    <%= form_for record, html: { class: 'editable inline' } do |f| %>
+      <%= f.hidden_field :a_sorting_envs, value: '0' %>
+      <%= f.label :a_sorting_envs, t('app.environment.enable_alpha_sorting') %>
+      <%= f.check_box :a_sorting_envs %>
+      <%= pipe_separator %>
+      <%= f.hidden_field :a_sorting_comps, value: '0' %>
+      <%= f.label :a_sorting_comps, t('app.component.enable_alpha_sorting') %>
+      <%= f.check_box :a_sorting_comps %>
+      <%= hidden_field_tag 'alpha_sorting_update', 'yes' %>
+      <%= hidden_field_tag 'index_page', params[:letter] %>
+      <%= hidden_field_tag 'key', params[:key] %>
+      <%= hidden_field_tag 'page', params[:page] %>
+      <%= f.submit t(:save), class: 'button' %>
+      <span style='font-size:10px;color:999;'>
+        or
+        <%= link_to t(:cancel), '#', class: 'cancel' %>
+      </span>
+    <% end %>
+  <% end %>
+
+  <% if can? :update, record %>
+    <%= link_to t('actions.edit'), '#', class: 'activate small', id: 'components_alpha_sorting' %>
+  <% end %>
+</div>

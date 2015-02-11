@@ -1,0 +1,1476 @@
+---
+- name: Main Tabs
+  items:
+  - id: 2
+    name: Dashboard
+    action: view
+    subject: :dashboard_tab
+  - id: 3
+    name: Plans
+    action: view
+    subject: :plans_tab
+  - id: 4
+    name: Requests
+    action: view
+    subject: :requests_tab
+  - id: 5
+    name: Reports
+    action: view
+    subject: :reports_tab
+  - id: 6
+    name: Applications
+    action: view
+    subject: :applications_tab
+  - id: 7
+    name: Environment
+    action: view
+    subject: :environment_tab
+  - id: 8
+    name: System
+    action: view
+    subject: :system_tab
+- name: Dashboard Permissions
+  depends_on_id: 2
+  items:
+  - id: 10
+    name: View My Applications
+    action: view
+    subject: :my_applications
+  - id: 11
+    name: View My Environments
+    action: view
+    subject: :my_environments
+  - id: 12
+    name: View My Servers
+    action: view
+    subject: :my_servers
+  - id: 13
+    name: View My Requests
+    action: view
+    subject: :my_requests
+  - id: 14
+    name: View Calendar
+    action: view
+    subject: :dashboard_calendar
+  - id: 15
+    name: View Promotions
+    action: view
+    subject: :dashboard_promotions
+  - id: 16
+    name: View Currently Running Steps
+    action: view
+    subject: :running_steps
+- name: Plans Permissions
+  depends_on_id: 3
+  items:
+  - id: 18
+    name: View Plans list
+    action: list
+    subject: Plan
+    items:
+    - id: 19
+      name: Inspect Plans
+      action: inspect
+      subject: Plan
+      items:
+      - id: 20
+        name: Manage Plans
+        action: manage_plan
+        subject: Plan
+        items:
+        - id: 21
+          name: Create Plan
+          action: create
+          subject: Plan
+        - id: 22
+          name: Edit Plan
+          action: edit
+          subject: Plan
+        - id: 23
+          name: Plan Plan
+          action: plan
+          subject: Plan
+        - id: 24
+          name: Start Plan
+          action: start
+          subject: Plan
+        - id: 25
+          name: Lock Plan
+          action: lock
+          subject: Plan
+        - id: 26
+          name: Hold Plan
+          action: hold
+          subject: Plan
+        - id: 27
+          name: Complete Plan
+          action: complete
+          subject: Plan
+        - id: 28
+          name: Archive Plan
+          action: archive_unarchive
+          subject: Plan
+        - id: 29
+          name: Reopen Plan
+          action: reopen
+          subject: Plan
+        - id: 30
+          name: Delete Plan
+          action: delete
+          subject: Plan
+        - id: 31
+          name: Cancel Plan
+          action: cancel
+          subject: Plan
+        - id: 32
+          name: Inspect Runs
+          action: inspect_run
+          subject: Plan
+          items:
+          - name: Manage Runs
+            items:
+            - id: 34
+              name: Create Runs
+              action: create_run
+              subject: Plan
+            - id: 35
+              name: Edit Runs
+              action: edit_runs
+              subject: Plan
+            - id: 36
+              name: Move Requests
+              action: move_requests
+              subject: Plan
+            - id: 37
+              name: Add to Run
+              action: add_to_run
+              subject: Plan
+            - id: 38
+              name: Drop from Run
+              action: drop_from_run
+              subject: Plan
+            - id: 39
+              name: Reorder Run
+              action: reorder_run
+              subject: Plan
+            - id: 40
+              name: Plan Run
+              action: plan_run
+              subject: Plan
+            - id: 41
+              name: Start Run
+              action: start_run
+              subject: Plan
+            - id: 42
+              name: Hold Run
+              action: hold_run
+              subject: Plan
+            - id: 43
+              name: Cancel Run
+              action: cancel_run
+              subject: Plan
+            - id: 44
+              name: Delete Run
+              action: delete_run
+              subject: Plan
+        - id: 45
+          name: View Tickets Summary Report
+          action: view_ticket_summary_report
+          subject: Plan
+        - id: 46
+          name: View Tickets list
+          action: list_plan_tickets
+          subject: Ticket
+        - id: 47
+          name: View Routes list
+          action: list
+          subject: PlanRoute
+          items:
+          - id: 48
+            name: Inspect Route
+            action: inspect
+            subject: PlanRoute
+            items:
+            - id: 49
+              name: Assign App Route
+              action: assign_app
+              subject: PlanRoute
+            - id: 50
+              name: Configure Route
+              action: configure
+              subject: Constraint
+          - id: 51
+            name: Delete Route from Plan
+            action: delete_from_plan
+            subject: PlanRoute
+  - id: 52
+    name: View Projects list
+    action: list
+    subject: Activity
+    items:
+    - name: Manage Projects
+      items:
+      - id: 54
+        name: Create Projects
+        action: create
+        subject: Activity
+      - id: 55
+        name: Edit Projects
+        action: edit
+        subject: Activity
+        items:
+        - id: 56
+          name: Edit General
+          action: edit_general
+          subject: Activity
+        - id: 57
+          name: Edit Requests
+          action: edit_requests
+          subject: Activity
+          items:
+          - id: 58
+            name: Consolidate Requests
+            action: consolidate_requests
+            subject: Request
+          - id: 59
+            name: Schedule Requests
+            action: schedule_request
+            subject: Request
+      - id: 60
+        name: Edit Notes
+        action: edit_notes
+        subject: Activity
+      - id: 61
+        name: Delete Projects
+        action: delete
+        subject: Activity
+- name: Requests Permissions
+  depends_on_id: 4
+  items:
+  - id: 63
+    name: View Requests list
+    action: view_requests_list
+    subject: Request
+    items:
+    - id: 64
+      name: View created Requests list
+      action: view_created_requests_list
+      subject: Request
+    - id: 65
+      name: Inspect Request
+      action: inspect
+      subject: Request
+      items:
+      - name: Manage Requests
+        items:
+        - id: 67
+          name: Import Request
+          action: import
+          subject: Request
+        - id: 68
+          name: Create Requests
+          action: create
+          subject: Request
+        - id: 69
+          name: Clone Request
+          action: clone
+          subject: Request
+        - id: 70
+          name: Modify Requests Details
+          action: edit
+          subject: Request
+          items:
+          - id: 71
+            name: Start Automatically
+            action: auto_start
+            subject: Request
+          - id: 72
+            name: Apply Template
+            action: apply_template
+            subject: Request
+        - id: 73
+          name: Update Notes
+          action: update_notes
+          subject: Request
+        - id: 74
+          name: Change Notification Options
+          action: change_notification_options
+          subject: Request
+        - id: 75
+          name: Edit Component Versions
+          action: edit_component_versions
+          subject: Request
+        - id: 76
+          name: Reorder Steps
+          action: reorder_steps
+          subject: Request
+        - id: 77
+          name: Plan Request
+          action: plan
+          subject: Request
+        - id: 78
+          name: Start Request
+          action: start
+          subject: Request
+        - id: 79
+          name: Cancel Request
+          action: cancel
+          subject: Request
+        - id: 80
+          name: Problem Request
+          action: put_in_problem
+          subject: Request
+        - id: 81
+          name: Resolve Request
+          action: resolve
+          subject: Request
+        - id: 82
+          name: Hold Request
+          action: hold
+          subject: Request
+        - id: 83
+          name: Reopen Request
+          action: reopen
+          subject: Request
+        - id: 84
+          name: Delete Request
+          action: delete
+          subject: Request
+        - id: 85
+          name: Create Template
+          action: create_template
+          subject: Request
+        - id: 86
+          name: Create Procedure
+          action: create_procedure
+          subject: Request
+        - id: 87
+          name: Choose Template
+          action: choose_template
+          subject: Request
+        - id: 88
+          name: Add Procedure
+          action: add_procedure
+          subject: Request
+      - id: 89
+        name: Export as XML Request
+        action: export_as_xml
+        subject: Request
+      - id: 90
+        name: Export as PDF Request
+        action: export_as_pdf
+        subject: Request
+      - id: 91
+        name: Export HTML
+        action: export_as_html
+        subject: Request
+      - id: 92
+        name: Inspect Steps
+        action: inspect_steps
+        subject: Request
+        items:
+        - id: 93
+          name: View General tab
+          action: view_step_general_tab
+          subject: Request
+        - id: 94
+          name: View Automation tab
+          action: view_step_automation_tab
+          subject: Request
+        - id: 95
+          name: View Notes tab
+          action: view_step_notes_tab
+          subject: Request
+        - id: 96
+          name: View Documents tab
+          action: view_step_documents_tab
+          subject: Request
+        - id: 97
+          name: View Properties tab
+          action: view_step_properties_tab
+          subject: Request
+        - id: 98
+          name: View Server properties tab
+          action: view_step_server_properties_tab
+          subject: Request
+        - id: 99
+          name: View Design tab
+          action: view_step_design_tab
+          subject: Request
+        - name: Manage Steps
+          items:
+          - id: 101
+            name: Add New Step
+            action: add_step
+            subject: Request
+          - id: 102
+            name: Import Steps
+            action: import_steps
+            subject: Request
+          - id: 103
+            name: Edit Steps
+            action: edit_step
+            subject: Request
+            items:
+            - id: 104
+              name: Edit Owner
+              action: edit_step_owner
+              subject: Request
+            - id: 105
+              name: Edit Task/Phase
+              action: edit_task_phase
+              subject: Request
+            - id: 106
+              name: Select Component
+              action: select_step_component
+              subject: Request
+              items:
+              - id: 107
+                name: Edit Step Component Versions
+                action: edit_step_component_versions
+                subject: Request
+            - id: 108
+              name: Select Package
+              action: select_step_package
+              subject: Request
+              items:
+              - id: 109
+                name: Select Instance
+                action: select_step_instance
+                subject: Request
+          - id: 110
+            name: Delete Steps
+            action: delete_steps
+            subject: Request
+          - id: 111
+            name: Turn On/Off
+            action: turn_on_off_steps
+            subject: Request
+          - id: 112
+            name: Reset Steps
+            action: reset_steps
+            subject: Request
+          - id: 113
+            name: Run Steps
+            action: run_step
+            subject: Request
+          - id: 114
+            name: Edit Execution Conditions for Procedure
+            action: edit_procedure_execute_conditions
+            subject: Request
+          - id: 115
+            name: Edit Procedure
+            action: edit_procedure
+            subject: Request
+          - id: 116
+            name: Add Serial Procedure step
+            action: add_serial_procedure_step
+            subject: Request
+          - id: 117
+            name: Remove Procedure
+            action: remove_procedure
+            subject: Request
+      - id: 118
+        name: View Coordination Summary
+        action: view_coordination_summary
+        subject: Request
+      - id: 119
+        name: View Activity Summary
+        action: view_activity_summary
+        subject: Request
+      - id: 120
+        name: View Property Summary
+        action: view_property_summary
+        subject: Request
+  - id: 121
+    name: View Calendar
+    action: view_calendar
+    subject: Request
+  - id: 122
+    name: View Currently Running Steps
+    action: view_currently_running_steps
+    subject: Request
+- name: Reports Permissions
+  depends_on_id: 5
+  items:
+  - id: 124
+    name: View Process
+    action: view
+    subject: :process_reports
+    items:
+    - id: 125
+      name: View Volume Report
+      action: view
+      subject: :volume_report
+    - id: 126
+      name: View Time to Complete Report
+      action: view
+      subject: :time_to_complete_report
+    - id: 127
+      name: View Problem Trend Report
+      action: view
+      subject: :problem_trend_report
+    - id: 128
+      name: View Time of Problem Report
+      action: view
+      subject: :time_to_problem_report
+  - id: 129
+    name: View Maps
+    action: view
+    subject: :maps_reports
+    items:
+    - id: 130
+      name: View Component Versions Map by Application
+      action: view
+      subject: :component_versions_map
+    - id: 131
+      name: View Properties Map by Environment/Application
+      action: view
+      subject: :properties_map
+    - id: 132
+      name: View Servers Map by Application
+      action: view
+      subject: :servers_map_by_app
+    - id: 133
+      name: View Server Map
+      action: view
+      subject: :server_map
+    - id: 134
+      name: View Application Component Summary
+      action: view
+      subject: :app_component_summary_map
+  - id: 135
+    name: View Calendars
+    action: view
+    subject: :calendar
+    items:
+    - id: 136
+      name: View Release Calendar
+      action: view
+      subject: :release_calendar
+    - id: 137
+      name: View Environment Calendar
+      action: view
+      subject: :environment_calendar
+    - id: 138
+      name: View Deployment Windows Calendar
+      action: view
+      subject: :deployment_windows_calendar
+  - id: 139
+    name: View Access
+    action: view
+    subject: :access_reports
+    items:
+    - id: 140
+      name: View Roles by Team/Group/User
+      action: view
+      subject: :roles_map_report
+- name: Applications Permissions
+  depends_on_id: 6
+  items:
+  - id: 142
+    name: View Applications list
+    action: list
+    subject: App
+    items:
+    - id: 143
+      name: Inspect Application
+      action: edit
+      subject: App
+      items:
+      - name: Manage Applications
+        items:
+        - id: 145
+          name: Create Application
+          action: create
+          subject: App
+        - id: 146
+          name: Import Application
+          action: import
+          subject: App
+        - id: 147
+          name: Edit Application
+          action: update
+          subject: App
+        - id: 148
+          name: Make Inactive/Active
+          action: make_active_inactive
+          subject: App
+        - id: 149
+          name: Add/Remove Environments
+          action: add_remove
+          subject: ApplicationEnvironment
+        - name: Manage Components
+          items:
+          - id: 151
+            name: Add/Remove Components
+            action: add_remove
+            subject: ApplicationComponent
+          - id: 152
+            name: Add Remote Components
+            action: add_remote_component
+            subject: App
+          - id: 153
+            name: Add New Component Template
+            action: add
+            subject: ComponentTemplate
+          - id: 154
+            name: Sync Component Templates
+            action: sync
+            subject: ComponentTemplate
+          - id: 155
+            name: Edit Component Properties
+            action: edit_properties
+            subject: ApplicationComponent
+          - id: 156
+            name: Map Component Properties
+            action: map_properties
+            subject: ApplicationComponent
+        - name: Manage Packages
+          items:
+          - id: 158
+            name: Add/Remove Package
+            action: add_remove_package
+            subject: App
+          - id: 159
+            name: Edit Package Properties
+            action: edit_properties
+            subject: ApplicationPackage
+        - id: 160
+          name: Copy All Components to All Environments
+          action: create
+          subject: InstalledComponent
+        - id: 161
+          name: Add/Remove Servers to Components/Associate with Servers
+          action: manage_servers
+          subject: InstalledComponent
+        - id: 162
+          name: Remove Component from Environment
+          action: destroy
+          subject: InstalledComponent
+        - id: 163
+          name: Clone Environment Components
+          action: clone
+          subject: InstalledComponent
+        - id: 164
+          name: Reorder Components
+          action: reorder
+          subject: ApplicationComponent
+        - id: 165
+          name: Reorder Environments
+          action: reorder
+          subject: ApplicationEnvironment
+        - id: 166
+          name: Export Application
+          action: export
+          subject: App
+        - id: 167
+          name: View Routes
+          action: list
+          subject: Route
+          items:
+          - id: 168
+            name: Inspect Routes
+            action: inspect
+            subject: Route
+            items:
+            - id: 169
+              name: Create Routes
+              action: create
+              subject: Route
+            - id: 170
+              name: Edit Routes
+              action: edit
+              subject: Route
+              items:
+              - id: 171
+                name: Configure Route Gates
+                action: configure_gates
+                subject: Route
+            - id: 172
+              name: Archive/Unarchive Routes
+              action: archive_unarchive
+              subject: Route
+            - id: 173
+              name: Delete Routes
+              action: delete
+              subject: Route
+- name: Environment Permissions
+  depends_on_id: 7
+  items:
+  - id: 175
+    name: View Properties list
+    action: list
+    subject: Property
+    items:
+    - name: Manage Properties
+      items:
+      - id: 177
+        name: Create Property
+        action: create
+        subject: Property
+      - id: 178
+        name: Edit Property
+        action: edit
+        subject: Property
+      - id: 179
+        name: Make Inactive/Active
+        action: make_active_inactive
+        subject: Property
+      - id: 180
+        name: See Property Private Value
+        action: see_private_value
+        subject: Property
+  - id: 181
+    name: Access Servers
+    action: view
+    subject: :server_tabs
+    items:
+    - id: 182
+      name: View Server Groups list
+      action: list
+      subject: ServerGroup
+      items:
+      - name: Manage Server Groups
+        items:
+        - id: 184
+          name: Create Server Groups
+          action: create
+          subject: ServerGroup
+        - id: 185
+          name: Edit Server Groups
+          action: edit
+          subject: ServerGroup
+        - id: 186
+          name: Make Inactive/Active Server Groups
+          action: make_active_inactive
+          subject: ServerGroup
+        - id: 187
+          name: Destroy Server Groups
+          action: delete
+          subject: ServerGroup
+    - id: 188
+      name: View Servers list
+      action: list
+      subject: Server
+      items:
+      - name: Manage Server
+        items:
+        - id: 190
+          name: Create Server
+          action: create
+          subject: Server
+        - id: 191
+          name: Edit Server
+          action: edit
+          subject: Server
+        - id: 192
+          name: Make Inactive/Active Server
+          action: make_active_inactive
+          subject: Server
+        - id: 193
+          name: Delete Server
+          action: delete
+          subject: Server
+    - id: 194
+      name: View Server Level Groups list
+      action: list
+      subject: ServerAspectGroup
+      items:
+      - name: Manage Server Level Groups
+        items:
+        - id: 196
+          name: Create Server Level Groups
+          action: create
+          subject: ServerAspectGroup
+        - id: 197
+          name: Edit Server Level Groups
+          action: edit
+          subject: ServerAspectGroup
+    - id: 198
+      name: View Server Levels list
+      action: list
+      subject: ServerLevel
+      items:
+      - id: 199
+        name: Inspect Server Level
+        action: inspect
+        subject: ServerLevel
+        items:
+        - name: Manage Server Level
+          items:
+          - id: 201
+            name: Create Server Level
+            action: create
+            subject: ServerLevel
+          - id: 202
+            name: Edit Server Level
+            action: edit
+            subject: ServerLevel
+          - id: 203
+            name: Add New Server level Instance
+            action: add
+            subject: ServerAspect
+          - id: 204
+            name: Edit Server Instance
+            action: edit
+            subject: ServerAspect
+          - id: 205
+            name: Delete Server Instance
+            action: delete
+            subject: ServerAspect
+          - id: 206
+            name: Edit Server Level Instance Property
+            action: edit_property
+            subject: ServerAspect
+          - id: 207
+            name: Delete Server Level Property
+            action: delete_property
+            subject: ServerLevel
+  - id: 208
+    name: View Components list
+    action: list
+    subject: Component
+    items:
+    - name: Manage Components
+      items:
+      - id: 210
+        name: Create Component
+        action: create
+        subject: Component
+      - id: 211
+        name: Edit Component
+        action: edit
+        subject: Component
+      - id: 212
+        name: Make Inactive/Active Component
+        action: make_active_inactive
+        subject: Component
+      - id: 213
+        name: Delete Component
+        action: delete
+        subject: Component
+  - id: 214
+    name: View Environments list
+    action: list
+    subject: Environment
+    items:
+    - name: Manage Environments
+      items:
+      - id: 216
+        name: Create Environment
+        action: create
+        subject: Environment
+      - id: 217
+        name: Edit Environment
+        action: edit
+        subject: Environment
+      - id: 218
+        name: Make Inactive/Active Environment
+        action: make_active_inactive
+        subject: Environment
+      - id: 219
+        name: Delete Environment
+        action: delete
+        subject: Environment
+  - id: 220
+    name: View Automation list
+    action: list
+    subject: :automation
+    items:
+    - name: Manage Automation
+      items:
+      - id: 222
+        name: Create Automation
+        action: create
+        subject: :automation
+      - id: 223
+        name: Edit Automation
+        action: edit
+        subject: :automation
+      - id: 224
+        name: Test Automation
+        action: test
+        subject: :automation
+      - id: 225
+        name: Import Scripts from Library
+        action: import
+        subject: :automation
+      - id: 226
+        name: Update Automation State
+        action: update_state
+        subject: :automation
+      - id: 227
+        name: Delete Automation
+        action: delete
+        subject: :automation
+  - id: 228
+    name: Access Metadata
+    action: access
+    subject: :metadata
+    items:
+    - id: 229
+      name: View Categories list
+      action: list
+      subject: Category
+      items:
+      - name: Manage Categories
+        items:
+        - id: 231
+          name: Create Categories
+          action: create
+          subject: Category
+        - id: 232
+          name: Edit Categories
+          action: edit
+          subject: Category
+        - id: 233
+          name: Archive/Unarchive Categories
+          action: archive_unarchive
+          subject: Category
+        - id: 234
+          name: Delete Categories
+          action: delete
+          subject: Category
+    - id: 235
+      name: View Environment Types list
+      action: list
+      subject: EnvironmentType
+      items:
+      - name: Manage Environment Types
+        items:
+        - id: 237
+          name: Create Environment Types
+          action: create
+          subject: EnvironmentType
+        - id: 238
+          name: Edit Environment Types
+          action: edit
+          subject: EnvironmentType
+        - id: 239
+          name: Archive/Unarchive Environment Types
+          action: archive_unarchive
+          subject: EnvironmentType
+        - id: 240
+          name: Delete Environment Types
+          action: delete
+          subject: EnvironmentType
+    - id: 241
+      name: View Plan Templates list
+      action: list
+      subject: PlanTemplate
+      items:
+      - id: 242
+        name: Inspect Plan Templates
+        action: inspect
+        subject: PlanTemplate
+        items:
+        - name: Manage Plan Templates
+          items:
+          - id: 244
+            name: Create Plan Templates
+            action: create
+            subject: PlanTemplate
+          - id: 245
+            name: Edit Plan Templates
+            action: edit
+            subject: PlanTemplate
+          - id: 246
+            name: Update Plan Templates State
+            action: update_state
+            subject: PlanTemplate
+          - id: 247
+            name: Delete Plan Templates
+            action: delete
+            subject: PlanTemplate
+    - id: 248
+      name: View Lists list
+      action: list
+      subject: List
+      items:
+      - name: Manage Lists
+        items:
+        - id: 250
+          name: Create Lists
+          action: create
+          subject: List
+        - id: 251
+          name: Edit Lists
+          action: edit
+          subject: List
+        - id: 252
+          name: Archive/Unarchive Lists
+          action: archive_unarchive
+          subject: List
+        - id: 253
+          name: Delete Lists
+          action: delete
+          subject: List
+    - id: 254
+      name: View Package Contents list
+      action: list
+      subject: PackageContent
+      items:
+      - name: Manage Package Contents
+        items:
+        - id: 256
+          name: Create Package Contents
+          action: create
+          subject: PackageContent
+        - id: 257
+          name: Edit Package Contents
+          action: edit
+          subject: PackageContent
+        - id: 258
+          name: Archive/Unarchive Package Contents
+          action: archive_unarchive
+          subject: PackageContent
+        - id: 259
+          name: Delete Package Contents
+          action: delete
+          subject: PackageContent
+    - id: 260
+      name: View Phases list
+      action: list
+      subject: Phase
+      items:
+      - name: Manage Phases
+        items:
+        - id: 262
+          name: Create Phases
+          action: create
+          subject: Phase
+        - id: 263
+          name: Edit Phases
+          action: edit
+          subject: Phase
+        - id: 264
+          name: Archive/Unarchive Phases
+          action: archive_unarchive
+          subject: Phase
+        - id: 265
+          name: Delete Phases
+          action: delete
+          subject: Phase
+    - id: 266
+      name: View Procedures list
+      action: list
+      subject: Procedure
+      items:
+      - name: Manage Procedures
+        items:
+        - id: 268
+          name: Create Procedures
+          action: create
+          subject: Procedure
+        - id: 269
+          name: Edit Procedures
+          action: edit
+          subject: Procedure
+        - id: 270
+          name: Update Procedures State
+          action: update_state
+          subject: Procedure
+        - id: 271
+          name: Delete Procedures
+          action: delete
+          subject: Procedure
+    - id: 272
+      name: View Processes list
+      action: list
+      subject: BusinessProcess
+      items:
+      - name: Manage Business Processes
+        items:
+        - id: 274
+          name: Create Business Processes
+          action: create
+          subject: BusinessProcess
+        - id: 275
+          name: Edit Business Processes
+          action: edit
+          subject: BusinessProcess
+        - id: 276
+          name: Archive/Unarchive Business Processes
+          action: archive_unarchive
+          subject: BusinessProcess
+        - id: 277
+          name: Delete Business Processes
+          action: delete
+          subject: BusinessProcess
+    - id: 278
+      name: View Releases list
+      action: list
+      subject: Release
+      items:
+      - name: Manage Releases
+        items:
+        - id: 280
+          name: Create Releases
+          action: create
+          subject: Release
+        - id: 281
+          name: Edit Releases
+          action: edit
+          subject: Release
+        - id: 282
+          name: Archive/Unarchive Releases
+          action: archive_unarchive
+          subject: Release
+        - id: 283
+          name: Delete Releases
+          action: delete
+          subject: Release
+    - id: 284
+      name: View Request Templates list
+      action: list
+      subject: RequestTemplate
+      items:
+      - id: 285
+        name: Inspect Request Templates
+        action: inspect
+        subject: RequestTemplate
+        items:
+        - name: Manage Request Templates
+          items:
+          - id: 287
+            name: Update Request Templates State
+            action: update_state
+            subject: RequestTemplate
+          - id: 288
+            name: Delete Request Templates
+            action: delete
+            subject: RequestTemplate
+    - id: 289
+      name: View Tickets list
+      action: list
+      subject: Ticket
+      items:
+      - name: Manage Tickets
+        items:
+        - id: 291
+          name: Create Tickets
+          action: create
+          subject: Ticket
+        - id: 292
+          name: Edit Tickets
+          action: edit
+          subject: Ticket
+        - id: 293
+          name: Delete Tickets
+          action: delete
+          subject: Ticket
+    - id: 294
+      name: View Version Tags list
+      action: list
+      subject: VersionTag
+      items:
+      - name: Manage Version Tags
+        items:
+        - id: 296
+          name: Create Version Tags/Bulk Create Version Tags
+          action: create
+          subject: VersionTag
+        - id: 297
+          name: Edit Version Tags
+          action: edit
+          subject: VersionTag
+        - id: 298
+          name: Archive/Unarchive Version Tags
+          action: archive_unarchive
+          subject: VersionTag
+        - id: 299
+          name: Delete Version Tags
+          action: delete
+          subject: VersionTag
+    - id: 300
+      name: View Work Tasks list
+      action: list
+      subject: WorkTask
+      items:
+      - name: Manage Work Tasks
+        items:
+        - id: 302
+          name: Create Work Tasks
+          action: create
+          subject: WorkTask
+        - id: 303
+          name: Edit Work Tasks
+          action: edit
+          subject: WorkTask
+        - id: 304
+          name: Archive/Unarchive Work Tasks
+          action: archive_unarchive
+          subject: WorkTask
+        - id: 305
+          name: Delete Work Tasks
+          action: delete
+          subject: WorkTask
+    - id: 306
+      name: View Deployment Windows list
+      action: list
+      subject: DeploymentWindow::Series
+      items:
+      - name: Manage Deployment Windows
+        items:
+        - id: 308
+          name: Create Deployment Windows Series
+          action: create
+          subject: DeploymentWindow::Series
+        - id: 309
+          name: Edit Deployment Windows Series
+          action: edit
+          subject: DeploymentWindow::Series
+        - id: 310
+          name: Move Deployment Window Event
+          action: move
+          subject: DeploymentWindow::Series
+        - id: 311
+          name: Suspend/Resume Deployment Window Event
+          action: suspend_resume
+          subject: DeploymentWindow::Series
+        - id: 312
+          name: Update Deployment Windows State
+          action: update_state
+          subject: DeploymentWindow::Series
+        - id: 313
+          name: Delete Deployment Windows
+          action: delete
+          subject: DeploymentWindow::Series
+  - id: 314
+    name: View Packages List
+    action: list
+    subject: Package
+    items:
+    - name: Manage Packages
+      items:
+      - id: 316
+        name: Create Package
+        action: create
+        subject: Package
+      - id: 317
+        name: Make Inactive/Active Package
+        action: make_active_inactive
+        subject: Package
+      - id: 318
+        name: Delete Package
+        action: delete
+        subject: Package
+      - id: 319
+        name: Edit Package
+        action: edit
+        subject: Package
+        items:
+        - name: Manage References
+          items:
+          - id: 321
+            name: Add Reference
+            action: create
+            subject: Reference
+          - id: 322
+            name: Update Reference
+            action: edit
+            subject: Reference
+          - id: 323
+            name: Delete Reference
+            action: delete
+            subject: Reference
+      - id: 324
+        name: View Package Instances List
+        action: view_instances
+        subject: Package
+        items:
+        - name: Manage Package Instances
+          items:
+          - id: 326
+            name: Create Instance
+            action: create_instance
+            subject: Package
+          - id: 327
+            name: Edit Instance
+            action: edit
+            subject: PackageInstance
+          - id: 328
+            name: Make Inactive/Active Instance
+            action: make_active_inactive
+            subject: PackageInstance
+          - id: 329
+            name: Delete Instance
+            action: delete
+            subject: PackageInstance
+- name: System Permissions
+  depends_on_id: 8
+  items:
+  - id: 331
+    name: View Users list
+    action: list
+    subject: User
+    items:
+    - name: Manage Users
+      items:
+      - id: 333
+        name: Create User
+        action: create
+        subject: User
+      - id: 334
+        name: Edit User
+        action: edit
+        subject: User
+      - id: 335
+        name: Make Inactive/Active
+        action: make_active_inactive
+        subject: User
+  - id: 336
+    name: View Roles list
+    action: list
+    subject: Role
+    items:
+    - name: Manage Roles
+      items:
+      - id: 338
+        name: Create Role
+        action: create
+        subject: Role
+      - id: 339
+        name: Edit Role
+        action: edit
+        subject: Role
+      - id: 340
+        name: Make Inactive/Active
+        action: make_active_inactive
+        subject: Role
+      - id: 375
+        name: Delete Role
+        action: delete
+        subject: Role
+  - id: 341
+    name: View Groups list
+    action: list
+    subject: Group
+    items:
+    - name: Manage Groups
+      items:
+      - id: 343
+        name: Create New Group
+        action: create
+        subject: Group
+      - id: 344
+        name: Edit Group
+        action: edit
+        subject: Group
+      - id: 345
+        name: Make Default
+        action: make_default
+        subject: Group
+      - id: 346
+        name: Make Inactive/Active
+        action: make_active_inactive
+        subject: Group
+  - id: 347
+    name: View Teams list
+    action: list
+    subject: Team
+    items:
+    - name: Manage Teams
+      items:
+      - id: 349
+        name: Create Team
+        action: create
+        subject: Team
+      - id: 350
+        name: Edit Team
+        action: edit
+        subject: Team
+      - id: 351
+        name: Make Inactive/Make Active
+        action: make_active_inactive
+        subject: Team
+  - id: 352
+    name: Access Settings
+    action: access
+    subject: :settings
+    items:
+    - id: 353
+      name: View General
+      action: view
+      subject: GlobalSettings
+      items:
+      - name: Manage General Settings
+        items:
+        - id: 355
+          name: Edit General Settings
+          action: edit
+          subject: GlobalSettings
+    - id: 356
+      name: View Calendar Preferences/Manage
+      action: manage_calendar_preferences
+      subject: GlobalSettings
+    - id: 357
+      name: View Statistics
+      action: view
+      subject: :statistics
+    - id: 358
+      name: View Automation Monitor
+      action: view
+      subject: :automation_monitor
+      items:
+      - id: 359
+        name: Clear Job Queue
+        action: clear
+        subject: AutomationQueueData
+    - id: 360
+      name: View Notification Templates
+      action: list
+      subject: NotificationTemplate
+      items:
+      - name: Manage Notification Template
+        items:
+        - id: 362
+          name: Create Notification Template
+          action: create
+          subject: NotificationTemplate
+        - id: 363
+          name: Show Notification Template
+          action: show
+          subject: NotificationTemplate
+        - id: 364
+          name: Edit Notification Template
+          action: edit
+          subject: NotificationTemplate
+        - id: 365
+          name: Delete Notification Temp
+          action: delete
+          subject: NotificationTemplate
+  - id: 366
+    name: View Integration
+    action: list
+    subject: ProjectServer
+    items:
+    - name: Manage Integrations
+      items:
+      - id: 368
+        name: Create Integration
+        action: create
+        subject: ProjectServer
+      - id: 369
+        name: Edit Integration
+        action: edit
+        subject: ProjectServer
+      - id: 370
+        name: Make Inactive/Active
+        action: make_active_inactive
+        subject: ProjectServer
+      - name: Manage Integration Projects
+        items:
+        - id: 372
+          name: Create Integration Project
+          action: create
+          subject: IntegrationProject
+        - id: 373
+          name: Edit Integration Project
+          action: edit
+          subject: IntegrationProject
+        - id: 374
+          name: Make Inactive/Active
+          action: make_active_inactive
+          subject: IntegrationProject

@@ -1,0 +1,172 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+#Login
+{
+    top: 0;
+    left: 0;
+    height: 107px;
+    /*width: 100%;*/
+    background: #FFFFFF;
+    min-width: 700px;
+    width: expression(document.body.clientWidth < 700? "700px": "auto" );
+}
+img.login_logo
+{
+    position: absolute;
+    top: 39px;
+    right: 39px;
+}
+.productName {
+    position :absolute;
+    border-collapse:collapse;
+    color: #004266;
+    font: bold 20px "Arial","Lucida Grande","Verdana","Helvetica",sans-serif;
+    top: 39px;
+    left: 39px;
+    margin: 0 0;
+}
+.productVersion
+{
+    position: absolute;
+    font: bold 12px "Arial","Lucida Grande","Verdana","Helvetica",sans-serif;
+    top :68px;
+    margin: 0 0;
+    left :39px;
+    color :#0069a5;
+}
+#loginCredentials
+{
+    background: #0069a5;
+    /*width :100%;
+    float :left;*/
+    margin-top: 0;
+    /*padding-right: 39px;*/
+}
+#loginCredentials img
+{
+    float :left;
+}
+#loginCredentials p
+{
+    font-family: Arial, Tahoma;
+    color: #74cde8;
+    text-align: left;
+    margin-left: 0px;
+    padding-top: 39px;
+    font-weight:bold;
+    font-size: 11px;
+}
+.loginform
+{
+    /*position: absolute;
+    left: 500px;*/
+    color: #FFFFFF;
+}
+.Footer
+{
+    position:absolute;
+    padding-top:10px;
+    padding-bottom:10px;
+    bottom:0;
+    width :100%;
+    border: 1px;
+    background-color:#ebebeb;
+    clear:both;
+}
+#footer_text
+{
+    margin-right:17px;
+}
+.Footer p
+{
+    margin :0 5px 0 25px;
+    /*float:left;*/
+    color:#646464;
+    font-family: Arial, Tahoma;
+    font-size:11px;
+    text-align:left;
+    /*width:98%;*/
+}
+body.sessions
+{
+    background-color: #fff;
+}
+.sessions .flash_messages {
+    margin:0 0 -25px 0px;
+    z-index:1;
+    /*position:static!important;
+    white-space:nowrap!important;*/
+    text-align:left;
+    width: auto;
+
+    left: auto;
+    max-width: 100%;
+    min-width: 15%;
+    padding: 7px 0 8px;
+    position: absolute;
+    text-align: left;
+    top: auto;
+    white-space: normal;
+}
+
+.forgot_password_username{
+    margin: 0 0 0 115px;
+    position: static !important;
+    text-align: left;
+    white-space: nowrap !important;
+    z-index: 1;
+    color: #FFF!important;
+}
+
+.forgot_password_username a{
+    color: #FFF!important;
+    font-size: 11px;
+}
+
+.forgot_password_username a.userid{
+    margin-left: 10px !important;
+}
+
+.field a.userid{
+    color: #FFF !important;
+}
+
+.field a.cancel{
+    color: #FFF !important;
+}
+
+.loginform .field label{
+    width:100px !important;
+}
+
+
+#loginCredentials .flash_messages, #loginCredentials #errorExplanation #errors {
+    margin:0 0 -25px 0px;
+    z-index:1;
+    /*position:static!important;
+    white-space:nowrap!important;*/
+    text-align:left;
+    width: auto;
+
+    left: auto;
+    max-width: 100%;
+    min-width: 15%;
+    padding: 7px 0 8px;
+    position: absolute;
+    text-align: left;
+    top: auto;
+    white-space: normal;
+}
+#loginCredentials p.forgot_password_message
+{
+    padding-top: 32px;
+}
+
+#loginCredentials p.forgot_userid_message
+{
+    padding-top:21px;
+}

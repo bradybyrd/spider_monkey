@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <% draw_tabs :class => "dashboard_request_tab my_dashboard_tabs" do %>
+    <% if can? :view_requests_list, Request.new %>
+      <li <%= tag_options({:class => class_per_page_path("requests")}, false) %>><%= link_to whose_requests, params[:for_dashboard] ? root_path : request_dashboard_path %></li>
+    <% end %>
+    <% if can? :view_calendar, Request.new %>
+      <li <%= tag_options({:class => class_per_page_path("calendar")}, false) %>><%= link_to 'Calendar', params[:for_dashboard] ? my_calendar_path : my_all_calendar_path %></li>
+    <% end %>
+    <% if params[:controller] == 'calendars' && @for_dashboard %>
+      <li <%= tag_options({:class => class_per_page_path("promotions")}, false) %>><%= link_to "Promotions", promotion_requests_path %></li>
+    <% end %>
+    <% if can? :view_currently_running_steps, Request.new %>
+      <li <%= tag_options({:class => class_per_page_path("currently_running_steps")}, false) %>><%= link_to 'Currently Running Steps', currently_running_steps_path(params_for_currently_running_steps) %></li>
+    <% end %>
+  <% end %>
+<% end %>

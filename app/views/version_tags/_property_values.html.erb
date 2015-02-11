@@ -1,0 +1,34 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2013
+# All Rights Reserved.
+################################################################################
+%>
+
+<% unless property_values.blank? %>
+    <%#= link_to "Edit values", edit_property_values_version_tag_path(@object, {:object => 'version_tag'}), :rel => 'facebox' %>
+    <%#= ("&nbsp;|&nbsp;").html_safe %>
+    <%#= link_to "Add Property", new_property_path(:object => @object.class.to_s.underscore, :object_id => @object.id), :rel => 'facebox' %>
+    <br>
+  <table class="formatted_table">
+	<thead>
+		<tr>
+		<th>Name</th>
+		<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+  <% property_values.each_with_index do |property_value, index| %>
+	<tr>
+        <td width="350" title="<%= property_value.property.name %>"><%= truncate(property_value.property.name, :length => 50) %></td>
+		<td title="<%= property_value.value %>"><%=truncate(property_value.value, :length => 150)%></td>
+	</tr>
+  <% end %>
+	</tbody>
+	</table>
+<% else %>
+    <%#= link_to "Add Property", new_property_path(:object => @object.class.to_s.underscore, :object_id => @object.id), :rel => 'facebox' %>
+<% end %>
+

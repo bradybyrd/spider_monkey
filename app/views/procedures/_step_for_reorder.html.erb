@@ -1,0 +1,20 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='step <%= class_for_component_color(step) %>' id='<%= dom_id(step) %>'>
+  <span class=<%= step.not_movable? ? 'not_movable' : '' %>>
+    <p <%= tag_options({:title => step.name}, false) %>>
+      <span class='step_number'><%= step.number %></span>
+      <%= truncate(step.name, :length => 22) %>
+    </p>
+  </span>
+  <%= form_tag update_position_procedure_step_path(procedure, step), :method => :put do %>
+    <!-- form is used for drag and drop steps -->
+  <% end %>
+
+</div>

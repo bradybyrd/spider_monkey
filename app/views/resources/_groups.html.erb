@@ -1,0 +1,49 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @groups.empty? %>
+  <h2>You are not currently managing any resource groups.</h2>
+<% else %>
+  <% if session[:status].blank? || session[:status] == "expand" %>
+    <div id='link'>
+      <%= render :partial => 'link_expand' %>
+    </div>
+    <img id='loader-expand' src='/images/loader.gif'>
+  <% else %>
+    <div id='link'>
+      <%= render :partial => 'link_close' %>
+    </div>
+    <img id='loader-close' src='/images/loader.gif'>
+  <% end %>
+  <table cellpadding='4' cellspacing='1'>
+    <thead>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </thead>
+    <% @groups.each do |group| %>
+      <tr class='heading'>
+        <td <%= tag_options({:colspan => '9', :style => "border-top:1px solid #CCCCCC;"}, false) %>>
+          <% if !session[:group_id].blank? %>
+            <% if session[:group_id].include?(group.id) %>
+              <%= render :partial => 'link_allocation_by_group' , :locals => { :link => group_toggle_link_text(group, true), :group => group  } %>
+              <%= render :partial => 'table_resource_allocation', :locals => { :group => group } %>
+            <% else %>
+              <%= render :partial => 'link_allocation_by_group' , :locals => { :link => group_toggle_link_text(group, false), :group => group  } %>
+              <%= render :partial => 'table_resource_allocation', :locals => { :group => group } %>
+            <% end %>
+          <% else %>
+            <%= render :partial => 'link_allocation_by_group' , :locals => { :link => group_toggle_link_text(group, false), :group => group  } %>
+            <%= render :partial => 'table_resource_allocation', :locals => { :group => group} %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <% session[:status] = "close" %>
+  </table>
+<% end %>

@@ -1,0 +1,48 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Components by Environment Map' %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+
+  <%= form_tag components_by_environment_maps_path, :class => 'cssform' do %>
+    <p>
+      <label for="environment_ids">Environments</label>
+      <%= select_tag :environment_ids, options_from_collection_for_select(@environments_for_select, :id, :name), :multiple => true %>
+      <%= select_clear_links('environment_ids') %>
+    </p>
+
+    <p><%= submit_tag "Map",:class =>'button' %></p>
+  <% end %>
+<% end %>
+
+<% if @environments.blank? %>
+  Please select environments to the right.
+<% else %>
+  <ul>
+    <% @environments.each do |environment| %>
+      <li><%= h environment.name %></li>
+      <ul>
+        <% Component.installed_on_environment(environment).each do |component| %>
+          <li><%= h component.name %></li>
+          <ul>
+            <% ServerAspect.on_component_in_environment(component, environment).each do |aspect| %>
+              <li><%= h aspect.path_string %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+<% end %>

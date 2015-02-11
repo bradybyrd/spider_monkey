@@ -1,0 +1,1 @@
+page.replace_html "error_messages", "<div id='errorExplanation' class='errorExplanation'><h2>Import operation encountered following errors</h2><ul>#{@validation_errors}</ul></div>"

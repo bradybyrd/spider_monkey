@@ -1,0 +1,96 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div  class="additional_info first last" style="padding:10px;width:700px">
+  <% if step.enabled_editing?(current_user) %>
+    <%= hidden_field_tag :Step_id, step.try(:id) %>
+    <%= hidden_field_tag 'step[component_id]', step.component_id  %>
+  <% end %>
+  <h2>Step: <%= step_attribute_value(step.number) %></h2>
+  <fieldset style="background-color:#E3EFFF;border: 1px solid #CCCCCC;padding-right: 10px;padding-bottom:10px;">
+     <div class="form_column left left_column" style="padding-top:10px;">
+      <div class="field">
+        <label >Name :</label>
+        <%= h(step.name)%>
+      </div>
+      <br class="clear"/>
+       <div class="field">
+         <label><%= I18n.t('type')%> :</label>
+           <%= step_attribute_value(package_component_type(step)) %>
+       </div>
+       <% if step.has_package? %>
+         <div class="field">
+         <label id='step_related_object_type' data-object-type="<%= step.related_object_type %>">
+           <%= I18n.t('step.package_instances')%> :
+         </label>
+         <%= step_attribute_value(package_instances_selection(step)) %>
+         </div>
+       <% end %>
+    </div>
+    <div class="form_column" style="padding-top:10px;">
+       <div class="field">
+        <label>Owner :</label>
+          <% if step.user_owner?  && (!step.owner_contact_number.nil?) %>
+            <%= name_of(step.owner)+" ("+step.owner_contact_number+")" %>
+         <%else%>
+            <%= name_of(step.owner) %>
+         <%end%>
+       </div>
+      <br class="clear"/>
+      <% if step.has_package? %>
+      <div class="field">
+        <label><%= I18n.t('step.package')%> :</label>
+        <div>
+          <%= step_attribute_value(step.package.name) %>
+        </div>
+      </div>
+      <% else %>
+        <div class="field">
+          <label><%= I18n.t('step.component') %> :</label>
+          <div>
+            <% if step.component.nil? %>
+                n/a
+            <% else %>
+                <%= step_attribute_value(step.component_name) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if step.enabled_editing?(current_user) && step.installed_component %>
+        <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:360px;">
+          <%= render :partial => 'steps/property_installed_components', :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
+        </div>
+      <% else %>
+        <% unless step.component.nil? %>
+          <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:360px;">
+            <label for="step_version" style="width:85px;text-align:left;float:left;padding: 0 15px 0 0;">Version :</label>
+            <%= step.component_version %>
+            <%= "(current version: #{step.installed_component.version})" if step.installed_component.try(:version).present? %>
+          </div>
+          <% if GlobalSettings.limit_versions? && step.component %>
+            <div>
+              <span class="component_version" style="margin-left: 95px;">&nbsp; Artifact URL: <%= "#{(step.version_tag && step.version_tag.artifact_url) ? raw(link_to step.version_tag.artifact_url, step.version_tag.artifact_url, :target => "_blank") : ""}".html_safe %>
+              </span>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </fieldset>
+  <%= render :partial => "steps/step_section_tabs", :locals => {:step => step, :request => request} %>
+</div>
+
+<% if step.enabled_editing?(current_user) %>
+  <div class="button_bar options" style="text-align:right;">
+    <div class="form_action_btns">
+      <%= button_to_function "Save Step", "submitStepFormFromFacebox($(this))" %>
+      &nbsp;
+    </div>
+  </div>
+<% end %>

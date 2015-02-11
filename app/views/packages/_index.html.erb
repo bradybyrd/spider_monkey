@@ -1,0 +1,102 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='packages'>
+  <h3>
+    Active
+  </h3>
+  <% unless @active_packages.blank? %>
+    <div class='line_h_20px active_package_pages'>
+      <%= will_paginate @active_packages %>
+    </div>
+    <table class='tablesorter formatted_table' name='active_table' id='active_table'>
+      <thead>
+        <tr>
+
+          <th width='40%'><%= sortable_link 'Name', 'name' %></th>
+          <th width='40%'>Applications</th>
+          <th width='20%'>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @active_packages.each do |package| %>
+          <tr id="package_<%= package.id %>" <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td title="<%= package.name %>">
+              <nobr>
+                <div class="truncated">
+                  <%= link_to_if can?(:edit, package), index_title(h(package.name)), edit_package_path(package, page: params[:page], key: params[:key]) %>
+                  <%= content_tag(:strong,"**not used**") if package.application_packages.empty?  %>
+                </div>
+              </nobr>
+            </td>
+            <td><%= package.application_packages.map { |app_package | h app_package.app.name  }.to_sentence %></td>
+            <td class='action_links'>
+              <nobr>
+                <% if can? :edit, package %>
+                  <span> <%= link_to 'Edit', edit_package_path(package, :page => params[:page], :key => params[:key]) %> </span>
+                <% end %>
+
+                <% if package.destroyable? && can?(:make_active_inactive, package) %>
+                  <span>
+                    <%= link_to 'Make Inactive', deactivate_package_path(package, :page => params[:page], :key => params[:key]), :method => :put %>
+                  </span>
+                <% end %>
+
+                <% if can?(:view_instances, package) %>
+                  <span> <%= link_to I18n.t('package.instances'), package_instances_path(package) %> </span>
+                <% end %>
+              </nobr>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <% unless @inactive_packages.blank? %>
+    <h3>
+      Inactive
+    </h3>
+    <div class='line_h_20px inactive_package_pages'>
+      <%= will_paginate @inactive_packages, param_name: :inactive_page %>
+    </div>
+    <table class='tablesorter formatted_table' name='inactive_table' id='inactive_table'>
+      <thead>
+        <tr>
+          <th width='80%'><%= sortable_link 'Name', 'name' %></th>
+          <th width='20%'>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inactive_packages.each do |package| %>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td title="<%= package.name %>">
+              <div class="truncated">
+                  <nobr>
+                    <%= link_to_if can?(:edit, package), h(package.name), edit_package_path(package) %>
+                    <%= content_tag(:strong,"**not used**")  %>
+                  </nobr>
+              </div>
+            </td>
+            <td class='action_links'>
+              <nobr>
+                <% if can? :make_active_inactive, package %>
+                  <%= link_to 'Make Active', activate_package_path(package, :page => params[:page], :key => params[:key]), :method => :put %>
+                <% end %>
+
+                <% if package.destroyable? && can?(:delete, package) %>
+                  <div class='spaced'>|</div>
+                  <%= link_to 'Delete', package_path(package,:page => params[:page], :key => params[:key]), :method => :delete, :confirm => "Are you sure?" %>
+                <% end %>
+              </nobr>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

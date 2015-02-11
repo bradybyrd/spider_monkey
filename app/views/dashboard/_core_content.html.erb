@@ -1,0 +1,22 @@
+<%
+   # #############################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   # #############################################################################
+%>
+<% if @request_dashboard[:can_view_requests_list] %>
+  <% if @request_dashboard[:requests_total_count] > 0 %>
+    <%= link_to "show steps", "#", :id => "show_request_steps", :rel => session_filter_var %>
+    <%= link_to "hide steps", "#", :id => "hide_request_steps", :style => "display: none;" %>
+  <% end %>
+
+  <% if @request_dashboard[:requests_total_count] == 0 %>
+    <p>There are no requests scheduled for this time.</p>
+  <% else %>
+    <%= render 'requests/list', requests: requests %>
+  <% end %>
+
+  <div class="deleted" style="display: none;"></div>
+<% end %>

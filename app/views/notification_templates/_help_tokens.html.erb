@@ -1,0 +1,84 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<hr>
+  <div id='toggleLink'>
+    <span style='font-weight:bold;font-size:11px'>Available Tokens:</span>
+    <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_tips" %>
+  </div>
+  <div id='auto_tips' style='display:none;'>
+    <p>
+      <strong>Liquid Templates:</strong>
+      BMC Release Process Management notification templates use Liquid Templates to provide flexible, yet secure access to information useful for composing notifications.
+      Available tokens for each system event are:
+    </p>
+    <p>
+      <div id='toggleLink'>
+        <span style='font-weight:bold;font-size:11px'>Exception raised</span>
+        <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_exception_raised" %>
+        <div id='auto_exception_raised' style='display:none;'>
+          <ul>
+            <% unless @available_tokens[:exception_event].blank? %>
+              <% @available_tokens[:exception_event].each do |token| %>
+                <li><%= token %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </p>
+    <p>
+      <div id='toggleLink'>
+        <span style='font-weight:bold;font-size:11px'>User login, password change, user created</span>
+        <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_user_events" %>
+        <div id='auto_user_events' style='display:none;'>
+          <ul>
+            <% unless @available_tokens[:user_event].blank? %>
+              <% @available_tokens[:user_event].each do |token| %>
+                <li><%= token %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </p>
+    <p>
+      <div id='toggleLink'>
+        <span style='font-weight:bold;font-size:11px'>Step started, completed, problem, blocked</span>
+        <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_step_events" %>
+        <div id='auto_step_events' style='display:none;'>
+          <ul>
+            <% unless @available_tokens[:step_event].blank? %>
+              <% @available_tokens[:step_event].each do |token| %>
+                <li><%= token %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </p>
+    <p>
+      <div id='toggleLink'>
+        <span style='font-weight:bold;font-size:11px'>Request completed, cancelled, message</span>
+        <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_request_events" %>
+        <div id='auto_request_events' style='display:none;'>
+          <ul>
+            <% unless @available_tokens[:request_event].blank? %>
+              <% @available_tokens[:request_event].each do |token| %>
+                <li><%= token %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </p>
+    <p>
+      More information on Liquid Templates is available at <%= link_to 'liquidmarkup.org', 'http://www.liquidmarkup.org/', :target => '_blank' %>.
+    </p>
+  </div>
+</hr>

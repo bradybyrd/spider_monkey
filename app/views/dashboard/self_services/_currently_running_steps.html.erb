@@ -1,0 +1,133 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% unless request.xhr? %>
+  <% content_for :sidebar do %>
+    <span></span>
+  <% end %>
+<% end %>
+<div id="request_and_calendar">
+  <% if can?(:view, :running_steps) || can?(:view_currently_running_steps, Request.new) %>
+    <div style="clear:left; text-align: right; margin: -3px 0 3px 0;">
+      <div id="toggleFilterLink">
+        <% if params[:filter_block_collapse_state_flag] == '1' %>
+          <%= link_to "Close Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% else %>
+          <%= link_to "Open Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="filterSection">
+      <%= render partial: 'steps/filters' %>
+    </div>
+
+    <br />
+
+    <%= render :partial => "dashboard/currently_running_steps_pagination" %>
+
+    <% if @steps.blank? %>
+      <p align="center">There are no Currently Running Steps</p>
+    <% else %>
+      <table id="steps_list" class="stepsList currently_running_steps formatted_table tablesorter">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Request Name</th>
+            <th>Step</th>
+            <th class="steps_list_status">Status</th>
+            <th>Step Name</th>
+            <%step_pref_bol = false%>
+            <%step_list_preferences_lists = current_user.step_list_preferences.active%>
+            <%unless step_list_preferences_lists.blank?%>
+                <%step_pref_bol = true%>
+            <%end%>
+            <%if step_pref_bol%>
+              <%step_list_preferences_lists.map{|srp| srp.step_preference_label}.each do |step_pref| %>
+                <%if step_pref == "est"%>
+                  <th>Estimate</th>
+                <%elsif step_pref == "task"%>
+                  <th>Work Task</th>
+                <%else%>
+                  <th><%=step_pref.humanize%></th>
+                <%end%>
+              <%end%>
+            <%else%>
+              <th>Component</th>
+              <th>Servers</th>
+              <th>Work Task</th>
+              <th>Version</th>
+              <th>Assigned To</th>
+              <th>Estimate</th>
+            <%end%>
+            <th>Started At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @steps.each do |step| %>
+            <tr class="<%= 'different_level_from_previous' if step.different_level_from_previous? %> container">
+              <td><%= link_to_if can?(:inspect, step.request), step.request.number, request_path(step.request) %>&nbsp;</td>
+              <td title="<%= h(step.request.name)%>" >
+                <% if step.request.name.present? %>
+                  <%= link_to_if(can?(:inspect, step.request), index_title(truncate(step.request.name, :length => 25).html_safe), request_path(step.request)) %>
+                <%end%>
+                <%= "<span class='holdRequestStep state'>On Hold</span>".html_safe if step.request.hold? %>&nbsp;
+              </td>
+              <td><%= link_to_if (can?(:inspect, step.request) && can?(:inspect_steps, step.request)),
+                                 step.number,
+                                 "#{request_path(step.request)}#step_#{step.id}_#{step.position}_heading" %>&nbsp;</td>
+              <td class="status pr_3 step_status_<%= step.aasm_state %>">
+                <div class="state">
+                  <%= step.aasm.current_state.to_s.humanize %>
+                </div>&nbsp;
+              </td>
+              <td title="<%= step.name %>">
+                <%= link_to_if (can?(:inspect, step.request) && can?(:inspect_steps, step.request)),
+                               truncate(index_title(step.name), :length => 25).html_safe,
+                               "#{request_path(step.request)}#step_#{step.id}_#{step.position}_heading" %>&nbsp;
+              </td>
+              <% if step_pref_bol %>
+                <%step_list_preferences_lists.each do |sp|%>
+                  <%step_pref = sp.step_preference_label%>
+                  <%if step_pref == "components"%>
+                    <td><%= step.component && h(step.component.name) %>&nbsp;</td>
+                  <%elsif step_pref == "servers"%>
+                    <td><%= name_list_sentence step.servers %>&nbsp;</td>
+                  <%elsif step_pref == "task"%>
+                    <td><%= step.work_task && h(step.work_task.name) %>&nbsp;</td>
+                  <%elsif step_pref == "version"%>
+                    <td><%= step.version_name %>&nbsp;</td>
+                  <%elsif step_pref == "assigned_to"%>
+                    <td>
+                      <i><%= step.owner_type %></i>&nbsp;:&nbsp;<%=  step.owner.name %>
+                    </td>
+                  <%elsif step_pref == "est"%>
+                    <td><%= step.estimate.nil? ? 'not specified' : hour_minute_estimate(step.estimate)%></td>
+                  <%end%>
+                <%end%>
+              <%else%>
+                <td><%= step.component && h(step.component.name) %>&nbsp;</td>
+                <td><%= name_list_sentence step.servers %>&nbsp;</td>
+                <td><%= step.work_task && h(step.work_task.name) %>&nbsp;</td>
+                <td><%= step.version_name %>&nbsp;</td>
+                <td>
+                  <i><%= step.owner_type %></i>&nbsp;:&nbsp;<%=  step.owner.name %>
+                </td>
+                <td><%= step.estimate.nil? ? 'not specified' : hour_minute_estimate(step.estimate) %></td>
+              <%end%>
+              <td><%= step.work_started_at.try(:default_format_date_time) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+</div>
+
+<%= javascript_tag("#{toggel_inbound_outbound_section_links}") %>

@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'dashboard' %>
+<% end %>
+<%= static_javascript_include_tag "dashboard" %>
+
+<% if defined?(@title) %>
+  <% page_settings :title => @title %>
+<% else %>
+  <% page_settings :title => 'Currently Running Steps' %>
+<% end %>
+<% content_for :page_section do %>
+<% user_group_id_params = {} %>
+<% user_group_id_params[:user_id] = @selected_user.id unless @selected_user.nil? %>
+<% user_group_id_params[:group_id] = @selected_group.id unless @selected_group.nil? %>
+<% user_group_id_params[:should_user_include_groups] = true unless @should_user_include_groups.nil? %>
+  <% draw_tabs :class => "dashboard_request_tab my_dashboard_tabs"+"#{' offset' unless params[:action]=='index'}" do %>
+    <%= sub_tab "Requests", :path => request_dashboard_path %>
+    <% if can? :view_calendar, Request.new %>
+      <%= sub_tab "Calendar", :path => (@show_all ? my_all_calendar_path : my_calendar_path) %>
+    <% end %>
+    <% if can? :view, :running_steps %>
+      <li  class="current">
+        <%= link_to 'Currently Running Steps', currently_running_steps_path(user_group_id_params),:class => "current"  %>
+      </li>
+    <% end %>
+  <% end %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, Request.new %>
+		<div class = "section">
+			<%= link_to image_tag("btn-create.png", :border => 0), new_request_path %>
+		</div>
+	<% end %>
+<% end %>
+
+<%= render :partial => "dashboard/self_services/currently_running_steps.html.erb" %>
+

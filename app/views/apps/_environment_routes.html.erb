@@ -1,0 +1,81 @@
+<div id="environmentRoutes" cellspacing="0" cellpadding="0" style="display:none;">
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+  <% title = "App | Routes" %>
+  <% page_settings :title => title %>
+  <% content_for :sidebar do %>
+      <%= button_to 'Create Route', new_app_route_path(app), :method => :get, :class => "button" %>
+  <% end %>
+  <% if routes.empty? %>
+      <div class='blank_data_msg'>
+        There are no routes at this time.
+      </div>
+  <% else %>
+      <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => routes,:metadata_type =>'route', :position => 'unarchived' } %>
+      <table class='tablesorter three_column_sorter formatted_table'>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Associated Event</th>
+          <th>Step/Request</th>
+          <th title='Count of associated requests'>#Requests</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% routes.each do |route| %>
+            <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+              <td><%= link_to index_title(h(route.name)), edit_route_path(route) %></td>
+              <td><%= route.human_associated_events %></td>
+              <td><%= route.categorized_type.capitalize %></td>
+              <td><%= "#{(route.categorized_type)=='request' ? route.count_of_associated_requests : route.count_of_existing_requests_through_step}" %></td>
+              <td>
+                <%= link_to I18n.t(:edit), edit_route_path(route) %>
+                <% if route.can_be_archived? %>
+                    &nbsp;|&nbsp;
+                    <%= link_to I18n.t(:archive), archive_route_path(route), :method => :put %>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
+  <% unless archived_routes.blank? %>
+      <h3><%= I18n.t(:archived) %></h3>
+      <%= render :partial => 'environments/metadata_pagination', :locals => { :metadata_model => archived_routes,:metadata_type =>'route', :position => 'archived' } %>
+      <table class='tablesorter one_column_sorter formatted_table'>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Associated Event</th>
+          <th>Step/Request</th>
+          <th title='Count of associated requests'>#Requests</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% archived_routes.each do |route| %>
+            <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+              <td><%= link_to h(route.name), edit_route_path(route) %></td>
+              <td><%= route.human_associated_events %></td>
+              <td><%= route.categorized_type.capitalize %></td>
+              <td><%= "#{(route.categorized_type.capitalize)=='REQUEST' ? route.count_of_associated_requests : route.count_of_existing_requests_through_step}" %></td>
+              <td>
+                <%= link_to I18n.t(:unarchive), unarchive_route_path(route), :method => :put %>
+                <% if route.destroyable? %>
+                    &nbsp;|&nbsp;
+                    <%= link_to I18n.t(:delete), route, :method => :delete, :confirm => "Are you sure you want to delete this route and its associations with steps and requests?" %>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
+
+</div>

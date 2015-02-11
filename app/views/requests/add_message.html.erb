@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>Notification Message</h2>
+<%= form_for @message, :url => send_message_request_path(@request, @transition), :html => { :id => "request_message_form", :class => "cssform", :method => :put } do |f| %>
+  <p>
+    <%= f.label :subject, "Subject" %>
+    <%= f.text_field :subject, :size => 41, :class => "width_380" %>
+  </p>
+  <p>
+    <label>Message</label>
+    <%= f.text_area :body, :class => "width_380", :rows => 10 %>
+  </p>
+  <%= hidden_field_tag 'message[sender_id]', current_user.id, :id => 'message_sender_id' %>
+  <%= f.submit "Send message" %>
+<% end %>
+

@@ -1,0 +1,4 @@
+$('#environment_server_ids').html(<%= options_from_collection_for_select(@servers, :id, :name, @selected_server_ids).to_json %>);
+$('#default_server_id').html("<option></option>" + <%= options_from_collection_for_select(@selected_servers, :id, :name, @selected_default_server_id).to_json %>);
+$('#environment_server_group_ids').html(<%= options_from_collection_for_select(@server_groups, :id, :name, @selected_server_group_ids).to_json %>);
+$('#environment_default_server_group_id').html("<option></option>" + <%= options_from_collection_for_select(@selected_server_groups, :id, :name, @selected_default_server_group_id).to_json %>);

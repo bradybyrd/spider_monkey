@@ -1,0 +1,334 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+/* life cycle */
+.auto_created_Request{background-image:url(<%= asset_path 'life_cycles/auto_created_Request.gif' %>);}
+.auto_planned_Request{background-image:url(<%= asset_path 'life_cycles/auto_planned_Request.gif' %>);}
+.auto_prepared_Request{background-image:url(<%= asset_path 'life_cycles/auto_prepared_Request.gif' %>);}
+.auto_started_Request{background-image:url(<%= asset_path 'life_cycles/auto_started_Request.gif' %>);}
+.auto_blocked_Request{background-image:url(<%= asset_path 'life_cycles/auto_blocked_Request.gif' %>);}
+.auto_problem_Request{background-image:url(<%= asset_path 'life_cycles/auto_problem_Request.gif' %>);}
+.auto_hold_Request{background-image:url(<%= asset_path 'life_cycles/auto_hold_Request.gif' %>);}
+.auto_cancelled_Request{background-image:url(<%= asset_path 'life_cycles/auto_cancelled_Request.gif' %>);}
+.auto_complete_Request{background-image:url(<%= asset_path 'life_cycles/auto_complete_Request.gif' %>);}
+.auto_deleted_Request{background-image:url(<%= asset_path 'life_cycles/auto_deleted_Request.gif' %>);}
+.no_Request{background-image:url(<%= asset_path 'life_cycles/no_Request.png' %>);}
+.life_cycle_arrow{width:25px; height:25px; float:right;}
+.life_cycle_arrow span a { border-bottom:none !important;}
+.life_cycle_arrow span{font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold; margin:5px 0px 0px 5px; display:inline-block;}
+.round_box_lc_created{background-color: #BECFE8;max-width:100px;}
+.round_box_lc_planned{background-color: #A7CAF1;max-width:100px;}
+.round_box_lc_prepared{background-color: #F6FB9F;max-width:100px;}
+.round_box_lc_started{background-color: #8AB96B;max-width:100px;}
+.round_box_lc_blocked{background-color: #AA2222;max-width:100px;}
+.round_box_lc_problem{background-color: #D48472;max-width:100px;}
+.round_box_lc_hold{background-color: #CF6347;max-width:100px;}
+.round_box_lc_cancelled{background-color: #DE4C20;max-width:100px;}
+.round_box_lc_complete{background-color: #76A9E1;max-width:100px;}
+.round_box_lc_deleted{background-color: #AAAAAA;max-width:100px;}
+.round_box_lc_no_request{background-color: #FFFFFF;max-width:100px;}
+
+td.plan_status_flowchart { padding-top: 10px !important; }
+/* td.plan_stages_flowchart { padding-top: 10px !important; max-width: 170px; line-height: 30px; padding-right: 10px;}*/
+ td.plan_stages_flowchart { padding-top: 10px !important; line-height: 30px; padding-right: 10px;} /* removed max-width: 170px; for no wrap*/
+
+.life_cycle{-moz-border-radius: 5px; -webkit-border-radius: 5px; border: 1px solid #000; padding: 5px; text-align:center;}
+.life_cycle span{font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold; margin:0px; padding:0px;}
+.life_cycle a{color:#1b23e9!important;}
+.plan_stage_circle { white-space: nowrap;}
+.line_left{border-left:solid 1px #000;}
+.line_right{border-right:solid 1px #000;}
+.line_top{border-top:solid 1px #000;}
+.line_bottom{border-bottom:solid 1px #000;}
+/* FIXME: this was incompatible with the rebranded tabs so I commented it out to keep the white box from dropping down
+.content { width:100%; padding: 2px 0px 0px 0px;}]
+.Left #content_box, .Full #content_box { width : 100%; clear:both; }
+******************************************************************** */
+table.layout td.left { width: 100%; text-align: left; }
+.tablesorter tfoot tr th { padding: 4px 4px 5px; }
+.vscroll_960 table.releases {border:1px solid #333;}
+div.tree div {padding-left: 16px;}
+div.tree div.parent div {display: none;cursor: default;}
+div.tree div.parent {cursor: pointer !important;background: transparent url(<%= asset_path 'plus.gif' %>) no-repeat top left;}
+div.tree div.expanded {background: transparent url(<%= asset_path 'minus.gif' %>) no-repeat top left;}
+.hideRelease {display:none;}
+/* Rally search forms for Release and Builds */
+.rally_form_right_justified {text-align:right; padding-right:20px !important; width:100px;}
+.rally_project_right_justified {padding-left:28px !important; padding-right:24px !important; text-align:right; width:100px;}
+.add_new_detail div.field input.small_time_field { width: 3em; }
+#rally_search_form td, #projects_data td {padding-bottom:5px;}
+#rally_search_form input, #rally_search_form select, #projects_data input, #projects_data select {width:150px;}
+#projects_data  input[type=checkbox], #rally_search_form input[type=checkbox]{width:20px!important;}
+#project_iterations_releases{display:none;}
+table#release_calendar tr td.month_year{background:none repeat scroll 0 0 #333333;font-size:16px;color:#FFFFFF;}
+table#release_calendar tr td.release_title{background:none repeat scroll 0 0 #d9d9d9;font-size:12px;}
+table#release_calendar tr td.environments{background:none repeat scroll 0 0 #bfbfbf;font-size:12px;}
+table#release_calendar tr td.projects {background:none repeat scroll 0 0 #d9d9d9;}
+table.stages_even {background:none repeat scroll 0 0 #fcefe4;}
+table.stages_odd {background:none repeat scroll 0 0 #fcefe4;}
+.stage_dates{margin-left:24%;margin-top:-1%;width:60% !important;}
+.requestList{background-color:#FFFFFF!important;}
+.requestList tbody td.person_cell{padding-right:14px;}
+
+table#plans_1 tr.even, table#plans_1 tr.odd { height: 50px; margin-top: 5px; }
+
+table.stage_dates tr td{padding-bottom:3px!important;padding-top:8px!important;padding-left:2px!important;}
+#facebox table.stage_dates { padding-left:0!important;  width:71%!important;}
+.wrap_stage_tbl { margin-left:118px; }
+#facebox .wrap_stage_tbl { margin-left:0px; }
+#facebox .popup .body .content form#new_run #run_start_at label.calendar,
+#facebox .popup .body .content form#new_run #run_end_at label.calendar,
+#facebox .popup .body .content form#new_run .marginlr15 #run_request_table_scroll table.selected_requests .request_in_run td:nth-child(6) {
+  min-width: 112px;
+  padding: 0;
+}
+div.scrollingDiv { overflow: auto; height: 157px; }
+.content table.stage_dates {width:100%!important; position:relative;float:right;border:solid 1px #ccc;margin-top:5px;}
+.content table.edit_stage_dates {width:100%!important; float:left;border:solid 1px #ccc;margin-top:5px;}
+.content table.edit_stage_dates td {padding: 5px!important;}
+div.plan_edit_facebox #form_stage_date_label { text-align: left!important; }
+table.stage_dates tr td label.calendar img{display:block;}
+/*input.date{width:72px;} */
+.ml_n28{margin-left:-100px;margin-top:10px!important;}
+form.plan_members div.field select {
+  width: 350px;
+}
+form.plan_members div.field label {
+  width: auto;
+  text-align: left;
+}
+#plan_stats {
+  padding-top: 5px;
+}
+#plan_stats ol {
+  padding-left: 1.75em;
+}
+#plan_stats ol li {
+  margin-bottom: 10px;
+}
+#plan_stats ol li div {
+  overflow: hidden;
+}
+#plan_stats ol li div b {
+  float: left; display: block; width: 140px; margin-right: 5px;
+}
+#plan_instructions {
+  padding-top: 5px;
+}
+#plan_instructions ul {
+  padding-left: 1em;
+}
+#plan_instructions ul li {
+  margin-bottom: 10px;
+}
+#plan_prepare_activity { width: 800px; }
+#plan_prepare_activity label {
+  font-size: 14px;
+  font-weight: normal;
+  width: 180px;
+  padding-right: 5px;
+}
+#plan_prepare_activity input,
+#plan_prepare_activity select { width: 250px; }
+#plan_prepare_activity textarea { width: 450px; height: 3.5em; font-family: arial, sans-serif; }
+#plan_prepare_activity p.stitched_date input { width: 80px; }
+#plan_prepare_activity p.stitched_date select { width: 50px; }
+#plan_prepare_activity input.date { width: 80px; }
+#plan_prepare_activity label.calendar { width: auto; }
+#plan_prepare_activity label.calendar img { float: right; padding-left: 3px; width: 25px; }
+#plan_prepare_activity h3 { padding-left: 15px; }
+#plan_request span input { vertical-align:middle; width: 10px; }
+#plan_request span input[type=submit] { width: 115px; }
+#plan_prepare_activity .border {
+  border: 1px solid #5F5F5F;
+  padding: 10px;
+  margin-bottom: 6px;
+  -webkit-box-shadow: 3px 3px 10px #666;
+  -moz-box-shadow: 3px 3px 10px #666;
+}
+.plan_form_p{margin-top:15px !important; margin-left:17px !important; }
+.plan_form_span
+{
+	display: block;
+	float: left;
+	margin-left: -115px;
+	width: 105px;
+	margin-top:-4px
+}
+.plan_form_span input{width:10px; margin-left:98px;}
+.plan_stage_label
+{
+	float:left;
+	width:100px;
+	font-weight:bold;
+	font-size:14px;
+	position:absolute;
+	margin-top:10px;
+	text-align:right;
+}
+.cg_number, .ticket_number{color:#2C5C8A;}
+.contentCol2 p {clear:both}
+.stage_list_wrapper hr{
+    display:block;
+    height:1px;
+    border:0;
+    border-top:2px solid #004376;
+    border-bottom:1px solid #444;
+    margin:25px 0px;
+}
+.stage_list_wrapper {margin:0; padding:0; width:100%; overflow:hidden; overflow-y:hidden;}
+.stage_list_wrapper .member_statuses {
+  overflow: auto;
+  clear: both;
+ }
+
+/*table.requestList { min-width:850px; overflow:auto;}*/
+.p_link_life_details { vertical-align: bottom; text-align: left!important; clear: both!important; float: none; margin-bottom: 12px; }
+.app_tbl { width:75%!important;margin-top:5px;border-left:1px solid #005293;}
+.week_tbl, .project_calendar_tbl { border-collapse:collapse; width:100%; }
+.project_calendar_tbl td, .project_calendar_tbl th {
+	border:solid 1px #666!important;
+	text-align:left;
+	color:#333;
+	padding:5px;
+}
+.prj_calendar_wrap { overflow:auto; overflow-y:hidden; }
+.week_tbl td{ padding:0 5px; vertical-align:middle!important; text-align:center}
+.week_tbl th { white-space:nowrap; border-left:none!important;}
+.plan_name_txt{font-size:12px;font-weight:bold}
+.content { width:auto!important}
+a.and_text { background:url(<%= asset_path 'and_text.png' %>) no-repeat; width:52px; height:19px; display:inline-block; margin-left:4px;}
+a.or_text { background:url(<%= asset_path 'or_text.png' %>) no-repeat; width:52px; height:19px; display:inline-block; margin:0 4px;}
+a.dn { background:url(<%= asset_path 'closex_hover.gif' %>) no-repeat; width:17px; height:19px; }
+#keyword_fields_ { width:95%}
+.stage_name h2 { cursor:pointer; }
+.stage_name h2.subdued { cursor:pointer; color: #666; font-size: 11pt;}
+
+form #release_date_label { float: left; }
+
+.report_title_row{ font-size: 125%; font-weight:bold }
+select.select_run_for_stage { padding-left: 5px; min-width: 230px;}
+.run_detail {
+	clear:left;
+	background-color:#DEE0E0;
+	padding: 10px;
+	padding-left: 20px;
+	overflow: auto;
+	width: 100%;
+}
+.run_info .run_detail_row span {
+	padding-right: 20px;
+}
+.run_info {
+/*	float: left;*/
+}
+span.run_status {
+	float: right;
+	margin-right: 12px;
+	margin-left: 20px;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 5px 7px 5px 7px;
+}
+.run_buttons {
+	float: right;
+	padding-right: 40px;
+}
+
+.run_buttons form {
+	float: right;
+	padding-bottom: 5px;
+	display:block;
+	margin-right: 5px;
+}
+
+.run_name h4 {
+	display:inline;
+	margin-right: 20px;
+}
+
+.stage_timelines span {
+    float: left;
+    display: inline;
+    padding-right: 5px;
+}
+
+.stage_timelines div#request_menu {
+  display: inline;
+  float: right;
+  padding-left: 140px;
+}
+.stage_name{ float: left;}
+.stage_timelines{margin-top: 0px; float:right; margin-bottom: 10px;line-height:15px;}
+.stage_timelines form {display: inline;}
+
+.run_section div#runs_menu {
+    display: inline;
+    padding-right: 5px;
+    min-width: 100%;
+}
+
+.run_section select.select_run_for_stage {
+    display: inline;
+    padding-left: 40px;
+    min-width: 200px;
+    float: right;
+}
+.stage_name{ float: left;}
+.run_section{margin-top: 10px; float:left; width: 100%; margin-bottom: 10px;line-height:15px;}
+.run_section form {display: inline;}
+
+
+/*
+ * Run new facebox form styles
+ */
+div#run_request_table_scroll {
+	overflow:auto;
+	max-height: 150px;
+}
+
+
+/*
+ * Ticketing filter styles for associating external tickets
+ */
+div.query_tickets {
+	padding: 10px 15px 10px 15px;
+	min-width:700px;
+	max-width: 1200px;
+}
+.tickets #facebox {
+    position: absolute;
+    left: 20% !important;
+    right: 20% !important;
+}
+
+div#automation_selection_header {
+	margin-bottom: 20px;
+}
+span#ticket_project_server_selector {
+	margin-right: 5px;
+}
+span#ticket_project_server_selector select, span#ticket_resource_automation_selector select {
+	width: 150px;
+}
+span#saved_query_selector {
+	margin-right: 5px;
+}
+div#ticket_filter_arguments {
+	border: 1px solid #C6C6C6;
+	padding: 10px 10px 10px 10px;
+}
+div#ticket_filter_arguments div.script_parameter_mapping {
+	border-top: none;
+}
+div#ticket_filter_results {
+	margin-top: 10px;
+	max-height: 300px;
+	overflow-y:auto;
+}
+input#tickets_assign_to_plan {
+	margin: 10px 0px 10px 0px;
+}

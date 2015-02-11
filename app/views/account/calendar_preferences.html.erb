@@ -1,0 +1,37 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings :title => 'Calendar Preferences' %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'system_settings' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<% content_for :page_section do %>
+  <%= render 'users/tabs', selected: 'settings', tab_view: true %>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render 'account/tabs', selected: 'calendar preferences' %>
+  </div>
+  <div class='content'>
+
+    <% if can?(:manage_calendar_preferences, GlobalSettings.new) %>
+      <%= form_tag settings_update_path, class: 'inline no_submit', id: 'steps_list', method: :put do %>
+        <%= render 'users/calendar_preferences',
+                   preferences: GlobalSettings[:calendar_preferences],
+                   tbl_object: 'GlobalSettings',
+                   calendar_fields: @calendar_fields
+        %>
+        <%= hidden_field_tag :redirect_path, calendar_preferences_path %>
+      <% end %>
+    <% end %>
+
+  </div>
+</div>

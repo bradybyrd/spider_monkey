@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id="<%= dom_id(step) %>" class="step procedure">
+  <p>
+    <%= link_to image_tag('triangle_unfolded.gif'), collapse_procedure_request_step_path(request, step), :class => 'collapse_procedure' %>
+    <%= h step.name %>
+  </p>
+
+  <div id="procedure_steps_container">
+    <%= render :partial => 'steps/reorder_steps', :locals => { :request => request, :parent_step => step, :start_number => start_number } %>
+    <div class="right_align">
+      <% unless step.not_movable? %>
+        <%= form_for [request, step], :html => { :method => :delete } do %>
+          <%= image_submit_tag 'bin_empty.png', :class => 'delete_procedure' %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+
+  <!-- form is used for drag and drop steps -->
+  <%= form_tag update_position_request_step_path(request, step), :method => :put do %>
+  <% end %>
+</div>
+

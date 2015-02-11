@@ -1,0 +1,27 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings title: I18n.t(:'notification_template.titles.notification_templates') %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => {:selected => 'settings', :tab_view => true} %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can?(:create, NotificationTemplate.new) %>
+    <%= link_to I18n.t(:'notification_template.buttons.create'), new_notification_template_path %>
+  <% end %>
+
+  <%= render :partial => 'help' %>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render :partial => 'account/tabs', :locals => {:selected => 'notification templates'} %>
+  </div>
+  <div class='content'>
+    <%= render :partial => 'index' %>
+  </div>
+</div>

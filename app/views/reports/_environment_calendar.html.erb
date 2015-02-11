@@ -1,0 +1,36 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% p = @environment_calendar["p"] if @environment_calendar["p"].present? %>
+<% @environment_calendar.delete("p") if @environment_calendar["p"].present? %>
+
+<% total_number_of_taskbars = 0 %>
+<% @environment_calendar.each_value do |hash_value| %>
+   <% total_number_of_taskbars = total_number_of_taskbars + hash_value.count %>
+<% end %>
+
+<% total_chart_height = total_number_of_taskbars * 35 %>
+ 
+ <% if total_number_of_taskbars <= 4 %>
+   <% total_chart_height = total_chart_height + ((total_number_of_taskbars) * 45) %>
+ <% end %>
+ 
+ <% if total_number_of_taskbars == 1 %>
+   <% total_chart_height = total_chart_height + ((total_number_of_taskbars) * 75) %>
+ <% end %>
+
+<% @environment_calendar["p"] = p if p.present? %>
+<% screen_width = @width.blank? ? 1024 : @width %>
+<% usable_width = screen_width %>
+
+<% str_xml = render(:file => '/reports/environment_calendar.builder', :locals => {:environment_calendar => @environment_calendar, :width => @width})  %>
+<%render_chart "#{context_root}/assets/FusionWidgets/Charts/Gantt.swf", "", str_xml, "myFirst", (usable_width.present?) ? usable_width : 900, total_chart_height, false, false do-%> 
+<%end%>
+
+

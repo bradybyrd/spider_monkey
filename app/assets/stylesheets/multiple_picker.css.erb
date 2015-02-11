@@ -1,0 +1,88 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+/* tables */
+div.multiple-picker-container {
+	font-family:arial;
+	background-color: #FFF;
+	margin:10px 0pt 15px;
+	width: 100%;
+	text-align: left;
+    padding: 10px;
+    float:left;
+    vertical-align: middle;
+
+}
+div.multiple-picker-data {
+	background-color: #FFF;
+	/*border: 1px solid #888;*/
+}
+
+.multiple-picker-controls,
+.multiple-picker-data {
+    float: left;
+}
+
+#facebox > .popup .button_bar{
+    /* IE defect fix: buttons_bar width was bigger than it should be */
+    width: 100%;
+    clear: left;
+}
+
+.multiple-picker-controls{
+    display: inline-block;
+    text-align: center;
+    padding:  15px 20px 0px 20px;
+    margin-top: 20px;
+}
+
+.multiple-picker-controls a{
+    text-decoration: none;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+
+.multiple-picker-data select{
+    width:  180px;
+    float: left;
+    clear: both;
+}
+
+div.multiple-picker-container input{
+    width:  180px;
+    margin:  2px 0px;
+    float: left;
+    clear: both;
+}
+
+div.multiple-picker-container input.search {
+    height: 14px;
+    margin: 4px;
+    padding-left: 15px;
+    width: 100px;
+    color: black;
+    content: 'search';
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    background: url(<%= asset_path 'self_services/search_btn_dash.gif'%>) no-repeat #FFFFFF;
+    background-size:15px 16px;
+}
+
+div.multiple-picker-container input.search::-ms-clear {
+    display: none;
+}
+
+.ui-corner-all {
+    border-radius: 4px;
+}
+
+.ui-state-active{
+    border: 1px solid #FBD850;
+    color: #EB8F00;
+    font-weight: bold;
+}

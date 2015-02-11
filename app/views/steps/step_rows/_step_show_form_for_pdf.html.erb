@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr id="step_<%= step.id  %>_<%= step.position %>_section" 
+    class="<%= step_section_row_class(step, local_assigns[:unfolded], invalid_component,(@last_step_of_req && step.id.eql?(@last_step_of_req.id))) %>"
+    style="<%= 'display: none;' unless local_assigns[:unfolded] %>">
+	<%= render :partial => 'steps/step_rows/step_section_for_pdf.html', :locals => { :request => request, :step => step, :unfolded => unfolded, :invalid_component => nil } %>
+</tr>

@@ -1,0 +1,13 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+"en":
+  activerecord:
+    errors:
+      messages:
+        blank: "must not be blank"
+        inclusion: "must include"

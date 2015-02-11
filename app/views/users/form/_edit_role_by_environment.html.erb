@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table cellspacing='0' padding='0'>
+  <tr>
+    <td colspan='2'>
+      <h3>Edit Role by Environment</h3>
+      <p>Assign user to a role for each environment</p>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td align='right' width='250'>
+      <p style='width:150px; text-align:right;'>
+        Set the user visibility and role by environment for all applications which have these environments. User roles by application and environment can be further specialized below
+      </p>
+    </td>
+    <td>
+      <table <%= tag_options({:id => "env_roles", :cellspacing => "0", :align =>"left", :style =>"border:1px solid #000000; width:100%;"}, false) %>>
+        <thead>
+          <tr>
+            <th>Environment</th>
+            <th>Application</th>
+            <th>Visible</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Environment.active.name_order.each do |env| %>
+            <tr <%= tag_options({:rel => "env_#{env.id}", :class => cycle("alt", "")}, false) %>>
+              <td><%= env.name %></td>
+              <td <%= tag_options({:title => to_sentence(env.app_names)}, false) %>><%= truncate(to_sentence(env.app_names), :length => 60) %></td>
+              <td><%= check_box_tag "user[env_roles][#{env.id}][visible]", 1, false, { :rel => "Env_#{env.id}", :onchange => "disableInvisibleEnv()" } %></td>
+              <td><%= select_tag "user[env_roles][#{env.id}][role]", options_for_select(Role::SmartRelease) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'dashboard', 'calendar' %>
+<% end %>
+<% page_settings :title => "Calendar - #{@plan.template_type.titleize} - #{@plan.name}" %>
+<%= render :partial => "plans/show", :locals => {:selected => "calendar"} %>
+<div class='content'><%= render :partial => "dashboard/self_services/calendar", :locals => {:open_filter_link => true} %></div>

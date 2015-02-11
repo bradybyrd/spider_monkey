@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<form class="cssform">
+	<p>
+		<label for="environment_ids">Environments</label>
+		<%= select_tag :environment_ids, options_from_collection_for_select(@environments, :id, :name), :multiple => true %>
+	</p>
+	<p><%= button_to_function "Map", "showSelectedEnv()" %></p>
+</form>

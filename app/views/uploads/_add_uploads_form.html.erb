@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<label class='columize_upload_lable'>Uploads:</label>
+<div id='upload_form'>
+  <%= f.fields_for :uploads do |builder| %>
+    <%= render :partial => 'uploads/upload_fields', :locals => {:owner => owner, :builder => builder } %>
+  <% end %>
+	<%= link_to_add_fields "Add", f, :uploads, 'uploads' %>
+</div>

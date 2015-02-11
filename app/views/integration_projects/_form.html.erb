@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+</div>
+<div class='field'><%= render :partial => "integration_projects/releases", :locals => {:project => @integration_project} %></div>
+<div class='field'>
+  <%= submit_tag "Save", class: 'button save_integration_project' %>
+  or
+  <%= link_to "Cancel", project_server_integration_projects_url(@project_server) %>
+</div>

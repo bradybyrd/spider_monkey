@@ -1,0 +1,16 @@
+<fieldset>
+  <p class='in_form'>
+    <% if builder.object.new_record? %>
+      <%= file_field_tag "argument[#{argument_id}][step_script_argument][uploads_attributes][#{Time.now.strftime('%s')}][attachment]", :class => "upload_file_field" %>
+      <%= hidden_field_tag "argument[#{argument_id}][step_script_argument][uploads_attributes][#{Time.now.strftime('%s')}][attachment_cache]" %>
+      <%= hidden_field_tag "argument[#{argument_id}][step_script_argument][uploads_attributes][#{Time.now.strftime('%s')}][_destroy]", false %>      
+    <% else %>
+      <%= link_to_upload(builder.object) %>
+      <%= hidden_field_tag "argument[#{argument_id}][update_step_script_argument][uploads_attributes][attachment_cache]" %>      
+      <%= hidden_field_tag "argument[#{argument_id}][update_step_script_argument][uploads_attributes][id]", builder.object.id %>
+      <%= hidden_field_tag "argument[#{argument_id}][update_step_script_argument][uploads_attributes][_destroy]", false %>
+    <% end %>
+
+    <%= link_to "remove", '#', class: "remove_argument_fields" %>
+  </p>
+</fieldset>

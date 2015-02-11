@@ -1,0 +1,11 @@
+<% app_name = app_id.nil? ? "unassigned" : App.find_by_id(app_id).try(:name) %>
+<tr>
+  <td class='report_title_row' <%= tag_options({:colspan => 4}, false) %>>
+    <h3>
+      <%= "App: #{app_name}" %>
+    </h3>
+    <%= "Runs: #{plan.runs.nil? ? " - " : run_name_links_for_app(plan, app_id)}".html_safe %>
+    <br/>
+    <%= "Requests: #{app_id.nil? ? " - " : request_name_links_for_app(plan, app_id)}".html_safe %>
+  </td>
+</tr>

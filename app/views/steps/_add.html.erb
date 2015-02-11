@@ -1,0 +1,17 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% if can? :add_step, request %>
+  <td colspan="14">
+    <div class="fl">
+      <%= link_to I18n.t(:'step.buttons.new'), new_request_step_path(request),
+                  remote: true, class: 'new_step button', rel: 'facebox'
+      %>
+    </div>
+  </td>
+<% end %>

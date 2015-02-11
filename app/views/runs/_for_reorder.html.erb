@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="plan_member component_color_1" title="<%= member.request.request_label_with_id %>">
+  <p><%= truncate(member.request.request_label_with_id, :length => 20) %></p>
+  
+
+  <!-- form is used for drag and drop components -->
+  <%= form_for [member], :url => update_member_order_plan_run_path(:plan_id => run.plan.id, :id => run.id, :plan_member_id => member.id) do |f| %>
+  <% end %>
+</div>
+

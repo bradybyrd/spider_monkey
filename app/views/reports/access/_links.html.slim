@@ -1,0 +1,4 @@
+ul.side_links
+  - if can? :view, :roles_map_report
+    li= link_to t('reports.view_access.roles_map.title'), reports_access_roles_map_path
+

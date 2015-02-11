@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr class="request_steps <%= step.should_execute? ? '' : ' step_off'%>" >
+
+  <td class="step_status_<%= step.aasm.current_state %> status">
+    <%= link_to_request_with_open_step req, step, content_tag(:div, h(step.aasm.current_state), :class => "state" ) %>
+  </td>
+  <td class="request_number"><nobr><%= "#{req.number}: #{step.number}" %></nobr></td>
+  <% unless @request_active_list_preferences.blank? %>
+    <td></td>
+  <% end %>
+<% (@request_active_list_preferences.blank? ? Preference::StepRequestColumnlist.map{|rp| rp.gsub(/request_|_td/, '')} : @request_active_list_preferences.map{|rp| rp.preference_label}).each do |req_pref| %>
+       <%
+    case req_pref
+    when "name" then %>
+      <td><%= ensure_space step.name %></td>
+    <% when "owner" then %>
+      <%= request_owner_td(req) %>
+    <% when "business_process" then %>
+      <td><%= ensure_space step.work_task && h(step.work_task.name) %></td>
+    <% when "release" then %>
+      <%= request_release_td(req) %>
+    <% when "scheduled" then %>
+      <td class="date"><%= step.start_by && step.start_by.try(:default_format_date_time) %></td>
+    <% when "duration" then %>
+      <td><%= hour_minute_estimate step.estimate if step.estimate %></td>
+    <% when "due" then %>
+      <td class="date"><%= step.complete_by && step.complete_by.try(:default_format_date_time) %></td>
+    <% when "created" then %>
+      <td><%= step.created_at && step.created_at.try(:default_format_date_time) %></td>
+    <% when "participants" then %>
+      <td><%= ensure_space ERB::Util.html_escape( name_of(step.owner) ) unless step.owner_id.blank? %></td>
+    <% when "plan_process" then %>
+      <td>&nbsp;</td>
+    <% else %>
+      <td>&nbsp;</td>
+    <% end %>
+  <% end %>
+</tr>

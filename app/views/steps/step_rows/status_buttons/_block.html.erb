@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if step_category_available_for?(step, 'block') %>
+  <%= link_to image_tag('icon-btn-block.png', :alt => 'Block', :title => 'Block'),
+              abstract_add_category_request_step_path(request, step, :associated_event => 'block'), 
+              :class => 'button change_step_status_form', :remote => true, :rel => 'facebox', :id => "image_block_step_#{step.id}" %>
+<% else %>
+  <%= image_submit_tag 'icon-btn-block.png', :alt => 'Block',:title => 'Block' ,:name => 'block', :id => "block_step_#{step.id}", :class => 'spinner', :disabled => request.hold? %>
+<% end %>

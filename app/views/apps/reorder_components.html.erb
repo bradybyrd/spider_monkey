@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => "Reorder Components for Application #{@app.name}", :full_screen => true %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/object_group_drop_zone', 'drag_and_drop/helpers' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <p>&nbsp;</p>
+<% end %>
+
+<div id="components_container">
+  <%= render :partial => 'apps/reorder_components', :locals => {:app => @app} %>
+</div>

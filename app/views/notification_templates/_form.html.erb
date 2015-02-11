@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :title, "*Title" %>
+  <%= f.text_field :title, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :format, "*Delivery Format" %>
+  <%= f.select :format, @supported_formats %>
+</div>
+<div class='field'>
+  <%= f.label :event, "*System Event" %>
+  <%= f.select :event, @supported_events %>
+</div>
+<div class='field'>
+  <%= f.label :description %>
+  <%= f.text_area :description, :rows => 2 %>
+</div>
+<div class='field'>
+  <%= f.label :subject, "Email Subject" %>
+  <%= f.text_area :subject, :rows => 2 %>
+</div>
+<div class='field'>
+  <%= f.label :body, "*Email Body" %>
+  <%= f.text_area :body %>
+</div>
+<div class='field'>
+  <%= f.label :active, "*Is Active?" %>
+  <%= f.check_box :active %>
+</div>

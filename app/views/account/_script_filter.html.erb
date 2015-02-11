@@ -1,0 +1,38 @@
+<div class="alt" id="financials_filters">
+  <%= form_tag automation_scripts_path, :id => 'filter_form', :style => 'display: inline', :class => "script_filter" do %>
+      <table align="center" cellpadding="0" cellspacing="0" style="width:100%">
+        <tbody>
+          <tr>
+            <td>
+              <label for="automation_category">Automation Category:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "automation_category", :filter_options => List.get_list_items("AutomationCategory")} %>
+            </td>
+            <td>
+              <label for="automation_type">Automation Type</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "automation_type", :filter_options => ["Automation", "ResourceAutomation"]} %>
+            </td>
+            <td>
+              <label for="render_as">Render As</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "render_as", :filter_options => ["List", "Table", "Tree"]} %>
+            </td>
+          </tr>        
+          <tr>
+            <td colspan="3" style="text-align: left">&nbsp;</td>
+            <td style="text-align: right"><%= link_to "clear", '#', :class => 'clear_script_filters' %></td>
+            <%= hidden_field_tag 'clear_filter', '0' %>
+          </tr>
+        </tbody>
+      </table>
+      <%= hidden_field_tag 'filter_block_collapse_state_flag', "#{@open_filter ? 1 : 0}" %>
+      <% if @filters %>
+        <% ['automation_category', 'automation_type', 'render_as'].each do |f| %>
+          <% if @filters[f] %>
+            <% @filters[f].each do |v| %>
+              <%= hidden_field_tag "filters[#{f}][]", v, :class => 'filter_hidden' %>
+            <% end %>
+          <% end %>
+        <% end %>
+    <% end %>
+  <% end %>
+</div>
+<%= javascript_tag("setFilters(#{(@filters||'').to_json})") %>

@@ -1,0 +1,127 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+releases_003: 
+  name: Q3 Sep 08
+  updated_at: <%= -13461.88411.seconds.ago %>
+  id: 3
+  position: 11
+  active: false
+  created_at: <%= 6555463.115947.seconds.ago %>
+releases_014: 
+  name: November
+  updated_at: <%= -13461.884022.seconds.ago %>
+  id: 14
+  position: 5
+  active: true
+  created_at: <%= 6555463.116014.seconds.ago %>
+releases_004: 
+  name: Q4 Dec 08
+  updated_at: <%= -13461.883958.seconds.ago %>
+  id: 4
+  position: 12
+  active: false
+  created_at: <%= 6555463.116073.seconds.ago %>
+releases_015: 
+  name: December
+  updated_at: <%= -13461.883899.seconds.ago %>
+  id: 15
+  position: 6
+  active: true
+  created_at: <%= 6555463.116134.seconds.ago %>
+releases_005: 
+  name: Q1 Mar 09
+  updated_at: <%= -13461.883838.seconds.ago %>
+  id: 5
+  position: 13
+  active: false
+  created_at: <%= 6555463.116192.seconds.ago %>
+releases_016: 
+  name: January
+  updated_at: <%= -13461.883779.seconds.ago %>
+  id: 16
+  position: 7
+  active: true
+  created_at: <%= 6555463.116254.seconds.ago %>
+releases_006: 
+  name: March
+  updated_at: <%= -13461.883717.seconds.ago %>
+  id: 6
+  position: 14
+  active: false
+  created_at: <%= 6555463.116313.seconds.ago %>
+releases_017: 
+  name: February
+  updated_at: <%= -13461.88366.seconds.ago %>
+  id: 17
+  position: 8
+  active: true
+  created_at: <%= 6555463.116374.seconds.ago %>
+releases_007: 
+  name: April
+  updated_at: <%= -13461.883598.seconds.ago %>
+  id: 7
+  position: 15
+  active: false
+  created_at: <%= 6555463.116432.seconds.ago %>
+releases_008: 
+  name: May
+  updated_at: <%= -13461.883501.seconds.ago %>
+  id: 8
+  position: 16
+  active: false
+  created_at: <%= 6555463.116534.seconds.ago %>
+releases_009: 
+  name: June
+  updated_at: <%= -13461.883437.seconds.ago %>
+  id: 9
+  position: 17
+  active: false
+  created_at: <%= 6555463.116594.seconds.ago %>
+releases_010: 
+  name: July
+  updated_at: <%= -13461.883378.seconds.ago %>
+  id: 10
+  position: 1
+  active: true
+  created_at: <%= 6555463.116656.seconds.ago %>
+releases_011: 
+  name: August
+  updated_at: <%= -13461.883316.seconds.ago %>
+  id: 11
+  position: 2
+  active: true
+  created_at: <%= 6555463.116717.seconds.ago %>
+releases_001: 
+  name: Q1 Mar 08
+  updated_at: <%= -13461.883254.seconds.ago %>
+  id: 1
+  position: 9
+  active: false
+  created_at: <%= 6555463.116776.seconds.ago %>
+releases_012: 
+  name: September
+  updated_at: <%= -13461.883196.seconds.ago %>
+  id: 12
+  position: 3
+  active: true
+  created_at: <%= 6555463.116837.seconds.ago %>
+releases_002: 
+  name: Q2 Jun 08
+  updated_at: <%= -13461.883135.seconds.ago %>
+  id: 2
+  position: 10
+  active: false
+  created_at: <%= 6555463.116895.seconds.ago %>
+releases_013: 
+  name: October
+  updated_at: <%= -13461.883077.seconds.ago %>
+  id: 13
+  position: 4
+  active: true
+  created_at: <%= 6555463.116956.seconds.ago %>

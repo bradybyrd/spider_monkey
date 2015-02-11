@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<html>
+  <head>
+    <%= stylesheet_link_tag "screen", "extra", "request", "calendar",  :media => 'screen' %>
+    <!--[if lt IE 8]>
+      <%= stylesheet_link_tag "ie7.css" %>
+    <![endif]-->
+    <!--[if IE 8]>
+      <%= stylesheet_link_tag "ie8.css" %>
+    <![endif]-->
+    <%= yield :head %>
+  </head>
+  <body>
+    <div id='WrapperPDF'>
+      <table class='layout'>
+        <tbody>
+          <tr>
+            <td class='left'>
+              <div class='customLogo'>
+                <%= default_logo %>
+                <br/>
+                <strong><%= GlobalSettings[:company_name] %></strong>
+                <br/><br/>
+              </div>              
+              <div class='col'>
+                <div class='unauthenticated_content'>
+                  <%= yield :layout %>
+                </div>
+              </div>
+            </td>
+            <td class='right'>
+              <div class='Right'>
+                <div class='col'>
+                  <%= yield :right_column %>
+                  <div id='sidebar'>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

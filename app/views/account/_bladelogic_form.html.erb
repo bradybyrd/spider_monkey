@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='financials_filters'>
+  <%= form_tag url_for(settings_update_path), :remote => true, :class => 'basic_form', :method => :put do %>
+    <%= hidden_field_tag 'redirect_path', bladelogic_path %>
+    <div class='field'>
+      <label for='GlobalSettings[bladelogic_ip_address]'>
+        IP Address
+      </label>
+      <%= text_field_tag 'GlobalSettings[bladelogic_ip_address]', GlobalSettings[:bladelogic_ip_address] %>
+    </div>
+    <div class='field'>
+      <label for='GlobalSettings[bladelogic_username]'>
+        Username
+      </label>
+      <%= text_field_tag 'GlobalSettings[bladelogic_username]', GlobalSettings[:bladelogic_username] %>
+    </div>
+    <div class='field'>
+      <label for='GlobalSettings[bladelogic_password]'>
+        Password
+      </label>
+      <%= password_field_tag 'GlobalSettings[bladelogic_password]', GlobalSettings[:bladelogic_password] %>
+    </div>
+    <div class='field'>
+      <label for='GlobalSettings[bladelogic_rolename]'>
+        Role Name
+      </label>
+      <%= text_field_tag 'GlobalSettings[bladelogic_rolename]', GlobalSettings[:bladelogic_rolename] %>
+    </div>
+    <div class='field'>
+      <label for='GlobalSettings[bladelogic_profile]'>
+        Profile Name
+      </label>
+      <%= text_field_tag 'GlobalSettings[bladelogic_profile]', GlobalSettings[:bladelogic_profile] %>
+    </div>
+    <%= submit_tag 'Save',:class =>'button' %>
+  <% end %>
+
+</div>

@@ -1,0 +1,40 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless step.complete? %>
+<% if step.owned_by?(current_user) || step.auto? %>
+   <div class="buttons">
+	<% if step.auto? %>
+		<% if step.in_process? %>
+			<%= render :partial => "steps/step_rows/status_buttons/problem.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		<% elsif step.problem? %>
+			<%= %>
+			<div>
+				<%= render :partial => "steps/step_rows/rerun_option.html", :locals => {:step => step} %>
+				<%= image_submit_tag 'btn-resolve.png', :alt => 'Resolve', :name => 'resolve', :id => "resolve_step_#{step.id}", :class => 'spinner', :disabled => request.hold?, :style => "top:7px;" %>
+			</div>
+		<% end %>
+	<% else %>
+		<% if step.startable? %>
+		     <%= image_submit_tag 'btn-start.png', :alt => 'Start', :name => 'start', :id => "start_step_#{step.id}", :class => 'button_action spinner', :disabled => request.hold? %>
+		     <%= render :partial => "steps/step_rows/status_buttons/block.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		   <% elsif step.problem? %>
+				<%= render :partial => "steps/step_rows/status_buttons/resolve.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		   <% elsif step.blocked? %>
+		     <%= render :partial => "steps/step_rows/status_buttons/unblock.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		   <% elsif step.in_process? %>
+		     <%= render :partial => "steps/step_rows/status_buttons/block.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		     <%= render :partial => "steps/step_rows/status_buttons/problem.html", :locals => {:unfolded_steps => local_assigns[:unfolded_steps], :request => request, :step => step} %>
+		<% end %>
+	<% end %>
+	<% if step.show_complete_option? %>
+	     <%= image_submit_tag 'btn-complete.png', :alt => 'Complete', :name => 'complete', :class => 'button_action spinner', :id => "complete_step_#{step.id}", :disabled => request.hold? %>
+	<% end %>
+	</div>
+<% end %>
+<% end %>

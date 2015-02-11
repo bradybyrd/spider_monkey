@@ -1,0 +1,33 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings title: 'Resource Groups' %>
+
+<% content_for :sidebar do %>
+  <br>
+  <% if can?(:create, Group.new) %>
+    <%=
+      link_to new_group_path(page: params[:page], key: params[:key]), title: 'Create Group', class: 'create_group' do
+        image_tag('btn-create-group.png', alt: 'Create Group')
+      end
+    %>
+  <% end %>
+  <% if can? :view, :roles_map_report %>
+    <p><%= link_to t('reports.view_access.roles_map.accessibility_report'), reports_access_roles_map_path %></p>
+  <% end %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render partial: 'users/tabs', locals: { selected: 'groups', tab_view: true } %>
+<% end %>
+
+<div class='server_search'>
+  <%= search_box("/groups") %>
+</div>
+
+<div id='search_result'><%= render partial: "index" %></div>

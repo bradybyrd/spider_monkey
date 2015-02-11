@@ -1,0 +1,204 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= hidden_field_tag :Request_id, @request.try(:id) %>
+<%= hidden_field_tag :Step_id, step.try(:id) %>
+<%= hidden_field_tag "server_aspect_ids", step.server_aspect_ids.join(',').to_s %>
+<%= hidden_field_tag "server_ids", step.server_ids.join(',').to_s %>
+<div class="form_column left left_column">
+  <% if step.parent %>
+    <%= f.hidden_field :parent_id %>
+  <% end %>
+  <div class="field">
+    <label>Name</label>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <label>Assigned To</label>
+    <% unless step.complete? %> <span class="radio"> <label><%= radio_button_tag 'user_group_step_owner', 'user',  !step.group_owner? %> User</label> &nbsp; <label><%= radio_button_tag 'user_group_step_owner', 'group',  step.group_owner? %> Group</label> </span>
+    <% end %>
+    <div class="step_user_only toggleable_select"<%= 'style="display: none;"' unless user_owner_chosen_for(step) %> >
+        <%= f.collection_select :owner_id, @users, :id, :name_for_index_with_contact, {:include_blank => "Select User"},
+          :id => 'step_owner_id_user',
+          :disabled => (step.complete? || !user_owner_chosen_for(step)) %>
+      <%= hidden_field_tag 'step[owner_type]', "User", :disabled => !user_owner_chosen_for(step) %>
+    </div>
+    <div class="step_group_only toggleable_select" <%= 'style="display: none;"' if user_owner_chosen_for(step) %> >
+      <%= f.collection_select :owner_id, @groups, :id, :name, {:include_blank => "Select Group"},
+        :id => 'step_owner_id_group',
+        :disabled => (step.complete? || user_owner_chosen_for(step)) %>
+
+      <%= hidden_field_tag 'step[owner_type]', "Group", :disabled => user_owner_chosen_for(step) %>
+    </div>
+  </div>
+  <div class="field">
+    <label>Component</label>
+    <%= hidden_field_tag "no_package_template", "1" if @request.has_no_available_package_templates? %>
+    <%= component_select_tag(step) %>
+  </div>
+  <div class="field step_manual_only">
+    <label>Work Task</label>
+    <%= f.collection_select :work_task_id, WorkTask.in_order.unarchived, :id, :name, :include_blank => true %>
+  </div>
+  <div class="field">
+    <label>Phase</label>
+    <%= f.collection_select :phase_id, Phase.unarchived.in_order, :id, :name, :include_blank => true %>
+  </div>
+  <div class="field">
+    <label>Runtime Phase</label>
+    <%= select_tag 'step[runtime_phase_id]', '', :class => 'use_remote_options', :rel => :step_phase_id %>
+    <%= hidden_field_tag :step_runtime_phase_id_url, runtime_phases_options_steps_path %>
+    <%= hidden_field_tag :selected_step_runtime_phase_id,  step.runtime_phase.id if step.runtime_phase %>
+  </div>
+  <br class="clear" />
+  <% if GlobalSettings.automation_available? %>
+    <div class="field">
+      <label>Automation</label>
+          <% if @selected_comp.empty? && @selected_comp_new.empty? && @selected_inst_comp.nil? %>
+              <%= select_tag "automation_type", options_for_select(Script.automation_popup, (step.script_type.nil? ? "none" : step.script_type)), :disabled => true %>
+          <% else %>
+              <%= select_tag "automation_type", options_for_select(Script.automation_popup, (step.script_type.nil? ? "none" : step.script_type)) %>
+          <% end %>
+    </div>
+    <div class="field">
+      <label>&nbsp;</label>
+      <span id="script_fields" style="<%= (step.script_id.nil? ? "display: none;" : "") %>;"> <%= f.collection_select :script_id, step.script_type.nil? ? CapistranoScript.sorted : Script.script_class(step.script_type).sorted, :id, :name, {:prompt => true}  %> </span>
+    </div>
+  <% end %>
+
+</div>
+<!-- /div.form_column.left -->
+<div class="form_column right_align">
+  <div id="properties_container_new" class="height_38">
+    <% if step.installed_component %>
+      <%= render :partial => 'steps/property_installed_components',
+        :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
+    <% end %>
+  </div>
+
+  <%= render :partial => 'uploads/add_uploads_form', :locals => { :owner => step, :f => f } %>
+
+  <div class="field step_estimate" style="white-space: nowrap; text-align: left; vertical-align: bottom; float:left;">
+    <% hours, minutes = (f.object.estimate ? f.object.estimate.divmod(60) : [nil,5]) %> <span style="float: left; margin-top: 10px;"><label>Estimate</label></span>
+    <span id="hours_field"> Hours
+      <br/>
+      <%= text_field_tag 'step[estimate_hours]', hours %> </span>
+    <span id="minutes_field"> Minutes
+      <br/>
+      <%= text_field_tag 'step[estimate_minutes]', minutes %> </span>
+  </div>
+  <!--<br class="clear" />
+	<br class="clear" />-->
+  <div class="field start_by_fields step_times">
+    <nobr>
+      <label for="step_start_by_date" style="display:inline-block;" >Start By</label>
+      <%= f.text_field :start_by_date, :value => default_format_date(step.start_by), :class => 'date' %> at
+      <%= f.select :start_by_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, { :include_blank => true }, :class => 'hour', :style => 'width: 50px;' %>:
+      <%= f.select :start_by_minute, %w{ 00 15 30 45 }, { :include_blank => true }, :class => 'minute', :style => 'width: 50px;'  %>
+      <%= f.select :start_by_meridian, %w{ AM PM }, { :include_blank => true }, :class => 'meridian', :style => 'width: 50px;'  %>
+    </nobr>
+  </div>
+  <div class="field complete_by_fields step_times">
+    <nobr>
+      <label for="step_complete_by_date" style="display:inline-block;" >Complete By</label>
+      <%= f.text_field :complete_by_date, :value => default_format_date(step.complete_by), :class => 'date'  %> at
+      <%= f.select :complete_by_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, { :include_blank => true }, :class => 'hour', :style => 'width: 50px;'  %>:
+      <%= f.select :complete_by_minute, %w{ 00 15 30 45 }, { :include_blank => true }, :class => 'minute', :style => 'width: 50px;'  %>
+      <%= f.select :complete_by_meridian, %w{ AM PM }, { :include_blank => true }, :class => 'meridian', :style => 'width: 50px;'  %>
+    </nobr>
+  </div>
+</div>
+<br class="clear" />
+<span class="step_auto_only"> <h4 style="<%= "display: none;" unless step.script %>" class='step_auto_only'><a href="#" id="script_heading" class="collapsible_section_heading">Automation</a></h4>
+  <%unless step.script_type == "BladelogicScript" %>
+      <div id="script_section" style="display:none;">
+        <%= render :partial => 'steps/step_script.html', :locals => { :script => step.script, :step => step, :installed_component => step.installed_component, :argument_values => step.script_argument_values_display } %>
+      </div> <!-- /div#script_section -->
+    <%else%>
+      <div id="script_section" style="display:none;">
+        <%= render :partial => 'steps/bladelogic/step_script.html', :locals => { :script => step.script, :step => step, :installed_component => step.installed_component, :argument_values => step.script_argument_values_display } %>
+      </div> <!-- /div#script_section -->
+    <%end%>
+</span>
+<div class="field textarea">
+  <label for="step_description">Step Description</label>
+  <%= f.text_area :description, :class =>"expand", :rows => 0 %>
+</div>
+<div class="expand_textarea_link fl" style ="padding-right:5px; font-size:11px; float:right">
+	[ <a href="javascript:toggleTextarea('step_description', 'step_desc')" id="step_desc">expand</a> ]
+</div>
+<h4><a href="#" id="notes_area_heading" class="collapsible_section_heading" style="<%= step.new_record? ? 'display:none' : '' %>">Notes</a></h4>
+<div id="notes_area_section" style="display:none;">
+  <% unless step.notes.empty? %>
+    <% step.notes.each do |note| %>
+      <%= display_note(note) %>
+    <% end %>
+  <% end %>
+  <% unless step.new_record? %> <div id ="new_note"></div>
+    <% if step.accessible_by?(current_user) %>
+      <div class="field textarea">
+        <strong><label>Add Note</label></strong>
+        <%= f.text_area :note, :class => 'expand', :rows => 0 %>
+      </div>
+      <div class="expand_textarea_link fl" style ="padding:0 5px 0 5px; font-size:11px; float:right">
+                    [ <a href="javascript:toggleTextarea('step_note', 'step_nt')" id="step_nt">expand</a> ]
+      </div>
+    <% end %>
+    <div style="float:right;">
+      <%= button_to_function 'Add Note', "submitStepNotes($(this))", :path => add_note_request_step_path(request,step) %>
+    </div>
+  <% end %>
+</div>
+<!-- /div# notes_area_section -->
+<h4><a href="#" id="properties_heading" class="collapsible_section_heading">Properties</a></h4>
+<div id="properties_section" style="display:none;">
+  <input type="hidden" id="step_properties_load_path" value="<%= properties_for_request_path(request) %>" />
+  <div id="properties_container">
+    <% if step.installed_component %>
+      <%= render :partial => 'steps/property_values.html',
+        :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
+    <% end %>
+  </div>
+</div>
+<!-- /div#properties_section -->
+<h4><a href="#" id="server_properties_heading" class="collapsible_section_heading">Server Properties</a></h4>
+<input type="hidden" id="step_server_properties_load_path" value="<%= server_properties_for_step_request_path request %>" />
+<div id="server_properties_section" style="display:none;">
+  <div id="server_properties_container">
+    <%= render :partial => 'steps/server_properties_for_pdf.html', :locals => { :step => step, :request => request, :installed_component => step.installed_component } %>
+  </div>
+  <br class="clear" />
+</div>
+<!-- /div#properties_section -->
+<% if step.new_record? %>
+  <div class="options">
+    <% if step.new_record? %>
+      <%= button_to_function "Save and Add New", "submitStepForm($(this))" %>
+            or
+      <%= button_to_function "Save Step", "submitStepForm($(this))" %>
+            or <%= link_to 'cancel', add_request_steps_path(request, :is_procedure_step => step.parent.to_bool), :class => "ajax cancel" %>
+    <% else %>
+      <%= submit_tag 'Update Step',:class =>'button' %>
+            or <%= link_to 'cancel', abstract_request_step_path(request, step), :class => 'cancel replace_row' %>
+    <% end %> <label><%= f.check_box :different_level_from_previous %> Serial Step</label>
+    <label><%= f.check_box :execute_anytime %> Execute Anytime</label>
+    <%= hidden_field_tag 'upload_link', add_uploads_via_ajax_request_steps_path(request) %>
+  </div>
+<% else %>
+  <div class="options">
+    <%= button_to_function "Save Step", "submitStepForm($(this))" %>
+    <% if step.new_record? %>
+            or <%= link_to 'cancel', add_request_steps_path(request, :is_procedure_step => step.parent.to_bool), :class => "ajax cancel" %>
+    <% else %>
+            or <%= link_to 'cancel', abstract_request_step_path(request, step), :class => 'cancel replace_row' %>
+    <% end %> <label><%= f.check_box :different_level_from_previous %> Serial Step</label>
+    <label><%= f.check_box :execute_anytime %> Execute Anytime</label>
+  </div>
+  <%= hidden_field_tag 'upload_link', add_uploads_via_ajax_request_steps_path(request) %>
+<% end %>
+

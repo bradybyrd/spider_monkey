@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+#hack to fix gems version > 1.3.6
+require 'thread'
+
+require File.dirname(__FILE__) + '/../config/boot'
+require 'commands/server'

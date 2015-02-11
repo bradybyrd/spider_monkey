@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :view, :server_tabs %>
+  <ul class='server_tabs'>
+    <% if can? :list, ServerGroup.new %>
+      <li <%= tag_options({:class => (selected== 'server_groups' ? 'selected' :'')}, false) %>>
+        <%= link_to "Server Groups", server_groups_path, :class => 'ajax' %>
+      </li>
+    <% end %>
+
+    <% if can? :list, Server.new %>
+      <li <%= tag_options({:class => ('selected' if selected == 'servers')}, false) %>>
+        <%= link_to "Servers", servers_path %>
+      </li>
+    <% end %>
+
+    <% if can? :list, ServerAspectGroup.new %>
+      <li <%= tag_options({id: 'server_aspect_groups_tab', class: ('selected' if selected == 'server_level_groups')}, false) %>>
+        <%= link_to "Server Level Groups", server_aspect_groups_path(:letter => defined?(server_level_groups_page) ? server_level_groups_page : nil), :class => 'ajax' %>
+      </li>
+    <% end %>
+
+    <% if can? :list, ServerLevel.new %>
+      <li <%= tag_options({:id => "server_level_groups", :class => ( selected == 'server_levels'? 'selected' :'')}, false) %>>
+        <%= link_to_function "Server Levels", "return false", :drop_down => true %>
+        <div class='drop_down'>
+          <% draw_tabs do %>
+            <% ServerLevel.order("LOWER(name) asc").each do |server_level| %>
+              <li <%= tag_options({:class => ('selected' if selected == server_level.name), :parent_tab_id => "server_level_groups"}, false) %>>
+                <%= link_to_if can?(:inspect, server_level), server_level.name, server_level, :class => 'ajax drop_down_list' do %>
+                  <%= content_tag(:div, server_level.name, class: 'drop_down_list') %>
+                <% end %>
+              </li>
+            <% end %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

@@ -1,0 +1,20 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Add Project to #{@project_server.name}" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'integrations',:tab_view => true } %>
+  <%# = render :partial => 'account/tabs', :locals => {:selected => 'integrations'} %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= form_for :integration_project, :url => project_server_integration_projects_url(@project_server), :method => :post, :html => { :class => 'cssform' } do |f| %>
+  <%= render :partial => "integration_projects/form", :locals => {:f => f} %>
+<% end %>
+

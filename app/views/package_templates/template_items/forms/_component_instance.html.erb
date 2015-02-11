@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table <%= tag_options({:id => "properties_pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}", :rel => "pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}", :class => "templateItemforms"}, false) %>>
+  <tbody <%= tag_options({:class => "2_pk_#{@package_template.try(:id)}_item_#{f.object.try(:id)}"}, false) %>>
+    <tr>
+      <td <%= tag_options({:colspan => 7}, false) %>>
+        <h3 class='fl'>Properties</h3>
+      </td>
+    </tr>
+    <tr>
+      <td align='right' width='150'><%= f.label :target %></td>
+      <td width='30%'><%= f.text_field :target, :value => f.object[:properties][:target] %></td>
+      <td align='right'><%= "&nbsp;" %></td>
+      <td><%= "&nbsp;" %></td>
+    </tr>
+    <tr <%= tag_options({:class => "newTemplateItem_pkg_#{@package_template.id}"}, false) %>>
+      <td <%= tag_options({:colspan => 3}, false) %>>
+        <%= submit_tag f.object.new_record? ? 'Add Item' : 'Update Item', :class => "button" %>
+        &nbsp;
+        or
+        &nbsp;
+        <%= link_to_function "Cancel", "CanceladdNewItem('.newTemplateItem_pkg_#{@package_template.try(:id)}')", :class => "default_link" %>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,27 @@
+<%
+ # #############################################################################
+ # BMC Software, Inc.
+ # Confidential and Proprietary
+ # Copyright (c) BMC Software, Inc. 2001-2012
+ # All Rights Reserved.
+ # #############################################################################
+%>
+
+<tr class="preference_row <%= cycle('', 'alt') %>">
+  <td>
+    <span class="preference" id="preference_<%= pref.id %>">
+      <%= image_tag 'drag.gif' %>
+    </span>
+  </td>
+  <td>
+    <% unless pref.text.blank? %>
+      <%= pref.text.gsub(/step_|_td/, '').humanize %>
+    <% end %>
+  </td>
+  <td>
+    <%= form_for pref, :url => user_step_list_preferences_path(:id => pref.id),:html => { :method => :post, :class => 'inline no_submit' } do |f| %>
+      <%= f.check_box :active, :id => "#{dom_id(pref)}_active", :class => 'step_should_execute' %>
+    <% end %>
+  </td>
+</tr>
+

@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Package Instances' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'packages' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can?(:create_instance, @package) %>
+    <%= link_to 'Add a new package instance', new_package_instance_path(@package, page: params[:page], key: params[:key]) %>
+    <span></span>
+  <% end %>
+<% end %>
+<div class='server_search'>
+  <%= search_box("/environment/packages/#{@package.id}/package_instances") %>
+</div>
+<div id='search_result'><%= render :partial => "index" %></div>

@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>
+  <%= "Map Parameters > #{@argument.argument}" %>
+</h2>
+<%= form_for @argument, :url => update_argument_properties_script_path(@script, @argument), :html => { :id => "script_#{@script.id}_mapping_form", :class => 'map_script_parameters cssform' } do |f| %>
+  <div class='script_parameter_mapping in_columns' style='border-top:none;'>
+    <h3>1. Select the Mapping Source</h3>
+    <div>
+      <label>
+        <%= radio_button_tag :mapping_source, 'app', @argument.app_mappings? || @argument.script_argument_to_property_maps.empty? %>
+        Application Mapping
+      </label>
+      <p><%= raw(note_span "Map applications and components to script parameters.") %></p>
+    </div>
+    <div>
+      <label>
+        <%= radio_button_tag :mapping_source, 'server', @argument.infrastructure_mappings? %>
+        Infrastructure Mapping
+      </label>
+      <p><%= raw(note_span "Map servers and server levels to script parameters.") %></p>
+    </div>
+  </div>
+  <br class='clear'/>
+  <!-- Entity name mapping has been tabled so we're hiding the selection for now. Leaving it in for the javascript -->
+  <div class='script_parameter_mapping in_columns' style='display: none'>
+    <h3>2. Select the Mapping Type</h3>
+    <div>
+      <label>
+        <%= radio_button_tag :mapping_type, 'properties', true %>
+        Properties
+      </label>
+      <p><%= raw(note_span "Map properties to script parameters.") %></p>
+    </div>
+    <div>
+      <label>
+        <%= radio_button_tag :mapping_type, 'entity_names' %>
+        Entity Names
+      </label>
+      <p><%= raw(note_span "Map entity names to script parameters.") %></p>
+    </div>
+  </div>
+  <br class='clear'\>
+  <div class='script_parameter_mapping no_inline'>
+    <h3>2. Select the Mapped Elements</h3>
+    <div class='mapping_section' id='app_properties_mapping'>
+      <%= render :partial => 'shared_scripts/app_property_mapping' %>
+    </div>
+    <div class='mapping_section' id='server_properties_mapping'>
+      <%= render :partial => 'shared_scripts/server_property_mapping' %>
+    </div>
+  </div>
+  <div class='button_bar'><%= submit_tag 'Save' %></div>
+<% end %>
+

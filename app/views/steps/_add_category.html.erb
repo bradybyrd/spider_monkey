@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div>
+  <!--h2>Choose a category:</h2-->
+  <%= form_for @step, :url => abstract_update_status_request_step_path(@step.request, @step), :html => { :class => 'add_step_category cssform' } do |f| %>
+    <div class="field">
+      <label style="width:96px;">Choose a category:</label>
+      <%= f.collection_select :category_id, @categories, :id, :name, :include_blank => true %>
+    </div>
+
+    <div class="field">
+      <label>Description:</label><br />
+      <%= text_area_tag 'note', nil, :rows => 10, :cols => 45 %>
+    </div>
+    <%= hidden_field_tag "#{@event}.x", true %>
+    <%= hidden_field_tag 'step[rerun_script]', params[:step].try(:[], :rerun_script) %>
+		<%= hidden_field_tag :unfolded_steps, @unfolded_steps%>
+    <div class="button_bar">
+       <%= submit_tag 'Update',:class =>'button', :onclick => "submitFixNote()" %>
+    </div>
+  <% end %>
+</div>

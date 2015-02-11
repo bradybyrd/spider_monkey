@@ -1,0 +1,45 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<tr id='release_<%= release.id %>' <%= tag_options({:class => cycle('', 'alt') +"#{' release_row' unless archived}"}, false) %>>
+  <% unless archived %>
+    <td>
+      <span class='release' <%= tag_options({:id => dom_id(release)}, false) %>>
+        <%= image_tag 'drag.gif' %>
+      </span>
+    </td>
+  <% end %>
+  <td>
+    <% if can?(:edit, release) %>
+      <%= link_to index_title(h(release.name)), edit_release_path(release) %>
+    <% else %>
+      <%= index_title(h(release.name)) %>
+    <% end %>
+  </td>
+  <td><%= "Total : #{release.plans.count} , Running : #{release.plans.running.count || 0}" %></td>
+  <td><%= "#{release.count_of_associated_requests} | #{release.count_of_associated_request_templates}" %></td>
+  <td>
+    <% unless archived %>
+      <% if can?(:edit, release) %>
+        <%= link_to I18n.t(:edit), edit_release_path(release), class: 'edit_release' %>
+      <% end %>
+
+      <% if release.can_be_archived? && can?(:archive_unarchive, release) %>
+        &#124;
+        <%= link_to I18n.t(:archive), archive_release_path(release), method: :put, class: 'archive_release' %>
+      <% end %>
+    <% else %>
+      <% if can?(:archive_unarchive, release) %>
+        <%= link_to I18n.t(:unarchive), unarchive_release_path(release), method: :put, class: 'archive_release' %>
+      <% end %>
+
+      <% if release.destroyable? && can?(:delete, release)  %>
+        &#124;
+        <%= link_to I18n.t(:delete), release, method: :delete, confirm: "Are you sure you want to delete the release?", class: 'delete_release' %>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,7 @@
+---
+application:
+  root: $BRPM_PATH$
+environment:
+  RAILS_ENV: production
+web:
+  context: /brpm

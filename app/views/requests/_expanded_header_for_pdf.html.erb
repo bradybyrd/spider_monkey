@@ -1,0 +1,111 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_for(request, :html => { :id => "show_request_#{request.number}", :class => 'cssform show_request' }) do |f| %>
+  <%= f.error_messages %>
+  <div class='contentCol1'>
+    <p>
+      <%= f.label :aasm_state, 'Status' %>
+      <span class="#{request.aasm.current_state}RequestStep state" id="request_status">
+        <%= h request.aasm.current_state.to_s.humanize %></p></span>
+    <% if request.activity %>
+      <p>
+        <%= f.label :activity_id, activity_or_project? %>
+        <%= ensure_space h(request.activity.name) %></p>
+    <% end %>
+    <p>
+      <%= label_tag :plan, 'Plan' %>
+      <%= ensure_space h(plan_label(request)) unless plan_label(request).blank? %>
+        <%#= ensure_space request.plan_member && request.plan_member.plan && h(request.plan_member.plan.name) %></p>
+    <p>
+      <%= f.label :business_process_id, 'Process' %>
+      <%= ensure_space request.business_process && h(request.business_process.name) %></p>
+    <% if request.server_association %>
+      <p>
+        <%= f.label :server %>
+        <%= ensure_space h(request.server_association.path_string) %></p>
+    <% end %>
+    <p>
+      <%= label_tag :app_ids, 'Applications' %>
+      <%= ensure_space h(request.app_names_with_version.to_sentence) %></p>
+    <p>
+      <%= f.label :environment_id, 'Environment' %>
+      <%= ensure_space request.environment && h(request.environment.name) %></p>
+    <p>
+      <%= f.label :package_content_tags %>
+      <%= ensure_space request.package_contents.map(&:name).join(', ') %></p></div>
+  <div class='contentCol2'>
+    <p>
+      <label>Requestor</label>
+        <% if !request.requestor_contact_number.nil? %>
+          <strong><%= h("#{request.requestor_name_for_index}")+ " ("+h("#{request.requestor_contact_number}")+")" %> </strong></p>
+        <%else%>
+          <strong><%= h("#{request.requestor_name_for_index}") %> </strong></p>
+        <%end%>
+    <p>
+      <label>Owner</label>
+        <% if !request.owner_contact_number.nil? %>
+          <strong><%= h("#{request.owner_name_for_index}")+ " ("+h("#{request.owner_contact_number}")+")" %> </strong></p>
+        <%else%>
+          <strong><%= h("#{request.owner_name_for_index}") %></p>
+        <%end%>
+    <p>
+      <%= f.label :release_tag, 'Release Tag' %>
+      <%= ensure_space(request.release && h(request.release.name)) %></p>
+
+    <% if request.deployment_window_event %>
+      <p>
+        <%= f.label :deployment_window, 'Deployment Window' %>
+        <%= ensure_space(h(deployment_window_event_option_text(request.deployment_window_event, true))) %>
+      </p>
+    <% end %>
+
+    <p>
+      <%= f.label :estimate, 'Duration' %>
+      <%= ensure_space h(request_duration(request)) %></p>
+    <p>
+      <%= f.label :rescheduled %>
+      <%= request.rescheduled? ? "Yes" : "No" %></p>
+    <p>
+      <%= f.label :scheduled_at, 'Planned Start' %>
+      <%= ensure_space(request.scheduled_at.try(:default_format_date_time)) %></p>
+      <% if request.auto_start%>
+          <strong><%= ' Automatically start is turned on' %></strong>
+          <% if request.scheduled_jobs.scheduled.present? %>
+              <strong><%= ' - Request scheduled' %></strong>
+          <% end %>
+      <% end %>
+    <% if request.started_at %>
+      <p>
+        <label='Actual Start'>
+        <%= ensure_space request.started_at.default_format_date_time %></p>
+    <% end %>
+    <p>
+      <%= f.label :target_completion_at, 'Due by' %>
+      <%= ensure_space(request.target_completion_at.try(:default_format_date_time)) %></p>
+    <% if request.completed_at %>
+      <p>
+        <label>Actual Completion</label>
+        <%= ensure_space request.completed_at.default_format_date_time %></p>
+    <% end %>
+  </div>
+  <div class='notes'>
+      <p>
+        <%= f.label :description %>
+        <%= auto_link ensure_space(request.description), :all, :target => '_blank' %></p>
+      <p>
+        <%= f.label :wiki_url, "Wiki" %>
+        <%= auto_link ensure_space(request.wiki_url), :all, :target => '_blank' %></p>
+      <p>
+        <label>Uploads</label>
+        <%= link_to_upload_list(request).html_safe %></p>
+      <p>
+        <%= f.label :notes, 'Notes' %>
+        <%= render :partial => "requests/all_notes_for_request", :locals => {:request => request}%>
+        </p></div>
+<% end %>

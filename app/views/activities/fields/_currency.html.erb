@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if current_user.present? %>
+  <%= text_field_tag field_name, to_currency(field_value), :class => 'currency', :disabled => disabled %>
+<% else %>
+  <%= to_currency(field_value) %>
+<% end %>
+<%= hidden_field_tag field_name, field_value, :class => "currency_helper", :disabled => disabled %>

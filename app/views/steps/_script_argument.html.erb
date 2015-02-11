@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<table style="width:100% !important;table-layout: fixed;">
+  <tbody>
+    <tr title="<%= argument.name %>">
+      <td class="arg_label"><%=argument.is_required? ? '*' : '' %><%= truncate_middle(argument.argument.humanize, :max => 40,:position => 0.5) %></td>
+      <!--td><%#= argument.name %></td-->
+      <%if step && step.new_record? %>
+        <td id="argument_<%=argument.id%>" class="ie7_val_field_fix_width">
+          <%if local_assigns[:output_parameters]%>
+            <%= script_argument_value_output_display step, argument%>
+          <%else%>
+            <%= script_argument_value_input_display step, argument, installed_component, argument_values[argument.id.to_s]['value'] || argument_values[argument.id]['value'] %>
+          <%end%>
+          <span></span></td>
+      <% else %>
+        <td id="argument_<%=argument.id%>" class="ie7_val_field_fix_width">
+          <%if local_assigns[:output_parameters]%>
+            <%= script_argument_value_output_display step, argument%><span></span>
+          <%else%>
+            <% if step && step.protect_automation? %>
+              <%= argument_values[argument.id]['value'] || argument_values[argument.id.to_s]['value'] %>
+            <% else %>
+              <%= script_argument_value_input_display step, argument, installed_component, argument_values[argument.id.to_s]['value'] || argument_values[argument.id]['value'], true %><span></span>
+            <%  end %>
+          <%end%>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>

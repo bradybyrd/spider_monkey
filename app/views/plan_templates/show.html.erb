@@ -1,0 +1,88 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%=
+    static_javascript_include_tag(
+      'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone',
+      'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget',
+      'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable'
+    )
+  %>
+<% end %>
+
+<% backlink = plan_templates_path %>
+<% title = "Edit Plan Template: #{h(@plan_template.name)}" %>
+<% page_settings title: title %>
+
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', selected: 'metadata' %>
+<% end %>
+
+<%= render 'environments/metadata_heading', { backlink: backlink, title: title } %>
+
+<% if @plan_template.can_change_aasm_state? %>
+  <%= render 'object_state/state_indicator', { passed_obj: @plan_template } %>
+<% end %>
+<br>
+<br>
+<div class='field'>
+  <b>
+    Template Type:
+  </b>
+  <%= h(@plan_template.template_type_label) %>
+  <nbsp></nbsp>
+  <nbsp></nbsp>
+  <% if can?(:edit, @plan_template) %>
+    <%= link_to 'edit', edit_plan_template_path(@plan_template), class: 'edit_plan_template' %>
+  <% end %>
+</div>
+<h3>
+  Stages
+</h3>
+<% if can?(:edit, @plan_template) %>
+  <div class='add_stage_link'>
+    <%= link_to "Add stage", new_plan_template_plan_stage_path(@plan_template), rel: 'facebox' %>
+  </div>
+<% end %>
+<table class='formatted_table'>
+  <thead>
+    <tr>
+      <th width='20'></th>
+      <th>
+        Name
+      </th>
+      <th>
+        Environment Type
+      </th>
+      <th>
+        Default Request Templates
+      </th>
+      <th>
+        Request Instances
+      </th>
+      <th>
+        Required
+      </th>
+      <th>
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @plan_template.stages.each do |stage| %>
+      <%= render 'plan_stages/plan_stage', { plan_template: @plan_template, plan_stage: stage } %>
+    <% end %>
+  </tbody>
+</table>
+
+<% if can?(:edit, @plan_template) %>
+  <%= form_tag reorder_plan_template_plan_stages_path(@plan_template), method: :put, id: 'reorder_plan_stages' do %>
+    <!--  -->
+  <% end %>
+<% end %>

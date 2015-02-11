@@ -1,0 +1,25 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+
+<% if @render_only_app_name %>
+    <% span_edit = content_tag(:span, '(edit)', class: 'app_edit_label') %>
+
+    <% @team.apps.name_order.each do |app| %>
+        <% app_name = content_tag(:span, app.name, class: 'app_name') %>
+        <div class="vscroll_960">
+            <h4 class="expand_team_application">
+              <%= link_to (app_name + span_edit), '', class: 'expand_team_application_link', data: {app_id: app.id} %>
+            </h4>
+            <%= content_tag :p, '', id: "team_app_#{app.id}" %>
+        </div>
+    <% end %>
+<% else %>
+    <%= render partial: 'teams/forms/environments', locals: {app: @app, environments: @app.environments, team: @team, data: @data} %>
+    <%= javascript_tag('window.Team.TeamRole.handlers()') %>
+<% end %>

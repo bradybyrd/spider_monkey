@@ -1,0 +1,33 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% title = 'Lists' %>
+<% page_settings :title => title %>
+<% content_for :page_section do %>
+    <%= render :partial => 'account/environment_tabs', :locals => {:selected => 'metadata'} %>
+<% end %>
+<% content_for :sidebar do %>
+    <% if can?(:create, List.new) %>
+        <%= button_to_function I18n.t(:'list.buttons.add_new'), "jQuery.facebox({ ajax: url_prefix + '/environment/metadata/lists/new' })" %>
+    <% end %>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br class='clear'/>
+<% if @lists.blank? && @archived_lists.blank? %>
+    <h3>
+        <%= I18n.t(:'list.no_resource') %>
+
+      <% if can?(:create, List.new) %>
+          <%= link_to I18n.t(:create_one_question), new_list_path %>
+      <% end %>
+
+    </h3>
+<% else %>
+    <%= render :partial => 'lists' %>
+<% end %>

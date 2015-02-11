@@ -1,0 +1,50 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if application_component.nil? %>
+  <table class='package_template_item_properties'>
+    <tbody>
+      <tr>
+        <td align='right' width='13%'>
+          <h2>Commands</h2>
+        </td>
+      </tr>
+      <tr>
+        <td align='right' width='13%'><%= label_tag "Command" %></td>
+        <td><%= text_area_tag "step[package_template_properties][#{template_item.id}][command]", template_item_command_value(step, template_item, 'command') %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag "Undo Command" %></td>
+        <td><%= text_area_tag "step[package_template_properties][#{template_item.id}][undo_command]", template_item_command_value(step, template_item, 'undo_command') %></td>
+      </tr>
+    </tbody>
+  </table>
+<% else %>
+  <table class='package_template_item_properties'>
+    <tbody>
+      <tr>
+        <td align='right' width='13%'>
+          <h2>Properties</h2>
+        </td>
+      </tr>
+      <% property_values.each do |property_value| %>
+        <tr>
+          <% property_value.each do |pv| %>
+            <% if pv.nil? %>
+              <td align='right' width='13%'><%= "&nbsp;" %></td>
+              <td width='30%'><%= "&nbsp;" %></td>
+            <% else %>
+              <td align='right' width='13%'><%= label_tag pv.property.name %></td>
+              <td width='30%'><%= text_field_tag "step[package_template_properties][#{template_item.id}][#{pv.property.name}]", template_item_property_value(step, template_item, pv) %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

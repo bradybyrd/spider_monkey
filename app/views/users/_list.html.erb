@@ -1,0 +1,65 @@
+<div class='line_h_20px user-top-paginator'>
+  <%= render partial: 'shared/alphabetical_pagination',
+             locals: {path: users_path, class_name: 'active_users'} if active
+  %>
+</div>
+<table class='tablesorter three_columns two_column_sorter formatted_table'>
+  <thead>
+  <tr>
+    <th><%= I18n.t(:'table.name') %></th>
+    <th><%= I18n.t(:'table.groups') %></th>
+    <th><%= I18n.t(:'table.actions') %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% (users || []).each do |user| %>
+    <tr class='<%= cycle('', 'alt') %>'>
+      <td>
+        <strong>
+          <% if can? :edit, user %>
+            <%= link_to user.name_for_index, edit_user_path(user, page: params[:page], key: params[:key]) %>
+          <% else %>
+            <%= user.name_for_index %>
+          <% end %>
+        </strong>
+      </td>
+      <td class='truncated' title='<%= user.group_names %>'><%= user.group_names %></td>
+      <td class='action_links'>
+        <% if active %>
+          <% if can? :edit, user %>
+              <span>
+                  <%= link_to I18n.t(:edit), edit_user_path(user, page: params[:page], key: params[:key]) %>
+              </span>
+          <% end %>
+          <% if can? :make_active_inactive, user %>
+              <span>
+                  <%= link_to I18n.t(:make_inactive),
+                              deactivate_user_path(user, page: params[:page], key: params[:key]), method: :put
+                  %>
+              </span>
+          <% end %>
+        <% else %>
+          <% if can? :make_active_inactive, user %>
+              <span>
+                  <%= link_to I18n.t(:make_active),
+                              activate_user_path(user, page: params[:page], key: params[:key]), method: :put
+                  %>
+              </span>
+          <% end %>
+
+          <% if user.destroyable? %>
+              <span>
+                  <%= link_to I18n.t(:delete), user, method: :delete, confirm: I18n.t(:'user.confirmations.delete') %>
+              </span>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<div class='line_h_20px'>
+  <%= render partial: 'shared/alphabetical_pagination',
+             locals: {path: users_path, class_name: 'active_users'} if active
+  %>
+</div>

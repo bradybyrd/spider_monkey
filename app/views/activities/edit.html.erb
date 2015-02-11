@@ -1,0 +1,41 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if current_user.present? %>
+  <% page_settings :title => "Activity: #{h @activity.name}" %>
+<% end %>
+<%= render 'activity_categories/tabs', :selected => 'request projects' %>
+<% if @activity_tab.present? %>
+  <%= render 'edit_tabs', :activity => @activity, :selected_id => @activity_tab.id %>
+  <div class='content'>
+    <h3>
+      <%= h "#{@activity.name}" %>
+    </h3>
+    <%= form_for @activity, :html => { :class => 'cssform activity', :multipart => true } do |f| %>
+      <%= f.error_messages %>
+      <%= hidden_field_tag "activity_tab_id", params[:activity_tab_id] || @activity_tab.try(:id) %>
+      <% @activity_tab.activity_attributes.each do |attr| %>
+        <div <%= tag_options({:class => "field #{attr.input_type} #{attr.field}"}, false) %>>
+          <%= render 'field', :activity => @activity, :attr => attr, :activity_category => @activity.activity_category, :disabled => attr.disabled_on?(@activity_tab), :f => f %>
+        </div>
+      <% end %>
+      <!-- TODO: Read only in scope of other story -->
+      <% unless @activity_tab.read_only? %>
+        <% if current_user.present? %>
+          <div class='field' id='update_button'>
+            <% disable_update = !(can?(:edit, @activity)) %>
+            <%= submit_tag "Update", :class => "activity-update button", :disabled => disable_update %>
+            or
+            <%= link_to 'cancel', activities_path, :class => "cancel-pending" %>
+            <span id='pending'></span>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

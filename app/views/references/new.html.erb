@@ -1,0 +1,25 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings title: 'Create Reference' %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', selected: 'packages' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<h3 class='no_margin servers_h2'>Create Reference</h3>
+<%= form_for [@package, @reference], html: { class: 'cssform' } do |f| %>
+  <%= render 'form', f: f, servers: @servers %>
+  <div class='field'>
+    <%= f.submit 'Create Reference', class: 'button' %>
+    or
+    <%= link_to 'cancel', edit_package_path(@package) %>
+  </div>
+<% end %>

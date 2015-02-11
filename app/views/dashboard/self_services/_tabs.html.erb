@@ -1,0 +1,37 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<%
+   user_group_id_params = {}
+   user_group_id_params[:user_id] = @selected_user.id unless @selected_user.nil?
+   user_group_id_params[:group_id] = @selected_group.id unless @selected_group.nil?
+   user_group_id_params[:should_user_include_groups] = true unless @should_user_include_groups.nil?
+%>
+<% if @request_dashboard[:view_my_requests] || @request_dashboard[:view_calendar] ||
+    @request_dashboard[:view_promotions] || @request_dashboard[:view_currently_running_steps]
+%>
+
+  <ul class='my_dashboard_tabs dashboard_request_tab'>
+    <% if @request_dashboard[:view_my_requests] %>
+      <li <%= tag_options({:class => class_per_page_path('requests')}, false) %>><%= link_to 'My Requests', root_path %></li>
+    <% end %>
+    <% if @request_dashboard[:view_calendar] %>
+      <li <%= tag_options({:class => class_per_page_path('calendar')}, false) %>><%= link_to 'Calendar', my_calendar_path %></li>
+    <% end %>
+    <% if @request_dashboard[:view_promotions] %>
+      <li <%= tag_options({:class => class_per_page_path('promotions')}, false) %>><%= link_to 'Promotions', promotion_requests_path %></li>
+    <% end %>
+    <% if @request_dashboard[:view_currently_running_steps] %>
+      <li <%= tag_options({:class => class_per_page_path('currently_running_steps')}, false) %>>
+        <%= link_to 'Currently Running Steps', dashboard_currently_running_path(user_group_id_params.merge(blank_on_deny: 1)) %>
+      </li>
+    <% end %>
+  </ul>
+  <div id='request_and_calendar'>
+  </div>
+<% end %>

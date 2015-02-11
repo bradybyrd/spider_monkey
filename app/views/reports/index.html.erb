@@ -1,0 +1,116 @@
+<% page_settings :title =>  report_title(@report_type) %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'reports' %>
+  <%= static_javascript_include_tag 'dashboard' %>
+  <%= stylesheet_link_tag 'dashboard' %>
+<%end%>
+
+<% content_for :page_section do %>
+  <%= render 'reports/tabs', selected: reports_selected_tab(@report_type)%>
+<%end%>
+<% content_for :sidebar do %>
+  <%= render 'reports/sidebar', sidebar_type: reports_selected_tab(@report_type) %>
+<%end%>
+
+<% if can_access_report?(@report_type) %>
+    <%= content_tag(:h3,(@report_type.humanize.titleize.split(' ') << 'Report').uniq.join(' ')) if @report_type && !@report_type.blank? %>
+    <div id="report_filter">
+      <div style = "clear:left;text-align: right">
+        <% if @open_filter%>
+          <%= link_to "Close Filters","#", :id => "hide_filter",:class => "filter_link" %>
+        <%else%>
+          <%= link_to "Open Filters","#", :id => "show_filter",:class => "filter_link" %>
+        <%end%>
+      </div>
+        <div id="filterSection" style="display:#{@open_filter ? 'block' : 'none'}">
+          <%= render "reports/report_filter",
+                     :locals => { :selected_options => @selected_options,
+                                  :report_type => @report_type,
+                                  :width => @width } %>
+        </div>
+    </div>
+
+  <% if @report_type == 'release_calendar' ||
+        @report_type == 'environment_calendar' ||
+        @report_type == 'deployment_windows_calendar' %>
+    <div align="center">
+      <%= link_to "< previous", '#', :onclick => "page('L');" %>&nbsp;|&nbsp;
+      <%= link_to "next >", '#', :onclick => "page('R');" %>
+    </div> <br/>
+  <% end %>
+
+  <div class="chart" id="chart_partial" style="width:auto !important;">
+    <% if @width %>
+      <%= render :partial => 'fusioncharts/process_volume',
+                 :locals => { :volume_report => @volume_report,
+                              :width => @width } if @volume_report %>
+      <%= render :partial => 'fusioncharts/time_to_complete',
+                 :locals => { :time_to_complete => @time_to_complete,
+                              :width => @width } if @time_to_complete %>
+      <%= render :partial => 'fusioncharts/problem_trend',
+                 :locals => { :problem_trend_report => @problem_trend_report,
+                              :selected_options => @selected_options,
+                              :width => @width } if @problem_trend_report %>
+      <%= render :partial => 'fusioncharts/time_of_problem',
+                 :locals => { :time_of_problem=> @time_of_problem,
+                              :selected_options => @selected_options,
+                              :width => @width } if @time_of_problem %>
+      <%= render :partial => 'release_calendar',
+                 :locals => { :release_calendar => @release_calendar,
+                              :width => @width } if @release_calendar %>
+      <%= render :partial => 'environment_calendar',
+                 :locals => { :environment_calendar => @environment_calendar,
+                              :width => @width } if @environment_calendar %>
+      <%= render :partial => 'deployment_windows_calendar',
+                 :locals => { :environments => @environments,
+                              :presenter => @presenter,
+                              :width => @width } if @deployment_windows_calendar %>
+    <% else %>
+      <%=content_tag(:div, "Analysing data...",:style => 'text-align:center;margin-top:20px;text-decoration:blink;color:#ccc;') %>
+    <% end %>
+  </div>
+  <br/>
+<% end %>
+
+<% if @width %>
+  <div id='fcexpDiv' align="center">
+     FusionCharts Export Handler Component
+   </div>
+
+   <script>
+     function FC_Loaded(DOMId){$('#fcexpDiv').hide();}
+     function FC_ExportReady (DOMId) {$('#fcexpDiv').show();}
+     function FC_Exported(objRtn){if (objRtn.statusCode=="1"){$('#fcexpDiv').hide();}}
+
+    //Render the export component in this
+    //Note: fcExporter1 is the DOM ID of the DIV and should be specified as value of exportHandler
+    //attribute of chart XML.
+    var myExportComponent = new FusionChartsExportObject("fcExporter1", url_prefix + "/assets/FusionWidgets/Charts/FCExporter.swf");
+    myExportComponent.debugMode = false;
+
+
+      myExportComponent.componentAttributes.width = '400';
+        myExportComponent.componentAttributes.height = '60';
+        //Button visual configuration
+        myExportComponent.componentAttributes.btnWidth = '150';
+        myExportComponent.componentAttributes.btnHeight= '25';
+        myExportComponent.componentAttributes.btnColor = 'E1f5ff';
+        myExportComponent.componentAttributes.btnBorderColor = '0372AB';
+        //Button font properties
+        myExportComponent.componentAttributes.btnFontFace = 'Arial';
+        myExportComponent.componentAttributes.btnFontColor = '0372AB';
+        myExportComponent.componentAttributes.btnFontSize = '12';
+        //Title of button
+        myExportComponent.componentAttributes.btnsavetitle = 'Save the Exported Report'
+        myExportComponent.componentAttributes.btndisabledtitle = 'Waiting for export';
+
+    //Render the exporter SWF in our DIV fcexpDiv
+    myExportComponent.Render("fcexpDiv");
+   </script>
+<% end %>
+  <div id='requests_list'>
+  </div>
+
+<br class="clear"/>
+<%# Required for IE %>
+&nbsp;

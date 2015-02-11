@@ -1,0 +1,26 @@
+<%
+ # #############################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  # #############################################################################
+%>
+<h2>Add Requests to Open Runs</h2>
+<%= form_tag add_requests_plan_runs_url(:plan_id => @plan.id), :method => :post, :class => 'cssform plan_stage_run_ammend', :id => "plan_stage_#{@plan_stage.id}_run_ammend" do %>
+  <% @request_ids.try(:each) do |request_id| -%>
+    <%= hidden_field_tag "request_ids[]", request_id %>
+  <% end -%>
+  <div class="field">
+  	<%= label_tag :run_id, '*Run' %>
+  	<%= select_tag :run_id, options_for_select(@runs) %>
+  </div>
+  <div class="field">
+    <label>&nbsp;</label>
+  	<%= submit_tag 'Add Requests', :name => nil %>
+  </div>
+  <div class="marginlr15">
+    <div class="divider"/>
+    <%= render :partial => 'selected_requests', :locals => { :requests => @requests, :show_date => false, :new_run => true } unless @requests.blank? %>
+  </div>
+<% end %>

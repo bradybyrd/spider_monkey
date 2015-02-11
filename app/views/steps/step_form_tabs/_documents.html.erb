@@ -1,0 +1,11 @@
+<% if can? :view_step_documents_tab, association_or_new_instance(step, :request) %>
+  <% if @display_only %>
+    <%= render :partial => 'ajax_documents_upload_form_container' %>
+  <% else %>
+    <%= render 'uploads/extended_form', { owner:          step,
+                                          is_managable:   can_manage_step?(step),
+                                          attachments:    step.uploads.archieved_attachments,
+                                          f:              f,
+                                          disable_fields: @disable_fields }  %>
+  <% end %>
+<% end %>

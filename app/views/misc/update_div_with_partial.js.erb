@@ -1,0 +1,5 @@
+$("#<%= @div %>").html("<%= escape_javascript(render :partial => @partial) %>");
+if ("<%= @scroll %>" == "true")
+{
+    $("#<%= @div %>").scrollTo(500);
+}

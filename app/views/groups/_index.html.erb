@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can?(:list, Group.new) %>
+
+  <div id='groups'>
+
+    <% if @active_groups.blank? %>
+      <h2>
+        There are no active resource groups at this time.
+        <%= link_to "Create one?", new_group_path %>
+      </h2>
+    <% else %>
+      <h2><%= I18n.t(:active) %></h2>
+      <%= render partial: "groups/list", locals: { groups: @active_groups, active: true } %>
+    <% end %>
+
+    <% unless @inactive_groups.blank? %>
+      <h2><%= I18n.t(:inactive) %></h2>
+      <%= render partial: "groups/list", locals: { groups: @inactive_groups, active: false } %>
+    <% end %>
+
+  </div>
+
+<% end %>

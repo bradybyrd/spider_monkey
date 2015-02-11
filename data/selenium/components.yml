@@ -1,0 +1,182 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+components_004: 
+  name: ESB
+  updated_at: <%= 3582523.79621.seconds.ago %>
+  id: 64
+  active: true
+  created_at: <%= 3582523.796267.seconds.ago %>
+components_015: 
+  name: Business Owner
+  updated_at: <%= 1573596.796298.seconds.ago %>
+  id: 79
+  active: true
+  created_at: <%= 1573596.796329.seconds.ago %>
+components_026: 
+  name: Cluster_01
+  updated_at: <%= 421283.796357.seconds.ago %>
+  id: 90
+  active: true
+  created_at: <%= 421283.796387.seconds.ago %>
+components_005: 
+  name: Database
+  updated_at: <%= 3582523.796416.seconds.ago %>
+  id: 65
+  active: true
+  created_at: <%= 3582523.796445.seconds.ago %>
+components_016: 
+  name: Tech Support
+  updated_at: <%= 1573596.796474.seconds.ago %>
+  id: 80
+  active: true
+  created_at: <%= 1573596.796503.seconds.ago %>
+components_027: 
+  name: Cluster_02
+  updated_at: <%= 421283.796532.seconds.ago %>
+  id: 91
+  active: true
+  created_at: <%= 421283.796561.seconds.ago %>
+components_006: 
+  name: WTR
+  updated_at: <%= 3582523.79659.seconds.ago %>
+  id: 66
+  active: true
+  created_at: <%= 3582523.796653.seconds.ago %>
+components_017: 
+  name: SAS
+  updated_at: <%= -695870.203309.seconds.ago %>
+  id: 81
+  active: false
+  created_at: <%= 1138565.79672.seconds.ago %>
+components_028: 
+  name: VHOST
+  updated_at: <%= 421283.79675.seconds.ago %>
+  id: 92
+  active: true
+  created_at: <%= 421282.79678.seconds.ago %>
+components_007: 
+  name: OFAC Update
+  updated_at: <%= 3476267.796809.seconds.ago %>
+  id: 67
+  active: true
+  created_at: <%= 3476267.79684.seconds.ago %>
+components_018: 
+  name: MYVISIONSQL
+  updated_at: <%= -695875.203131.seconds.ago %>
+  id: 82
+  active: false
+  created_at: <%= 633403.796895.seconds.ago %>
+components_029: 
+  name: HTTP_ENV
+  updated_at: <%= 421282.796923.seconds.ago %>
+  id: 93
+  active: true
+  created_at: <%= 421282.796953.seconds.ago %>
+components_008: 
+  name: DB
+  updated_at: <%= -695868.203019.seconds.ago %>
+  id: 72
+  active: false
+  created_at: <%= 2087844.797007.seconds.ago %>
+components_019: 
+  name: MYWAS
+  updated_at: <%= -695872.202965.seconds.ago %>
+  id: 83
+  active: false
+  created_at: <%= 633403.797062.seconds.ago %>
+components_009: 
+  name: CW-DB
+  updated_at: <%= 1756776.79709.seconds.ago %>
+  id: 73
+  active: true
+  created_at: <%= 1756776.797119.seconds.ago %>
+components_020: 
+  name: MYWAS-2
+  updated_at: <%= -695873.202853.seconds.ago %>
+  id: 84
+  active: false
+  created_at: <%= 633403.797173.seconds.ago %>
+components_010: 
+  name: OS
+  updated_at: <%= 1573595.797201.seconds.ago %>
+  id: 74
+  active: true
+  created_at: <%= 1573595.79723.seconds.ago %>
+components_021: 
+  name: Exchange01
+  updated_at: <%= 465381.797259.seconds.ago %>
+  id: 85
+  active: true
+  created_at: <%= 465381.797287.seconds.ago %>
+components_011: 
+  name: Hardware
+  updated_at: <%= 1573595.797315.seconds.ago %>
+  id: 75
+  active: true
+  created_at: <%= 1573595.797346.seconds.ago %>
+components_022: 
+  name: CorpBES02
+  updated_at: <%= 465381.797374.seconds.ago %>
+  id: 86
+  active: true
+  created_at: <%= 465381.797403.seconds.ago %>
+components_001: 
+  name: Optima
+  updated_at: <%= 3582522.79743.seconds.ago %>
+  id: 61
+  active: true
+  created_at: <%= 3582522.797461.seconds.ago %>
+components_012: 
+  name: Application
+  updated_at: <%= 1573595.797489.seconds.ago %>
+  id: 76
+  active: true
+  created_at: <%= 1573595.797518.seconds.ago %>
+components_023: 
+  name: DC_WAS05
+  updated_at: <%= 465381.797546.seconds.ago %>
+  id: 87
+  active: true
+  created_at: <%= 465381.797575.seconds.ago %>
+components_002: 
+  name: Portal
+  updated_at: <%= 3582522.797604.seconds.ago %>
+  id: 62
+  active: true
+  created_at: <%= 3582522.797633.seconds.ago %>
+components_013: 
+  name: Network
+  updated_at: <%= 1573595.797661.seconds.ago %>
+  id: 77
+  active: true
+  created_at: <%= 1573595.79769.seconds.ago %>
+components_024: 
+  name: AD_01
+  updated_at: <%= 465381.797718.seconds.ago %>
+  id: 88
+  active: true
+  created_at: <%= 465381.797747.seconds.ago %>
+components_003: 
+  name: Rules Engine
+  updated_at: <%= 3582522.797775.seconds.ago %>
+  id: 63
+  active: true
+  created_at: <%= 3582522.797804.seconds.ago %>
+components_014: 
+  name: Storage
+  updated_at: <%= 1573595.797834.seconds.ago %>
+  id: 78
+  active: true
+  created_at: <%= 1573595.797863.seconds.ago %>
+components_025: 
+  name: DC_WAS03
+  updated_at: <%= 465358.797891.seconds.ago %>
+  id: 89
+  active: true
+  created_at: <%= 465358.79792.seconds.ago %>

@@ -1,0 +1,20 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+system_settings_001: 
+  name: default_date_format
+  id: 1
+  value: "%m/%d/%Y %I:%M %p"
+system_settings_002: 
+  name: base_request_number
+  id: 2
+  value: "1000"
+system_settings_003: 
+  name: application_type
+  id: 3
+  value: "smart_release"

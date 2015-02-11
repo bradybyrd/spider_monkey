@@ -1,0 +1,29 @@
+<div class="field">
+  <label for="activity_update">Current Update</label>
+  <% if current_user.present? %>
+    <%= text_area_tag 'activity[new_update][contents]' %>
+  <% end %>
+</div>
+<% if current_user.present? %>
+    <%= hidden_field_tag 'activity[new_update][user_id]', current_user.id %>
+<% end %>
+<% unless @activity.updates.empty? %>
+  <table cellspacing="0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @activity.updates.each do |update| %>
+        <tr class="<%= cycle '', 'alt' %>">
+          <td><%= update.created_at.try(:to_s, :simple) %></td>
+          <td><%= h update.user_name %></td>
+          <td><%= h update.contents %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

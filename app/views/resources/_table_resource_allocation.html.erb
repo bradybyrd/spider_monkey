@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table <%= tag_options({:id => "resource_allocation_#{group.id}" ,:class=>"formatted_table"}, false) %>>
+  <% if !session[:group_id].blank? %>
+    <% if session[:group_id].include?(group.id) %>
+      <%= render 'resource_allocations', :group => group %>
+    <% end %>
+  <% end %>
+</table>

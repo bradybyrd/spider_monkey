@@ -1,0 +1,40 @@
+<div id="route_gate">
+
+  <div>
+    <div class="plan_stage_instance_header">
+      Plan Stage
+      </div>
+      <div class="plan_stage_instance_header">
+        Route Gate Constraints
+      </div>
+    <div style="clear:both"></div>
+    <div class="plan_stage_instance_level_divider"><p></p></div>
+    <% plan_stage_instances.each_with_index do |psi, index| -%>
+        <div class="plan_stage_instance_level <%= psi.plan_stage.strict? ? 'strict_stage' : '' %>">
+          <div class="plan_stage_instance_label">
+            <h2><%= "#{index+1}. #{truncate(psi.plan_stage.name)}" %> </h2>
+            <p>
+              <strong>Environment Type</strong>: <%= colorized_label(psi.plan_stage.try(:environment_type).try(:label_color), psi.plan_stage.environment_type_label ) %><br/>
+              <strong>Stage Required</strong>: <%= psi.plan_stage.required? ? 'Yes' : 'No' %>
+            </p>
+          </div>
+          <div class="plan_stage_instance_constraints">
+          <% constraints = psi.constraints.filter_by_route_id(route.id) -%>
+          <% if constraints.present? -%>
+              <% constraints.each do |constraint| %>
+                  <%= render :partial => 'plan_routes/for_reorder', :locals => {:route_gate => constraint.constrainable, :constraint => constraint} %>
+              <% end %>
+          <% else -%>
+              <p>No route gate constraints.</p>
+          <% end -%>
+          </div>
+        </div>
+        <div class="plan_stage_instance_level_divider"><p></p></div>
+        <div style="clear:both"></div>
+    <% end -%>
+
+  </div>
+
+</div>
+
+

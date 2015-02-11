@@ -1,0 +1,47 @@
+- if scope == :active
+  .counter= pluralize(@roles_amount, 'Item')
+  .clear
+table.tablesorter.server_side_tablesorter.formatted_table.roles_table class=(scope) summary=(roles_path(params.merge({scope: scope, order: @sorter_params[scope][:order]})))
+  thead
+    tr
+      th.roles_name headers='name'
+        = t 'role.name'
+
+      th.roles_groups
+        = t 'role.groups'
+
+      th.roles_actions
+        = t 'role.actions'
+
+  tbody
+    - plaginated_roles = @roles.send(scope).order(@query_params[scope][:order]).paginate(page: (@query_params[scope][:page] || 1))
+    - if plaginated_roles.length.zero?
+      - plaginated_roles = plaginated_roles.paginate(page: plaginated_roles.total_pages)
+
+    - plaginated_roles.each do |role|
+      tr id="role_#{ role.id }"
+        td
+          .role_name_link
+            = link_to_if can?(:edit, role), role.name, edit_role_path(role), title: role.name
+
+        td title=role.group_names
+          .group_list
+            = role.decorate.group_expandable_links
+
+        td
+          - if scope == :active
+            - if can?(:edit, role)
+              = link_to I18n.t(:edit), edit_role_path(role), class: 'edit_role'
+            - if role.deactivatable? && can?(:make_active_inactive, role)
+              = " | "
+              = link_to 'Make Inactive', deactivate_role_path(role), method: :put, class: 'make_inactive_role'
+          - else
+            - if can?(:delete, role)
+              = link_to I18n.t(:delete), role_path(role), method: :delete, confirm: t('role.confirm_delete'), class: 'make_inactive_role'
+            - if can?(:make_active_inactive, role)
+              = " | "
+              = link_to 'Make Active', activate_role_path(role), method: :put, class: 'make_inactive_role'
+- if scope == :active
+  .counter= "#{pluralize(@roles_amount, 'Item')}#{@roles_amount > Role.per_page ? ':' : ''}"
+= will_paginate plaginated_roles, { class: 'server_side_tablesorter_pagination', params: {scope: scope}}
+.clear

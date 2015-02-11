@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_tag "/environment/bladelogic/search" do %>
+  <%= text_field_tag :key, params[:key], :size => '15' %>
+	<%= submit_tag 'Search',:class =>'button' %>
+  <%= link_to "clear", "/environment/bladelogic" %>
+  <div style="display:none">
+    <%= text_field_tag :blad, params[:blad]%>
+  </div>        
+  <%= hidden_field_tag :redirect_path, "/environment/bladelogic" %>
+<% end %>

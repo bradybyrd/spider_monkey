@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<td <%= tag_options({:class => day_classes_for(day)}, false) %>>
+  <span <%= tag_options({:class => user_signed_in? ? "number" : "unauth_cal_number"}, false) %>>
+    <%= day.day %>
+    <% day.requests.each do |req| %>
+      <% if user_signed_in? %>
+        <% if can? :view_calendar, req %>
+          <%= show_request(req) %>
+        <% end %>
+      <% else %>
+        <div class='request_unauth'>
+          <%= show_request(req) %>
+        </div>
+      <% end %>
+    <% end %>
+  </span>
+</td>

@@ -1,0 +1,142 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='environments'>
+  <% if can?(:list, Environment.new) %>
+      <h3><%= I18n.t(:active) %></h3>
+
+      <div class='line_h_20px'>
+        <%= render :partial => 'shared/alphabetical_pagination',
+                   :locals => {:path => environments_path, :class_name => 'environments'}
+        %>
+      </div>
+      <% unless @active_environments.blank? %>
+          <table class='tablesorter one_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th width='400'><%= I18n.t(:'table.name') %></th>
+              <th><%= I18n.t(:'table.environment_type') %></th>
+              <th><%= I18n.t(:'table.deployment_policy') %></th>
+              <th><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @active_environments.each do |environment| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+
+                    <% if can?(:edit, environment) %>
+                        <%= link_to(index_title(h(environment.name)),
+                                    edit_environment_path(environment,
+                                                          :page => params[:page],
+                                                          :key => params[:key])
+                            )
+                        %>
+                    <% else %>
+                        <%= index_title(h(environment.name)) %>
+                    <% end %>
+
+                    <%= "<strong>**#{I18n.t(:not_used)}**</strong>".html_safe unless environment.used? %>
+                  </td>
+                  <td><%= colorized_label(environment.environment_type.try(:label_color),
+                                          truncate(environment.environment_type.try(:name))) %>
+                  </td>
+                  <td><%= environment.deployment_policy.capitalize %></td>
+                  <td class='action_links'>
+
+                    <% if can?(:edit, environment) %>
+                        <%= link_to I18n.t(:edit), edit_environment_path(environment,
+                                                                         :page => params[:page],
+                                                                         :key => params[:key])
+                        %>
+                    <% end %>
+
+                    <% if can?(:make_active_inactive, environment) && environment.can_deactivate? %>
+                        <%= h('|') if can?(:edit, environment) %>
+                        <%= link_to I18n.t(:make_inactive),
+                                    deactivate_environment_path(environment, :page => params[:page], :key => params[:key]),
+                                    :method => :put
+                        %>
+                    <% end %>
+
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+      <div class='line_h_20px'><%= render :partial => 'shared/alphabetical_pagination',
+                                          :locals => {:path => environments_path, :class_name => 'environments'} %>
+      </div>
+      <br>
+
+      <% unless @inactive_environments.blank? %>
+          <h3><%= I18n.t(:inactive) %></h3>
+          <table class='tablesorter one_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th width='400'><%= I18n.t(:'table.name') %></th>
+              <th><%= I18n.t(:'table.environment_type') %></th>
+              <th><%= I18n.t(:'table.deployment_policy') %></th>
+              <th><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @inactive_environments.each do |environment| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <% if can?(:edit, environment) %>
+                        <%= link_to(index_title(h(environment.name)),
+                                    edit_environment_path(environment,
+                                                          :page => params[:page],
+                                                          :key => params[:key])
+                            )
+                        %>
+                    <% else %>
+                        <%= index_title(h(environment.name)) %>
+                    <% end %>
+                  </td>
+                  <td><%= colorized_label(environment.environment_type.try(:label_color),
+                                          truncate(environment.environment_type.try(:name))) %>
+                  </td>
+                  <td><%= environment.deployment_policy.capitalize %></td>
+                  <td class='action_links'>
+
+                    <% if can?(:edit, environment) %>
+                        <%= link_to I18n.t(:edit), edit_environment_path(environment, :page => params[:page],
+                                                                         :key => params[:key])
+                        %>
+                    <% end %>
+
+                    <% if can?(:make_active_inactive, environment) %>
+                        <%= h('|') if can?(:edit, environment) %>
+                        <%= link_to I18n.t(:make_active), activate_environment_path(environment,
+                                                                                    :page => params[:page],
+                                                                                    :key => params[:key]),
+                                    :method => :put
+                        %>
+                    <% end %>
+
+                    <% if environment.destroyable? %>
+                        <%= h('|') if can?(:edit, environment) || can?(:make_active_inactive, environment) %>
+                        <%= link_to I18n.t(:delete), environment_path(environment, :page => params[:page],
+                                                                      :key => params[:key]),
+                                    :confirm => I18n.t(:confirm_deletion, item: I18n.t(:'activerecord.models.environment')),
+                                    :method => :delete
+                        %>
+                    <% end %>
+
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+  <% end %>
+
+</div>

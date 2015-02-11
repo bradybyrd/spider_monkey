@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<h2>Enroll Members</h2>
+
+<%= form_for @plan, :url => enroll_members_plan_path(@plan), :html => { :class => 'enroll_members cssform plan_members' } do |f| %>
+  <div class="field">
+    <%= f.label :member_ids, "Members" %>
+    <%= f.collection_select :member_ids, @available_members, :id, :name, {}, :multiple => true %>
+  </div>
+
+  <div class="field">
+    <%= submit_tag "Enroll", :class => "button" %>
+  </div>
+<% end %>
+

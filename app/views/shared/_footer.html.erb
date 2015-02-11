@@ -1,0 +1,35 @@
+<%
+  ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2015
+  # All Rights Reserved.
+  ################################################################################
+%>
+<style>
+  html{
+    display : none ;
+    visibility : hidden ;
+  }
+</style>
+<%= image_tag_wait %>
+<div class='Footer'>
+  <div id='footer_text'>
+    <p>
+      <span> &#169; Copyright 2011 - <%= DateTime.now.year.to_i %> BMC Software, Inc.
+        <br />
+        BMC, BMC Software, the BMC logos, and other BMC marks are trademarks
+        or registered trademarks of BMC Software, Inc. in the U.S. and/or
+        certain other countries. </span>
+        <span class='instance_name'> <%= @instance_name %> </span>
+    </p>
+  </div>
+</div>
+<script>
+  if( self == top ) {
+    document.documentElement.style.display = 'block' ;
+    document.documentElement.style.visibility = 'visible' ;
+  } else {
+    top.location = self.location ;
+  }
+</script>

@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2015
+# All Rights Reserved.
+################################################################################
+%>
+<%= static_javascript_include_tag 'dashboard' %>
+<%= render :partial => "calendars/smart_release/request_tabs" %>
+<% content_for :sidebar do %>
+  <% if user_signed_in? %>
+    <%= link_to image_tag("btn-create.png", :border => 0), new_request_path if can? :create, Request.new %>
+    <hr>
+    <div class='calendar_fields'><%= render :partial => 'calendars/smart_release/calendar_sidebar' %></div>
+    <%= render :partial => 'shared/process_map' %>
+  <% end %>
+<% end %>
+<% if can? :view_calendar, Request.new %>
+  <% if user_signed_in? %>
+    <div style='clear:left;text-align: right'>
+      <div id='toggleFilterLink'>
+        <% if params[:filter_block_collapse_state_flag] == '1' %>
+          <%= link_to "Close Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% else %>
+          <%= link_to "Open Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+        <% end %>
+      </div>
+    </div>
+    <div id='filterSection'><%= render :partial => "dashboard/filters/filters" %></div>
+    <form class='activity'>
+      <div class='field'>
+        <label class='date_label'>Date:</label>
+        <% if @calendar.day? %>
+          <%= date_field_tag 'date', Date.generate_from(@calendar.first_day), :id => 'date' %>
+        <% elsif params[:action]=='upcoming_requests' %>
+          <%= date_field_tag 'date', Date.generate_from(@calendar.date), :id => 'date_upcoming_requests' %>
+        <% else %>
+          <%= date_field_tag 'date', Date.generate_from(@calendar.date), :id => 'date' %>
+        <% end %>
+      </div>
+    </form>
+  <% end %>
+<% end %>

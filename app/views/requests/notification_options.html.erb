@@ -1,0 +1,174 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+
+<%= form_for @request, as: :request, remote: true, html: { class: 'cssform'} do |f| %>
+
+  <h2>Notification Options for Request <%= @request.number %></h2>
+  <div id="error_messages">
+  	<%= f.error_messages %>
+  </div>
+
+  <!-- requests events -->
+  <div>
+    <div class="float_left">
+      <h3 class="margin_bottom_0">Request's Events</h3>
+      <span class="message">Requestor and Owner are notified about checked events by default</span>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_planned, class: 'normal' %>
+        <%= f.label :notify_on_request_planned, 'When request is planned', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_start, class: 'normal' %>
+        <%= f.label :notify_on_request_start, 'When request is started', class: 'normal' %>
+      </div>
+
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_problem, class: 'normal' %>
+        <%= f.label :notify_on_request_problem, 'When request is in problem', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_resolved, class: 'normal' %>
+        <%= f.label :notify_on_request_resolved, 'When request is resolved', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_hold, class: 'normal' %>
+        <%= f.label :notify_on_request_hold, 'When request is on hold', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_cancel, class: 'normal' %>
+        <%= f.label :notify_on_request_cancel, 'When request is canceled', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_complete, class: 'normal' %>
+        <%= f.label :notify_on_request_complete, 'When request is completed', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_dw_fail, class: 'normal' %>
+        <%= f.label :notify_on_dw_fail, 'When request is not started due to Deployment Window', class: 'normal' %>
+      </div>
+
+      <div class="separator">&nbsp;</div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_request_step_owners, class: 'normal' %>
+        <%= f.label :notify_on_request_step_owners, 'Notify Step Owner(s)', class: 'normal' %>
+      </div>
+
+      <div class="separator">&nbsp;</div>
+
+      <h3 class="margin_bottom_0">Step's Events</h3>
+      <span class="message">Only Step Owner are notified about checked events by default</span>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_ready, class: 'normal' %>
+        <%= f.label :notify_on_step_ready, 'When step is ready', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_start, class: 'normal' %>
+        <%= f.label :notify_on_step_start, 'When step is started', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_block, class: 'normal' %>
+        <%= f.label :notify_on_step_block, 'When step is blocked', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_problem, class: 'normal' %>
+        <%= f.label :notify_on_step_problem, 'When step is put in problem', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_complete, class: 'normal' %>
+        <%= f.label :notify_on_step_complete, 'When step is completed', class: 'normal' %>
+      </div>
+
+      <div class="separator">&nbsp;</div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_step_owners, class: 'normal' %>
+        <%= f.label :notify_on_step_step_owners, 'Notify all Step Owners from Request about changes', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_requestor_owner, class: 'normal' %>
+        <%= f.label :notify_on_step_requestor_owner, 'Notify Request\'s Owner/Requestor about changes', class: 'normal' %>
+      </div>
+    </div>
+
+    <div class="float_left  margin_left-20 border_left">
+      <h3 class="margin_bottom_0">Additional Participiants</h3>
+      <div class="field">
+        <%= f.check_box :notify_on_request_participiant, class: 'normal' %>
+        <%= f.label :notify_on_request_participiant, 'Notify on Request event', class: 'normal' %>
+      </div>
+
+      <div class="field">
+        <%= f.check_box :notify_on_step_participiant, class: 'normal' %>
+        <%= f.label :notify_on_step_participiant, 'Notify on Step events', class: 'normal' %>
+      </div>
+
+      <div class="separator">&nbsp;</div>
+
+      <div class="field">
+        <label for="user_email_recipients[]">Users</label>
+        <p/>
+        <%= select_tag 'user_email_recipients[]', options_from_collection_for_select(@users, :id, :name_for_index, @request.email_recipient_ids_for(:user)),  include_blank: 'None', class: 'customize_multiselect', multiple: true, size: 4 %>
+      </div>
+
+      <div class="field">
+        <label for="group_email_recipients[]">Groups</label>
+        <p/>
+        <%= select_tag 'group_email_recipients[]', options_from_collection_for_select(@groups, :id, :name, @request.email_recipient_ids_for(:group)), include_blank: 'None', class: 'customize_multiselect', multiple: true, size: 4 %>
+      </div>
+
+      <div class="field">
+        <label for="request_additional_email_addresses">Other Email Ids</label>
+        <p/>
+        <%= f.text_area :additional_email_addresses, rows: 4 %>
+      </div>
+
+      <h3>Groups notification behavior</h3>
+
+      <div class="field">
+        <%= f.radio_button :notify_group_only, "true", class: 'float_left' %>
+        <label for="notify_group_only" class="notify_group_only" >Group email only</label>
+      </div>
+      <div class="field">
+        <%= f.radio_button :notify_group_only, "false", class: 'float_left' %>
+        <label for="notify_group_only" class="notify_group_only">Group email + Member email(s)</label>
+      </div>
+
+      <%= f.hidden_field :app_id %>
+      <%= f.hidden_field :environment_id %>
+      <%= hidden_field_tag :updating_notification_options, true %>
+
+    </div>
+
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div class="float_left" style="width: 100%;">
+    <div class="button_bar">
+      <%= f.submit 'Update' %>
+    </div>
+  </div>
+
+<% end %>

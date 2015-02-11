@@ -1,0 +1,18 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name, '*Name' %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+
+<div class='field'>
+  <%= f.label :description, 'Description' %>
+  <%= f.text_area :description, :rows => 3, :cols => 50 %>
+</div>

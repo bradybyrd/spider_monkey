@@ -1,0 +1,85 @@
+<div id = "apps" >
+  <% unless @active_applications.blank? %>
+	<h3>Active</h3>
+    <div class="line_h_20px">
+	  <%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => apps_path, :class_name => 'apps' } %>
+    </div>
+    <table class="formatted_table tablesorter three_column_sorter">
+      <thead>
+        <tr>
+          <th>Name</th>
+  	  <th>Components</th>
+          <th>Requests</th>
+          <th>Strict Plan Control</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @active_applications.each do |application| %>
+          <tr class="<%= cycle '', 'alt' %>">
+            <td>
+	      <%= generate_link_to_or_not(index_title(application.name), edit_app_path(application, page: params[:page], key: params[:key]), can?(:edit, application)   )%>
+	    </td>
+	    <td>
+	      <%= truncate(current_user.accessible_visible_installed_components_for_app(application).map(&:name).uniq.sort.join(', '), length: 50)%>
+	    </td>
+            <td><%= "Active: #{application.requests.active.size.to_s}, Total: #{application.requests.size.to_s}" %></td>
+            <td><%= application.strict_plan_control ? 'Yes' : 'No' %></td>
+	        <td class="action_links">
+            <%= link_to I18n.t(:edit), edit_app_path(application, :page => params[:page], :key => params[:key]) if can?(:update, application)  %>
+            <% if !application.default? && can?(:make_active_inactive, application) %>
+              |
+              <%= link_to 'Make Inactive', deactivate_app_path(application, :page => params[:page], :key => params[:key]), :method => :put %>
+            <% end %>
+          </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="line_h_20px">
+	  <%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => apps_path, :class_name => 'apps' } %>
+    </div>
+  <% end %>
+  <br />
+  <% unless @inactive_applications.blank? %>
+    <h3>Inactive</h3>
+    <div class="line_h_20px">
+      <%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => apps_path, :class_name => 'apps', :unarchived => true } %>
+    </div>
+    <table  class="formatted_table tablesorter three_column_sorter">
+      <thead>
+        <tr>
+          <th><em>Inactive</em>&nbsp;&nbsp;Name</th>
+          <th>Components</th>
+          <th>Requests</th>
+          <th>Strict Plan Control</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inactive_applications.each do |application| %>
+          <tr class="<%= cycle '', 'alt' %>">
+            <td><%= generate_link_to_or_not(index_title(h(application.name)), edit_app_path(application, :page => params[:page], :key => params[:key]), can?(:edit, application)   ) %></td>
+	        <td><%= truncate(current_user.accessible_visible_installed_components_for_app(application).map(&:name).uniq.sort.join(", "), :length => 50)%></td>
+            <td><%= "Active: #{application.requests.active.size.to_s}, Total: #{application.requests.size.to_s}" %></td>
+            <td><%= application.strict_plan_control ? 'Yes' : 'No' %></td>
+            <td class="action_links">
+              <%= link_to I18n.t(:edit), edit_app_path(application, :page => params[:page], :key => params[:key]) if can?(:update, application)  %>
+              |
+              <%= link_to 'Make Active', activate_app_path(application, :page => params[:page], :key => params[:key]), :method => :put if can?(:make_active_inactive, application) %>
+              |
+              <% if application.destroyable? %>
+                <%= link_to I18n.t(:delete), app_path(application, :page => params[:page], :key => params[:key]), :confirm => 'This will permanently delete the application. Are you sure?', :method => :delete if can?(:destroy, application) %>
+              <% else %>
+                <abbr title="See summary in edit view">In use by</abbr>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="line_h_20px">
+      <%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => apps_path, :class_name => 'apps', :unarchived => true } %>
+    </div>
+  <% end %>
+</div>

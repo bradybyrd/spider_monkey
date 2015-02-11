@@ -1,0 +1,48 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<tr id='environment_type_<%= environment_type.id %>' <%= tag_options({:class => cycle('', 'alt') +"#{' environment_type_row' unless archived}"}, false) %>>
+  <% unless archived %>
+    <td>
+      <span class='environment_type' <%= tag_options({:id => dom_id(environment_type)}, false) %>>
+        <%= image_tag 'drag.gif' %>
+      </span>
+    </td>
+  <% end %>
+  <td title="<%= environment_type.name %>">
+    <% if can?(:edit, environment_type) %>
+      <%= colorized_label( environment_type.try(:label_color), link_to(index_title(h(truncate(environment_type.name))), edit_environment_type_path(environment_type))) %>
+    <% else %>
+      <%= colorized_label(environment_type.try(:label_color), index_title(h(truncate(environment_type.name)))) %>
+    <% end %>
+  </td>
+  <td><%= " #{environment_type.environments.count} | #{environment_type.plan_stages.count}" %></td>
+  <td title="<%= environment_type.description %>"><%= truncate(environment_type.description, :length => 50) %></td>
+  <td><%= boolean_to_label(environment_type.strict) %></td>
+  <td>
+    <% unless archived %>
+      <% if can?(:edit, environment_type) %>
+        <%= link_to I18n.t(:edit), edit_environment_type_path(environment_type), class: 'edit_environment_type' %>
+      <% end %>
+
+      <% if can?(:archive_unarchive, environment_type) %>
+        <% if environment_type.can_be_archived? %>
+          &nbsp;|&nbsp;
+          <%= link_to I18n.t(:archive), archive_environment_type_path(environment_type), method: :put, class: 'archive_environment_type' %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <% if can?(:archive_unarchive, environment_type) %>
+        <%= link_to I18n.t(:unarchive), unarchive_environment_type_path(environment_type), method: :put, class: 'archive_environment_type' %>
+      <% end %>
+
+      <% if can?(:delete, environment_type) && environment_type.destroyable? %>
+        &nbsp;|&nbsp;
+        <%= link_to(I18n.t(:delete), environment_type, method: :delete, class: 'delete_environment_type', confirm: "Are you sure you want to delete this environment type?") %>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

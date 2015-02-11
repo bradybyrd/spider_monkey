@@ -1,0 +1,20 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table cellspacing='0' class='calendar' id='calendar'>
+  <thead>
+    <tr>
+      <% @calendar.rotated_week_days.each do |day| %>
+        <td><%= day %></td>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render :partial => "#{@calendar.type}.html.erb", :object => @calendar %>
+  </tbody>
+</table>

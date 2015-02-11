@@ -1,0 +1,55 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag "self_services", "multi_select", "activities", "select2" %>
+  <script>
+    //<![CDATA[
+      $(function(){
+        choose_environment_for_template_request();
+      });
+    //]]>
+  </script>
+<% end %>
+<% page_settings :title => 'Create Request', :heading => 'Create New Request', :full_screen => true %>
+<% content_for :sidebar do %>
+  <br>
+  <%= link_to_function image_tag('btn-choose-template.png'), 'loadRequestTemplates($(this))',
+                       numeric_pagination: true,
+                       id: 'btn_choose_template',
+                       rel: choose_request_templates_path(:numeric_pagination => true,:visible_only => 'draft') if can? :choose_template, @request
+  %>
+<% end %>
+<div id='request_templates'></div>
+<hr/>
+<%= form_for(@request, :html => { :class => 'request cssform', :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+  <%= hidden_field_tag :numeric_pagination, true %>
+  <%= render :partial => 'form', :locals => { :f => f, :request => @request, :human_date_format => @human_date_format } %>
+  <div class='field'>
+    <%= f.label :notes %>
+    <%= f.fields_for :notes do |ff| %>
+      <%= ff.text_area :content, :rows => 3, :class => "expand" %>
+      <%= ff.hidden_field :user_id %>
+    <% end %>
+  </div>
+  <p class='expand_textarea_link'>
+    [
+    <a href="javascript:toggleTextarea('request_notes', 'notes')" id='notes'>expand</a>
+    ]
+  </p>
+  <div class='options'>
+    <%= f.submit t(:create_request), data_disable_with: 'Creating request...' %>
+    or
+    <% if params[:plan_id] %>
+      <%= link_to 'cancel', plan_path(params[:plan_id]) %>
+    <% else %>
+      <%= link_to 'cancel', requests_path %>
+    <% end %>
+  </div>
+<% end %>

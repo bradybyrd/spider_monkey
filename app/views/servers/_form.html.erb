@@ -1,0 +1,47 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages unless !new && @server.errors.messages.keys.include?(:name) && @server.errors.messages.keys.size == 1%>
+<% if new %>
+  <div class='field'>
+    <%= f.label :name %>
+    <%= f.text_field :name, :class => 'initialFocus' %>
+  </div>
+<% end %>
+<div class='field'>
+  <%= f.label "DNS/URL" %>
+  <%= f.text_field :dns %>
+</div>
+<div class='field'>
+  <%= f.label :ip_address %>
+  <%= f.text_field :ip_address %>
+</div>
+<div class='field'>
+  <%= f.label :os_platform %>
+  <%= f.text_field :os_platform %>
+</div>
+<div class='field'>
+  <%= f.label :server_group_ids, "Server Groups" %>
+  <span id='server_groups'>
+    <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @server, :collection => @server_groups, :object => "server", :method => "server_group_ids", :label => "name", :value => "id"} %>
+  </span>
+  <span class='sl_links' id='servergrp_select_links'>
+    <%= select_clear_chk('server_groups') %>
+  </span>
+</div>
+<div class='field'>
+  <%= f.label :environment_ids, 'Environments' %>
+  <span id='environments'>
+    <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @server, :collection => @environments, :object => "server", :method => "environment_ids", :label => "name", :value => "id"} %>
+  </span>
+  <span class='sl_links' id='env_select_links'>
+    <%= select_clear_chk('environments') %>
+  </span>
+</div>
+<%= hidden_field_tag :page, params[:page] %>
+<%= hidden_field_tag :key, params[:key] %>

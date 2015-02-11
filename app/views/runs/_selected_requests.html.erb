@@ -1,0 +1,46 @@
+ <%
+ # #############################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+# #############################################################################
+%>
+<h3><%= "Selected #{pluralize(requests.count, 'Request')}" %></h3>
+<div id='run_request_table_scroll' style="padding-bottom:10px;">
+  <table class='formatted_table selected_requests'>
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>App</th>
+        <th>Env</th>
+        <th>Clone?</th>
+        <% if show_date %>
+          <th>Planned Start Date</th>
+          <th>Hours</th>
+          <th>Minutes</th>
+          <th>Meridian</th>
+        <% end %>
+      </tr>
+    </thead>
+      <tbody>
+        <% requests.each do |request| %>
+          <tr class ="<%=  cycle('', 'alt') %> request_in_run" bgcolor="<%= show_alert_for_scheduling(request) %>">
+            <td><%= request.should_be_cloned?(@plan_stage.id, new_run) ? 'pending' :  request.number %></td>
+            <td <%= tag_options({:title =>request.name},false) %>><%= truncate(request.name, :length => 20) %></td>
+            <td <%= tag_options({:title => request.app_name.to_sentence}, false) %>><%= truncate(request.app_name.to_sentence, :length => 20) %></td>
+            <td><%= available_environments_for_request_menu(@plan_stage_instance, request) %></td>
+            <td><%= request.should_be_cloned?(@plan_stage.id, new_run) ? 'yes' : 'no' %></td>
+            <%if show_date%>
+              <td><%= date_field_tag "run[requests_planned_date[#{request.id}][scheduled_at_date]]",request.scheduled_at, :class => "request_planned_date", :disabled => disable_date_field_for_request?(request, new_run) %></td>
+              <td><%= select_tag "run[requests_planned_date[#{request.id}][scheduled_at_hour]]", options_for_select(%w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, request.scheduled_at_hour), :class => 'request_planned_date', :include_blank => true, :disabled => disable_date_field_for_request?(request, new_run) %></td>
+              <td><%= select_tag "run[requests_planned_date[#{request.id}][scheduled_at_minute]]", options_for_select((0..59).map {|n| "%02d" % n}, request.scheduled_at_minute), :class => 'request_planned_date', :include_blank => true, :disabled => disable_date_field_for_request?(request, new_run) %></td>
+              <td><%= select_tag "run[requests_planned_date[#{request.id}][scheduled_at_meridian]]", options_for_select(%w{ AM PM }, request.scheduled_at_meridian), :class => 'request_planned_date', :include_blank => true, :disabled => disable_date_field_for_request?(request, new_run) %></td>
+            <%end%>
+          </tr>
+        <%end%>
+      </tbody>
+  </table>
+</div>
+

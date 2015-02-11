@@ -1,0 +1,37 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<h2> Edit Properties for  <%= truncate(@application_component.component.name) %></h2>
+<div id="properties_wrapper">
+  <div id="property_error_messages"></div>
+  <div class="marginleft5">Edit Properties By Environment</div>
+
+  <%= form_tag update_property_values_app_application_component_path(@app, @application_component),
+               :method => :put, :class => 'property_value_form ajax cssform' do %>
+      <div class="main_property_value_form">
+        <%= hidden_field_tag "main_property_value_form", true %>
+        <%= render :partial => "edit_property_values",
+                   :locals => {:application_component => @application_component,
+                               :app_environments => @app_environments,
+                               :app => @app} %>
+      </div>
+
+      <div class="add_property_link_holder">
+        <%= link_to "add properties",
+                    edit_property_values_app_application_component_path(@app, @application_component),
+                    :id => "add_new_property"
+        %>
+      </div>
+
+      <div class="button_bar">
+        <%= submit_tag "Submit", :id => 'facebox_submit', :class => 'property_value_form_submit' %>
+      </div>
+
+  <% end %>
+
+</div>

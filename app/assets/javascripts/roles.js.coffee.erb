@@ -1,0 +1,91 @@
+RoleForm =
+  $form: ->
+    $('form.role')
+
+  init: ->
+    return if !@$form().length
+    @bindEvents()
+    @updateFolders()
+    @updateCheckboxesState()
+
+  bindEvents: ->
+    @$form().find('a.select-all').on 'click', ->
+      RoleForm.togglePermissions(this, true)
+      false
+
+    @$form().find('a.clear').on 'click', ->
+      RoleForm.togglePermissions(this, false)
+      false
+
+    @$form().find('input[type=checkbox]').on 'change', ->
+      if (this.checked)
+        RoleForm.selectAllParents(this)
+        RoleForm.selectAllDependent(this.value)
+      RoleForm.togglePermissions(this, this.checked)
+      RoleForm.updateCheckboxesState()
+
+    @$form().find('.expand').closest('.header').on 'click', -> $(this).closest('li').toggleClass 'collapsed'
+
+  togglePermissions: (el, checked) ->
+    $el = $(el)
+    is_section = $el.closest('li').length
+    if is_section
+      scope = $el.closest('li')
+    else
+      scope = $el.closest('.permissions')
+    scope.find('> ul input').each ->
+      if !this.checked && checked
+        # select all dependent items if "select all" changes checkbox state to "checked"
+        RoleForm.selectAllDependent(this.value)
+      this.checked = checked
+      true
+    @updateCheckboxesState()
+
+  selectAllDependent: (id)->
+    RoleForm.$form().find("li.depends#{id}").find("input").prop('checked', true)
+
+  selectAllParents: (li)->
+    $(li).parents('li:not(.top-section)').find('.header input:first').prop('checked', true)
+
+  updateCheckboxesState: ->
+    @updateDependentSections()
+    @updateChildrenState()
+
+  # check folder checkbox if it has checked permissions
+  updateFolders: ->
+    @$form().find('li.folder > .header input').each ->
+      $li = $(this).closest('li')
+      has_checked = $li.find('ul').find('input:enabled:checked').length > 0
+      if has_checked
+        this.checked = true
+
+  # uncheck all disabled in subsection
+  updateChildrenState: ->
+    @$form().find('input:disabled:checked').prop('checked', false)
+
+  # updates subsections state according to checkbox in main section
+  updateDependentSections: ->
+    @$form().find('li.depends').each ->
+      $li = $(this)
+      depends_id = $li.data('depends-on')
+      depends_on_checked = $("#permission#{depends_id}").prop('checked')
+      $li.find('input').prop('disabled', !depends_on_checked)
+      $li.toggleClass('disabled', !depends_on_checked)
+
+class LinksListTruncate
+  constructor: ->
+    $(document).on 'click', '.<%= ApplicationDecorator::SHOW_MORE_LINK_CLASS %>', @show_more_links
+
+  show_more_links: ->
+    $(this).parent().find('.<%= ApplicationDecorator::HIDDEN_EXPANDABLE_LINKS_CLASS %>').show()
+    $(this).hide()
+    return
+
+$ ->
+  if $('body.roles').length
+    if $('.group_list').length or $('.team_list').length
+      new LinksListTruncate
+
+  RoleForm.init()
+  RPM.Helpers.InitSearch('#roles')
+  RPM.Helpers.AjaxPagination('body.roles')

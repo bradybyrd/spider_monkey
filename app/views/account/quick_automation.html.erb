@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>Quick Automation</h2>
+
+<% if GlobalSettings.automation_available? %>
+<div class="field step_auto_only">
+	Choose Automation Script:
+  <%= form_for @script, :html => { :class => 'cssform' } do |f| %>
+	
+  <span class="radio toggles" style="<%= "display: none" unless GlobalSettings.bladelogic_available? || GlobalSettings.capistrano_available? %>">
+    <label><%= f.radio_button :script_type, 'CapistranoScript', :checked => true %> SSH</label>
+    <label><%= f.radio_button :script_type, 'BladelogicScript' %> BMC BladeLogic</label>
+  </span>
+
+  <div class="toggleable_select">
+    <span class="CapistranoScript_fields">
+      <%= f.collection_select :id, CapistranoScript.sorted, :id, :name, {:prompt => true} %>
+	</span>
+
+    <span class="BladelogicScript_fields">
+      <%= f.collection_select :id, BladelogicScript.sorted, :id, :name, {:prompt => true} %>
+	</span>
+  </div>
+  <% end %>
+</div>
+
+
+Application Context (show/hide)
+
+<% #render :partial => 'shared_scripts/app_env_component_selection' %>
+	
+<table>
+	<% #render :partial => 'add_arguments' %>
+</table>
+
+<% else %>
+	Automation is not enabled in system settings
+<% end %>

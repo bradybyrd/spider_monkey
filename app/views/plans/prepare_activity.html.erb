@@ -1,0 +1,77 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='plan_prepare_activity'>
+  <% if @activity_categories.empty? %>
+    <h2><%= "There are currently no request-compatible #{activity_or_project?.downcase} categories." %></h2>
+  <% else %>
+    <%= form_tag create_activity_plan_path(@plan), :class => 'cssform', :multipart => true do %>
+      <%= hidden_field_tag 'plan_stage_id', @stage.id %>
+      <div class='border' id='plan_activity'>
+        <h2><%= "#{activity_or_project?} Details" %></h2>
+        <% if @activities.any? %>
+          <div id='existing_plan_activity'>
+            <h3><%= "Select an #{activity_or_project?}..." %></h3>
+            <p>
+              <%= label_tag 'activity_id', activity_or_project? %>
+              <%= select_tag 'activity_id', options_from_collection_for_select(@activities, :id, :name) %>
+            </p>
+            <h3>
+              or
+              <%= link_to "create a new one", '#', :class => 'new_activity' %>
+            </h3>
+          </div>
+        <% end %>
+        <div id='new_plan_activity' <%= tag_options({:style => ("display: none" if @activities.any?)}, false) %>>
+          <%= fields_for Activity.new do |f| %>
+            <div class='field'>
+              <%= f.label :activity_category_id, "#{activity_or_project?} Category" %>
+              <%= f.collection_select :activity_category_id, @activity_categories, :id, :name, {}, :id => 'activity_category_id', 'data-template-url' => creation_attributes_activities_path %>
+            </div>
+            <div id='activity_creation_attributes'>
+              <%= render "activities/creation_attributes", :activity_category => @activity_categories.default %>
+            </div>
+          <% end %>
+
+          <br class='clear'/>
+          <% if @activities.any? %>
+            <h3><%= link_to "use existing", "#", :class => 'cancel' %></h3>
+          <% end %>
+        </div>
+      </div>
+      <div class='border' id='plan_request'>
+        <h2>Request Details</h2>
+        <%= fields_for @request do |f| %>
+          <%= render_request_form f, @request, @plan, @environments %>
+          <%= hidden_field_tag 'request[deployment_coordinator_id]', current_user.id %>
+          <% if @request_template %>
+            <hr>
+            <div>
+              <%= label_tag 'creating_requests', "Creating Requests from" %>
+              <br>
+              <div style='clear:left;margin-left:37px;'>
+                <%= label_tag 'creating_requests', "#{@request_template.name} Template", :style => "line-height:14px;" %>
+                <span>
+                  <%= check_box_tag "include[version]", 1, false, :id => "include_version_#{@request_template.id}" %>
+                  preserve versions
+                  <%= check_box_tag "include[users]", 1, false, :id => "include_users_#{@request_template.id}" %>
+                  preserve assignments
+                  <%= check_box_tag "include[all]", 1, true, :id => "include_all_#{@request_template.id}" %>
+                  preserve all data
+                </span>
+              </div>
+            </div>
+          <% end %>
+          <%= submit_tag I18n.t(:create) %>
+        <% end %>
+
+      </div>
+    <% end %>
+
+  <% end %>
+</div>

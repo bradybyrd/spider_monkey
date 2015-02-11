@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <%# - unless params[:controller] == 'activities' && params[:action] == 'request_projects' %>
+  <%# .search_no_pad %>
+  <%# = render :partial => 'activity_categories/search_box' %>
+  <% draw_tabs :selected => "projects" do %>
+    <%= sub_tab_with_name "Plans", { :path => plans_path } %>
+    <%= sub_tab_with_name "Projects", { :path => request_projects_path } %>
+  <% end %>
+<% end %>

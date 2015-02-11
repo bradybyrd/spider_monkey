@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<th <%= tag_options({:class => ("filterable" if index_column.filterable?), :id => attribute_column, :valign => 'middle', :style => "z-index: 2"}, false) %>>
+  <div class='cell_contents_wrapper'>
+    <div class='cell_text'><%= name %></div>
+    <% if index_column.filterable? %>
+      <div class='clear_filters'></div>
+      <div class='filter_box' style='display:none'>
+        <% vals = @activity_category.filter_options_for_column(attribute_column).each do |opt| %>
+          <p <%= tag_options({'data-filter-value' => opt.value, 'data-column-id' => attribute_column}, false) %>><%= opt.human_value %></p>
+        <% end %>
+        <% if vals.blank? %>
+          <p class='no_filter'>[no filters]</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</th>

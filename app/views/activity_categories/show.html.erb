@@ -1,0 +1,79 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<!-- This gets displayed for editable activities - list for read-only -->
+<% page_settings :title => h(@activity_category.name.pluralize) %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag "activity_index_columns", "stdlib" %>
+  <%= stylesheet_link_tag "financials" %>
+<% end %>
+<% content_for :sidebar do %>
+  <p>
+    <%= link_to activity_or_project_image?, new_activity_path(@activity_category) %>
+  </p>
+  <% if current_user.root? %>
+    <p>
+      <%= button_to_function "", "jQuery.facebox({ ajax: '/activity_categories/#{@activity_category.id}/edit_index_columns'})", :class => "customize" %>
+    </p>
+  <% end %>
+<% end %>
+<% content_for :page_section do %>
+  <%= render 'tabs', :selected => @activity_category %>
+<% end %>
+<% if @activity_category.activities.blank? %>
+  <h2>
+    There are no activities in this category.
+    <%= link_to "Create one?", new_activity_path(@activity_category) %>
+  </h2>
+<% else %>
+  <table cellspacing='0' class='filter_table'>
+    <thead>
+      <tr>
+        <th>
+          <div class='cell_contents_wrapper'>
+            <div class='cell_text'>Leading Group<br>ID</div>
+          </div>
+        </th>
+        <%# %th %>
+        <% @activity_category.index_columns.each do |col| %>
+          <%= render 'filterable_th', :index_column => col, :attribute_column => col.activity_attribute_column, :name => col.name %>
+        <% end %>
+        <%# %th %>
+        <th id='submit_filter'>
+          <%= form_tag filter_index_columns_activity_category_path(@activity_category), :class => "activity_filters #{dom_id(@activity_category)}" do %>
+            <div class='submit'>
+              <%= submit_tag 'filter', :class => 'spinner' %>
+              <a class='clear_filters' <%= tag_options({:href => '#', :style => "display: none"}, false) %>>clear</a>
+            </div>
+          <% end %>
+
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <td <%= tag_options({:colspan => column_count}, false) %>>[ <%= #{link_to_function 'expand all', '', :class => 'expand_all' %> ]</td>
+    </tr>
+    <% @groups.each do |group| %>
+      <% if count_group(@activity_category.id, group.id) > 0 %>
+        <tr class='group_name_row'>
+          <td <%= tag_options({:colspan => column_count}, false) %>>
+            <div class='group'>
+              <div class='toggle closed preserve group_name' <%= tag_options({:id => dom_id(group), :rel => ".#{dom_id(group)}"}, false) %>>
+                <%= h group.name %>
+                <span <%= tag_options({:id => "span_#{group.id}"}, false) %>><%= "(#{count_group(@activity_category.id, group.id)})" %></span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tbody <%= tag_options({:id => "#{dom_id(group)}_activities", :class => "#{dom_id(group)} activities_container", :style => "display:none"}, false) %>>
+          <%= render_activities_by_group group %>
+        </tbody>
+      <% end %>
+    <% end %>
+  </table>
+<% end %>

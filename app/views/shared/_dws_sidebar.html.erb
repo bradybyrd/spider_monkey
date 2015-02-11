@@ -1,0 +1,16 @@
+<% content_for :sidebar do %>
+  <% if can?(:create, DeploymentWindow::Series.new)%>
+    <div class="create_deployment_window_series_button_wrapper">
+      <%= form_tag new_deployment_window_series_path, method: :get do %>
+        <%= hidden_field_tag :behavior, :allow %>
+        <%= submit_tag 'Create Allow Deployment Window', class: 'button create_allow_deployment_window_series' %>
+      <% end %>
+    </div>
+    <div class="create_deployment_window_series_button_wrapper">
+      <%= form_tag new_deployment_window_series_path, method: :get do %>
+        <%= hidden_field_tag :behavior, :prevent %>
+        <%= submit_tag 'Create Prevent Deployment Window', class: 'button create_prevent_deployment_window_series' %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

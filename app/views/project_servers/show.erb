@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Project Server' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/tabs', :locals => { :selected => 'rally' } %>
+<% end %>
+Server Name
+<%= @project_server.server_name_id %>
+<br>
+"IP/DNS"
+<%= @project_server.ip %>
+<br>
+Server URL
+<%= @project_server.server_url %>
+<br>
+Port
+<%= @project_server.port %>
+<br>
+Username
+<%= @project_server.username %>
+<br>
+<%= link_to 'Back', project_servers_path %>

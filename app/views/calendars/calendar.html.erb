@@ -1,0 +1,72 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Calendar - #{@calendar.title} - #{@calendar.first_day.to_date.strftime('%Y')}" %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'calendar' %>
+  <%= stylesheet_link_tag 'request', 'dashboard' %>
+  <style>
+    /*<![CDATA[*/
+      span.request_id {padding:0px 0px;}
+      div.request a { border-bottom:none; }
+    /*]]>*/
+  </style>
+  <% unless user_signed_in? %>
+    <style>
+      /*<![CDATA[*/
+        td { word-break:break-all; word-wrap:break-word; white-space:inherit; }
+      /*]]>*/
+    </style>
+  <% else %>
+    <style>
+      /*<![CDATA[*/
+        div.calendar_nav
+      /*]]>*/
+    </style>
+  <% end %>
+<% end %>
+<div id='request_and_calendar'>
+  <%= render :partial => "calendars/smart_release/page_section_sidebar.html.erb" %>
+  <div class='clear'></div>
+  <% if can? :view_calendar, Request.new %>
+    <% unless user_signed_in? %>
+      <%= render :partial => "filters/smart_release/selected_filters.html.erb" %>
+    <% end %>
+    <% if user_signed_in? %>
+      <div class='calendar_nav above'>
+        <%= link_to "&#171; previous".html_safe, previous_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+        <%= link_to "next &#187;".html_safe, next_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+      </div>
+    <% end %>
+    <h1 class='calender_header'>
+      <span class='month'>
+        <%= @calendar.title %>
+        <%= @calendar.first_day.to_date.strftime('%Y') %>
+      </span>
+    </h1>
+    <div class='clear'></div>
+    <% if params[:action] == 'upcoming_requests' %>
+      <%= render :partial => 'upcoming_requests', :locals => { :partial_prefix => "request" } %>
+    <% else %>
+      <%= render :partial => "calendars/calendar_cells.html.erb" %>
+    <% end %>
+    <% if user_signed_in? %>
+      <% session['calendar_session'] = remove_temp_filters(session['calendar_session'], @params) %>
+      <div class='calendar_nav'>
+        <%= link_to "&#171; previous".html_safe, previous_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+        <%= link_to "next &#187;".html_safe, next_calendar_path, :ajax => true, :dom_path => "#request_and_calendar" %>
+      </div>
+      <span class='button'>
+        <%= link_to "Link to this calendar", this_calendar_url %>
+      </span>
+      <span class='button'>
+        <%= link_to "Calendar report", requests_for_coming_weeks_url %>
+      </span>
+    <% end %>
+  <% end %>
+</div>

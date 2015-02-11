@@ -1,0 +1,4 @@
+<div class='field'>
+  <%= f.label :estimate, 'Estimate:' %>
+  <%= f.select :estimate, @request.view_object.estimate, {:include_blank => true}, id: 'popup_request_estimate' %>
+</div>

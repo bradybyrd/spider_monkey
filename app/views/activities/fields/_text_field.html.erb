@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if current_user.present? %>
+  <%= text_field_tag field_name, h(field_value), :disabled => disabled %>
+<% else %>
+  <%= h(field_value) %>
+<% end %>

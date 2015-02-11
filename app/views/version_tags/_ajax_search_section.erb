@@ -1,0 +1,68 @@
+<% if @version_tags.blank? %>
+    <div class='blank_data_msg'>
+      <%= I18n.t(:none_at_this_time, model: I18n.t(:'version_tag.version_tags')) %>
+      <div class='server_search'>
+        <%= search_box("/environment/metadata/version_tags?format=html") %>
+      </div>
+    </div>
+<% else %>
+    <div style='overflow-x: auto;overflow-y: hidden;'>
+      <div class='server_search'>
+        <%= search_box("/environment/metadata/version_tags?format=html") %>
+      </div>
+      <%= render :partial => 'environments/metadata_pagination',
+                 :locals => {:metadata_model => @version_tags,
+                             :metadata_type => 'version_tag',
+                             :position => 'unarchived',
+                             :html_class => 'server_side_tablesorter_pagination',
+                             :align => :left,
+                             :key => @keyword}
+      %>
+      <table class='tablesorter server_side_tablesorter formatted_table'
+             summary="<%= details_version_tags_path(:position => 'unarchived',
+                                                    :format => 'html',
+                                                    :page => @page,
+                                                    :per_page => @per_page,
+                                                    :order => @order,
+                                                    :key => @keyword)
+             %>">
+        <thead>
+        <tr>
+          <th headers="id"><%= I18n.t(:'table.id') %></th>
+          <th headers="name"><%= I18n.t(:'table.name') %></th>
+          <th headers="app"><%= I18n.t(:'table.application') %></th>
+          <th><%= I18n.t(:'table.environment') %></th>
+          <th headers="component"><%= I18n.t(:'table.components') %></th>
+          <th><%= I18n.t(:'table.artifact_url') %></th>
+          <th title="<%= I18n.t(:'table.titles.count_of_r_rt_p') %>">
+            <%= I18n.t(:'table.r_rt_p') %>
+          </th>
+          <th><%= I18n.t(:'table.actions') %></th>
+        </tr>
+        </thead>
+        <%= render :partial => 'version_tags/details', :locals => {:@version_tag_list => @version_tags, :@position => 'unarchived'} %>
+      </table>
+    </div>
+<% end %>
+
+<% unless @archived_version_tags.blank? %>
+    <h3><%= I18n.t(:archived) %></h3>
+    <%= render :partial => 'environments/metadata_pagination', :locals => {:metadata_model => @archived_version_tags, :metadata_type => 'version_tag', :position => 'archived', :align => :left, :html_class => 'server_side_tablesorter_pagination'} %>
+    <table class='tablesorter server_side_tablesorter formatted_table' summary="<%= details_version_tags_path(:position => 'archived', :format => 'html', :page => @page, :per_page => @per_page, :order => @order) %>">
+      <thead>
+      <tr>
+        <th headers="id"><%= I18n.t(:'table.id') %></th>
+        <th headers="name"><%= I18n.t(:'table.name') %></th>
+        <th headers="app"><%= I18n.t(:'table.application') %></th>
+        <th><%= I18n.t(:'table.environment') %></th>
+        <th headers="component"><%= I18n.t(:'table.components') %></th>
+        <th><%= I18n.t(:'table.artifact_url') %></th>
+        <th title="<%= I18n.t(:'table.titles.count_of_r_rt_p') %>">
+          <%= I18n.t(:'table.r_rt_p') %>
+        </th>
+        <th><%= I18n.t(:'table.actions') %></th>
+      </tr>
+      </thead>
+      <%= render :partial => 'version_tags/details', :locals => {:@version_tag_list => @archived_version_tags, :@position => 'archived'} %>
+    </table>
+<% end %>

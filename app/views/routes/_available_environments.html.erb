@@ -1,0 +1,65 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='available_environments'>
+  <%= form_tag add_environments_app_route_path(app, route), :id => dom_id(route) do %>
+
+      <div>
+        <h2 class="table_heading">Available Environments</h2>
+        <% if can? :configure_gates, Route.new %>
+          <span class="table_buttons"><%= submit_tag('Add Selected', :disabled => environments.blank?, :class => 'button') %></span>
+        <% end %>
+      </div>
+      <br class='clear'/>
+      <table id="environments_list" class='tablesorter formatted_table'>
+        <thead>
+        <tr>
+          <th class='check_all'>
+            <% check_box_dom = "#environments_list tbody tr td" -%>
+            <%= check_box_tag :select_all_chk, "1", false, :check_box_dom => check_box_dom, :id => "select_all_check_environments", :class => "check_all_input", :disabled => environments.blank? %>
+          </th>
+          <th width='400'>Name</th>
+          <th>Environment Type</th>
+          <th>Assigned Routes</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <% unless environments.blank? -%>
+            <% environments.each do |environment| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <%= check_box_tag 'new_environment_ids[]', environment.id, false, {:class => "environments_", :id => "environment_move_#{environment.id}"} %>
+                  </td>
+                  <td title="<%= environment.name %>">
+                  <%= index_title(h(truncate(environment.name))) %>
+                  </td>
+                  <td title="<%= environment.environment_type.try(:name) %>"><%= colorized_label(environment.environment_type.try(:label_color), truncate(environment.environment_type.try(:name))) %></td>
+                  <td title="<%= environment.routes_list %>"><%= truncate(environment.routes_list) %></td>
+                  <td class='action_links'>
+                    <% if can? :configure_gates, Route.new %>
+                    <%= link_to 'Add to Route', add_environments_app_route_path(app, route, :new_environment_ids => [environment.id]), :method => :post, :class => 'button' %>
+                    <% else %>
+                      <span <%= tag_options({:style => "color:#999"}, false) %>>Add to Route</span>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+
+        <% else -%>
+
+            <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+              <td colspan="6">No additional environments available for route.</td>
+            </tr>
+
+        <% end -%>
+        </tbody>
+      </table>
+  <% end -%>
+</div>

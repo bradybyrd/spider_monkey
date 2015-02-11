@@ -1,0 +1,20 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+user_apps_000001: 
+  created_at: 2011-04-29 04:13:14
+  updated_at: 2011-04-29 04:13:14
+  app_id: "1"
+  id: "3"
+  user_id: "1"
+  visible: "1"
+  roles: |
+    --- 
+    1: 
+    2: 
+

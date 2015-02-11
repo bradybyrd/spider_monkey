@@ -1,0 +1,33 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+
+<div class="component_mappings">
+    <h2>Map Component to an External Object</h2>
+    <p>
+        Select an available integration server and filter automation to fetch objects
+        that could be mapped with this component.
+    </p>
+    <p>
+        Note that at least one automation should exist that maps to a component for a given integration server
+    </p>
+    <div id="automation_selection_header">
+        <span id="component_project_server_selector">
+            <%= label_tag :project_servers, "Select Target Server" %>
+            <%= select_tag :resource_automation_id, options_from_collection_for_select(project_servers, "id", "name" ), 
+			'data-path' => resource_automations_app_application_component_path(@app, @application_component, :edit_mode => edit_mode), :prompt => "Select Integration Server" %>
+        </span>
+        <span id="component_resource_automation_selector"> 
+            <%= render :partial => "component_mappings/resource_automations", :locals => { :project_server => nil, :resource_automations => nil, 
+                    :edit_mode => edit_mode, :selected_automation_id => nil } %>
+        </span>
+    </div>
+    <div id="component_selection_filters">
+        <%= render :partial => "component_mappings/filter_arguments", :locals => { :script => nil, :step => nil } %>
+    </div>
+</div>

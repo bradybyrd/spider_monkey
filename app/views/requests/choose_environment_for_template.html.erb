@@ -1,0 +1,82 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div style=''>
+  <div id="errorExplanation" class="errorExplanation">
+    <h2></h2>
+  </div>
+
+  <% if @request.apps.present? && @request.apps.first.strict_plan_control %>
+    <br />
+    <span class='label_look'>
+      <%= t 'choose_plan_stage_notification' %>
+    </span>
+  <% end %>
+
+  <%= form_for @request, :url => '',
+               :html => {:class => 'cssform', :id => 'choose_environment_for_template'} do |f| %>
+    <h2><%= "Create request from #{@request_template.name} template" %></h2>
+    <h3>Request Information</h3>
+    <div class='field'>
+      <%= label_tag :applications %>
+      <% if @request.apps.present? %>
+        <%= @request.app_name.to_sentence %>
+        <%= hidden_field_tag 'request[app_ids]', @request.app_ids %>
+      <% else %>
+        <%= t 'no_applications' %>
+      <% end %>
+    </div>
+    <div class='field'>
+      <%= label_tag :environments, 'Select environment' %>
+      <% if @request.common_environments_of_apps.blank? %>
+        <%= t 'no_environments' %>
+      <% else %>
+        <div id='request_link_for_multi_select'>
+          <%= select_tag 'request[environment_id]', options_for_select(
+            raw(common_environments_of_apps_of_template(@request))
+            ), { id: 'popup_request_environment_id' } %>
+          <%= link_to_function 'Multi-select environments', 'useMultiSelect(this, "Environment")' %>
+        </div>
+        <div id='request_multi_select'>
+        </div>
+      <% end %>
+      <%= hidden_field_tag :request_template_id, @request_template.id %>
+    </div>
+
+    <%= render :partial => 'requests/request_popup/plan' %>
+
+    <%= render :partial => 'requests/request_popup/estimate', :locals => {f: f} %>
+
+    <%= render :partial => "requests/request_popup/scheduled_at", :locals => {f: f} %>
+
+    <div id='popup_select_deployment_window' class='field hide'>
+      <div id="popup_deployment_window_warning">
+      </div>
+      <%= f.label :deployment_window, 'Deployment Window:' %>
+      <%= f.hidden_field :deployment_window_event_id, {
+              class: 'request_deployment_window_event_id',
+              id: 'popup_request_deployment_window_event_id',
+              "data-text" => (deployment_window_event_option_text(@request.deployment_window_event, true) if @request.deployment_window_event_id) }
+      %>
+      <div class="request_deployment_window_controls">
+        <%= f.submit :Next, :type => "button", :disabled => false, :id => "popup_deployment_window_next", :class => "button" %>
+        <%= f.submit 'Clear', type: 'button', id: 'popup_deployment_window_clear', class: "button" %>
+      </div>
+      <%= hidden_field_tag 'deployment_window_event_id_url', deployment_window_options_requests_path, id: 'popup_deployment_window_event_id_url' %>
+      <%= hidden_field_tag 'deployment_window_next_url', deployment_window_next_requests_path, id: 'popup_deployment_window_next_url' %>
+      <%= hidden_field_tag 'request_environment_id_url', application_environment_options_requests_path, id: 'popup_request_environment_id_url' %>
+      <%= hidden_field_tag 'deployment_window_warning_url', deployment_window_warning_requests_path, id: 'popup_deployment_window_warning_url' %>
+      <%= hidden_field_tag 'selected_request_environment_id', @request.environment_id_in_list, id: 'popup_selected_request_environment_id' %>
+      <%= hidden_field_tag 'old_deployment_window_event_id', @request.deployment_window_event_id, id: 'popup_old_deployment_window_event_id' %>
+      <%= hidden_field_tag 'old_environment_id', @request.environment_id, id: 'popup_old_environment_id' %>
+    </div>
+
+    <br>
+    <div class='button_bar'><%= submit_tag t('create_request'), class: 'button', id: 'create_request_for_environment' %></div>
+  <% end %>
+</div>

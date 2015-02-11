@@ -1,0 +1,69 @@
+<div>
+  <div id="toggleFilterLink">
+    <%= link_to "Open Filters", {}, data: { placeholder: 'Close Filters' } %>
+  </div>
+  <div id="filterSection" class="hide">
+    <% if @filter_params[:filters][:start_at].present? || @filter_params[:filters][:finish_at].present? || @filter_params[:filters][:environment].present? %>
+      <%= hidden_field_tag 'not_empty_filter' %>
+    <% end %>
+    <div id="financials_filters">
+      <%= form_tag nil, remote: true,
+                        method: :get,
+                        class: 'filters',
+                        id: 'filter_form' do -%>
+        <%= hidden_field_tag 'act', 'filter' %>
+        <%= hidden_field_tag 'clear_filters', '1', disabled: 1 %>
+        <table align="center" cellpadding="0" cellspacing="0" style="width:100%">
+          <tbody>
+            <tr>
+              <td>
+                <label for="start_date">Start Date:</label>
+                <div class="selected_values"></div>
+                <div class="values_to_select">
+                  <%= date_field_tag 'filters[start_at]',
+                                     (@filter_params.has_key?(:filters) && @filter_params[:filters][:start_at].present? ?
+                                        Date.strptime(@filter_params[:filters][:start_at], GlobalSettings['default_date_format'].split(' ')[0]) : '') %>
+                  <div class="control-links">
+                    <%= link_to 'done', '#' %>
+                    <%= link_to 'cancel', '#', class: 'hidden' %>
+                    <%= link_to 'clear', '#' %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <label for="finish_date">Finish Date:</label>
+                <div class="selected_values"></div>
+                <div class="values_to_select">
+                  <div>
+                    <%= date_field_tag 'filters[finish_at]',
+                                       (@filter_params.has_key?(:filters) && @filter_params[:filters][:finish_at].present? ?
+                                          Date.strptime(@filter_params[:filters][:finish_at], GlobalSettings['default_date_format'].split(' ')[0]) : '') %>
+                  </div>
+                  <div class="control-links">
+                    <%= link_to 'done', '#' %>
+                    <%= link_to 'cancel', '#', class: 'hidden' %>
+                    <%= link_to 'clear', '#' %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <label for="filters_environment">Environment:</label>
+                <%= render partial: "dashboard/filters/filter_select_list",
+                           locals: { filter: "environment",
+                                     filter_selected_values: @filter_params[:filters] ? @filter_params[:filters][:environment] : nil,
+                                     filter_options: @occurrences.map(&:environments).flatten.uniq.map { |e| [e.name, e.id] } }
+                                     %>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: left">&nbsp;</td>
+              <td style="text-align: right">
+                <%= link_to "clear", nil, class: 'clear_request_filters' %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end -%>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<%= form_for @steps_with_invalid_components, :url => update_components_steps_path(:steps => @steps_with_invalid_components.map(&:id)), :method => :put do |f| %>
+
+  <%= hidden_field_tag :request_id, params[:id] %>
+  <% params[:request].each do |key, value| %>
+    <%= hidden_field_tag "request[#{key}]", value %>
+  <% end %>
+
+  Request: <%= @request.number %>
+  <p>The following steps have components that are not available in the selected environment (<%= @request.environment.name %>)</p>
+
+  <table>
+    <% @steps_with_invalid_components.each do |step| %>
+      <tr>
+        <td>Step: <%= step.position %></td>
+        <td>
+          <label for="components">Components</label>
+          <%= select_tag "components[#{step.id}]", options_for_select([''].concat( @request.available_components.map { |c| [c.name, c.id] })) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <h3>Note: Steps without a new component selected will be deleted!</h3>
+
+  <%= f.submit "update steps" %> or <%= link_to 'cancel', :back %>
+
+<% end %>
+

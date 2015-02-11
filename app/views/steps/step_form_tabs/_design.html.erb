@@ -1,0 +1,47 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :view_step_design_tab, association_or_new_instance(step, :request) %>
+  <% if @display_only %>
+    <div id="design_section" >
+      Editing Disabled
+    </div>
+  <% else %>
+    <div id="design_section" >
+      <div id="error_messages">
+        <%= f.error_messages %>
+      </div>
+      <div class="float_left">
+        <h3 class="margin_bottom_0">Default Tab</h3>
+        <span class="message">the default tab appears first when opening the step</span>
+        <div class="field">
+          <%= f.label :default_tab, t('step.default_tab_to_display') %>
+          <%= f.select :default_tab, (Step::STEP_TABS & step_allowed_tabs(step)).map{|k| [k.humanize,k] } %>
+        </div>
+      </div>
+      <div class="float_right" style="width: 300px;">
+        <h3 class="margin_bottom_0">Additional Step Options</h3>
+        <div class="field">
+          <%= f.check_box :protected_step, class: 'normal' %>
+          <%= f.label :protected_step, t('step.protected.label'), class: 'normal' %>
+        </div>
+        <span class="message"><%= raw t('step.protected.description') %></span>
+        <div class="field">
+          <%= f.check_box :protect_automation_tab, class: 'normal' %>
+          <%= f.label :protect_automation_tab, t('step.protect_automation.label'), class: 'normal' %>
+        </div>
+        <span class="message"><%= t('step.protect_automation.description') %></span>
+        <div class="field">
+          <%= f.check_box :suppress_notification, class: 'normal' %>
+          <%= f.label :suppress_notification, 'Suppress notification', class: 'normal' %>
+        </div>
+        <span class="message">No email will be sent on step events</span>
+      </div>
+    </div>
+  <% end %>
+<% end %>

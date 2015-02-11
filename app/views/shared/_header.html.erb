@@ -1,0 +1,108 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% if user_signed_in? && current_user.active? -%>
+    <div id='topBar'>
+      <div id='banner'>
+        <h2> User Menu </h2>
+
+        <div class='transparent_image'>
+          <a href=""></a>
+          <%= user_name %>
+        </div>
+        <ul class='userMenu'>
+          <li>
+            <a href="<%= profile_path %>" title='Your Profile'>Profile</a>
+          </li>
+          <li>
+            <%= link_to_function 'Logout', "logOut()", :title => 'Logout and remove the cookie from your machine' %>
+          </li>
+        </ul>
+        <%= image_tag("banner/software_title.png", :alt => "BMC Release Process Management", :class => "softwareTitle") %>
+      </div>
+      <%= flash_div :success, :error, :notice,:warning %>
+      <%= yield :error_messages %>
+      <%#FIXME: this is mad to make tab selected like this %>
+      <% unless (current_user.first_time_login? || current_user.is_reset_password?) -%>
+          <div id='primaryNav'>
+            <h2> Primary Nav </h2>
+            <ul class="leftNavGroup">
+
+              <% if can? :view, :dashboard_tab %>
+                  <%= main_tab "Dashboard", :path => root_path,
+                               :and => !(@show_all || @request_dashboard[:show_all]) && !@is_releases_tab,
+                               :or => (params[:controller] == 'calendars' && params[:for_dashboard]) ||
+                                       (params[:action] = "currently_running" if params[:for_dashboard]) %>
+              <% end %>
+
+              <% if can? :view, :plans_tab %>
+                  <%= main_tab "Plans", :drop_down => "plans",
+                               :path => plans_path,
+                               :if => (params[:controller] == "plans" ||
+                                       params[:action] == "integration_query" ||
+                                       params[:controller] == 'activities') %>
+              <% end %>
+
+              <% if can? :view, :requests_tab %>
+                  <% default_path = current_user.default_tab.try(:tab_name).eql?('Calendar') ? my_all_calendar_path : request_dashboard_path -%>
+                  <%= main_tab "Requests", :drop_down => "requests",
+                               :path => default_path,
+                               :and => params[:action] != "request_modification" && params[:action] != "bulk_destroy",
+                               :or => ((params[:controller] == 'dashboard' && @request_dashboard[:show_all] && !@is_releases_tab) ||
+                                       params[:controller] == 'calendars' && !params[:plan_id] && !params[:for_dashboard]) ||
+                                       (params[:action] = "currently_running" if (params[:controller] == 'steps' &&
+                                               !params[:for_dashboard] &&
+                                               !params[:should_user_include_groups])) %>
+              <% end %>
+
+              <% if can? :view, :reports_tab %>
+                  <%= main_tab "Reports", :drop_down => "reports",
+                               :path => reports_tab_path,
+                               :if => ((params[:controller] == 'reports') || params[:controller] == 'maps' ||
+                                        params[:controller] == 'reports/access' ) %>
+              <% end %>
+            </ul>
+            <ul class="rightNavGroup">
+
+              <% if can? :view, :system_tab %>
+                  <%= main_tab "System", :drop_down => "users",
+                               :path => users_path,
+                               :if => (params[:controller] == "groups" || params[:controller] == "teams" || params[:controller] == "users"),
+                               :right => true %>
+              <% end %>
+
+              <% if can? :view, :environment_tab %>
+                  <%= main_tab "Environment", :drop_down => "environments",
+                               :path => servers_tab_path,
+                               :if => (request.path.starts_with?("#{ENV['RAILS_RELATIVE_URL_ROOT']}/environment/") ||
+                                       request.path.starts_with?("#{ENV['RAILS_RELATIVE_URL_ROOT']}/lists") ||
+                                       params[:controller] == "properties"),
+                               :right => true %>
+              <% end %>
+
+              <% if can? :view, :applications_tab %>
+                  <%= main_tab "Applications", :path => apps_path, :controller => 'apps', :right => true %>
+              <% end %>
+
+            </ul>
+          </div>
+      <% end -%>
+    </div>
+<% else -%>
+    <div id='Login'>
+      <%= image_tag "bmc_login_logo.gif", :alt => "BMC Software", :class => "login_logo" %>
+      <p class='productName'>
+        BMC Release Process Management
+      </p>
+
+      <p class='productVersion'>
+        VERSION <%= get_version_from_file %>
+      </p>
+      <!-- <%= get_version_and_build_from_file %> -->
+    </div>
+<% end -%>

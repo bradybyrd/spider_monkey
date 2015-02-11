@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div>
+  <div class='pageSection'>
+    <div>
+      <ul class='UserSettings'>
+        <li <%= tag_options({:class => ('selected' if selected == 'global_user_settings'), :tab => 'global_user_settings'}, false) %>>
+          <%= link_to_function "Global User Settings" %>
+        </li>
+        <li <%= tag_options({:class => ('SmartRelease' if selected == 'smart_release'), :tab => 'smart_release'}, false) %>>
+          <%= link_to_function "SmartRelease" %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

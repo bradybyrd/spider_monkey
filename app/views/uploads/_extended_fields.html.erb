@@ -1,0 +1,30 @@
+<fieldset>
+  <div class='in_form'>
+    <% if builder.object.new_record? %>
+      <%= builder.label :attachment, 'File:' %>
+      <%= builder.file_field :attachment, class: "upload_file_field" %>
+      <%= link_to "remove", '#', class: "remove_fields" if is_managable %>
+      <div>
+        <%= builder.label :description, 'Description:' %>
+        <%= builder.text_area :description, size: '40x0', maxlength: 255, class: "expand" %>
+      </div>
+    <% else %>
+      <%= "File: #{link_to_upload(builder.object)}".html_safe %>
+      <%= link_to "remove", '#', class: "remove_fields" if is_managable %>
+      <div class='description_wrapper'>Description:
+        <%= link_to 'edit', '#', class: 'edit_attachment' if is_managable %>
+        <div class='attachment_description truncated' title='<%= builder.object.description %>'><%= builder.object.description %></div>
+        <%= builder.text_area :description, size: '40x0', maxlength: 255, class: "expand hide additional_actions description_field" %>
+        <div class='actions'>
+          <%= link_to 'apply', '#', class: 'hide apply_edit additional_actions' %>
+          <span class='hide additional_actions'> | </span>
+          <%= link_to 'cancel', '#', class: 'hide cancel_edit additional_actions' %>
+        </div>
+      </div>
+    <% end %>
+    <%= builder.hidden_field :new_attachment, value: builder.object.id %>
+    <%= builder.hidden_field :attachment_cache %>
+    <%= builder.hidden_field :_destroy %>
+    <hr class='clear'>
+  </div>
+</fieldset>

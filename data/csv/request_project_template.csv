@@ -1,0 +1,14 @@
+"Template Name:","Request Project","request",,,,,,,,
+"Phases:","Launch; Deliver; Close",,,,,,,,,
+"Field Type","Name","Field","Input Type","Values","Elemental?","Create","Index","General","Requests","Notes"
+"widget","uploads","uploads",,,,70,,40,,
+"custom","Shortcuts",,"text_area",,,60,,45,,
+"widget","requests","requests",,,,,,,10,
+"static","Name","name","text_field",,,10,10,10,,
+"static","Planned Start",planned_start,"date",,,40,30,30,,
+"static","Planned End","projected_finish_at","date",,,50,40,35,,
+"static","Health","health","health",,,,50,25,,
+"static","Project Manager","manager_id","select","User; all","yes",15,15,20,,
+"static","Status","status","select","Projected; Ongoing; On hold; Terminated; Consolidated; Complete",,"30:d",25,27,,
+"widget","Notes","notes",,,,,,,,10
+"static","Leading Group","leading_group_id","select:r","Group","yes",17,,22,,

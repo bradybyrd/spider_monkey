@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <% draw_tabs :selected => 'plans' do %>
+    <% if can?(:list, Plan.new) %>
+      <%= sub_tab_with_name 'Plans', { :path => plans_path } %>
+    <% end %>
+
+    <% if can?(:list, Activity.new) %>
+      <%= sub_tab_with_name 'Projects', { :path => request_projects_path } %>
+    <% end %>
+  <% end %>
+<% end %>

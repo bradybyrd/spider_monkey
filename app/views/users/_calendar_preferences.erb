@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<p>
+  <%= check_box_tag "user[calendar_preferences][]", "id", true, :disabled => true, :width => "13px !important;", :id => "id" %>
+  <span>Request ID</span>
+</p>
+<p>
+  <%= check_box_tag "user[calendar_preferences][]", "name", true, :disabled => true, :width => "13px !important;", :id => "name" %>
+  <span>Name</span>
+</p>
+<% calendar_fields.each do |field| %>
+  <p>
+    <%= check_box_tag "#{tbl_object}[calendar_preferences][]", "#{field.last}", preferences.try(:include?, field.last), :class => "step_should_execute", :width => "13px !important", :id => field[0] %>
+    <span><%= field.first %></span>
+  </p>
+<% end %>
+<%= hidden_field_tag "#{tbl_object}[calendar_preferences][]", "id" %>
+<%= hidden_field_tag "#{tbl_object}[calendar_preferences][]", "name" %>

@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= open_flash_chart_object '100%', '250px', full_chart_path(@chart_path, :criterion_id => @criterion_id, 
+                                                                          :criterion_type => @criterion_type, 
+                                                                          :period => @period, 
+                                                                          :filters => @filters,
+                                                                          :display_by => @display_by) %>

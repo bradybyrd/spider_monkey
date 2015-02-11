@@ -1,0 +1,13 @@
+<% pagination_links = will_paginate @steps %>
+<div class='running_steps_pagination'>
+  <%= "#{@total_records.to_s} Currently Running Steps: " if @total_records > 0 %>
+  <% per_page_options = %w{20 50 100} %>
+  <% if @total_records >= per_page_options.first.to_i %>
+    <span>
+      displaying
+      <%= select_tag 'per_page', options_for_select(per_page_options, params[:per_page]), :include_blank => false, :id => 'per_page_steps' %>
+    </span>
+    <span><%= "per page" %></span>
+    <%= pagination_links %>
+  <% end %>
+</div>

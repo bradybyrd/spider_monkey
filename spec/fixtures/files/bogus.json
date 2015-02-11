@@ -1,0 +1,20 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+<a-sorting-comps type="boolean">false</a-sorting-comps>
+<a-sorting-envs type="boolean">false</a-sorting-envs>
+<active type="boolean">true</active>
+<app-version>0.0</app-version>
+<name>import_app_blank</name>
+<strict-plan-control type="boolean">false</strict-plan-control>
+<components type="array"/>
+<environments type="array"/>
+<active-packages type="array"/>
+<installed-components type="array"/>
+<active-routes type="array"/>
+<active-business-processes type="array"/>
+<version-tags type="array"/>
+<application-packages type="array"/>
+<requests-for-export type="array"/>
+</app>
+</app_import>

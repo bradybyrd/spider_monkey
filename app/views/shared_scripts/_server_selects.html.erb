@@ -1,0 +1,33 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='field toggles'>
+  <div class='property_label'>
+    <label for='entity_type'>
+      <%= "Entity Type #{note_span "Pick one entity type."}" %>
+    </label>
+  </div>
+  <%= select_tag :entity_type, options_for_select([["Server", "server"]] + ServerLevel.in_order.map { |level| [h(level.name), "server_level_#{level.id}"] }), :include_blank => true %>
+</div>
+<div id='server_entity_type_selects'>
+  <span class='server_fields'>
+    <div class='field'>
+      <label for='server_ids'>Servers</label>
+      <%= select_tag :server_id, options_from_collection_for_select(Server.active.all, :id, :name), :include_blank => true, :class => "get_mapped_values" %>
+    </div>
+  </span>
+  <% ServerLevel.in_order.each do |level| %>
+    <span <%= tag_options({:class => "server_level_#{level.id}_fields"}, false) %>>
+      <div class='field'>
+        <label <%= tag_options({:for => "server_aspect_#{level.id}_ids"}, false) %>><%= h level.name %></label>
+        <%= select_tag :server_aspect_id, options_from_collection_for_select(level.server_aspects, :id, :path_string), :include_blank => true, :id => "server_aspect_#{level.id}_ids", :class => "get_mapped_values" %>
+      </div>
+    </span>
+  <% end %>
+</div>
+<%= hidden_field_tag 'mapped_values_url', default_values_from_server_properties_script_path(@script) %>

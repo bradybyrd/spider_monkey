@@ -1,0 +1,25 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings title: t('bulk_delete_requests') %>
+<% content_for :page_section do %>
+  <%= render 'users/tabs', selected: 'settings', tab_view: true %>
+<% end %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'dashboard', 'request' %>
+  <%= static_javascript_include_tag 'dashboard', 'bulk_delete_requests', 'requests' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render 'account/tabs', selected: 'bulk delete requests'  %>
+  </div>
+  <%= render 'requests/bulk_delete_requests' %>
+</div>

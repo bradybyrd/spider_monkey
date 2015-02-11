@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @phase.runtime_phases.blank? %>
+  <%= "No runtime phases for this phase" %>
+<% else %>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th width='20'></th>
+        <th>
+          Runtime Phase
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @phase.runtime_phases.each do |runtime_phase| %>
+        <%= render :partial => 'runtime', :locals => {:runtime_phase => runtime_phase} %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form_tag reorder_phases_path, :method => :put, :id => 'reorder_runtime_phases' do %>
+    <!--  -->
+  <% end %>
+
+<% end %>

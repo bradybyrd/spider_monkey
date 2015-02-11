@@ -1,0 +1,22 @@
+h3 Teams
+ul
+  - teams.each do |team|
+    li
+      = team.name
+      = render 'reports/access/roles_map/roles_list', roles: team.roles
+
+h3 Groups
+ul
+  - groups.each do |group|
+    li
+      = group.name
+      = render 'reports/access/roles_map/roles_list', roles: group.roles
+
+h3 Users
+ul
+  - users.each do |user|
+    li
+      = user.name
+      = render 'reports/access/roles_map/roles_list', roles: user.roles
+
+= render 'reports/access/roles_map/export_to_csv_form', teams: teams, groups: groups, users: users

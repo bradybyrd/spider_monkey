@@ -1,0 +1,48 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<table class='tablesorter two_column_sorter formatted_table'>
+  <thead>
+  <tr>
+    <th width='25%'><%= t('table.name') %></th>
+    <th width='60%'><%= t('table.releases') %></th>
+    <th width='15%'></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% projects.each do |project| %>
+    <% release_names = project.release_names.sort.to_sentence %>
+    <tr id='integration_project_<%= project.id %>'<%= tag_options({:class => cycle('', 'alt')}, false) %>>
+      <td>
+        <%= link_to_if(can?(:edit, project), h(project.name), edit_project_server_integration_project_path(project_server, project)) %>
+      </td>
+      <td <%= tag_options({:title => release_names}, false) %>><%= truncate(release_names, length: 100) %></td>
+      <td class="action_links">
+        <% if can?(:edit, project) %>
+          <span>
+            <%= link_to t(:edit), edit_project_server_integration_project_path(project_server, project),
+                      class: 'edit_integration_project' %>
+          </span>
+        <% end %>
+
+        <% if can?(:make_active_inactive, project) %>
+          <span>
+            <% if project.active? %>
+              <%= link_to t(:make_inactive), deactivate_project_server_integration_project_path(project_server, project),
+                        method: :put, class: 'make_inactive_integration_project' %>
+            <% else %>
+              <%= link_to t(:make_active), activate_project_server_integration_project_path(project_server, project),
+                        method: :put, class: 'make_inactive_integration_project' %>
+            <% end %>
+          </span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

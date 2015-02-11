@@ -1,0 +1,35 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='lrb_padding_5'>
+  <h3><%= "Release Contents from CSV - #{@integration_csv.name}" %></h3>
+  <div>
+    <span>
+      Last Run at
+      <%= @integration_csv.created_at.try(:default_date_format) %>
+      <%= "by #{@integration_csv.user_to_label}" if @integration_csv.user %>
+    </span>
+  </div>
+</div>
+<table class='tablesorter formatted_table' id='tablesorter-demo'>
+  <thead>
+    <tr>
+      <% @csv_columns.each do |column| %>
+        <th><%= column.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody></tbody>
+  <% 0.upto(@primary_column.integration_csv_data.count) do |i| %>
+    <tr>
+      <% @csv_columns.each do |column| %>
+        <td><%= @csv_rows[column.id][i].try(:value) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

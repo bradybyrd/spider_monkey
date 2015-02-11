@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name, 'Name' %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :label_color, 'Label color' %>
+  <%= select_label_color(@business_process) %>
+</div>
+<div class='field'>
+  <%= f.label :applications, 'Applications' %>
+  <%= f.collection_select :app_ids, App.active.name_order, :id, :name, {}, :multiple => true, :style => "width:240px;" %>
+</div>
+<%= javascript_tag("$('#business_process_label_color').val('')") if f.object.label_color.blank? %>

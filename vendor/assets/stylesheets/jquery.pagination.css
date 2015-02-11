@@ -1,0 +1,35 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+.arg_table_pagination {
+            font-size: 80%;
+        }
+
+.arg_table_pagination a {
+    text-decoration: none;
+	border: solid 1px #AAE;
+	color: #15B;
+}
+
+.arg_table_pagination a, .arg_table_pagination span {
+    display: block;
+    float: left;
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.arg_table_pagination .current {
+    background: #26B;
+    color: #fff;
+	border: solid 1px #AAE;
+}
+
+.arg_table_pagination .current.prev, .arg_table_pagination .current.next{
+	color:#999;
+	border-color:#999;
+	background:#fff;
+}

@@ -1,0 +1,9 @@
+//= require jquery.contextMenu
+
+body.reports {
+  ul.context-menu-list.context-menu-root {
+    li.context-menu-item.disabled {
+      display: none;
+    }
+  }
+}

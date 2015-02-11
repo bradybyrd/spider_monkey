@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless server_aspects.empty? %>
+<ul>
+  <% server_aspects.each do |server_aspect| %>
+    <li>
+    	<%= "#{h(name_of(server_aspect.server_level).singularize)}: #{ensure_space(h(server_aspect.name))}" %>
+	    <% unless server_aspect.property_values.empty? %>
+		    <ul>
+		    <% server_aspect.property_values.each do |property_value| %>
+		      <li><%= h property_value.property.name %>: <%= ensure_string h(property_value.value), h(property_value.property.default_value), note_span("no value") %></li>
+		    <% end %>
+		    </ul>
+	    <% end %>
+    
+    <% unless server_aspect.server_aspects.empty? %>
+      <%= render_server_aspects_tree server_aspect.server_aspects, local_assigns[:filter_proc], *(local_assigns[:filter_args] || []) %>
+    <% end %>
+    </li>
+  <% end %>
+</ul>
+<% end %>

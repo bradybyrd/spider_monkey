@@ -1,0 +1,26 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+
+<h3>
+  <%= render :partial => "environments/metadata_heading", :locals => {:backlink => plan_plan_routes_path(@plan), :title => "Add Route for #{truncate(@plan.name)}"} %>
+</h3>
+<br>
+<br>
+<% if @applications.blank? -%>
+    <%= content_tag(:h3, 'Sorry, all applications to which you have rights have already been routed for this plan.') %>
+<% end -%>
+<br class="clear">
+    <%= form_for [@plan, @plan_route], :html => {:class => 'cssform'} do |f| %>
+        <%= render partial: 'form', locals: {f: f, plan: @plan, route: @route} %>
+        <div class='field'>
+          <%= f.submit "Add", :class => "button", :disabled => @applications.blank? %>
+          or
+          <%= link_to 'cancel', plan_plan_routes_path(@plan) %>
+        </div>
+    <% end -%>

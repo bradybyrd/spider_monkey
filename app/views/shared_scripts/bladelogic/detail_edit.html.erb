@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "#{@script.class.to_s.humanize} #{@script.name}" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'bmc blade_logic' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <br>
+    <%= render :partial => 'shared_scripts/help', :locals => { :script_type => @script.get_script_type } %>
+  </br>
+<% end %>
+<%= form_for @script, :as => :script, :url => shared_script_path(@script), :remote => true,:html => { :method => :put, :class => 'basic_form' } do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'shared_scripts/bladelogic/form', :locals => { :script => @script, :f => f } %>
+<% end %>
+

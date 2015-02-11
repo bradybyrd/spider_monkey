@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if current_user.present? %>
+  <label class='health_option'>
+    <%= radio_button_tag field_name, 'green', (field_value == 'green') %>
+    <%= image_tag 'check.png' %>
+  </label>
+  <label class='health_option'>
+    <%= radio_button_tag field_name, 'yellow', (field_value == 'yellow') %>
+    <%= image_tag 'exclamation.png' %>
+  </label>
+  <label class='health_option'>
+    <%= radio_button_tag field_name, 'red', (field_value == 'red') %>
+    <%= image_tag 'stop.png' %>
+  </label>
+<% else %>
+  <label class='health_option'>
+    <% if field_value == 'green' %>
+      <%= image_tag 'check.png' %>
+    <% elsif field_value == 'yellow' %>
+      <%= image_tag 'exclamation.png' %>
+    <% else %>
+      <%= image_tag 'stop.png' %>
+    <% end %>
+  </label>
+<% end %>

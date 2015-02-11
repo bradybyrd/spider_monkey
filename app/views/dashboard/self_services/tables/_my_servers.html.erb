@@ -1,0 +1,54 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<table class='tablesorter four_column_sorter self_service_app_table formatted_table' <%= tag_options({:id => "my_servers_#{@page_no || 1}"}, false) %>>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Environments</th>
+      <th>Applications</th>
+      <th>Recent Activity</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @my_servers.each do |server| %>
+      <tr <%= tag_options({:class => cycle('alt', '')}, false) %>>
+        <td><%= server.name %></td>
+        <td <%= tag_options({:title => server.environment_names_for(current_user)}, false) %>>
+          <%= ensure_string(truncate(server.environment_names_for(current_user), :length => 30)) %>
+        </td>
+        <td <%= tag_options({:title => server.app_names_for(current_user)}, false) %>>
+          <%= ensure_string(truncate(server.app_names_for(current_user), :length => 30)) %>
+        </td>
+        <% requests = current_user.decorate.visible_recent_activity_requests(server) %>
+        <% request_ids = requests.map(&:number) %>
+        <td <%= tag_options({:title => format_to_sentence(request_ids)}, false)  if (can? :inspect, Request.new) %>>
+          <% if can? :inspect, Request.new %>
+            <%= latest_requests(requests) %>
+          <% end %>
+        </td>
+        <td>
+          <% if can? :edit, server %>
+            <%= link_to I18n.t(:edit), edit_server_path(server) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<table class='my_dashboard_pagination' <%= tag_options({:id => "my_servers_pagination_#{@page_no || 1}"}, false) %>>
+  <tr>
+    <td <%= tag_options({ colspan: 2, width: 476 }, false) %>>
+      <%= will_paginate(@my_servers, class: "my_data_pagination", rel: "my_servers") %>
+    </td>
+    <% if can? :create, Server.new %>
+      <td><%= button_to "Create Server", new_server_url, method: :get, class: 'button' %></td>
+    <% end %>
+  </tr>
+</table>

@@ -1,0 +1,22 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='w_485' id='edit_chart_details'>
+  <h2>
+    <%= "Edit Property Values for #{h object.name}" %>
+  </h2>
+  <%= form_tag eval("update_property_values_#{object.class.to_s.underscore}_path(#{object.id}, {:object => '#{object.class.to_s.underscore}'})"), :method => :put, :class => 'cssform' do %>
+    <% object.properties.active.each do |property| %>
+      <div class='field'>
+        <%= property_value_input 'property_values', property, server_property_value(property, object) %>
+      </div>
+    <% end %>
+    <div class='button_bar'><%= submit_tag "Update values",:class =>'button' %></div>
+  <% end %>
+
+</div>

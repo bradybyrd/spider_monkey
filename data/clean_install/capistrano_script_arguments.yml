@@ -1,0 +1,65 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+capistrano_scripts_arguments_000001: 
+  id: "1"
+  script_id: "6"
+  argument: command
+  name: Name of command
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000002:
+  id: "2"
+  script_id: "6"
+  argument: success
+  name: Term or Phrase to indicate success
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000003:
+  id: "3"
+  script_id: "7"
+  argument: hosts
+  name: IP address remote server - leave blank for step servers
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000004:
+  id: "4"
+  script_id: "7"
+  argument: user
+  name: Login for remote server
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000005:
+  id: "5"
+  script_id: "7"
+  argument: password
+  name: Password for remote server - leave blank for public key
+  is_private: true
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000006:
+  id: "6"
+  script_id: "7"
+  argument: command
+  name: Name of command
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000007:
+  id: "7"
+  script_id: "7"
+  argument: sudo
+  name: Use sudo? (yes or no/blank)
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000008:
+  id: "8"
+  script_id: "7"
+  argument: arguments
+  name: Arguments to script
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22

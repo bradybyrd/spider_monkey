@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless server_aspect.installed_components.blank? %>
+	<ul>
+		<% server_aspect.installed_components.each do |installed_component| %>
+		  <li>Component: <%= h(installed_component.name) %>
+		  	  <% unless installed_component.properties.empty? %>
+				  <ul>
+					  <% installed_component.properties.each do |property| %>
+					    <ol>
+					      <%= ensure_space property.name %>: 
+					      <%= ensure_string h(property.literal_display_value_for(installed_component)), note_span('no value') %>
+					    </ol>
+					  <% end %>
+				  </ul>
+			  <% end %>
+		  </li>
+		<% end %>
+	</ul>
+<% end %>

@@ -1,0 +1,30 @@
+<% if references %>
+  <h3><%= package_or_instance.titleize %> Contents</h3>
+  <%= hidden_field_tag :content_tab_viewed, 'Y' %>
+  <table cellspacing="0" class="formatted_table">
+    <% step_reference_ids = step.step_references.map(&:reference_id) %>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>
+        <%= check_box_tag :select_all_chk, "1", all_references_included_in_step?(references.map(&:id), step_reference_ids),
+                            disabled: references.blank? || disabled_step_per_permission_editing?(step, :select_step_package)
+        %>
+      </th>
+    </tr>
+    </thead>
+    <% references.each do |reference| %>
+      <tr>
+        <td width="332" title="<%= reference.name %>"><%= truncate(reference.name, :length => 50) %></td>
+        <td width="332"><%= reference.uri %></td>
+        <td><%= check_box_tag "step_references[#{reference.id}]",
+                              true,
+                              reference.id.in?(step_reference_ids) || step.package_id_changed? || step.package_instance_id_changed?,
+                              disabled: disabled_step_per_permission_editing?(step, :select_step_package)
+        %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

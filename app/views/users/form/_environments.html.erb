@@ -1,0 +1,54 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table cellspacing='0' class='environments_list_table'>
+  <thead>
+    <tr>
+      <% environments.each_with_index do |env, i| %>
+        <% if i <= 5 %>
+          <th <%= tag_options({:title => env.name}, false) %>>
+            <%= truncate(env.name, :length => 14) %>
+          </th>
+        <% end %>
+      <% end %>
+      <% if environments.size > 0 && 6 - environments.size > 0 %>
+        <% 1.upto(6 - environments.size) do %>
+          <th>&nbsp;</th>
+        <% end %>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% environments.in_groups_of(6).each_with_index do |envs, idx| %>
+      <% if idx != 0 %>
+        <tr>
+          <% envs.each do |e| %>
+            <% if e %>
+              <td <%= tag_options({:class => "grey_background", :title => e.name}, false) %>>
+                <strong><%= truncate(e.name, :length => 14) %></strong>
+              </td>
+            <% else %>
+              <td class='grey_background'>&nbsp;</td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+      <tr>
+        <% envs.each do |env| %>
+          <% if env %>
+            <td <%= tag_options({:class => "Env_#{env.id}"}, false) %>>
+              <%= select_tag "app_roles[#{app.id}][#{env.id}]", options_for_select(Role::SmartRelease), :class => "roleInAppList", :app_id => app.id, :environment_id => env.id %>
+            </td>
+          <% else %>
+            <td>&nbsp;</td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Teams' %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'teams' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'teams',:tab_view => true } %>
+<% end %>
+<%= form_for(@team, :url => teams_path, :remote => true,:html => { :method => :post, :id => "team_form" }) do |f| %>
+  <h2><%= "Create Team" %></h2>
+  <h3><%= "Create a Team. Add application, groups to the Team." %></h3>
+  <%= render partial: 'teams/form', locals: { f: f, button_label: 'Create Team' } %>
+  <%= render :partial => 'teams/forms/add_remove_team_groups', :locals => { :f => f } %>
+  <div id='edit_roles_for_team'><%= render :partial => 'teams/forms/edit_roles_for_team' %></div>
+<% end %>
+

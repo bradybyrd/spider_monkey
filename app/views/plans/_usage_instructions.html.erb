@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='plan_instructions'>
+  <h3>Instructions</h3>
+  <p>Use checkboxes to select one or more items from a stage. Do not select items from more than one stage at a time.</p>
+  <ul>
+    <li>
+      <strong>Using Stages:</strong>
+      Use the "Promote" and "Demote" links to move items between stage of the plan
+    </li>
+    <li>
+      <strong>Using Statuses:</strong>
+      Change the status by clicking on "Change Status" and selecting a new status.
+    </li>
+    <li>
+      <strong><%= "Create #{activity_or_project?}:" %></strong>
+      <%= "Click on Create #{activity_or_project?}, enter a #{activity_or_project?} name and select a request template. This will create a #{activity_or_project?} and create requests for each item." %>
+    </li>
+  </ul>
+</div>

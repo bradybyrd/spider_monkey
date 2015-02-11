@@ -1,0 +1,5 @@
+<label>Display parameter as:</label>
+<%=select_tag "parameter_type", options_for_select(["Input", "Output"], "Output")%>
+<%=hidden_field_tag "output_step_id", step.id%>
+<%=hidden_field_tag "output_script_id", script.id%>
+<%=hidden_field_tag "output_installed_component_id", installed_component.try(:id)%>

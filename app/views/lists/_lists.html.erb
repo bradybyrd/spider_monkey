@@ -1,0 +1,107 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='lists'>
+  <% if can?(:list, List.new) %>
+      <% unless @lists.blank? %>
+          <%= render :partial => 'environments/metadata_pagination', locals: {metadata_model: @lists,
+                                                                              metadata_type: 'list', position: 'unarchived'} %>
+          <table class='tablesorter two_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th><%= I18n.t(:'table.name') %></th>
+              <th width='20'><%= I18n.t(:'table.id') %></th>
+              <th><%= I18n.t(:'table.items') %></th>
+              <th><%= I18n.t(:'table.required') %></th>
+              <th><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @lists.each do |list| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <% if can?(:edit, list) %>
+                        <%= link_to_function index_title(h(list.name)), "jQuery.facebox({ ajax: url_prefix + '/environment/metadata/lists/#{list.id}/edit' })" %>
+                    <% else %>
+                        <%= index_title(h(list.name)) %>
+                    <% end %>
+                  </td>
+
+                  <td><%= h list.id %></td>
+
+                  <% items_value = list.list_items.unarchived.name_order.map { |li| li.value_text || li.value_num.to_s }.to_sentence %>
+                  <td title="<%= items_value %>"><%= h truncate(items_value, :length => 50) %></td>
+
+                  <td><%= list.required? ? I18n.t(:yup) : I18n.t(:nope) %></td>
+
+                  <td>
+                    <% if can?(:edit, list) %>
+                        <%= link_to_function I18n.t(:edit), "jQuery.facebox({ ajax: url_prefix + '/environment/metadata/lists/#{list.id}/edit' })" %>
+                    <% end %>
+                    <% if list.can_be_archived? && can?(:archive_unarchive, list) %>
+                        <%= '&nbsp;|&nbsp;'.html_safe if can?(:edit, list) %>
+                        <%= link_to I18n.t(:archive), archive_list_path(list), :method => :put %>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+
+      <% unless @archived_lists.blank? %>
+          <h3><%= I18n.t(:archived) %></h3>
+          <%= render :partial => 'environments/metadata_pagination', locals: {metadata_model: @archived_lists,
+                                                                              metadata_type: 'list', position: 'archived'} %>
+          <table class='tablesorter two_column_sorter formatted_table' id='lists'>
+            <thead>
+            <tr>
+              <th><%= I18n.t(:'table.name') %></th>
+              <th width='20'><%= I18n.t(:'table.id') %></th>
+              <th><%= I18n.t(:'table.items') %></th>
+              <th><%= I18n.t(:'table.required') %></th>
+              <th><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @archived_lists.each do |list| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <% if can?(:edit, list) %>
+                      <%= link_to_function h(list.name), "jQuery.facebox({ ajax: url_prefix + '/environment/metadata/lists/#{list.id}/edit' })" %>
+                    <% else %>
+                        <%= index_title(h(list.name)) %>
+                    <% end %>
+                  </td>
+
+                  <td><%= list.id %></td>
+
+                  <td><%= h truncate(list.list_items.unarchived.name_order.map { |li| li.value_text || li.value_num.to_s }.to_sentence, :length => 50) %></td>
+
+                  <td><%= list.required? ? I18n.t(:yup) : I18n.t(:nope) %></td>
+
+                  <td>
+                    <% if can?(:archive_unarchive, list) %>
+                        <%= link_to I18n.t(:unarchive), unarchive_list_path(list), :method => :put %>
+                    <% end %>
+
+                    <% if can?(:delete, list) %>
+                        <%= '&nbsp;|&nbsp;'.html_safe if can?(:unarchive, list) %>
+                        <%= link_to I18n.t(:delete), list, method: :delete,
+                                    confirm: I18n.t(:'list.confirmations.delete'),
+                                    id: "list_delete_#{list.id}", title: I18n.t(:'list.titles.delete') %>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+  <% end %>
+
+</div>

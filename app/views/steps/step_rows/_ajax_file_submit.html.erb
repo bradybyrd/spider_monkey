@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% step_parent = step.parent %>
+<%
+ # following is done to fix IE7 & IE8 html rendering issue, where jquery ajaxsubmit truncates the html contents for IE while rendering.
+%>
+<%if local_assigns[:procedure].present? %>
+	<%= ("&nbsp;<table>").concat(render :partial => 'steps/step_for_procedure',
+      :locals => { :invalid_component => nil,
+                   :step => step,
+                   :unfolded => false,
+                   :step_preferences => step_preferences}).concat("</table>").html_safe  %>
+<%else%>
+	<%= ("&nbsp;<table>").concat(render :partial => 'steps/step_rows/step_header',
+	      :locals => { :request => request,
+	                   :invalid_component => invalid_component,
+	                   :step => step,
+	                   :unfolded => unfolded,
+	                   :step_header => step_header,
+                       available_package_ids: available_package_ids,
+	                   :step_position => step_parent ? (step_parent.procedure? ? "#{step_parent.position}.#{step.position}" : step.postion) : step.position ,:step_preferences => step_preferences}).concat("</table>").html_safe  %>
+<%end%>

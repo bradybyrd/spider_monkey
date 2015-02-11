@@ -1,0 +1,33 @@
+<%
+ # #############################################################################
+ # BMC Software, Inc.
+ # Confidential and Proprietary
+ # Copyright (c) BMC Software, Inc. 2001-2012
+ # All Rights Reserved.
+ # #############################################################################
+%> 
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+<% end %>
+
+<table class="formatted_table">
+  <thead>
+    <tr>
+      <th width="20"></th>
+      <th>Name</th>
+      <th>Enable/Disable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render :partial => "users/preferences/request_list_row", :collection => current_user.request_list_preferences, :as => :pref %>
+  </tbody>
+</table>
+
+<%= form_tag user_request_list_preferences_path, :method => :post, :id => 'reorder_preferences' do %>
+  <%= hidden_field_tag :user_id, current_user.id %>
+<% end %>
+<br/>
+<%= link_to "Reset request list preferences", reset_request_list_preferences_path %>
+

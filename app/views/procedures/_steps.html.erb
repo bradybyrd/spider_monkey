@@ -1,0 +1,97 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="subheader">
+  <div class="step_header_wrapper">
+    <span class="step_h2label">Steps</span>
+    <% if can?(:reorder_steps, Request.new) %>
+      <%= link_to(image_tag("btn-reorder.png", :border => 0, :id => 'reorder_image'), reorder_steps_procedure_path(procedure), :id => 'reorder_steps') %>
+    <% end %>
+    <div id="step_search">
+      <%= text_field_tag :query, nil, :style => "padding-bottom:1px;",  :class  =>  "search_for_step" %>
+      <%= button_to_function "Search", "localSearch($(this))",  :id =>  "search_for_step",:class =>'button' %>
+      <%= button_to_function "Clear", "clearQuery($(this))",:class =>'button' %>
+    </div>
+    <% unless procedure.archived? %>
+      <div id="step_action_links">
+        <span class="step_link_spacer">Select:</span>
+        <span id="check_all"><%= link_to_function "All", "checkSteps(1)" %>&nbsp;&#124;</span>
+        <span id="check_visible"><%= link_to_function "Visible", "checkSteps(5)"%>&nbsp;&#124;</span>
+        <%= link_to_function "None", "checkSteps(2)" %>&nbsp;&#124;
+        <%= link_to_function "On", "checkSteps(3)" %>&nbsp;&#124;
+        <%= link_to_function "Off", "checkSteps(4)" %>
+        <span class="step_link_spacer">Actions:</span>
+        <% if can? :delete_steps, Request.new %>
+          <%= link_to_function "Delete", "bulkUpdate('delete', 'This action will permanently delete the selected steps. Click OK to proceed.', true)" %>&nbsp;&#124;
+        <% end %>
+        <% if can? :edit_step_owner, Request.new %>
+          <%= link_to_function "Modify Assignment", "bulkUpdate('modify_assignment')" %>&nbsp;&#124;
+        <% end %>
+        <% if can? :select_step_component, Request.new %>
+          <%= link_to_function "Modify Component", "bulkUpdate('modify_app_component')" %>&nbsp;&#124;
+        <% end %>
+        <% if can? :edit_task_phase, Request.new %>
+          <%= link_to_function "Modify Task/Phase", "bulkUpdate('modify_task_phase')" %>&nbsp;&#124;
+        <% end %>
+        <% if can? :turn_on_off_steps, Request.new %>
+          <%= link_to_function "Turn On/Off", "bulkUpdate('modify_should_execute')" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%step_list_preferences_lists = current_user.step_list_preferences.active%>
+<table class='formatted_table formatted_steps_table' id='steps_list'>
+  <thead>
+    <tr id="first_step_row">
+      <th class="step_position" >Step</th>
+      <th>Status</th>
+      <th>Name</th>
+      <%unless step_list_preferences_lists.blank?%>
+        <%step_list_preferences_lists.map{|srp| srp.step_preference_label}.each do |step_pref| %>
+          <%if (step_pref != "servers") && (step_pref != "version") %>
+            <th><%=step_pref.humanize%></th>
+          <%end%>
+        <%end%>
+      <%else%>
+        <th>Component</th>
+        <th>Task</th>
+        <th>Assigned To</th>
+        <th>Est</th>
+      <%end%>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="first_step_row_tbody" class='dn'></tr>
+    <%procedure_steps = procedure.steps%>
+    <% if procedure_steps.present?%>
+      <% procedure_steps.each do |step| %>
+        <%= render 'steps/step_for_procedure',
+                   step: step,
+                   unfolded: false,
+                   invalid_component: step_has_invalid_component?(procedure, step),
+                   step_preferences: step_list_preferences_lists
+        %>
+      <% end %>
+    <%end%>
+    <% if can?(:add_step, Request.new) && !procedure.archived? %>
+      <tr class="container">
+        <td colspan="14">
+          <div class="fl">
+            <%= link_to 'New Step',
+                        new_step_for_procedure_steps_path(app_id: procedure.apps.try(:first), procedure_id: procedure.id ),
+                        class: 'edit_old button add_new_procedure_step',
+                        rel: "facebox",
+                        style: 'text-decoration:underline;' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

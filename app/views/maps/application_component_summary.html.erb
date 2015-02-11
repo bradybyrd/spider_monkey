@@ -1,0 +1,57 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Application Component Summary' %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'multi_select', 'maps' %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+
+  <%= form_tag application_component_summary_maps_path, :class => 'properties_maps_server_form', :id => 'application_component_summary_form'   do %>
+    <div class="section">
+    	<label for="app_ids">Applications</label>
+	    <p id="applications">
+	      <%= select_tag :app_ids, options_from_collection_for_select(@apps_for_select, :id, :name, @selected_app_ids), :class => "customize_multiselect", :multiple => true %>
+	      <br/>
+	      <%= select_clear_links('app_ids', :eval => "$('#application_environment_ids,  #component_ids').html('')", :env => "$('#app_ids').trigger('change')")%>
+	    </p>
+      <label for="environemnt_ids">Environments</label>
+      <p id="environments">
+        <%= select_tag :application_environment_ids, '', :multiple => true, :class => 'use_remote_options customize_multiselect', :rel => 'app_ids',  :click_env  =>  true %>
+        <br/>
+        <%= hidden_field_tag 'application_environment_ids_url', multiple_application_environment_options_maps_path %>
+        <%= hidden_field_tag 'multiple_selected_application_environment_ids', @selected_application_environment_ids.to_json %>
+        <%= select_clear_links('application_environment_ids', :eval =>  "$('#component_ids').html('')",:env => "$('#application_environment_ids').trigger('change')")%>
+      </p>
+      <label for="component_ids">Components</label>
+	    <p id="components">
+	      <%= select_tag :component_ids, '', :multiple => true, :class => 'use_remote_options customize_multiselect', :rel => 'application_environment_ids',  :click_env  =>  true  %>
+	      <br/>
+	      <%= hidden_field_tag :component_ids_url, component_options_maps_path %>
+	      <%= hidden_field_tag :multiple_selected_component_ids, @selected_component_ids.to_json %>
+	      <%= select_clear_links('component_ids')%>
+      </p>
+
+	    <p><%= submit_tag "Map",:class =>'button' %></p>
+	  </div>
+
+  <% end %>
+<% end %>
+
+<div id="application_component_summary">
+  <%= render :partial => "application_component_summary", :locals => { :map => @map } %>
+</div>
+

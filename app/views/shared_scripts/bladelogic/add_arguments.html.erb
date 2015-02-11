@@ -1,0 +1,35 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr class='no_hover' <%= tag_options({:id => "script_#{@script.id}_row"}, false) %>>
+  <td colspan='5'>
+    <hr>
+      <%= link_to "&nbsp;".html_safe, shared_script_index_path, :class => "unfolded" %>
+      <h3 class='inline'>
+        <%= @script.name %>
+        <span style='font-size:12px;'>-- Set Test Run Parameters</span>
+      </h3>
+      <%= form_tag test_run_shared_script_path(@script), :class => 'replace_row', :method => :get do %>
+        <br>
+          <div class='script_parameter_mapping mapping_section'>
+            <%= render :partial => 'shared_scripts/bladelogic/app_env_component_selection', :locals => { :script => @script } %>
+          </div>
+          <div id='script_arguments'>
+            <%= render :partial => 'steps/bladelogic/step_script', :locals => { :script => @script, :step => nil, :installed_component => nil, :argument_values => argument_values } %>
+          </div>
+          <%= hidden_field_tag 'page', params[:page] %>
+          <%= hidden_field_tag 'key', params[:key] %>
+          <%= submit_tag 'test script',:class =>'button' %>
+          or <%= link_to 'cancel', shared_script_index_path(params[:page], params[:key]) %>
+        </br>
+      <% end %>
+
+      <hr>
+    </hr>
+  </td>
+</tr>

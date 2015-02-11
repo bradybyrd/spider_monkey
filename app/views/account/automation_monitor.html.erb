@@ -1,0 +1,45 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings :title => 'Automation Monitor' %>
+<% content_for :page_section do %>
+    <%= render :partial => 'users/tabs', :locals => {:selected => 'settings', :tab_view => true} %>
+<% end %>
+<% content_for :sidebar do %>
+    <span></span>
+    <h4>
+      Help
+    </h4>
+    Automation runs are records in JobRuns and dispatched to automation queue imprints.
+    Automation queue imprints reflect the entries in real queue. Those entries are deleted on entry being processed.
+    As the job executes, JobRuns are correspondently updated with stdout and stderr output.
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render :partial => 'account/tabs', :locals => {:selected => 'automation monitor'} %>
+  </div>
+  <div class='content'>
+
+    <% if can?(:view, :automation_monitor) %>
+        <h3>
+          Current Jobs in Queue
+        </h3>
+
+        <div id='automation_queue_data'>
+          <%= render :partial => 'automation_queue_data/list' %>
+        </div>
+
+        <hr>
+        <h3>
+          Job Run Log
+        </h3>
+        <%= render :partial => 'job_runs/list' %>
+    <% end %>
+
+  </div>
+</div>

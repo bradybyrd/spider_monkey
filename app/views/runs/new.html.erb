@@ -1,0 +1,21 @@
+<%
+# #############################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+# #############################################################################
+%>
+<h2>Create Run</h2>
+<%= form_for([@plan, @run], :remote => true, :html => { :class => 'cssform' }) do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f } %>
+  <div class="field">
+    <label>&nbsp;</label>
+  </div>
+	<br/>
+	<div class="marginlr15">
+	  <div class="divider"/>
+	  <%= render :partial => 'selected_requests', :locals => { :requests => @requests, :f => f, :show_date => true, :new_run => true } unless @requests.blank? %>
+	</div>
+<div class='button_bar'><%= f.submit 'Create',:disable_with => "Creating..." %></div>
+<% end %>

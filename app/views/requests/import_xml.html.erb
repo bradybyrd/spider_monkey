@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if can? :import, Request.new %>
+  <%= form_tag import_requests_path, :multipart => true,:class => 'cssform' do %>
+    <div class='field' style='text-align: left;margin-top:10px;'>
+      <span class='uploads dynamic_fields'>
+        <strong>Import XML Request</strong>
+        <br>
+        <br>
+        <%= file_field_tag "request", :style => "width: auto", :id => "1", :class => "request_xml_upload" %>
+        <br>
+        <br>
+      </span>
+    </div>
+    <div class='button_bar'><%= submit_tag 'Create Request',:class =>'button' %></div>
+  <% end %>
+<% end %>

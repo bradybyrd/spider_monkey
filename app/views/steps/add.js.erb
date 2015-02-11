@@ -1,0 +1,6 @@
+var cancelled_row = $('#new_step_form').parents('tr:first');
+<% if @is_procedure_step %>
+  cancelled_row.remove();
+<% else %>
+  cancelled_row.html("<%= escape_javascript(render(:partial => 'steps/add', :locals => { :request => @request })) %>");
+<% end %>

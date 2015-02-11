@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<ul>
+<% @server_aspects.each do |server_aspect| %>
+  <li><%= h server_aspect.name %></li>
+  <ul>
+    <% @properties.each do |property| %>
+      <li><%= h property.name %>: <%= server_property_value(property.value_for(server_aspect)) %></li>
+    <% end %>
+  </ul>
+<% end %>
+</ul>

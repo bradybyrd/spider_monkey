@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% application_component.property_values.in_groups_of(2, nil).each do |property_value| %>
+  <tr <%= tag_options({:class => "property_values_#{identifier}"}, false) %>>
+    <% property_value.each do |pv| %>
+      <% if pv.nil? %>
+        <td align='right'><%= "&nbsp;" %></td>
+        <td><%= "&nbsp;" %></td>
+      <% else %>
+        <td align='right'><%= label_tag pv.property.name %></td>
+        <td><%= text_field_tag "package_template[package_template_items_attributes][#{template_item_count}][properties][#{pv.property.name}]", template_property_value(template_item, pv), :size => 30 %></td>
+      <% end %>
+    <% end %>
+  </tr>
+<% end %>

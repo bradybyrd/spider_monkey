@@ -1,0 +1,102 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div style='margin:3px'>
+  <h2><%= "Server instance for: #{@server_level.name}" %></h2>
+</div>
+<%= form_for [@server_level, @server_aspect], :html => {:class => 'cssform ajax'} do |f| %>
+    <%= hidden_field_tag 'id', params[:id] %>
+    <%= hidden_field_tag 'key', params[:key] %>
+    <%= hidden_field_tag 'page', params[:page] %>
+    <%= error_messages_for :server_aspect %>
+    <div class='field'>
+      <%= f.label :name %>
+      <%= f.text_field :name, :class => 'initialFocus' %>
+    </div>
+    <div class='field'>
+      <%= f.label :description %>
+      <%= f.text_area :description, :rows => 0, :class => "expand" %>
+      <p class='expand_textarea_link'>
+        [
+        <a href="javascript:toggleTextarea('server_aspect_description', 'server_aspect_desc')" id='server_aspect_desc'>expand</a>
+        ]
+      </p>
+    </div>
+    <div class='field'>
+      <%= f.label :parent_type_and_id, "Parent" %>
+      <%= select_tag('server_aspect[parent_type_and_id]', parent_options(@server_level.grouped_potential_parents, @server_aspect.parent_type_and_id)) %>
+      <%#= find_and_preserve(Haml::Filters::Javascript.render_with_options("remote_option_load_to_form_field_environments(\"#{@server_level.id}\");\n", _hamlout.options)) %>
+      <%= javascript_tag("remote_option_load_to_form_field_environments('#{@server_level.id}')") %>
+    </div>
+    <div class='field'>
+      <%= f.label :environment_ids, "Environments" %>
+      <%#= f.collection_select :environment_ids, @server_aspect.available_environments, :id, :name, {}, :multiple => true, :class => 'use_remote_options', :rel => 'server_aspect_parent_type_and_id' %>
+      <span id='server_groups'>
+      <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @server_aspect, :collection => @server_aspect.available_environments, :object => "server_aspect", :method => "environment_ids", :label => "name", :value => "id"} %>
+    </span>
+    <span class='sl_links' id='servergrp_select_links'>
+      <%= select_clear_chk('server_groups') %>
+    </span>
+      <%= hidden_field_tag :server_aspect_environment_ids_url, environment_options_server_level_server_aspects_path(@server_level) %>
+      <%= hidden_field_tag :multiple_selected_server_aspect_environment_ids, @selected_environment_ids.to_json %>
+    </div>
+    <div class='field'>
+      <%= f.label :properties_with_value_ids, "Properties" %>
+      <%#= f.collection_select :properties_with_value_ids, @server_level.properties, :id, :name, {}, :multiple => true, :size => 4 %>
+      <span id='properties'>
+      <% if @server_aspect.parent.nil? %>
+        <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @server_aspect, :collection => Array.new, :object => "server_aspect", :method => "properties_with_value_ids", :label => "name", :value => "id"} %>
+      <% else %>
+        <%= render :partial => "shared/checkbox_select_list", :locals => {:form_object => @server_aspect, :collection => @server_level.properties.active, :object => "server_aspect", :method => "properties_with_value_ids", :label => "name", :value => "id"} %>
+      <% end %>
+        <span class='sl_links' id='properties_select_links'>
+        <%= select_clear_chk('properties') %>
+      </span>
+    </span>
+    </div>
+    <div class='field'>
+      <% if @server_aspect.new_record? %>
+          <%= submit_tag "Create #{h @server_level.name}", :class => 'button' %>
+      <% else %>
+          <%= submit_tag "Update #{h @server_aspect.name}", :class => 'button' %>
+      <% end %>
+      <% if @server_level.has_server_aspects? %>
+          or
+          <%= link_to "cancel", server_level_path(@server_level.try(:id), :page => params[:page], :key => params[:key]), :class => 'ajax' %>
+      <% end %>
+    </div>
+<% end %>
+
+<h2><%= I18n.t(:'activerecord.models.property').pluralize %></h2>
+<% if @server_aspect.properties.active.any? %>
+    <% unless @server_aspect.id.nil? %>
+        <%= link_to "Edit values", edit_property_values_server_level_server_aspect_path(@server_level, @server_aspect), :rel => 'facebox' %>
+    <% end %>
+    <br>
+    <br>
+    <table cellspacing='0' class='formatted_table'>
+      <thead>
+      <tr>
+        <th><%= I18n.t(:'table.name') %></th>
+        <th><%= I18n.t(:'table.value') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @server_aspect.properties.active.each do |property| %>
+          <tr>
+            <td>
+              <%= h property.name %>
+            </td>
+            <td>
+              <%= property.literal_display_value_for(@server_aspect) %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

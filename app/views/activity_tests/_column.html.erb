@@ -1,0 +1,12 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<li <%= tag_options({'data-column-id' => column.id, :rel => column.name, :class => column.duplicate? ? "dup" : ""}, false) %>>
+  <%= h truncate(column.name, :length => 20) %>
+  <%= link_to_function "x", "", :class => "remove" %>
+</li>

@@ -1,0 +1,88 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% content_for :head do %>
+	<%= stylesheet_link_tag 'properties' %>
+<% end %>
+
+
+<%= render :partial => "requests/edit" %>
+
+<table class="activity_summary_rpt" style="font-size:14px;">
+	<tr>
+		<td>
+			<div id="request_header_rpt" style="display:inline">
+				<h3>Request: <%= request_edit_page_title_for(@request,"summary_tab")%></h3>
+				Application: <strong> <%= ensure_space(@request.app_name.to_sentence) + " in " + "#{@request.environment.try(:name)}" %> environment</strong><br>
+				<% unless @request.logs.empty? %>
+					Last Run: <strong> <%= @request.logs.first.user.name + " on " + @request.last_activity_at.default_format %></strong>
+				<% end %>
+				
+			</div>
+			<div id="rpt_toggleLink" style="float:right">
+				<% if GlobalSettings.is_WickedPdf_installed? %>
+					<% exportFormat = "PDF" %>
+					<% params_hash = {:format => :pdf} %>
+				<% else %>
+					<% exportFormat = "HTML" %>
+					<% params_hash = {:export => true, :format => :pdf } %>
+				<% end %>
+				<strong>
+					<%= link_to "Generate #{exportFormat}", activity_summary_request_path(@request, params_hash), :target => "_blank" %>
+				</strong>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<hr>
+			<div id="rpt_toggleLink">
+				Request Activity <%= link_to_function "(hide)", "toggleSection($(this))", :rel => "(show)", :class => "request_activity_rpt" %>
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<div id="request_activity_rpt" style="display:block">
+				<%= render :partial => 'requests/activity_by_time_rpt', :locals => { :request => @request, :log_groups => @log_groups } %>  
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<hr>
+			<div id="rpt_toggleLink">
+				Request Notes <%= link_to_function "(hide)", "toggleSection($(this))", :rel => "(show)", :class => "request_step_notes_rpt" %>
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<div id="request_step_notes_rpt" style="display:block">
+				<%= render :partial => 'requests/notes_by_step_rpt', :locals => { :request => @request, :note_groups => @note_groups } %>  
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<hr>
+			<div id="rpt_toggleLink">
+				Request Design Activity <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "request_design_activity_rpt" %>
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<div id="request_design_activity_rpt" style="display:none">
+				<%= render :partial => 'requests/activity_by_time_rpt', :locals => { :request => @request, :log_groups => @log_groups_design } %>  
+			</div>
+		</td>
+	</tr>                                
+</table>
+

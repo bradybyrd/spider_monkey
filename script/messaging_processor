@@ -1,0 +1,37 @@
+#!/usr/bin/env jruby
+require 'rubygems'
+require 'torquebox'
+require 'torquebox-messaging'
+
+class MessagingProcessor < TorqueBox::Messaging::MessageProcessor
+
+  MESSAGING_PATH = '/topics/messaging/brpm_event_queue'
+
+  def initialize
+    puts "initialize"
+    @destination = TorqueBox::Messaging::Topic.new(
+      MESSAGING_PATH, 
+      :host => 'localhost', 
+      :port => 5445#, 
+#      :username => 'brpm',
+#      :password => 'brpm_pass123'
+    )
+    puts "Destination: #{@destination}"
+  end
+
+  def on_message(serialized_message)
+    p "==============================================="
+    p serialized_message
+    p "==============================================="
+  end
+    
+  def run
+    on_message(@destination.receive)
+  end
+end
+
+consumer = MessagingProcessor.new
+puts "Listening..."  
+loop do
+  consumer.run
+end

@@ -1,0 +1,75 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Properties Map' %>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'multi_select', 'maps' %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+  <%= form_tag properties_maps_path, :id => 'properties_maps_map_form' do %>
+    <div class="section">
+      <label for="app_id">Application</label><br/>
+      <%= select_tag 'app_id', options_from_collection_for_select(@apps, :id, :name, @selected_app_id),
+                     :class => 'maps_remote_options', :style => "max-width:300px" %>
+
+      <p class="environments_and_components" id="environments">
+        <label for="application_environment_ids">Environments</label>
+        <%= select_tag 'application_environment_ids[]', [], :id => 'application_environment_ids', :class => "customize_multiselect", :multiple => true %>
+				<%= select_clear_links('application_environment_ids')%>
+        <% if @selected_application_environment_ids %>
+          <% @selected_application_environment_ids.each do |id| %>
+            <%= hidden_field_tag 'selected_application_environment_ids[]', id, :id => 'selected_application_environment_ids' %>
+          <% end %>
+        <% end %>
+      </p>
+
+      <p class="environments_and_components" id="components">
+        <label for="component_ids">Components</label>
+        <%= select_tag 'component_ids[]', [], :id => 'component_ids', :class => "customize_multiselect", :multiple => true %>
+				<%= select_clear_links('component_ids')%>
+        <% if @selected_component_ids %>
+          <% @selected_component_ids.each do |id| %>
+            <%= hidden_field_tag 'selected_component_ids[]', id, :id => 'selected_component_ids' %>
+          <% end %>
+        <% end %>
+      </p>
+
+      <p class="environments_and_components" id="releases">
+        <label for="release_ids">Releases</label>
+        <%= select_tag 'release_ids[]', options_from_collection_for_select(Release.name_order, :id, :name, @releases.try(:map, &:id)), :id => 'release_ids', :class => "customize_multiselect", :multiple => true %>
+        <%= select_clear_links('release_ids')%>
+      </p>
+    </div>
+
+    <%= hidden_field_tag 'maps_remote_options_url', application_environment_and_component_options_for_app_maps_path %>
+
+    <%= submit_tag 'Compare' %>
+
+  <% end %>
+<% end %>
+
+<div id="properties_map" class="vscroll_960">
+  <% if @selected_app && @selected_application_environments && @selected_components %>
+    <h3>Properties</h3>
+    <%= render :partial => 'properties_map',
+               :locals => { :selected_app => @selected_app,
+                            :selected_application_environments => @selected_application_environments,
+                            :selected_components => @selected_components } %>
+  <% else %>
+    <span id="map_need_app">Please select an application on the right.</span>
+  <% end %>
+</div>
+

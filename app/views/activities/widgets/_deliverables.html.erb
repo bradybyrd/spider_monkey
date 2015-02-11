@@ -1,0 +1,33 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='wrapper'>
+  <strong>Deliverables</strong>
+  <table <%= tag_options({:cellspacing => 0}, false) %>>
+    <thead>
+      <tr>
+        <th class='first'>Name</th>
+        <th>Description</th>
+        <th>Projected Delivery</th>
+        <th>Delivered On</th>
+        <th>Delivery Highlights</th>
+        <th class='last'>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => 'activities/widgets/deliverables/deliverable', :collection => @activity.deliverables %>
+      <tr>
+        <td <%= tag_options({:colspan => 6}, false) %>>
+          <% if current_user.present? %>
+            <%= link_to "add deliverable", modify_deliverable_activity_path(@activity), :class => "modify_deliverable", :rel => 'facebox' %>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

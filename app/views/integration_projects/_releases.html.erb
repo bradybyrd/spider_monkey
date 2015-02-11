@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= label_tag :releases, "Releases" %>
+<div class='release_dyn_fields' id='dynamic_fields' style='float:left'>
+  <% project.releases.each do |release| %>
+    <p>
+      <%= text_field_tag "integration_project[releases][]", h(release.name) %>
+      |
+      <%= link_to 'clear', '#', :class => 'clear_field' %>
+    </p>
+  <% end %>
+  <span>
+    <p>
+      <%= text_field_tag "integration_project[releases][]" %>
+      |
+      <%= link_to 'clear', '#', :class => 'clear_field' %>
+    </p>
+  </span>
+  <span id='field_for_clone' style='display: none'>
+    <p>
+      <%= text_field_tag "integration_project[releases][]" %>
+      |
+      <%= link_to "remove", "#", :class => "remove_field" %>
+    </p>
+  </span>
+  <span>
+    <p>
+      <%= link_to "more", '#', :id => "add_field" %>
+    </p>
+  </span>
+</div>

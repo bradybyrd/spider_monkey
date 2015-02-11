@@ -1,0 +1,31 @@
+<td align="left">
+  <% if can? :manage_servers, installed_component %>
+    <%= check_box_tag 'installed_component_ids[]',
+                      installed_component.id, false,
+                      class: 'installed_component_ids',
+                      id: "installed_component_ids_#{installed_component.id}" %>
+  <% end %>
+</td>
+<td>
+	<div style="word-wrap:break-word;">
+    <strong>
+		  <%= link_to_if can?(:manage_servers, installed_component), installed_component.name, edit_app_installed_component_path(app, installed_component), :class => 'underline', :rel => 'facebox' %>
+    </strong>
+  </div>
+</td>
+<td class="installed_component_version">
+	<div style="word-wrap:break-word;"><%= h installed_component.version %></div>
+</td>
+<td class="server_associations_name_list" title="<%= name_list_sentence installed_component.server_associations %>">
+	<div style="word-wrap:break-word;">
+		<%= name_list_sentence installed_component.server_associations, 25 %>
+	</div>
+</td>
+<td class="installed_component_properties"><%= installed_component.properties.active.empty? ? 'no' : 'yes' %></td>
+<td>
+  <% if can? :destroy, installed_component %>
+    <%= form_for installed_component, :url => app_installed_component_path(app, installed_component), :html => {:method => :delete, :class => 'inline delete', 'data-confirmation' => "Are you sure you want to remove this installed component?"} do |f| %>
+      <%= image_submit_tag 'bin_empty.png',:alt => 'Remove installed component', :id => "delete_installed_component_#{installed_component.id}", :title => 'Remove installed component' %>
+    <% end %>
+  <% end %>
+</td>

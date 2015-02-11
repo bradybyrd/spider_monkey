@@ -1,0 +1,9 @@
+<div class='field'>
+  <label for='environment_ids'>*Environments</label>
+  <span id='environments'>
+    <%= render :partial => "shared/checkbox_select_list", :locals => { :collection => @environments, :method => "environment_ids", :label => "name", :value => "id"} %>
+  </span>
+  <span class='sl_links' id='env_select_links'>
+    <%= select_clear_chk('environments') %>
+  </span>
+</div>

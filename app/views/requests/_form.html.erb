@@ -1,0 +1,275 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<%= static_javascript_include_tag 'request_form' %>
+<% disable_fields = disable_all_request_form_fields(@request) unless @cloned_request %>
+<h3>
+  Core Attributes
+</h3>
+<% unless @cloned_request %>
+  <div class='field'>
+    <%= f.label :aasm_state, 'Status:' %>
+    <span <%= tag_options({class: "#{request.aasm.current_state}RequestStep state"}, false) %>>
+      <%= h @request.aasm.current_state.to_s.humanize %>
+    </span>
+  </div>
+<% end %>
+<% unless local_assigns[:from_plan] %>
+  <% users_active = User.active.select([:id, :contact_number, :first_name, :last_name, :type]).order('LOWER(last_name) asc') %>
+  <div class='field'>
+    <%= f.label :name, 'Name:' %>
+    <%= f.text_field :name, disabled: disable_fields %>
+  </div>
+  <div class='field'>
+    <%= f.label :requestor_id, 'Requestor:' %>
+    <%= f.collection_select :requestor_id, users_active, :id, :name_for_index_with_contact,{}, {disabled: disable_fields} %>
+  </div>
+  <div class='field'>
+    <%= f.label :owner_id, 'Owner:' %>
+    <%= f.collection_select :owner_id, users_active, :id, :name_for_index_with_contact,{}, {disabled: disable_fields} %>
+  </div>
+  <% if @request.try(:plan_member).try(:run_id).nil? || @cloned_request%>
+    <%= f.fields_for :plan_member do |lm_form| %>
+      <div class='field'>
+        <%= lm_form.label :plan_id, 'Plan:' %>
+        <%= lm_form.select :plan_id, options_for_select(@available_plans_for_select, request.try(:plan_member).try(:plan_id)),
+                           {include_blank: lm_form.object.new_record?}, {disabled: disable_fields, style: 'max-width:137px;'} %>
+        <span class='label_look'>
+          Stage:
+        </span>
+        <%= lm_form.select :plan_stage_id, options_for_select(@available_plan_stages_for_select,
+                                                              selected: request.try(:plan_member).try(:plan_stage_id),
+                                                              disabled: @stages_requestor_can_not_select),
+                           {},
+                           {disabled: disable_fields, style: 'max-width:137px;'} %>
+        <% unless lm_form.object.new_record? %>
+          <%= lm_form.check_box '_destroy' %>
+          <span class='label_look_checkbox'>
+            Remove?
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+
+  <% else %>
+    <div class='field'>
+      <%= label_tag :plan, 'Plan' %>
+      <% plan = request.plan_member.plan rescue nil %>
+      <%= link_to h(plan_label(request)), plan unless plan_label(request).blank? %>
+      * Plan in a run cannot be reassigned.
+    </div>
+  <% end %>
+<% end %>
+<div class='field'>
+  <%= label_tag :app_ids, 'Application:' %>
+  <%= collection_select :request, :app_ids,
+                        current_user.accessible_apps_for_requests.select(%w(apps.id apps.name)),
+                        :id, :name, { include_blank: true },
+                        { disabled: disable_fields } %>
+  <% if disable_fields %>
+    <% @request.app_ids.each do |app_id| %>
+      <%= hidden_field_tag 'request[app_ids][]', app_id %>
+    <% end %>
+  <% end %>
+  <%= hidden_field_tag 'user_id', current_user.id %>
+</div>
+<div class='field'>
+  <% if @request.environment_ids.blank?%>
+    <%= f.label :environment_id, 'Environment:' %>
+  <% else%>
+    <%= f.label :environment_id, 'Environments:' %>
+  <% end %>
+  <% if disable_fields %>
+    <%= f.hidden_field :environment_id, value: @request.environment_id %>
+    <%= f.select :environment_id, @request.app_environments.select(%w(environments.id environments.name)).collect {|e| [e.name, e.id]}, {}, disabled: disable_fields %>
+  <% else %>
+    <div id='request_link_for_multi_select'>
+      <% if @request.environment_ids.blank?%>
+         <%= f.select :environment_id, defined?(@update_start_complete_time) ? @request.app_environments.select(%w(environments.id environments.name)).collect {|e| [e.name, e.id]} : [], {}, class: 'use_remote_options', :rel => 'request_app_ids' %>
+      <% end%>
+      <% if @request.new_record? %>
+          <% if @request.environment_ids.present?%>
+            <%= link_to_function @request.get_environment_names + '(Edit)', 'addRemoveItems(this, "Environment")' %>
+            <span id="show_picker_container_for_environment_id">
+              <% @request.environment_ids.each do |env_id| %>
+                <input value=<%= env_id %> name="request[environment_ids][]" type="hidden">
+              <% end %>
+            </span>
+            <input id='request_environment_ids' value='<%= @request.environment_ids.join(',') %>' name='request[environment_ids]' type='hidden'>
+          <% else%>
+            <%= link_to_function 'Multi-select environments', 'useMultiSelect(this, "Environment")' %>
+          <% end %>
+      <% end %>
+    </div>
+    <div id='request_multi_select'></div>
+  <% end %>
+  <%= hidden_field_tag 'request_environment_id_url', application_environment_options_requests_path %>
+  <%= hidden_field_tag 'selected_request_environment_id', request.environment_id_in_list %>
+  <%= hidden_field_tag 'old_environment_id', request.environment_id %>
+  <%= hidden_field_tag 'old_app_ids', request.app_ids.join(',') %>
+</div>
+<div class='field'>
+  <%= f.label :business_process_id, 'Business Process:' %>
+  <%= f.select :business_process_id, [], {}, class: 'use_remote_options', rel: 'request_app_ids', disabled: disable_fields %>
+  <%= hidden_field_tag 'request_business_process_id_url', application_process_options_requests_path %>
+  <%= hidden_field_tag 'selected_request_business_process_id', request.business_process_id %>
+</div>
+<div class='field'>
+  <%= f.label :description, 'Description:' %>
+  <%= f.text_area :description, disabled: disable_fields, rows: 0, class: 'Expand' %>
+  <p class='expand_textarea_link'>
+    [
+    <a href="javascript:toggleTextarea('request_description', 'desc')" id='desc'>expand</a>
+    ]
+  </p>
+</div>
+<div class='field'>
+  <%= f.label :release_id, 'Release Tag:' %>
+  <%= f.select :release_id,  options_for_select(Release.unarchived.in_order.select([:id, :name]).collect{|r| [r.name,r.id]},
+                                                request.release_id ? request.release_id : request.try(:plan_member).try(:plan).try(:release).try(:id)),
+               {include_blank: true}, {disabled: disable_fields} %>
+</div>
+<div id='toggleLink'>
+  <h3>
+    Extended Attributes
+    <%= link_to_function '(Show)', 'toggleSection($(this))', rel: '(Hide)', class: 'extended_fields' %>
+  </h3>
+</div>
+<div id='extended_fields' style='display: none'>
+  <% unless local_assigns[:from_plan] %>
+    <div class='field'>
+      <%= f.label :activity_id, activity_or_project? %>
+      <%= f.collection_select :activity_id, Activity.request_compatible, :id, :name, {include_blank: true}, disabled: disable_fields %>
+    </div>
+  <% end %>
+  <div class='field'>
+    <%= f.label :package_contents, 'Package Contents:' %>
+    <div id='package_contents' style='margin-left:100px;'>
+      <%= render partial: 'shared/checkbox_select_list',
+                 locals: {form_object: @request, collection: PackageContent.unarchived.in_order,
+                          object: 'request', method: 'package_content_ids', label: 'name', value: 'id'} %>
+      <span id='package_content_select_links'>
+        <%= select_clear_chk('package_contents') %>
+      </span>
+    </div>
+  </div>
+  <div class='field'>
+    <%= f.label :wiki_url, 'Wiki:' %>
+    <%= f.text_area :wiki_url, disabled: disable_fields, class: 'expand', rows: 0 %>
+    <p class='expand_textarea_link'>
+      [
+      <a href="javascript:toggleTextarea('request_wiki_url', 'wiki')" id='wiki'>expand</a>
+      ]
+    </p>
+  </div>
+  <div class='field'>
+    <span class='uploads dynamic_fields'>
+      <%= render partial: 'uploads/add_uploads_form', locals: {owner: @request, f: f} %>
+    </span>
+  </div>
+</div>
+<div class='divider'></div>
+
+<h3>
+  Scheduling and Estimation
+</h3>
+
+<div class='field'>
+  <%= f.label :estimate, 'Estimate:' %>
+  <%= f.select :estimate, @request.view_object.estimate, {include_blank: true}, disabled: disable_fields %>
+</div>
+<div class='field' <%= tag_options({style: show_rescheduled_field_for(@request), id: 'rescheduled_field', class: class_for_rescheduled_field(@request)}, false) %>>
+  <%= f.label :rescheduled, 'Rescheduled:' %>
+  <%= f.check_box :rescheduled, disabled: disable_fields %>
+</div>
+<div style='float:left; margin-bottom: 4px;'>
+  <div class='field stitched_date' id='scheduled_at' style='width:538px !important;margin-bottom:4px;'>
+    <%= f.label :scheduled_at_date, 'Planned Start:' %>
+    <nobr>
+      <%= f.text_field :scheduled_at_date, value: default_format_date(@request.scheduled_at),
+                       class: 'date request_scheduled_at_date', disabled: false %>
+      &nbsp;at
+      <%= f.select :scheduled_at_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, {include_blank: true}, class: 'hour', disabled: false %>
+      :
+      <%= f.select :scheduled_at_minute, (0..59).map {|n| '%02d' % n}, {include_blank: true}, class: 'minute', disabled: false %>
+      <%= f.select :scheduled_at_meridian, %w{ AM PM }, {include_blank: true}, class: 'meridian', disabled: false %>
+
+      <% if can? :auto_start, Request.new %>
+        <%= f.check_box :auto_start, style: 'width: 20px;', disabled: disable_fields %>
+        Start Automatically?
+      <% end %>
+    </nobr>
+  </div>
+
+  <div class='field' style='display: none'>
+   <div id="deployment_window_warning">
+   </div>
+    <%= f.label :deployment_window, 'Deployment Window:' %>
+    <%= f.hidden_field :deployment_window_event_id, {
+            disabled: disable_fields,
+            value: @request.deployment_window_event_id,
+            class: 'request_deployment_window_event_id',
+            'data-text' => (deployment_window_event_option_text(@request.deployment_window_event, true) if @request.deployment_window_event_id)
+    } %>
+    <div class="request_deployment_window_controls">
+      <%= f.submit :Next, type: 'button', disabled: disable_fields, id: 'deployment_window_next', class: 'button' %>
+      <%= f.submit 'Clear', type: 'button', id: 'deployment_window_clear', class: 'button' %>
+    </div>
+    <%= hidden_field_tag 'deployment_window_event_id_url', deployment_window_options_requests_path %>
+    <%= hidden_field_tag 'deployment_window_next_url', deployment_window_next_requests_path %>
+    <%= hidden_field_tag 'deployment_window_warning_url', deployment_window_warning_requests_path %>
+    <%= hidden_field_tag 'request_environment_id_url', application_environment_options_requests_path %>
+    <%= hidden_field_tag 'selected_request_environment_id', request.environment_id_in_list %>
+    <%= hidden_field_tag 'old_deployment_window_event_id', request.deployment_window_event_id %>
+    <%= hidden_field_tag 'old_environment_id', request.environment_id %>
+  </div>
+
+  <div class='field stitched_date' id='target_completion_at' style='width:538px !important;'>
+    <%= f.label :target_completion_at_date, 'Due by:' %>
+    <%= f.text_field :target_completion_at_date, value: default_format_date(@request.target_completion_at), class: 'date', disabled: disable_fields %>
+    &nbsp;at
+    <nobr>
+      <%= f.select :target_completion_at_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, {include_blank: true}, class: 'hour', disabled: disable_fields %>
+      :
+      <%= f.select :target_completion_at_minute, (0..59).map {|n| '%02d' % n}, {include_blank: true}, class: 'minute', disabled: disable_fields %>
+      <%= f.select :target_completion_at_meridian, %w{ AM PM }, {include_blank: true}, class: 'meridian', disabled: disable_fields %>
+    </nobr>
+  </div>
+  <% if @update_start_complete_time %>
+    <div class='field stitched_date' id='started_at'>
+      <%= f.label :started_at_date, 'Started At' %>
+      <%= f.text_field :started_at_date, value: default_format_date(@request.started_at), class: 'date' %>
+      &nbsp;at
+      <nobr>
+        <%= f.select :started_at_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, {include_blank: true}, class: 'hour' %>
+        :
+        <%= f.select :started_at_minute, %w{ 00 15 30 45 }, {include_blank: true}, class: 'minute' %>
+        <%= f.select :started_at_meridian, %w{ AM PM }, {include_blank: true}, class: 'meridian' %>
+      </nobr>
+    </div>
+    <div class='field stitched_date' id='completed_at'>
+      <%= f.label :completed_at_date, 'Completed At:' %>
+      <%= f.text_field :completed_at_date, value: default_format_date(@request.completed_at), class: 'date' %>
+      &nbsp;at
+      <nobr>
+        <%= f.select :completed_at_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, {include_blank: true}, class: 'hour' %>
+        :
+        <%= f.select :completed_at_minute, %w{ 00 15 30 45 }, {include_blank: true}, class: 'minute' %>
+        <%= f.select :completed_at_meridian, %w{ AM PM }, {include_blank: true}, class: 'meridian' %>
+      </nobr>
+    </div>
+  <% end %>
+</div>
+<% hidden = f.object.due_before_scheduled? ? '' : 'display:none' %>
+<div class='early_due_date_error on_form' <%= tag_options({style: hidden}, false) %>>
+  Due by is before Planned Start.
+<%= hidden_field_tag :due_date, @request.target_completion_at %>
+</div>
+<div class='clear'></div>
+<%= hidden_field_tag :editing_details, '1' %>
+<%= hidden_field_tag :current_date, Time.now.strftime('%a %b %d %H:%M:%S %z %Y') %>

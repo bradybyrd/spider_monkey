@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% draw_tabs :for => :component, :class => 'component_tabs'  do %>
+  <li <%= tag_options({:class => ( selected == 'components' ? 'selected':'')}, false) %>>
+    <%= link_to_function "Components", "showAppComponents()", :id => 'link_component' %>
+  </li>
+  <li <%= tag_options({:class => (selected == 'component_templates' ? 'selected' :'' )}, false) %>>
+    <%= link_to_function "Component Templates", "showAppComponentTemplates()", :id => 'link_component_template' %>
+  </li>
+  <li <%= tag_options({:class => (selected == 'packages' ? 'selected' :'' )}, false) %>>
+    <%= link_to_function "Packages", "showAppPackages()", :id => 'link_packages' %>
+  </li>
+<% end %>

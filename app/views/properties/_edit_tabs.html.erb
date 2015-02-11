@@ -1,0 +1,12 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% draw_tabs :selected => selected do %>
+  <%= sub_tab 'Assignment', :path => edit_property_path %>
+  <%= sub_tab 'Values', :path => properties_edit_values_path %>
+<% end %>

@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<b><%= "Filters" %></b>
+<form class='cssform deliverableFilters'>
+  <div class='contentCol1' style='width:100%;'>
+    <p>
+      <label><%= "Delivered:" %></label>
+      <span><%= @params[:used_filters][:delivered].present? ? @params[:used_filters][:delivered] : 'None' %></span>
+    </p>
+    <p>
+      <label><%= "Organizational Impact:" %></label>
+      <span><%= @params[:used_filters][:organizational_impact].present? ? @params[:used_filters][:organizational_impact] : 'None' %></span>
+    </p>
+    <p>
+      <label><%= "Leading Group:" %></label>
+      <span><%= @params[:used_filters][:leading_group_id].present? ? @params[:used_filters][:leading_group_id] : 'None' %></span>
+    </p>
+  </div>
+</form>
+<div class='clear'></div>

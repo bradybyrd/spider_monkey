@@ -1,0 +1,123 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Your profile' %>
+<% content_for :page_section do %>
+  <div class='pageSection'>
+    <ul>
+      <li class='selected'><%= link_to 'Your profile', profile_path %></li>
+      <li><%= link_to 'Calendar Preferences', user_calendar_preferences_path %></li>
+      <li>
+        <%= link_to 'Request List Preferences', user_request_list_preferences_path %>
+      </li>
+      <li>
+        <%= link_to 'Step List Preferences', user_step_list_preferences_path %>
+      </li>
+    </ul>
+    <div class='pageFunctions'>
+      &nbsp;
+    </div>
+  </div>
+<% end %>
+<% content_for :sidebar do %>
+  &nbsp;
+<% end %>
+<%= form_for @user, :url => update_profile_path do |f| %>
+  <%= f.error_messages %>
+  <div class='field'>
+    <%= f.label :first_name, 'First name', :class => 'required' %>
+    <%= f.text_field :first_name, :size => 30, :autocomplete => 'off', :class => 'initialFocus' %>
+  </div>
+  <div class='field'>
+    <%= f.label :last_name, 'Last name', :class => 'required' %>
+    <%= f.text_field :last_name, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <div class='field'>
+    <%= f.label :email, 'Email', :class => 'required' %>
+    <%= f.text_field :email, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <div class='field'>
+    <%= f.label :groups, 'Groups', :class => 'required' %>
+    <span class="groups">
+      <%= user_groups_list @user %>
+    </span>
+  </div>
+  <% if current_user_authenticated_via_rpm? %>
+    <div class='field'>
+      <%= f.label :password, 'Password', :class => 'required' %>
+      <%= f.password_field :password, :autocomplete => 'off', :class => 'password' %>
+      <sup class='help'>
+        <a <%= tag_options({:href => '#'}, false) %>>?</a>
+      </sup>
+      <div class='help_box' style='display:none; top:133px'>
+        <p>Must be at least six characters long, and contain at least one letter and one number.</p>
+        <p>
+          For example,
+          <span>password1</span>
+        </p>
+      </div>
+    </div>
+    <div class='field half left'>
+      <%= f.label :password_confirmation, 'Confirm Password', :class => 'required' %>
+      <%= f.password_field :password_confirmation, :autocomplete => 'off', :class => 'password' %>
+      <div class='helperText'>(please re-enter password to confirm)</div>
+    </div>
+  <% end %>
+  <div class='field half left'>
+    <%= f.label :contact_number, 'Contact Number' %>
+    <%= f.text_field  :contact_number, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <div class='field'>
+    <%= f.label :time_zone, 'Time Zone' %>
+    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => current_user.time_zone.nil? ? 'Central Time (US & Canada)' : current_user.time_zone  } %>
+  </div>
+  <div class='field half left'>
+    <label>Display First Day In Calendar</label>
+    <% weekdays = [['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]] %>
+    <%= f.select :first_day_on_calendar, weekdays %>
+  </div>
+  <div class='field half left'>
+    <label>Dashboard/Request tab default view</label>
+    <% if @default_tab.try(:tab_name).eql?('Calendar') %>
+      <%= radio_button_tag 'tab_name', 'Request' %>
+      Request tab
+      <%= radio_button_tag 'tab_name', 'Calendar', true %> Calendar tab
+    <% else %>
+      <%= radio_button_tag 'tab_name', 'Request', true %>
+      Request tab
+      <%= radio_button_tag 'tab_name', 'Calendar' %> Calendar tab
+    <% end %>
+  </div>
+  <div class='field half left'>
+    <label>Request list order</label>
+    <%= f.radio_button 'list_order', 'asc' %>
+    Ascending
+    <%= f.radio_button 'list_order', 'desc' %> Descending
+    <%# FIXME: When we determine the API security protocol, this will be replaced with role or certificate based security back to the user model %>
+  </div>
+  <% if @user.in_root_group? %>
+    <div class='field half left'>
+      <div id='toggleLink'>
+        <span <%= tag_options({:style => 'font-size:12px;color:#666;margin:1px 15px 0;'}, false) %>>API Key</span>
+        <%= link_to_function '(show)', 'toggleSection($(this))', :rel => '(hide)', :class => 'automation_token' %>
+      </div>
+      <div id='automation_token' style='display: none;'>
+        <br>
+          <span style='font-size:11px;margin:1px 23px 0;'>
+            <%= "API Key Value: #{@user.api_key}" %>
+          </span>
+        <br/>
+      </div>
+    </div>
+  <% end %>
+  <div class='field submit clear'>
+    <%= submit_tag 'Update' %>
+    or <%= link_to 'cancel', dashboard_path %>
+  </div>
+<% end %>
+

@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table id="property_entry">
+  <tr>
+		<td>
+			<div id="request_header_rpt" style="display:block">
+        <h3><%= link_to request_edit_page_title_for(@request,"summary_tab"), request.referer %></h3>
+				Application: <strong> <%= ensure_space(@request.app_name.to_sentence) + " in " + "#{@request.environment.try(:name)}" %> environment</strong><br>
+				<% unless @request.logs.empty? %>
+					Last Run: <strong> <%= @request.logs.first.user.name + " on " + @request.last_activity_at.default_format %></strong>
+				<% end %>
+      </div>
+		</td>
+	</tr>
+  <tr>
+    <td>
+      <%=  params[:export] ? "HTML" : "PDF"%> created On: <strong> <%= Time.now.default_format %> </strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= render :partial => 'requests/expanded_header_for_pdf.html.erb', :locals => { :request => @request, :business_processes => @business_processes, :apps => @apps, :human_date_format => @human_date_format } %>
+    </td>
+  </tr>
+  <tr>
+    <th>Request Activity </th>
+	</tr>
+	<tr>
+		<td>
+			<div id="request_activity_rpt" style="display:block">
+				<%= render :partial => 'requests/activity_by_time_rpt.html.erb', :locals => { :request => @request, :log_groups => @log_groups } %>  
+			</div>
+		</td>
+	</tr>
+	<tr>
+    <th>Request Notes </th>
+	</tr>
+	<tr>
+		<td>
+			<div id="request_step_notes_rpt" style="display:block">
+				<%= render :partial => 'requests/notes_by_step_rpt.html.erb', :locals => { :request => @request, :note_groups => @note_groups } %>  
+			</div>
+		</td>
+	</tr>
+    <tr>
+      <th>Request Design Activity</th>
+    </tr>
+    <tr>
+	<td>
+          <div id="request_activity_rpt" style="display:block">
+            <%= render :partial => 'requests/activity_by_time_rpt.html.erb', :locals => { :request => @request, :log_groups => @log_groups_design } %>  
+          </div>
+	</td>
+    </tr>
+</table>

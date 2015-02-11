@@ -1,0 +1,190 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <a-sorting-comps type="boolean">false</a-sorting-comps>
+  <a-sorting-envs type="boolean">false</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version></app-version>
+  <name>import_app_with_packages_no_servers</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array">
+    <component>
+      <active type="boolean">true</active>
+      <name>AppContainer</name>
+      <active-properties type="array">
+        <active-property>
+          <active type="boolean">true</active>
+          <default-value>AppContProp1</default-value>
+          <is-private type="boolean" nil="true"/>
+          <name>AppContProp1</name>
+        </active-property>
+      </active-properties>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Apache</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Passenger</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_MySQL</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_RailsApp</name>
+      <active-properties type="array"/>
+    </component>
+  </components>
+  <environments type="array"/>
+  <active-packages type="array">
+    <active-package>
+      <instance-name-format>0.0.0.[#]</instance-name-format>
+      <name>p1</name>
+      <next-instance-number type="integer">3</next-instance-number>
+      <properties type="array">
+        <property>
+          <active type="boolean">true</active>
+          <default-value>12def</default-value>
+          <is-private type="boolean">false</is-private>
+          <name>p1</name>
+        </property>
+        <property>
+          <active type="boolean">true</active>
+          <default-value nil="true"/>
+          <is-private type="boolean" nil="true"/>
+          <name>p</name>
+        </property>
+      </properties>
+      <references type="array">
+        <reference>
+          <name>r1</name>
+          <resource-method>File</resource-method>
+          <uri>r1uri</uri>
+          <property-values type="array">
+            <property-value>
+              <value>pr1_p1</value>
+              <name>p1</name>
+            </property-value>
+          </property-values>
+          <server>
+            <name>s1</name>
+          </server>
+        </reference>
+        <reference>
+          <name>r2</name>
+          <resource-method>File</resource-method>
+          <uri>r2_uri</uri>
+          <property-values type="array"/>
+          <server>
+            <name>s2</name>
+          </server>
+        </reference>
+      </references>
+      <package-instances type="array">
+        <package-instance>
+          <name>0.0.0.1</name>
+          <property-values type="array">
+            <property-value>
+              <value>12_0.0.0.1</value>
+              <name>p1</name>
+            </property-value>
+          </property-values>
+          <instance-references type="array">
+            <instance-reference>
+              <name>r1</name>
+              <uri>r1uri</uri>
+              <reference>
+                <name>r1</name>
+              </reference>
+              <property-values type="array">
+                <property-value>
+                  <value>pr1_p1</value>
+                  <name>p1</name>
+                </property-value>
+              </property-values>
+              <server>
+                <name>s1</name>
+              </server>
+            </instance-reference>
+            <instance-reference>
+              <name>r2</name>
+              <uri>r2_uri</uri>
+              <reference>
+                <name>r2</name>
+              </reference>
+              <property-values type="array"/>
+              <server>
+                <name>s2</name>
+              </server>
+            </instance-reference>
+          </instance-references>
+        </package-instance>
+        <package-instance>
+          <name>0.0.0.2</name>
+          <property-values type="array">
+            <property-value>
+              <value>12</value>
+              <name>p1</name>
+            </property-value>
+          </property-values>
+          <instance-references type="array">
+            <instance-reference>
+              <name>r2</name>
+              <uri>r2_uri</uri>
+              <reference>
+                <name>r2</name>
+              </reference>
+              <property-values type="array"/>
+              <server>
+                <name>s2</name>
+              </server>
+            </instance-reference>
+          </instance-references>
+        </package-instance>
+        <package-instance>
+          <name>ii</name>
+          <property-values type="array"/>
+          <instance-references type="array"/>
+        </package-instance>
+        <package-instance>
+          <name>iie</name>
+          <property-values type="array"/>
+          <instance-references type="array"/>
+        </package-instance>
+      </package-instances>
+    </active-package>
+    <active-package>
+      <instance-name-format>0.0.0.[#]</instance-name-format>
+      <name>p2_empty</name>
+      <next-instance-number type="integer">1</next-instance-number>
+      <properties type="array"/>
+      <references type="array"/>
+      <package-instances type="array"/>
+    </active-package>
+  </active-packages>
+  <installed-components type="array"/>
+  <active-routes type="array"/>
+  <active-business-processes type="array"/>
+  <version-tags type="array"/>
+  <application-packages type="array">
+    <application-package>
+      <property-values type="array"/>
+      <package>
+        <name>p1</name>
+      </package>
+    </application-package>
+    <application-package>
+      <property-values type="array"/>
+      <package>
+        <name>p2_empty</name>
+      </package>
+    </application-package>
+  </application-packages>
+</app>
+</app_import>

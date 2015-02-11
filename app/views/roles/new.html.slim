@@ -1,0 +1,21 @@
+- ################################################################################
+- # BMC Software, Inc.
+- # Confidential and Proprietary
+- # Copyright (c) BMC Software, Inc. 2001-2012
+- # All Rights Reserved.
+- ################################################################################
+- page_settings :title => t('role.create'), content_class: 'mainContent'
+
+- content_for :page_section do
+  = render :partial => 'users/tabs', :locals => {:selected => 'roles',:tab_view => true}
+- content_for :sidebar
+  span
+
+h3= t 'role.create'
+
+= form_for @role, :html => { :class => 'cssform role', :style => "width:805px" } do |f|
+  = render :partial => 'form', :locals => { :f => f }
+
+  .field
+    = f.submit I18n.t(:create), :class => "button"
+    |  or #{link_to 'cancel', roles_path}

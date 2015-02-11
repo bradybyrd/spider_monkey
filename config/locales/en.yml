@@ -1,0 +1,731 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+en:
+  #### All active records messages need to be below this.
+  #### DO NOT duplicate those, otherwise some keys don't get recognized while translation.
+
+  TrueClass: 'Yes'
+  FalseClass: 'No'
+
+  yup: 'Yes'
+  nope: 'No'
+
+  or: 'or'
+  none: 'None'
+
+  not_used: "**not used**"
+
+  expand: 'expand'
+  collapse: 'collapse'
+
+  activerecord:
+      models:
+        plan_template: Plan Template
+        user: 'User'
+        server_level: 'Server Level'
+        server_group: 'Server Group'
+        team: 'Team'
+        environment: 'Environment'
+        server: 'Server'
+        component: 'Component'
+        property: 'Property'
+        list: 'List'
+        version_tag: 'Version Tag'
+        work_task: 'Work Task'
+        notification_template: 'Notification Template'
+        group: Group
+        request_template: Request Template
+      attributes:
+        plan_template:
+          name: Name
+          template_type: Template type
+          is_automatic: Is automatic
+        property:
+          name: Name
+          is_private: Private
+        ticket:
+          foreign_id: Foreign ID
+          project_server_id: Integration
+        app:
+          team_ids: 'Team'
+      errors:
+        no_access_to_view_page: 'You do not have access permissions to view this page. '
+        object:
+          stolen: Object was edited and saved by another user - you cannot save your changes.
+        models:
+          upload:
+            attributes:
+              attachment:
+                size_too_big: is too big (should be at most 5 MB)
+        template:
+          header:
+            one: Fix error below to save the %{model}.
+            other: Fix these %{count} errors to save the %{model}.
+        messages:
+          existence: "does not exist"    
+      notices:
+        record_not_present: "%{model} %{id} was not found."
+        created: "%{model} was successfully created."
+        updated: "%{model} was successfully updated."
+        deleted: "%{model} was successfully deleted."
+        not_created: "There was a problem when creating a new %{model}."
+        not_updated: "There was a problem when updating %{model}."
+        not_deleted: "There was a problem when deleting %{model}."
+        not_found: "%{model} was not found"
+        prohibited_from_being_saved: "%{number} error(s) prohibited these items from being saved:"
+        no_permissions: "You do not have the appropriate permissions to %{action} %{model}"
+      messages:
+        # carrierwave file_size validator messages
+        wrong_size: "is the wrong size (should be %{file_size})"
+        size_too_small: "is too small (should be at least %{file_size})"
+        size_too_big: "is too big (should be at most %{file_size})"
+
+  ### common and misc strings
+  l10n_frm_cancel: cancel
+  l10n_frm_create: Create
+  l10n_frm_update: Update
+
+  l10n_lnk_show: (show)
+  l10n_lnk_hide: (hide)
+
+  ### plan template related strings
+  l10n_title_plan_templates: Plan Templates
+  l10n_title_plan_template_new: Create New Plan Template
+  l10n_title_plan_template_edit: "Edit Plan Template: %{name}"
+
+  l10n_tbl_plan_template: Plan Template
+  l10n_tbl_plan_template_name: Name
+  l10n_tbl_plan_template_type: Template type
+  l10n_tbl_plan_template_automatic: Is automatic
+
+  l10n_plan_template_new: Create Plan Template
+
+  l10n_msg_plan_template_no_templates: There are no plan templates at this time.
+
+  l10n_ttip_plan_template_delete: Delete plan template...
+  l10n_dlg_plan_template_delete_are_you_sure: Are you sure you want to delete this plan template?
+
+  ### plan related strings
+  l10n_tbl_plan_count: Plans
+
+  l10n_title_property_new: Create New Property
+  l10n_title_property_edit: "Edit Property: %{name}"
+
+  ### Request related strings
+  request_on_env_error_permissions: "You do not have permissions to create request on %{environment_name} environment."
+  strict_plan_control_error: "Plan and plan stage must be assigned since Application %{app_name} has strict plan control."
+  unable_set_request_validation_skipper: "Couldn't set attribute %{skipper}, there are no such setter."
+
+  ### Located @ http://host:port/brpm/properties/new or edit
+  l10n_frm_property_private_note: "(hides values for password etc.)"
+
+  l10n_frm_property_component_assignment: "Component Assignment:"
+  l10n_frm_property_component_assignment_note1: Use for a property that follows a component.
+  l10n_frm_property_component_assignment_note2: Properties are primarily assigned to components.
+
+  l10n_frm_property_package_assignment: "Package Assignment:"
+  l10n_frm_property_package_assignment_note1: Use for a property that follows a package.
+  l10n_frm_property_package_assignment_note2: Properties are primarily assigned to packages.
+
+  l10n_frm_property_server_assignment: "Server Assignment:"
+  l10n_frm_property_server_assignment_note1: Use for a property that follows a server/server level
+  l10n_frm_property_server_assignment_note2: Use for a property that must follow the server and not the component installed on the server
+  l10n_frm_property_server_assignment_note3: Server levels behave similar to servers.
+
+  l10n_frm_property_property_entry: "Property Entry Assignment:"
+  l10n_frm_property_property_entry_creation_task: Work Tasks for Creation
+  l10n_frm_property_property_entry_execution_task: Work Tasks for Execution
+  l10n_frm_property_property_entry_note1: Use only for a property that will not change with environment or component
+  l10n_frm_property_property_entry_note2: Select the allowed tasks where this property can be modified during request creation.
+  l10n_frm_property_property_entry_note3: Select the allowed tasks where this property can be modified during request execution.
+  l10n_msg_plan_template_no_templates: There are no plan templates at this time.
+
+  l10n_msg_property_no_properties: There are no properties at this time.
+
+  l10n_title_script_new: Create New Automation
+  l10n_title_script_edit: "Edit Automation: %{name}"
+  l10n_title_resource_script_edit: "Edit Resource Automation: %{name}"
+  l10n_title_resource_script_new: Create New Resource Automation
+
+  page_does_not_exist: 'Page You were looking for does not exist.'
+
+  # branding
+  product_name: BMC Release Lifecycle Management
+  product_application_name: RLM Application
+  default_company_name: RLM Instance
+  product_initials: RLM
+  version: version
+  # authentication
+  login: login
+  login_button: Log In
+  login_prompt: Please log in.
+  login_bg_alt: Please log in to
+  forgot_password: Forgot password?
+  forgot_username: Forgot username?
+  forgot_userid:
+    security_question: Security Question
+    incorrect_email: Sorry !!! We didn' t recognize You. Please provide correct email
+    security_question_not_exist: Sorry !!! User with provided email have no security question as never loged in.
+  error_connecting_to_bladelogic: 'Error connecting to BladeLogic'
+
+  # Packaging
+  packaging:
+    package_instance_list_title: "Package instances for package: %{name}"
+    add_or_remove: 'Add / Remove Packages'
+
+  package_instance:
+    updated: Package instance was successfully updated
+    not_found: No Package Instance found
+    package_blank: Package cannot be blank.
+    package_not_found: Package could not be found. Check that the package name is valid.
+    package_change_not_allowed: 'The package cannot be changed.'
+
+  package:
+    instances: 'Instances'
+    errors:
+      inactivate_condition: 'A Package being assigned to an Application cannot be made inactive'
+      package_id_change_not_allowed: 'The package_id cannot be changed.'
+
+  # user
+  user:
+    created: "New user account for %{user_name} is successfully created."
+    updated: "Profile information of %{user_name} is successfully updated."
+    password_help_message: '<p>Must be at least six characters long, and contain at least one letter and one number.<p>For example,<span>password1</span></p>'
+    profile_updated: 'Your profile has been successfully updated'
+    imported_from_bladelogic: "Successfully imported %{size} Bladelogic users"
+    edit_error: You cannot update an Inactivated Users
+    password_generated_and_sent: "A new password has been generated and emailed to - %{user_email}."
+    password_changed: 'You have successfully changed your account password'
+    email_not_delivered_to: "Sorry! We could not deliver email to this account: %{user_email}. Please contact your administrator."
+    email_not_delivered: 'Sorry! Email could not be delivered to your email account. Please contact your administrator.'
+    email_delivered_with_id: "Your user ID is e-mailed to - %{user_email}."
+    answer_matches_not_with_email: 'Sorry! Your answer does not match with provided Email.'
+    not_recognized: 'Sorry! We did not recognize you. Please provide correct details.'
+    provide_details_for_security_question: "Sorry! We did not recognize You. Please provide correct details to view your Security question."
+    confirmations:
+      delete: 'Are you sure you want to delete this user?'
+    errors:
+      base:
+        change_password: Couldn't change password as user have never logged in.
+      email:
+        not_configured: Email not configured. Contact administrator!!!
+
+  # application button text
+  add_build: Add Build
+  add_deliverable: Add Deliverable
+  add_end_user_deliverable: Add End User Deliverable
+  add_package_template: Add Package Template
+  add_property: Add Property
+  add_procedure: Add Procedure
+  add_remove_servers: Add Remove Servers
+  add_to_run: Add to Run
+  archive: Archive
+  block: Block
+  cancel: cancel
+  close: Close
+  cancel_all_jobs: Cancel All Jobs
+  copy_environment_components: Copy Environment Components
+  create: Create
+  creating: Creating
+  create_application: Create Application
+  create_automation: Create Automation
+  create_bulk_version_tags: Bulk Create Version Tags
+  create_business_process: Create Business Process
+  create_category: Create Category
+  create_component: Create Component
+  create_component_template: Create Component Template
+  create_consolidated_request: Create Consolidated Request
+  create_default_application: Create Default Application
+  create_default_environment: Create Default Environment
+  create_deployment: Create Deployment
+  create_environment: Create Environment
+  create_group: Create Group
+  create_integration: Create Integration
+  create_list: Create List
+  create_notification_template: Create Notification Template
+  create_package_content: Create Package Content
+  create_package_template: Create Package Template
+  create_phase: Create Phase
+  create_plan: Create Plan
+  create_plan_template: Create Plan Template
+  create_plan_stage: Create Plan Stage
+  create_project: Create Project
+  create_property: Create Property
+  create_release: Create Release
+  create_request: Create Request
+  update_request: Update Request
+  create_request_template: Create Request Template
+  create_request_template_variant: Create Request Template Variant
+  create_run: Create Run
+  create_server: Create Server
+  create_server_group: Create Server Group
+  create_server_level: Create Server Level
+  create_server_level_group: Create Server Level Group
+  create_step: Create Step
+  create_team: Create Team
+  create_ticket: Create Ticket
+  create_user: Create User
+  create_version_tag: Create Version Tag
+  create_work_task: Create Work Task
+  edit: Edit
+  edit_component_template: Edit Component Template
+  edit_component_versions: Edit Component Versions
+  edit_installed_component: Edit Installed Component
+  edit_notification_options: Edit Notification Options
+  edit_package_template: Edit Package Template
+  edit_plan_details: Edit Plan Details
+  edit_plan_stage: Edit Plan Stage
+  edit_request_details: Edit Request Details
+  edit_run_details: Edit Run Details
+  view_run_details: View Run Details
+  archived_plan_message: Plan is archived. In order to modify it, please unarchive.
+  edit_values: Edit Values
+  export_tickets_as_csv: Export Tickets as CSV
+  delete: Delete
+  import_automation: Import Automation Scripts
+  import_blade_logic_rbac: Import Blade Logic Users
+  import_from_library: Import from Library
+  import_application: Import Application
+  import_request: Import Request
+  import_steps: Import Steps
+  move_request: Move Request
+  more_activity: More Activity...
+  problem: Problem
+  rename: Rename
+  reorder_components: Reorder Components
+  reorder_environments: Reorder Environments
+  resolve: Resolve
+  return: Return
+  select: Select
+  select_user: Select a User
+  select_teams: Select Teams
+  schedule: Schedule
+  sync: Sync
+  type: Type
+  unarchive: Unarchive
+  unblock: Unblock
+  update: Update
+  select_all: Select All
+  clear_all: Clear All
+  make_active: 'Make Active'
+  make_inactive: 'Make Inactive'
+  destroy: 'Destroy'
+  active: 'Active'
+  inactive: 'Inactive'
+  not_used: 'not used'
+  confirm_deletion: 'This will permanently delete the %{item}. Are you sure?'
+  list: 'list'
+  are_you_sure: 'Are you sure?'
+  file: 'File'
+  archived: 'Archived'
+  create_one_question: 'Create One?'
+  new_item: "New %{item}"
+  save: 'Save'
+  clear_job_queue: 'Clear Job Queue'
+  none_at_this_time: "There are no %{model} at this time."
+  problem_archiving: "There was a problem archiving the %{model}"
+  problem_unarchiving: "There was a problem unarchiving the %{model}"
+  exists_not_or_deleted: "%{model} you are trying to access either does not exist or has been deleted"
+  show: 'Show'
+  default: default
+
+  app_import:
+    time_warning: 'Warning: Importing large files can take several minutes.'
+    overwrite_warning: 'Any objects that already exist in the application will be overwritten by the import process.'
+    no_team_error: 'You must be a member of at least one team to import applications.'
+    team_error: 'Application already exists and the selected team does not have permission to update this application.'
+    invalid_xml: 'Provided xml file has invalid format'
+    format_error: 'Imported file should be in XML or JSON format'
+    file_select: 'Please select the file to import.'
+    import_success: "Application %{app_name} imported successfully"
+
+  object_state:
+    draft_on_create_warning: 'State must be "draft" for create operation.'
+    draft_usage_warning: 'Usage of objects in DRAFT state is not allowed'
+
+  # tables column names
+  table:
+    name: 'Name'
+    root: 'Root'
+    teams: 'Teams'
+    team: 'Team'
+    groups: 'Groups'
+    application: 'Application'
+    applications: 'Applications'
+    visible: 'Visible'
+    environment_type: 'Environment Type'
+    deployment_policy: 'Deployment Policy'
+    actions: 'Actions'
+    properties: 'Properties'
+    components: 'Components'
+    last_modified: 'Last Modified'
+    value: 'Value'
+    items: 'Items'
+    required: 'Required'
+    id: 'ID'
+    environment: 'Environments'
+    artifact_url: 'Artifact URL'
+    r_rt_p: 'Requests | Req. Templates | Procedures'
+    releases: 'Releases'
+    titles:
+      count_of_r_rt_p: 'Count of associated requests, request templates and procedures'
+
+  # default tool tips
+  tooltip_edit: Edit
+  tooltip_delete: Delete
+  tooltip_create: Create
+  # teams
+  assign_users_roles: Assign Users to Roles
+
+  # confirmations
+  cancel_all_jobs_confirmation: Are you sure you want to clear all running jobs?
+  new_servers_assigments_for_steps_confirmation: Changes you are making can affect associated Servers for Steps in Locked, Ready, Blocked, Problem, Hold states. Only Requests in Created, Planned, Cancelled states will be updated. Are you sure you want to proceed?
+  # messages for choose environment popup
+  no_applications: No application is assigned.
+  no_environments: No environment is common in request applications.
+  choose_plan_stage_notification: Choose Plan And Stage since Application has strict plan control.
+  # page titles
+  add_serial_procedure_step: Add Serial Procedure Step
+  conditional_procedure_execution: Conditional Procedure Execution
+  currently_running_steps: Currently Running Steps
+  external_ticket_filters: External Ticket Filters
+  select_tickets: Select Tickets
+
+  # report titles
+  ticket_summary_report: Ticket Summary
+  property_maps_report: Property Maps
+  version_conflict_report: Version Conflicts
+  # users
+  information: Information
+  roles: Roles
+  change_password: Change password
+
+  # Route Gate constraints
+  no_route_gates_available: 'Stage does not have any Route Gate Constraints assigned in Plan Route'
+  no_route_gates_for_app: "Stage does not have Route Gate Constrains assigned in Plan Route for %{app_name}"
+
+  # Permission restrictions
+  permissions:
+    action_not_permitted: 'You do not have permissions to %{action} %{subject}'
+
+  environment:
+    environments: 'Environments'
+    create: 'Create Environment'
+    validations:
+      deactivate_default: Default environment cannot be deactivated.
+      deactivate_in_use: Environment which is in use cannot be deactivated.
+      server_referenced: You cannot remove Environment to Server assignment as Server is used in Package’s Reference.
+    buttons:
+      add_new: 'Add a new environment'
+      add_default: 'Add default'
+    alerts:
+      permanently_delete: 'This will permanently delete the environment. Are you sure?'
+
+  # Version Tag
+  version_tag:
+    version_tags: 'Version Tags'
+    titles:
+      create: 'Create new Version Tag'
+    buttons:
+      add_new: 'Add new Version Tag'
+      bulk_create: 'Bulk Create Version Tags'
+    validations:
+      empty_name: 'Name cannot be blank.'
+      empty_application: 'Application cannot be blank.'
+      empty_component: 'Component cannot be blank.'
+      empty_environments: 'At least one environment should be selected.'
+
+  # Deployment Window Series
+  move: 'Move'
+  suspend: 'Suspend'
+  deployment_window:
+    not_editable: 'Deployment Window is not editable.'
+    archive_failed: 'Archive action could not be completed.'
+    duration_help: 'Extend single occurrence time frame on selected number of days. For example, if value "1 day" was selected occurrence will be extended on 24 hours.'
+    series_created: 'Deployment window was successfully created.'
+    series_updated: 'Deployment window series was successfully updated.'
+    occurrence_will_be_generated: 'Occurrences are still being generated at the moment, it can take up to few minutes. Please refresh the page.'
+    none_at_this_time: 'There are no deployment window occurrences at this time.'
+    warnings:
+      has_active_requests_html: "Deployment Window you're trying to %{action} has %{link_to_active_requests}"
+      edit: "Editing of series may have an impact on its request(s): user will not be allowed to start request(s)
+      with invalid or unassigned event(s)"
+      move: "Moving of the event may have impact on its request(s): if event no longer fit 'Estimate' and/or
+      'Planned Start', user will not be allowed to start the request(s)."
+      suspend: "Suspending of the event has an impact on its request(s): user will not be allowed to start request(s)
+      with suspended event."
+    validations:
+      start_date_not_exist: "Start date does not exist"
+      finish_date_not_exist: "Finish date does not exist"
+      start_at_incorrect_format: "Start date format is incorrect. %{expected_date_format} expected"
+      finish_at_incorrect_format: "Finish date format is incorrect. %{expected_date_format} expected"
+      check_overlapping_occurrences: 'Occurrences overlap. Please check Frequency, From, To and Duration'
+      check_appropriate_environments: 'Selected environment/s is/are with non appropriate deployment policy'
+      check_occurrences_ready: 'Deployment Window cannot be edited while its occurrences are still being processed'
+      occurrence_limit_exceeded: "Occurrence limit count exceeded. The current limit number is %{max_occurrences},
+                        meaning you are limited to create a daily recurrent series for %{max_years} year at maximum."
+      no_occurrences_to_generate: 'Occurrence is out of Start/Finish date range.'
+      date:
+        start_at_before_current_date: 'Start date is before current date'
+        finish_at_before_start_at_date: 'Finish date is before Start date'
+        recurrent:
+          start_at_before_current_time: 'From time is before current time'
+          finish_at_before_start_at_time: 'To time is before From time'
+          start_at_equal_finish_at: 'Finish time is equal to Start time'
+        non_recurrent:
+          start_at_before_current_time: 'Start time is before current time'
+          finish_at_before_start_at_time: 'Finish time is before Start time'
+          start_at_equal_finish_at: 'From time is equal to To time'
+      behavior:
+        cannot_change: cannot be changed
+      frequency:
+        daily_range: "Daily frequency should be on range %{range}"
+        weekly_range: "Weekly frequency should be on range %{range}"
+        monthly_range: "Monthly frequency should be on range %{range}"
+        weekly_days: "Day is not selected in weekly range"
+        monthly_days: "Day is not selected in monthly range"
+
+  app:
+    component:
+      create: 'create new component'
+      add_remove: 'add/remove components'
+      reorder: Reorder Components
+      reorder_alpha_sorting: Reorder Components (alpha sorting is enabled)
+      enable_alpha_sorting: 'Enable Alpha sort for Components Combobox lists'
+      copy_all: Copy All Components to All Environments
+    environment:
+      reorder: Reorder Environments
+      reorder_alpha_sorting: Reorder Environments (alpha sorting is enabled)
+      enable_alpha_sorting: 'Enable Alpha sort for Environment Combobox lists'
+    component_template:
+      add: Add New component template
+      sync: Sync
+
+  application_package:
+    errors:
+      property_value_names_dont_exist: "contained references to properties could not be found. Did you confirm the property exists and the name is correct?"
+
+  request:
+    inbound_count: "%{count} Inbound Requests"
+    inbound_title: 'Requests where you are requestor or owned by You'
+    outbound_count: "%{count} Outbound Requests"
+    outbound_title: 'Requests where you are listed as Assigned to on a set - either as member of group or as an individual'
+    active: 'active request(s)'
+    import_request:
+      error_app_env_blank: 'Request without Application and environment cannot be imported.'
+      error_have_not_access_to_app_or_env: 'You do not have permissions to import request on selected Application or Environment.'
+    modify_details: 'Modify Request Details'
+    validations:
+      permit_auto_promote: "You don't have permission to automatically start requests on selected Environment"
+      at_least_one_env: 'Please select at least one Environment'
+      environment_not_associated: 'Environment is not associated with the selected application. Please add environment to application or select a different environment.'
+    deployment_window:
+      overlays_with_preventing_dwe: "Request is on opened environment (%{environment_name}) and overlays with preventing Deployment Window. Please, check the calendar"
+      fits_not_to_allowing_dwe: 'Request is on closed environment and does not fit into Deployment Window. Please,
+      correct Estimate and/or Planned Start or select valid Deployment Window'
+      dw_is_suspended: 'You have chosen a suspended Deployment Window. Please, choose an active one'
+      opened_environment:
+        estimate_missing: 'Estimate is required if any preventing Deployment Window exists for opened environment'
+        scheduled_at_missing: 'Planned Start is required if any preventing Deployment Window exists for opened environment'
+      closed_environment:
+        estimate_missing: 'Estimate is required if Deployment Window has been selected'
+        scheduled_at_missing: 'Planned Start is required if Deployment Window has been selected'
+    notices:
+      created: 'Request(s) was successfully created.'
+      disabled_environments: '* Environment is disabled if You don`t have permissions to create Request on that Environment'
+
+  step:
+    create_new: Create New
+    latest: Latest
+    component: Component
+    package: Package
+    package_instances: Package Instances
+    script_deleted: 'SCRIPT DELETED'
+    default_tab_to_display: 'Default tab to display'
+    protected:
+      label: Protected
+      description: 'Protected steps cannot be changed, reordered or deleted<br/>(except Automation tab)'
+    protect_automation:
+      label: Protect Automation
+      description: User input on Automation tab cannot be changed
+    buttons:
+      new: 'New Step'
+      add_and_continue: 'Add Step & Continue'
+      add_and_close: 'Add Step & Close'
+      save: 'Save Step'
+
+  role:
+    name: Name
+    groups: Groups
+    teams: Teams
+    actions: Actions
+    create: Create Role
+    was_created: Role was successfully created.
+    edit: Editing %{name}
+    was_updated: Role was successfully updated.
+    access_permissions: Access Permissions
+    not_found: Role not found.
+    confirm_delete: Are you sure you want to delete this role?
+    none: 'There are no roles at this time.'
+
+  group:
+    deactivate_error: 'Group contains users that are included only in this group. You cannot make it inactive.'
+    edit_error: You cannot update an Inactivated Groups
+    errors:
+      cannot_be_made_non_root: "Group with name '%{name}' cannot be made non root"
+      should_contain_at_lease_one_user: "Group with name '%{name}' should contain at least one user"
+      name_cannot_be_changed: "Group with name '%{name}' cannot have name changed"
+
+  # Run
+  run:
+    auto_promotion_help_message: 'Auto promotion is available for Run with Requests that include Environments on Opened deployment policy'
+    notices:
+      dropped_successfully: 'Requests were successfully dropped from any associated runs.'
+
+  team:
+    edit_error: 'You cannot edit inactive teams.'
+    without_app_edit: "You won't have permissions to edit created app through the selected team."
+    select_group: 'Select Groups from list below to add them to the Team'
+    groups_automatic_assignment: 'Group assignments are saved automatically after Team has been created. No need to click "Update"'
+    name: 'Team Name'
+    edit: 'Edit'
+    edit_details: 'Edit team details. Add application, groups to the Team.'
+    add_group_to: 'Add Group to Team'
+    edit_roles_for_team: 'Edit Roles for Team'
+    app_checkbox_disabled_hint: 'Default App and last associated App cannot be removed from the Team'
+    group_checkbox_disabled_hint: 'Default Group and last associated Group cannot be removed from the Team'
+    errors:
+      should_contain:
+        at_least_one_group: 'Team should contain at least one Group'
+        at_least_one_app: 'Team should contain at least one Application'
+
+  #authentication types
+  simple_form:
+    labels:
+      global_settings:
+        authentication_mode_sym: 'Authentication mode'
+    options:
+      global_settings:
+        authentication_mode_sym:
+          default_authentication: Default Authentication
+          ldap: LDAP
+          cas: CAS
+          sso: SSO
+
+  flash:
+    user:
+      messaging_account_destroyed: Successfully destroyed messaging account.
+      avatar_updated: User's avatar successfully updated
+      avatar_removed: User's avatar successfully removed
+
+  session:
+    create:
+      no_main_tabs_selected: You do not have access permissions to view any tab.
+
+  calendar:
+    preferences_updated: 'You have successfully updated calendar preferences'
+    preferences_not_updated: 'There is some problem updating calendar preferences'
+
+  reports:
+    select_report: Please select report to the right.
+    view_access:
+      title: Access
+      roles_map:
+        title: Roles by Team/Group/User
+        select_report_objects: Please select Teams, Groups and Users to the right.
+        teams: Teams
+        groups: Groups
+        users: Users
+        report: Report
+        export_to_csv: Export to CSV
+        accessibility_report: Accessibility Report
+
+  component:
+    components: 'Components'
+    buttons:
+      add_new: 'Add a new Component'
+
+  property:
+    properties: 'Properties'
+    no_active: 'No active Properties found'
+    private_value: '-private-'
+    buttons:
+      maps: 'Property Maps'
+      add_new: 'Add new Property'
+
+  server_aspect:
+    delete_error: 'There was a problem deleting the server aspect.'
+
+  list:
+    lists: 'Lists'
+    no_resource: 'There are no resource lists at this time.'
+    buttons:
+      add_new: 'Add a new List'
+    confirmations:
+      delete: 'Are you sure you want to permanently delete this list and all of its list items?'
+    titles:
+      delete: 'Delete list'
+    validations:
+      had_errors: 'List had validation errors: %{errors}'
+
+  work_task:
+    work_tasks: 'Work Tasks'
+    work_task: 'Work Task'
+    buttons:
+      add_new: 'Add a new Work Task'
+    titles:
+      create: 'Create new Work Task'
+
+  notification_template:
+    buttons:
+      create: 'Create new Notification Template'
+    titles:
+      notification_templates: 'Notification Templates'
+      delete: 'Delete plan template...'
+    notices:
+      created: 'NotificationTemplate was successfully created.'
+      updated: 'NotificationTemplate was successfully updated.'
+      deleted: 'NotificationTemplate was successfully deleted.'
+    errors:
+      not_deleted: 'There was a problem when deleting NotificationTemplate'
+    confirmations:
+      delete: 'Are you sure you want to delete this notification template?'
+
+  request_template:
+    notices:
+      created: 'The request template was successfully created.'
+
+  actions:
+    list: 'list'
+    view: 'view'
+    create: 'create'
+    delete: 'delete'
+    edit: 'edit'
+
+  tabs:
+    general: 'General'
+    calendar_preferences: 'Calendar Preferences'
+    statistic: 'Statistics'
+    automation_monitor: 'Automation Monitor'
+    notification_template: 'Notification Templates'
+
+  settings:
+    updated: 'Settings updated successfully'
+    messages: 'Messages'
+    create_for_integrations: 'Create messages for integrations?'
+
+  stage:
+    confirmations:
+      delete: Are you sure you want to delete this stage?
+    delete: 'Delete stage...'
+
+  cannot_edit_archived: "You cannot update an archived %{model_name}"
+  confirm_update_deployment_window:  "The Deployment Window you're trying to edit already has active requests. Are you sure you want to update?"
+
+  bulk_delete_requests: Bulk Delete Requests
+  open_filters: Open Filters
+  close_filters: Close Filters

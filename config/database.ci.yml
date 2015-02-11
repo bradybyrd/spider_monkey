@@ -1,0 +1,9 @@
+test:
+  adapter: jdbcpostgresql
+  database: brpm_test_ci
+  host: localhost
+  username: brpm_test
+  password: brpm_test
+  encoding: utf8
+  pool: 12
+  wait_timeout: 10

@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h4 class='pt_2'><%= "Following #{steps.count} steps of different requests will have impact due to this server association" %></h4>
+<div class='pb_20'>To save click Save Changes or Cancel to discard changes</div>
+<div class='facebox_scroll table_test'>
+  <table align='center' class='tablesorter formatted_table' id='tablesorter-demo' style='width:99%'>
+    <thead>
+      <tr>
+        <th>Request Number</th>
+        <th>Request Name</th>
+        <th>Step Name</th>
+        <th>Step Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% steps.each do |step| %>
+        <% if step.request %>
+          <% request = step.request %>
+          <tr <%= tag_options({:class => "#{cycle('', 'alt' )}"}, false) %>>
+            <td><%= link_to request.number, request %></td>
+            <td><%= link_to request.name, request %></td>
+            <td><%= link_to_step_of_request(step, step.name, request) %></td>
+            <td><%= link_to_step_of_request(step, step.exact_position, request) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+      <tr></tr>
+    </tbody>
+  </table>
+</div>
+<hr>

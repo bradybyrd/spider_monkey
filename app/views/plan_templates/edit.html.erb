@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+backlink = plan_templates_path
+title = t(:l10n_title_plan_template_edit, name: h(@plan_template.name))
+page_settings title: title
+
+%>
+
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', selected: 'metadata' %>
+<% end %>
+
+<%= render 'environments/metadata_heading', backlink: backlink, title: title %>
+
+<% if @plan_template.can_change_aasm_state? && can?(:update_state, @plan_template) %>
+  <%= render 'object_state/state_indicator', passed_obj: @plan_template %>
+<% end %>
+
+<br class="clear" />
+
+<%= render 'form', backlink: backlink, is_create: false %>

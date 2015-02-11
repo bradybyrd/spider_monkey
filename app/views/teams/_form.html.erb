@@ -1,0 +1,46 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='selectedValuesofLists'></div>
+<div>
+  <div id='error_messages'></div>
+  <div>
+    <div>
+      <%= label :team, :name, "*#{I18n.t(:'team.name')}", {class: 'required right_short_margin' }%>
+      <%= text_field :team, :name %>
+    </div>
+    <div style='margin:10px 0px 10px 0px;'>
+      <%= f.submit button_label, class: 'button'%>
+      <span>
+      or
+      </span>
+      <span>
+        <%= link_to "cancel", teams_path(page: params[:page], key: params[:key]) %>
+      </span>
+    </div>
+  </div>
+  <div class="top_margin">
+    <%= render :partial => 'teams/forms/edit_applications' %>
+    <%= hidden_field_tag :page, '', :id => 'page_field' %>
+    <%= hidden_field_tag :team_id, @team.id %>
+  </div>
+</div>
+<div class='pageSection top_margin'>
+  <% draw_tabs :for => :server do %>
+      <%= render :partial => 'teams/tabs', :locals => {:selected => 'add_user_to_team'} %>
+  <% end %>
+</div>
+<%= hidden_field_tag 'team_id', @team.id %>
+<%= hidden_field_tag 'page_no', params[:page] %>
+<%= hidden_field_tag 'key', params[:key] %>
+<% @team.group_ids.map do |id| %>
+    <%= f.hidden_field :group_ids, multiple: true, value: id %>
+<% end %>
+<%= hidden_field_tag :expand_apps_for_roles_url, app_user_list_team_path(@team) if @team.persisted? %>
+<%= hidden_field_tag :team_group_app_env_roles_create_url, team_group_app_env_roles_set_path %>
+

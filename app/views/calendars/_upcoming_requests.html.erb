@@ -1,0 +1,11 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= render :partial => "calendars/upcoming_requests/request_list_by_week", :locals => { :week => @calendar } %>
+<%= render :partial => "calendars/upcoming_requests/request_list_by_week", :locals => { :week => @one_week_ahead } %>
+<%= render :partial => "calendars/upcoming_requests/request_list_by_week", :locals => { :week => @two_week_ahead } %>

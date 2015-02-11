@@ -1,0 +1,56 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table <%= tag_options({:id => "request_projects_pagination_#{@page_no || 1}"}, false) %>>
+  <tr>
+    <td align='char' width='40%'>
+      <strong><%= page_entries_info @activities, :entry_name => "Projects" %></strong>
+    </td>
+    <td <%= tag_options({:colspan => 2, :width => 476, :align => :center}, false) %>><%= will_paginate(@activities, :class => "my_data_pagination", :rel => "request_projects") %></td>
+  </tr>
+</table>
+<div <%= tag_options({:id => "request_projects_#{@page_no || 1}", :rel =>"request_projects", :style => "overflow-x:auto;overflow-y:hidden;min-height:100px;"}, false) %>>
+  <table class='tablesorter four_column_sorter formatted_table' id='tablesorter-demo'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Requests</th>
+        <th>Current Phase</th>
+        <th>Active Requests</th>
+        <th>Completed Requests</th>
+        <th>Total Requests</th>
+        <th>Planned Start</th>
+        <th>Planned End</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @activities.each do |activity| %>
+        <tr <%= tag_options({:class => cycle('alt', '')}, false) %>>
+          <td><%= link_to_if can?(:edit, activity), index_title(h(activity.name)), activity %></td>
+          <td><%= activity.requests.map { |req| req.number }.to_sentence %></td>
+          <td><%= activity.requests.map{|req| req.current_phase_name }.to_sentence %></td>
+          <td><%= activity.requests.present.count %></td>
+          <td><%= activity.requests.complete.count %></td>
+          <td><%= activity.requests.extant.count %></td>
+          <td><%= default_format_date(activity.planned_start) %></td>
+          <td><%= default_format_date(activity.projected_finish_at) %></td>
+          <td nowrap='' style='valign: top'>
+            <% if can? :edit, activity %>
+              <%= link_to 'edit', edit_activity_path(activity) %>
+            <% end %>
+            |
+            <% if can? :delete, activity %>
+              <%= link_to image_tag('bin_empty.png', :height => '10px'), activity, :method => :delete, :confirm => "Delete #{activity_or_project?} #{activity.name}. \n Are you sure?" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

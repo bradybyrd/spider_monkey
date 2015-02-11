@@ -1,0 +1,11 @@
+<p>Step <%= @params['step_number'] %> on Request <%= @params['request_id'] %> has been marked 'Problem'
+
+<% unless @note.blank? %>
+  with the following message:</p>
+  <p><%= @note %></p>
+<% else %>
+  </p>  
+<% end %>
+
+<p>Request: <%= @params['SS_edit_request_url'] %></p>
+

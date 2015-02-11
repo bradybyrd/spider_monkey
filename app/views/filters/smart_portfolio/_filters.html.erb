@@ -1,0 +1,69 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='alt' id='financials_filters'>
+  <strong>Filters:</strong>
+  <%= form_tag @page_path, :id => 'filter_form', :style => 'display: inline' do %>
+    <table cellpadding='0' cellspacing='0'>
+      <tr>
+        <td>
+          <label for='filters_delivered'>Delivered</label>
+        </td>
+        <td>
+          <%= select_tag 'delivered', options_for_select(ActivityDeliverable.delivered_filters_for_select, @temp_filters['delivered']), :include_blank => true, :id => 'delivered', :class => 'request_filters', :style => 'width: 100px' %>
+          &nbsp;
+          <%= link_to "add", '#', :class => 'add_request_filters' %>
+          <br>
+          <div class='selected_filters' id='f_delivered' style='width: 100px;'></div>
+        </td>
+        <td>
+          <label for='filters_organizational_impact'>Organizational Impact</label>
+        </td>
+        <td>
+          <%= select_tag 'organizational_impact', release_filter_options('ActivityDeliverable', @temp_filters, 'organizational_impact'), :id => 'organizational_impact', :class => 'request_filters', :style => 'width: 200px' %>
+          &nbsp;
+          <%= link_to "add", '#', :class => 'add_request_filters' %>
+          <br>
+          <div class='selected_filters' id='f_organizational_impact' style='width: 200px;'></div>
+        </td>
+        <td>
+          <label for='filters_leading_group'>Leading Group</label>
+        </td>
+        <td>
+          <%= select_tag 'leading_group_id', release_filter_options('Group', @temp_filters, 'leading_group_id'), :id => 'leading_group_id', :class => 'request_filters', :style => 'width: 200px' %>
+          &nbsp;
+          <%= link_to "add", '#', :class => 'add_request_filters' %>
+          <br>
+          <div class='selected_filters' id='f_leading_group_id' style='width: 200px;'></div>
+        </td>
+      </tr>
+      <tr>
+        <td <%= tag_options({:colspan => 5}, false) %>></td>
+        <td style='text-align: right'>
+          <%= link_to "clear", '#', :class => 'clear_request_filters' %>
+        </td>
+      </tr>
+    </table>
+    <%= hidden_field_tag 'filters[ignore_month]', @filters[:ignore_month] %>
+    <%= hidden_field_tag 'display_format', params[:display_format], :id => 'hidden_display_format' %>
+    <%= hidden_field_tag 'beginning_of_calendar', @beginning_of_calendar %>
+    <%= hidden_field_tag 'end_of_calendar', @end_of_calendar %>
+    <% if @filters %>
+      <% ['delivered', 'organizational_impact', 'leading_group_id'].each do |f| %>
+        <% if @filters[f] %>
+          <% @filters[f].each do |v| %>
+            <%= hidden_field_tag "filters[#{f}][]", v, :class => 'filter_hidden' %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= render :partial => '/dashboard/display_options' %>
+  <% end %>
+
+</div>
+<%= javascript_tag("setFilters(#{@filters.to_json})") %>

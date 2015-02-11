@@ -1,0 +1,16 @@
+/*
+*= require select2/select2
+*/
+
+.field .select2-container .select2-choice {
+  border-radius: 0;
+  height: 17px;
+  line-height: 17px;
+  .select2-arrow {
+    border-radius: 0;
+    b {
+      background-position: 0 -4px;
+      background-image: url("select2_dark.png");
+    }
+  }
+}

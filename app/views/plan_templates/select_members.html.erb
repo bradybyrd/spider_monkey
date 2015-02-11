@@ -1,0 +1,39 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>Enroll Members</h2>
+<%= form_for @plan_template, :url => enroll_members_plan_template_path(@plan_template), :html => { :class => 'enroll_members cssform plan_members' } do |f| %>
+  <div class='field toggles'>
+    <label for='member_type'>
+      Member Type
+    </label>
+    <%= select_tag :member_type, options_for_select([["Applications", "app"], ["Servers", "server"]] +  @server_aspects.keys.map { |level| [h(level.name), "server_level_#{level.id}"] }, selected_plan_template_members(@plan_template)) %>
+  </div>
+  <div class='field'>
+    <span class='app_fields' style='display: none'>
+      <%= f.label :app_ids, "Applications" %>
+      <%= f.collection_select :app_ids, @apps, :id, :name, {}, :multiple => true %>
+    </span>
+    <span class='server_fields' style='display: none'>
+      <%= f.label :server_ids, "Servers" %>
+      <%= f.collection_select :server_ids, @servers, :id, :name, {}, :multiple => true %>
+    </span>
+    <% @server_aspects.each do |level, aspects| %>
+      <span <%= tag_options({:class => "server_level_#{level.id}_fields", :style => "display: none"}, false) %>>
+        <label <%= tag_options({:for => "server_aspect_ids_#{level.id}"}, false) %>>
+          <%= h level.name %>
+        </label>
+        <%= f.collection_select :server_aspect_ids, aspects, :id, :path_string, {}, :multiple => true, :id => "server_aspect_ids_#{level.id}" %>
+      </span>
+    <% end %>
+  </div>
+  <div class='field'>
+    <%= submit_tag "Enroll", :class => "button" %>
+  </div>
+<% end %>
+

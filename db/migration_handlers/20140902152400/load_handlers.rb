@@ -1,0 +1,5 @@
+require File.join(File.dirname(__FILE__), 'base_handler')
+require File.join(File.dirname(__FILE__), 'default_groups_handler')
+require File.join(File.dirname(__FILE__), 'site_admin_group_handler')
+require File.join(File.dirname(__FILE__), 'root_group_handler')
+require File.join(File.dirname(__FILE__), 'team_groups_handler')

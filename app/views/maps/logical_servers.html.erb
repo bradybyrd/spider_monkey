@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'maps' %>
+<% end %>
+
+<% page_settings :title => 'Logical Servers Map' %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+<% end %>
+<ul>
+  <% @levels_by_environment.each do |environment, server_levels| %>
+    <li>
+      <%= h(environment.name) %>
+      <% unless server_levels.empty? %>
+        <ul>
+          <% server_levels.each do |level, servers| %>
+            <li>
+              <%= h(level.name) %>
+              <% unless servers.empty? %>
+                <ul>
+                  <% servers.each do |server| %>
+                    <li><%= h server.name %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+</div>

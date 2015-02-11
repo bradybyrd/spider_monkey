@@ -1,0 +1,2 @@
+page.replace_html "edit_roles_for_team",  :partial => "teams/forms/edit_roles_for_team"
+page << "$('#team_roles').show();"

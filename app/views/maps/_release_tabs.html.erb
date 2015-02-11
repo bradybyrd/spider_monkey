@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="pageSection">
+  <ul>
+    <% if releases.blank? %>
+      <li class="selected"><a href="#" onclick="return false;">Properties</a></li>
+    <% else %>
+      <% releases.each do |release| %>
+        <li class="<%= "selected" if release == releases.first %>">
+          <%= link_to h(release.name), '#', :onclick => "$('li.selected').removeClass('selected'); $(this).parent().addClass('selected'); return false;" %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <div class="pageFunctions">&nbsp;</div>
+</div>

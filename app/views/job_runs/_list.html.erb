@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='line_h_20px'><%= render :partial => "shared/pagination_links", :locals => {:model_title => "Automation Job Runs", :model_list => @job_runs } %></div>
+<% unless @job_runs.blank? %>
+  <table cellspacing='0' class='index_table formatted_table'>
+    <thead>
+      <tr>
+        <th>Request/Step</th>
+        <th>Job Type</th>
+        <th>Job Error</th>
+        <th>Started</th>
+        <th>Finished</th>
+        <th>Status</th>
+        <th>User</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @job_runs.each do |cur_job| %>
+        <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <td>
+            <% if cur_job.job_request.present? %>
+              <%= link_to index_title(h(cur_job.job_request.slice(0..50))), job_run_path(cur_job, :page => params[:page]) %>
+            <% end %>
+          </td>
+          <td>
+            <%= h(cur_job.job_type) %>
+          </td>
+          <td title="<%= (!cur_job.stderr.blank? && cur_job.stderr.size>200 ) ? h(cur_job.stderr) : "" %>">
+            <%= h truncate(cur_job.stderr, :length => 200) %>
+          </td>
+          <td>
+            <%= cur_job.started_at.try(:default_format_date_time) %>
+          </td>
+          <td>
+            <%= cur_job.finished_at.try(:default_format_date_time) %>
+          </td>
+          <td>
+            <%= h(cur_job.status) %>
+          </td>
+          <td>
+            <%= h(cur_job.job_user) %>
+          </td>
+          <td class='action_links'>
+            <%= link_to "Show", job_run_path(cur_job, :page => params[:page]) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h4>
+    No Automation Runs in system
+  </h4>
+<% end %>

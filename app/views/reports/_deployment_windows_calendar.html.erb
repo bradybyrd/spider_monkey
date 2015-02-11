@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%
+  screen_width = @width.blank? ? 1024 : @width
+  usable_width = screen_width.present? ? @width.blank? ? 1024 : @width : 900
+
+  str_xml = render(:file => 'reports/deployment_windows_calendar.builder',
+                   :locals => { :presenter => @presenter,
+                                :width => @width,
+                                :current_user_role => current_user.roles[0] })
+%>
+
+<% render_chart "#{context_root}/assets/FusionWidgets/Charts/Gantt.swf",
+                "",
+                str_xml,
+                "deploymentWindowCalendar",
+                usable_width,
+                (100 + @presenter.environments_size * 35),
+                false,
+                false do -%>
+<% end %>

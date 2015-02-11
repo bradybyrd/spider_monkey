@@ -1,0 +1,49 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<p>
+<% if @installed_component and not @installed_component.server_associations.empty? %>
+  <h2>Alternate Servers</h2>
+  <table cellspacing="0">
+    <thead>
+      <tr>
+        <th><%= ensure_space %></th>
+        <th colspan="2"><%= h @installed_component.server_level.try(:name) %></th>
+      </tr>
+    </thead>
+
+    <% @installed_component.server_associations.each do |assoc| %>
+      <tbody>
+        <tr>
+          <td><%= check_box_tag :server_ids %></td>
+          <td colspan="2"><%= h assoc.path_string %></td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <td><%= ensure_space %></td>
+          <th colspan="2">Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% assoc.properties.active.each do |property| %>
+          <tr>
+            <td style="border: none;"><%= ensure_space %></td>
+            <td><%= h property.name %></td>
+            <td>
+              <%= property_value_input_field "property_values[#{assoc.class.to_s.underscore}][#{assoc.id}]", property, server_property_value(property, assoc), :class => "property_field" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+
+  </table>
+<% end %>
+</p>

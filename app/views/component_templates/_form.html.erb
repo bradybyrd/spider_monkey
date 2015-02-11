@@ -1,0 +1,35 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='component_template_error_messages'></div>
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+</div>
+<div class='field'>
+  <%= f.label :version %>
+  <%= f.text_field :version %>
+</div>
+<div class='field'>
+  <%= f.label :active %>
+  <%= f.check_box :active %>
+</div>
+<div class='field'>
+  <%= f.label :component %>
+  <%= f.select :application_component_id, @app.application_components.collect { |ac| [ac.component.name, ac.id] }, :prompt => "Select" %>
+</div>
+<div class='field'>
+  <%= f.label :description %>
+  <%= f.text_area :description, :class=> "expand" %>
+  <p class='expand_textarea_link'>
+    [
+    <a href="javascript:toggleTextarea('component_template_description', 'component_desc')" id='component_desc'>expand</a>
+    ]
+  </p>
+</div>
+<%= f.hidden_field :app_id %>

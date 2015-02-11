@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+def print_and_exit message, errcode = 1
+  print "#{message}\n"
+  $stdout.flush
+  exit errcode
+end
+
+print_and_exit "Usage: script/list_importer <csv_file>" if ARGV.empty?
+
+filename = ARGV.first
+filename = "#{filename}.csv" unless filename =~ /\.\w+$/
+filename = File.join("data", "csv", filename) unless File.exist? filename
+begin
+  csv = File.open(filename)
+rescue Errno::ENOENT => e
+  print_and_exit e
+end
+
+require File.join(File.dirname(__FILE__), '..', 'config/environment')
+require 'csv'
+
+
+def log attr_name, tab_name
+  print "Adding #{attr_name} to #{tab_name}... "
+  begin
+    yield
+  rescue => e
+    print_and_exit "FAILED!\n\n#{e}"
+  end
+  print "Done.\n"
+end
+
+ActiveRecord::Base.transaction do
+  lines = CSV.parse(csv)
+  
+  lines.each do |line|
+    unless line[4].nil?
+      attr_list = line[4].split
+     if attr_list[0] == "List:"
+       list = List.find_by_name(attr_list[1])
+       activity_attribute = ActivityAttribute.find_by_name(line[1])
+       if list.present?
+         log list.name, "activity_attributes" do
+           activity_attribute.update_attribute(:list_id, list.id)
+         end
+       else
+         print "FAILED, #{attr_list[1]} doesn't exist !"
+       end
+      end
+    end
+  end
+end

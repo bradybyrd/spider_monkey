@@ -1,0 +1,46 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% if can? :create_run, plan %>
+  <%= form_tag new_plan_run_url(:plan_id => plan.id), :method => :post, :rel => 'facebox', :class => 'plan_stage_run_create', :id => "plan_stage_#{stage.id}_run_create", :onsubmit => "return submitCreateRunForm(#{plan.id}, #{stage.id});" do %>
+    <%= hidden_field_tag :plan_stage_id, stage.id %>
+    <%= submit_tag "Create Run", :class => 'button', :name => nil, :disabled => plan.archived? %>
+  <% end %>
+<% end %>
+
+<% run_options = Run.by_plan_and_stage(plan.id, stage.id).functional.map { |r| [truncate(r.name, :length => 30), r.id] } %>
+<% unless run_options.blank? %>
+  <% if can? :add_to_run, plan %>
+    <%= form_tag select_run_for_ammendment_plan_runs_path(:plan_id => plan.id), :method => :post, :rel => 'facebox', :class => 'plan_stage_run_ammend', :id => "plan_stage_#{stage.id}_run_ammend", :onsubmit => "return submitAmmendRunForm(#{plan.id}, #{stage.id});" do %>
+      <%= hidden_field_tag :plan_stage_id, stage.id %>
+      <%= submit_tag "Add to Run", :class => 'button', :name => nil, :disabled => plan.archived? %>
+    <% end %>
+  <% end %>
+
+  <% if can? :drop_from_run, plan %>
+    <%= form_tag drop_plan_runs_path(:plan_id => plan.id), :method => :post, :class => 'plan_stage_run_drop', :id => "plan_stage_#{stage.id}_run_drop", :onsubmit => "return submitDropRunForm(#{plan.id}, #{stage.id}, #{@run.blank? ? 0 : @run.id});" do %>
+      <%= hidden_field_tag :plan_stage_id, stage.id %>
+      <%= submit_tag "Drop from Run", :class => 'button', :name => nil, :disabled => plan.archived? %>
+    <% end %>
+  <% end %>
+  <% next_required_stage = stage.next_required_stage(plan) -%>
+  <% if @run && @run.completed? && @run.plan.is_constrained? && next_required_stage.present?  %>
+    <%= form_tag new_plan_run_url(:plan_id => plan.id), :method => :post, :rel => 'facebox', :class => 'plan_stage_run_promote', :id => "plan_stage_#{stage.id}_run_promote", :onsubmit => "return submitPromoteRunForm(#{plan.id}, #{stage.id}, #{@run.id}, #{next_required_stage.id});" do %>
+      <%= hidden_field_tag :plan_stage_id, stage.id %>
+      <%= hidden_field_tag :next_required_stage_id, next_required_stage.id %>
+      <%= hidden_field_tag :run_to_clone_id, @run.id %>
+      <%= submit_tag "Promote to #{ stage.next_required_stage(plan).try(:short_name) }", :class => 'button', :name => nil, :disabled => plan.archived? %>
+    <% end -%>
+  <% end -%>
+
+  <%= form_tag plan_run_url(:plan_id => plan.id), :method => :get, :rel => 'facebox', :class => 'plan_stage_run_show', :id => "plan_stage_#{stage.id}_run_show" do %>
+    <%= select_tag :run_id, options_for_select(run_options.insert(0, ['Show all requests (or select a run...)', ""]), @run.blank? ? "" : @run.id.to_i), { :allow_blank => 'Select a Run', :class => "select_run_for_stage", :id => "select_run_for_stage_#{stage.id}", :onchange => "window.open('#{plan_path(plan)}?run_id=' + this.options[this.selectedIndex].value,'_top')"} %>
+  <% end %>
+
+<% end %>

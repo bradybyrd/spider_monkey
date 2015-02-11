@@ -1,0 +1,82 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => h(@notification_template.title) %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'settings',:tab_view => true } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render :partial => 'account/tabs', :locals => { :selected => 'notification templates' } %>
+  </div>
+  <div class='content'>
+    <h2 class='no_margin servers_h2'>
+      Notification Template:
+      <%= h @notification_template.title %>
+    </h2>
+    <p>
+      <strong>Title</strong>
+      <br>
+      <%= @notification_template.title %>
+    </p>
+    <p>
+      <strong>Format</strong>
+      <br>
+      <%= @notification_template.format %>
+    </p>
+    <p>
+      <strong>Event</strong>
+      <br>
+      <%= @notification_template.event %>
+    </p>
+    <p>
+      <strong>Description</strong>
+      <br>
+      <%= @notification_template.description %>
+    </p>
+    <p>
+      <strong>Subject</strong>
+      <br>
+      <%= @notification_template.subject %>
+    </p>
+    <p>
+      <strong>Body</strong>
+      <br>
+      <%= h @notification_template.body %>
+    </p>
+    <hr>
+    <p>
+      <strong>Body HTML Preview</strong>
+      <br>
+      <%= raw(@notification_template.body) %>
+    </p>
+    <hr>
+    <% unless @notification_template.template.blank? %>
+      <p>
+        <strong>Template</strong>
+        <br>
+        <%= @notification_template.template %>
+      </p>
+    <% end %>
+    <p>
+      <strong>Active</strong>
+      <br>
+      <%= @notification_template.active ? "Yes" : "No" %>
+    </p>
+    <p>
+      <% if can?(:edit, @notification_template) %>
+          <%= link_to I18n.t(:edit), edit_notification_template_path(@notification_template) %>
+      <% end %>
+
+      <%= link_to 'Back', notification_templates_path %>
+    </p>
+  </div>
+</div>

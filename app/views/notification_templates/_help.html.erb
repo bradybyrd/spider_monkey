@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<hr>
+  <div id='toggleLink'>
+    <span style='font-weight:bold;font-size:11px'>Notification Template Tips:</span>
+    <%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "auto_tips" %>
+  </div>
+  <div id='auto_tips' style='display:none;'>
+    <p>
+      <strong>Liquid Templates:</strong>
+      BMC Release Process Management notification templates use Liquid Templates to provide flexible, yet secure access to information useful for composing notifications.
+    </p>
+    <p>
+      <strong>Key Concepts:</strong>
+      <br>
+      -Available tokens are shown on the template editing screen for all the major mail event types.
+      <br>
+      - Each notification type (user, system event, request, step) has a set of tokens available for inclusion in the email with {{token}}.
+      <br>
+      - Liquid templates can include conditional and other control structures using this notation: {% if true %}{% endif %}
+      <br>
+      <p>More information on Liquid Templates is available at <%= link_to 'liquidmarkup.org', 'http://www.liquidmarkup.org/', :target => '_blank' %>.</p>
+    </p>
+  </div>
+</hr>

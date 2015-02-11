@@ -1,0 +1,50 @@
+<div class="event_popups_container">
+  <% if event.requests.active.any? %>
+    <div class="bg-warning event_popups_container_warnings">
+      <% link_to_active_requests = link_to_active_requests(event.series, event.requests.active, event.environment_id) %>
+      <p class="bold"><%= t 'deployment_window.warnings.has_active_requests_html', action: t(:move), link_to_active_requests: link_to_active_requests %></p>
+      <p class="bold"><%= t 'deployment_window.warnings.move' %></p>
+    </div>
+  <% end %>
+  <div id="error_explanation" class="error error-messages"></div>
+  <h2>Move Deployment Window</h2>
+  <%= form_for event, url: move_deployment_window_event_path(event), method: :put, remote: true do |f| %>
+    <%= f.hidden_field :state, value: DeploymentWindow::Event::MOVED %>
+    <div class="field stitched_date">
+      <%= f.label :start %>
+      <input type="text" class="date" name="deployment_window_event[start_at]" value="<%= event.start_at.try(:default_format_date) %>">
+      <span class="time">
+          <span class="prefix">at</span>
+          <%= f.time_select :start_at, ignore_date: true %>
+      </span>
+    </div>
+
+    <div class="field stitched_date">
+      <%= f.label :finish %>
+      <input type="text" class="date" name="deployment_window_event[finish_at]" value="<%= event.finish_at.try(:default_format_date) %>">
+      <span class="time">
+          <span class="prefix">at</span>
+          <%= f.time_select :finish_at, ignore_date: true %>
+      </span>
+    </div>
+
+    <div class="field">
+      <%= f.label :state %>
+      <label>Moved</label>
+    </div>
+
+    <div class="field">
+      <%= f.label :reason %>
+      <%= f.text_area :reason, rows: 5, cols: 30, :class => 'initialFocus', id: 'move-reason' %>
+    </div>
+    <div class="divider"></div>
+    <div class="actions">
+    <% if event.requests.active.any? %>
+      <%= f.submit "Move", class: "button", data: { confirm: "Deployment Window you're trying to move already has active requests. Are you sure you want to move?" } %>
+    <% else %>
+      <%= f.submit "Move", :class => "button" %>
+    <% end %>
+      <%= button_to_function "Cancel", "javascript:jQuery(document).trigger('close.facebox')", :class => "button" %>
+    </div>
+  <% end %>
+</div>

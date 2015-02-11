@@ -1,0 +1,29 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% backlink = work_tasks_path %>
+<% title = I18n.t(:'work_task.titles.create') %>
+<% page_settings :title => 'Create Task' %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br>
+<br>
+<%= form_for @work_task, :html => { :class => 'cssform' } do |f| %>
+  <%= render 'form', :f => f %>
+  <div class='field'>
+    <%= f.submit I18n.t(:create), :class => 'button' %>
+    or
+    <%= link_to I18n.t(:cancel), work_tasks_path %>
+  </div>
+<% end %>
+

@@ -1,0 +1,10 @@
+&>div:nth-child(2) {
+  position: relative;
+  clear: both;
+
+  #toggleFilterLink {
+    position: relative;
+    margin-top: -20px;
+    clear: both;
+  }
+}

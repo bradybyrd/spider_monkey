@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => "Request status", :heading => "Request status" %>
+
+<% content_for(:sidebar) do %>
+  <strong>Usage</strong><br />
+  Enter using the format:
+  <pre>request-3 status</pre>
+<% end %>
+
+<%= form_tag status_path, :id => 'request_status_form' do %>
+  <%= text_field_tag 'command', '', :style => 'width: 100%;', :class => 'initialFocus' %>
+  <%= submit_tag 'Evaluate' %>
+<% end %>
+
+<pre id="request_status_info"></pre>

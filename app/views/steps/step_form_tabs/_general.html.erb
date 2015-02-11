@@ -1,0 +1,168 @@
+<% if can? :view_step_general_tab, association_or_new_instance(step, :request) %>
+  <% if step.design_state?  %>
+    <div class="field textarea">
+      <label for="step_description">Step Description</label>
+      <%= f.text_area :description, :class =>"expand", :rows => 0, :disabled => disable_fields%>
+    </div>
+    <div class="expand_textarea_link fl" style ="padding-right:5px; font-size:11px; float:right">
+  [ <a href="javascript:toggleTextarea('step_description', 'step_desc')" id="step_desc">expand</a> ]
+    </div>
+    <div class="field textarea" style="min-width:700px">
+      <label><%#= radio_button_tag('step_time','custom',true, :style=>"vertical-align: bottom;") %>Step Time</label>
+
+      <div style="min-width:700px;padding:5px">
+        <div class=" start_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+          <nobr>
+            <label for="step_start_by_date" style="display:inline-block;" >Start</label><br/>
+            <%= f.text_field :start_by_date, :value => default_format_date(step.start_by), :class => 'date', :disabled => disable_fields %> at
+            <%= f.select :start_by_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, { :include_blank => true },:disabled => disable_fields , :class => 'hour', :style => 'width: 50px;' %>
+            <%= f.select :start_by_minute, %w{ 00 15 30 45 }, { :include_blank => true }, :disabled => disable_fields, :class => 'minute', :style => 'width: 50px;'  %>
+            <%= f.select :start_by_meridian, %w{ AM PM }, { :include_blank => true }, :disabled => disable_fields , :class => 'meridian', :style => 'width: 50px;'  %>
+          </nobr>
+        </div>
+        <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:52px;">&nbsp;</div>
+        <div class="step_estimate" style="white-space: nowrap; text-align: left; vertical-align: bottom; float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+          <% hours, minutes = (f.object.estimate ? f.object.estimate.divmod(60) : [nil,5]) %>
+          <label>Estimate<span style="color:gray">(H:M)</span></label>
+          <span id="hours_field"> <!--Hours <br/>-->
+            <%= text_field_tag 'step[estimate_hours]', hours, :disabled => disable_fields, :class=> hours ? '':'',:maxlength => 8 %></span>
+          <span id="minutes_field"> <!--Minutes <br/>-->
+            <%= text_field_tag 'step[estimate_minutes]', minutes, :disabled => disable_fields,:class=> minutes ? '': '', :maxlength => 8 %> </span>
+        </div>
+        <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:52px;">&nbsp;</div>
+        <div class=" complete_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+          <nobr>
+            <label for="step_complete_by_date" style="display:inline-block;" >Complete</label><br/>
+            <%= f.text_field :complete_by_date, :value => default_format_date(step.complete_by), :class => 'date', :disabled => disable_fields %> at
+            <%= f.select :complete_by_hour, %w{ 01 02 03 04 05 06 07 08 09 10 11 12 }, { :include_blank => true }, :disabled => disable_fields, :class => 'hour', :style => 'width: 50px;'  %>
+            <%= f.select :complete_by_minute, %w{ 00 15 30 45 }, { :include_blank => true },:disabled => disable_fields, :class => 'minute', :style => 'width: 50px;'  %>
+            <%= f.select :complete_by_meridian, %w{ AM PM }, { :include_blank => true },:disabled => disable_fields, :class => 'meridian', :style => 'width: 50px;'  %>
+          </nobr>
+        </div>
+      </div>
+    </div>
+    <%= hidden_field_tag :estimate_calculation_url, estimate_calculation_steps_path %>
+    <br class="clear"/><br/>
+    <!-- TODO: need changes in controller on step creare and update[could be the code used for bottom checkboxes]-->
+    <div class="field">
+      <%= radio_button_tag("step[different_level_from_previous]",true, step.new_record? ? true : step.different_level_from_previous,:disabled => disable_fields,:style=>"vertical-align: bottom;") %> Set Start to End of Previous Serial Step
+    &nbsp;&nbsp;&nbsp;<!--/div>
+
+    <div class="field"-->
+      <%= radio_button_tag("step[different_level_from_previous]",false, step.new_record? ? false : !step.different_level_from_previous,:disabled => disable_fields, :style=>"vertical-align: bottom;") %> Set Start to Start of Previous Serial Step
+    </div>
+
+  <hr class="clear"/>
+  <div class="form_column left left_column">
+    <div class="field">
+      <label>Phase</label>
+      <%= f.collection_select :phase_id, Phase.unarchived.order("LOWER(name) asc"), :id, :name,
+                              {include_blank: "Select"},
+                              {disabled: disable_fields || !can?(:edit_task_phase, association_or_new_instance(step, :request))} %>
+    </div>
+  </div>
+  <div class="form_column" style="padding-top:10px;">
+    <div class="field">
+      <label>Runtime Phase</label>
+      <%= select_tag 'step[runtime_phase_id]', '',
+                     class: 'use_remote_options',
+                     rel: :step_phase_id,
+                     disabled: (disable_fields || !can?(:edit_task_phase, association_or_new_instance(step, :request))) %>
+      <%= hidden_field_tag :step_runtime_phase_id_url, runtime_phases_options_steps_path %>
+      <%= hidden_field_tag :selected_step_runtime_phase_id,  step.runtime_phase.id if step.runtime_phase %>
+    </div>
+  </div>
+  <hr class="clear"/>
+  <div class="field step_manual_only">
+    <label>Work Task</label>
+    <%= f.collection_select :work_task_id, WorkTask.unarchived.in_order, :id, :name, {include_blank: true},
+                            {disabled: (disable_fields || !can?(:edit_task_phase, association_or_new_instance(step, :request)))} %>
+  </div>
+
+  <!--  ###############  The Display Form ################## -->
+  <% else %>
+  	<div class="field textarea">
+  	  <label for="step_description">Step Description</label>
+  	  <% if step.description.blank? %>
+  	    <p class="no_value">No description provided</p>
+  	  <% else %>
+  	    <span class="right">
+  	                    [<a href="#" id="step_description_expand_<%= step.id %>" onclick="toggleTextarea('step_description_<%= step.id %>', 'step_description_expand_<%= step.id %>'); return false;"
+  	          style="color:blue;font-size:-4px">expand</a>]
+  	    </span>
+  	    <textarea id="step_description_<%= step.id %>" rows="0" class="expand" readonly="true"><%= step.description %></textarea>
+  	  <% end %>
+  	</div>
+  	<div class="field textarea">
+  	  <label>Step Time</label>
+
+  	  <div style="min-width:680px;padding:5px">
+  	    <div class=" start_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+  	      <nobr>
+  	        <label for="step_start_by_date" style="display:inline-block;" >Start</label>
+  	        <%= step_attribute_value(step.start_by && step.start_by.to_s(:simple_with_time)) %>
+  	      </nobr>
+  	    </div>
+  	    <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:27px;">&nbsp;</div>
+  	    <div class="step_estimate" style="white-space: nowrap; text-align: left; vertical-align: bottom; float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+
+  	      <label>Estimate</label>
+  	      <%= step_attribute_value(step.estimate && hour_minute_estimate(step.estimate)) %>
+  	    </div>
+  	    <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:27px;">&nbsp;</div>
+  	    <div class=" complete_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+  	      <nobr>
+  	        <label for="step_complete_by_date" style="display:inline-block;" >Complete</label>
+  	        <%= step_attribute_value(step.complete_by && step.complete_by.to_s(:simple_with_time)) %>
+  	      </nobr>
+  	    </div>
+  	  </div>
+  	</div>
+
+  	<br class="clear"/><br/>
+
+
+  	<hr class="clear"/>
+  	<div class="form_column left left_column">
+  	  <div class="field">
+  	    <label>Phase</label>
+  	    <% if step.accessible_by?(current_user) %>
+  	      <div>
+  	        <%= step_attribute_value(step.phase_name) %>
+
+  	      </div>
+  	    <% else %>
+  	      <div><%= step_attribute_value(step.full_phase_name) %></div>
+  	    <% end %>
+  	  </div>
+  	</div>
+
+  	<div class="form_column">
+  	  <%- if step.request.present? %>
+  	    <% unless step.phase_id.nil? %>
+  	      <div class="field">
+  	        <label>Runtime Phase</label>
+
+  	        <% if can? :edit_task_phase, association_or_new_instance(step, :request) %>
+  	          <%= form_for step, :url => update_runtime_phase_request_step_url(step.request, step), :html => { :method => :put, :class => 'inline no_submit' } do |f| %>
+  	            <%= f.collection_select :runtime_phase_id, step.phase.runtime_phases, :id, :name, :include_blank => true %>
+  	          <% end %>
+  	        <% else %>
+  	          <div><%= step_attribute_value(step.runtime_phase.name) %></div>
+  	        <% end %>
+
+  	      </div>
+  	    <% end %>
+  	  <% end %>
+  	</div>
+  	<br class="clear"/>
+  	<hr class="clear"/>
+  	<div class="form_column left left_column">
+  	  <div class="field step_manual_only">
+  	    <label>Work Task</label>
+  	    <%= step_attribute_value(step.work_task_name) %>
+  	  </div>
+  	</div>
+
+  <% end %>
+<% end %>

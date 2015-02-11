@@ -1,0 +1,39 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='clear'></div>
+<div class='modify_should_execute' id='versions_by_app_map'>
+  <table class='formatted_table' style='width:100% !important'>
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @step_ids.each do |step_id| %>
+        <tr <%= tag_options({:class => "#{cycle('', 'alt' )}"}, false) %>>
+          <td><%= find_step_from_hash(step_id).number %></td>
+          <td><%= @step.name %></td>
+          <td class='step_status'><%= @step.should_execute? ? "ON" : "OFF" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class='divider'></div>
+<div class='gray_text' id='versions_by_app_map'>New</div>
+<div class='clear'></div>
+<div class='field'>
+  <%= label_tag "status", "Status" %>
+  <%= select_tag("step[should_execute]", ("<option value=''>Select</option>" + options_for_select([["ON", true], ["OFF", false]], :selected =>  common_attribute_id_of(@steps,  'should_execute'))).html_safe) %>
+  <%= hidden_field_tag "original_step_should_execute", common_attribute_id_of(@steps,  'should_execute') %>
+  <span class='step_status_span'></span>
+</div>
+<%= javascript_tag("AddLabelForSelectLists('modify_should_execute')") %>

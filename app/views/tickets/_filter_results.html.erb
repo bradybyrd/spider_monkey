@@ -1,0 +1,25 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<div id="results_partial">
+	<span id="results_prompt">
+		<p>
+			Tickets located by your query script will appear here after you run your query.
+		</p> 
+	</span>
+	<span id="ticket_results_table"> 
+		<%= form_tag add_selected_external_tickets_path, :method => :post do %> 
+
+		<div id='select_tickets_table'>
+		</div>
+		<p>
+			<%= hidden_field_tag :plan_id, plan.try(:id) %>
+		</p> 
+		<% end -%> 
+	</span>
+</div>

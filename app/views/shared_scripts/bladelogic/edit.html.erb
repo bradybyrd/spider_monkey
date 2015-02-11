@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr class='no_hover' <%= tag_options({:id => "script_#{@script.id}_row"}, false) %>>
+  <td colspan='5'>
+    <%= form_for @script, :as => :script, :remote => true, :url => shared_script_path(@script), :html => { :method => :put, :class => 'basic_form' ,:id => 'basic_form'} do |f| %>
+      <%= f.error_messages %>
+      <%= link_to "&nbsp;".html_safe, shared_script_index_path, :class => "unfolded automation_cancel" %>
+      <h3 class='inline'>Editing Script</h3>
+      <%= render :partial => 'shared_scripts/bladelogic/form', :locals => { :script => @script, :f => f } %>
+    <% end %>
+
+  </td>
+</tr>

@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<div class="edit_property_table" id="property_table_<%=@page_no%>">
+<div style="text-align:right"><%=will_paginate(@app_environments, :table_position => "#{local_assigns[:properties].present? || @property_number.present? ? 'lower_table' : ''}", :class => "my_data_pagination", :rel => "edit_component_properties")%></div>
+  <table  cellspacing="0" cellpadding="4" id="<%=local_assigns[:properties].present? ? 'show_existing_properties' : @property_number.present? ? 'new_properties' : 'edit_properties' %>" class="<%=local_assigns[:properties].present? ? 'show_existing_properties_'+@page_no : @property_number.present? ? 'new_properties properties_tbl' : 'edit_properties'%> properties_tbl">
+    <tr>
+      <th>Property</th>
+      <% @app_environments.each do |env|%>
+        <th><%=env.name%></th>
+      <% end %>
+      <% if local_assigns[:new_property].present? %>
+        <th class="value">Delete</th>
+      <% else %>
+        <th class="value" style="text-align:center">Remove from App</th>
+      <% end %>
+      <th class="value">Values</th>
+      <% if @property_number.nil? %>
+        <th class="value">Locked</th>
+      <%end%>
+    </tr>
+
+    <% if local_assigns[:properties].present?%>
+      <% @properties.each do |property| %>
+        <%= render :partial => "show_properties", :locals => {:property => property, :app_environments => @app_environments, :property_number => @property_number }%>
+      <% end %>
+    <% elsif local_assigns[:new_property].present? || @property_number.present? %>
+      <% (@new_property_ids.present? ? @new_property_ids.map(&:to_i) : [1]).each do |property_number|%>
+        <%= render :partial => "show_properties", :locals => {:app_environments => @app_environments, :property => nil, :property_number => property_number}%>
+      <% end %>
+    <% else%>
+      <% @application_component.properties.active.each do |property| %>
+        <%= render :partial => "show_properties", :locals => {:property => property, :app_environments => @app_environments}%>
+      <% end %>
+    <% end %>
+  </table>
+</div>
+

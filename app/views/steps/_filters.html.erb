@@ -1,0 +1,74 @@
+<%
+ # #############################################################################
+ # BMC Software, Inc.
+ # Confidential and Proprietary
+ # Copyright (c) BMC Software, Inc. 2001-2012
+ # All Rights Reserved.
+ # #############################################################################
+%>
+
+
+<div class="alt" id="financials_filters">
+  <strong>Filters:</strong>
+  <form id="dashboard_range">
+    <table cellpadding="0" cellspacing="0" style="width:950px;">
+      <tbody>
+        <tr>
+          <td style="background:transparent;">
+            <div>Filter by Started Date – From:</div>
+            <div><%= date_field_tag 'beginning_date', @filters[:started_at_range][:initial_date].present? ? Date.generate_from(@filters[:started_at_range][:initial_date]) : '' %></div>
+            <div>To:</div>
+            <div><%= date_field_tag 'end_date', @filters[:started_at_range][:end_date].present? ? Date.generate_from(@filters[:started_at_range][:end_date]) : '' %></div>
+            <div><%= submit_tag 'Set', :class =>'button' %></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  <%= form_tag dashboard_currently_running_path, :id => 'filter_form', :style => 'display: inline' do %>
+    <%if request.xhr?%>
+      <table align="center" cellpadding="0" cellspacing="0" style="width:100%">
+        <tbody>
+          <tr>
+            <td>
+              <label for="filters_aasm_state">Status:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "aasm_state", :filter_options => [['In Process', 'in_process'], ['Problem', 'problem'], ['Ready', 'ready']]} %>
+            </td>
+            <td>
+              <label for="filters_user_id">Owner:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "user_id", :options_from_collection_for_select => options_from_collection_for_select(User.select("id, first_name, last_name, type").order("LOWER(last_name) asc"), :id, :name_for_index) } %>
+            </td>
+            <td>
+              <label for="filters_component_id">Component:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "component_id", :options_from_collection_for_select => options_from_collection_for_select(Component.select("id, name").order("LOWER(name) asc"), :id, :name) } %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="filters_work_task_id">Work Task:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "work_task_id", :options_from_collection_for_select => options_from_collection_for_select(WorkTask.select("id, name").order("LOWER(name) asc"), :id, :name) } %>
+            </td>
+            <td>
+              <label for="filters_server_id">Server:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "server_id", :options_from_collection_for_select => options_from_collection_for_select(Server.select("id, name").order("LOWER(name) asc"), :id, :name) } %>
+            </td>
+            <td>
+              <label for="filters_group_id">Group:</label>
+              <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "group_id", :options_from_collection_for_select => options_from_collection_for_select(Group.select("id, name").order("LOWER(name) asc"), :id, :name) } %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: left">&nbsp;</td>
+            <td style="text-align: right"><%= link_to "clear", '#', :class => 'clear_request_filters' %></td>
+          </tr>
+        </tbody>
+      </table>
+    <%end%>
+    <%= hidden_field_tag 'filters[started_at_range][initial_date]', @filters[:started_at_range].try(:[], :initial_date), id: 'beginning_of_calendar' %>
+    <%= hidden_field_tag 'filters[started_at_range][end_date]', @filters[:started_at_range].try(:[], :end_date), id: 'end_of_calendar' %>
+    <%= hidden_field_tag :filter_block_collapse_state_flag, params[:filter_block_collapse_state_flag] %>
+  <% end %>
+</div>
+
+<%= javascript_tag("setFilters(#{@filters.to_json})") %>

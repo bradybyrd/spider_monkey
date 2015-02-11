@@ -1,0 +1,92 @@
+README File for BMC Release Process Management version 2.5.01
+
+Installation Notes:
+
+# Force - Passenger Restart
+ touch tmp/restart.txt
+
+#Privildge Application Migration
+1. Do git pull origin stage
+2. rake db:migrate
+3. rake sr:access_control:assigned_apps_data (This rake was added on September 9, 2010 is present in lib/tasks/add_data_in_assigned_apps.rake. This task should also be executed during deployment done after Feb 18, 2011)
+4. rake sr:requests:set_cancelled_at
+5. rake sr:requests:set_cancelled_at # Do not run if already executed
+6. rake app:lists:add_release_content_item_status / rake app:lists:remove_release_content_item_status
+7. rake homeaway:clear_direct_access (This is specifically for homeaway - 31-12-2010)
+8. rake homeaway:set_direct_access (Sets `direct_access` attribute to TRUE for all users so every user can work with app directly assigned to him)
+9. rake homeaway:set_global_access (Sets `global_access attribute` to TRUE for all users so every app and environment is made visible to all users regardless of permissions set)
+
+10. rake sr:multiple_apps:apps_requests_data (Copies app_id and id column from requests table into apps_requests table, as now Request may contain multiple Apps)
+11. rake sr:service_now:change_blank_attributes_to_nil ( This is for Service Now, setting nil values to blank column in service_now_table - 20-08-2011)
+12. rake sr:service_now:rewrite_changer_request_attribute_values (This is for rewriting change requets table columns - 09-09-2011)
+13. rake app:data_repairs:fix_continuous_integrations (This corrects typos in the continuous integration plan template type - 12-22-2011)
+14. rake app:data_repairs:stage_dates_to_members  (This removes superfluous member records for plans -- 01-02-2012)
+15. rake app:data_repairs:rename_duplicate_plan_stages (This enforces uniqueness on stages within plans == 01-12-2012)
+15. rake app:data_repairs:repair_plan_member_positions  (This renumbers requests within stages through plan members == 01-16-2012)
+9-2-11 ------- Using Bundler -----------------#
+The app now requires bundler to manage gems, to update your version follow the steps
+Many gems will change Rails, now 2.3.14, searchlogic etc. - best to start with a new rvm gemset
+Otherwise, look at versions in Gemfile and Gemfile.lock and remove gems that do not match, then
+1) gem install bundler
+2) bundle install
+As development progresses, you may have to run bundle install or bundle update to capture
+new versions of gems that we needed for one reason or another.
+
+## Administrative Password Reset
+rake app:reset_password RAILS_ENV=production
+
+#Fix List Items Migration:
+rake db:migrate:down VERSION='20100827121710'
+rake db:migrate:up VERSION='20100827121710'
+
+#Update CSV Activity Configuration
+rake app:load_csv:request_project
+
+#Create automation_results folder
+1) create the folder automation_results parallel to the rails root directory
+2) link to that folder from inside public
+3) (from rails root) #> ln -s ../automation_results public/automation_results
+
+# CAS and SSO Authentication Configuration
+Restart server after changing system setting for either
+
+# 3-21-11 Fix frozen steps in request templates
+rake sr:unfreeze_template_steps
+
+#  Bounce Server after changing SystemSetting default_date_format
+
+# 3-24-11 DelayedJob now will not start in Development env.  To force use:
+AUTOMATION=true script/server
+or 
+script/delayed_job -n 2 start (stop or restart, where n 2 is number of parallel instances)
+
+# 3-27-11 Reset the session key unique for server
+  rake app:reset_session_key
+
+# 4-2-11 New Import Rakes for Components, Environments and Servers
+  rake import:(many options)
+  *  See lib/task/data_importer.rake
+# 4-26-11 Amazon Integration Capability ##
+  This requires a file with the amazon login information
+  in lib/script_support/amazon_login.txt
+  The file has 3 lines (substitute your amazon login information):
+  access_id: 1J365I4Q4K33EP2S1Q02
+  secret_key: ogJwelZKvPqNlPoiRqeDJH1rwNxEi+Dt2oRgZ1gP
+  owner_id: 497279483945
+  
+ # 9-14-11 Load default fixtures for notification templates
+ # Notifications will fall back on the ERB views if there are no
+ # liquid templates, but ideally this rake task will be run to load
+ # our default templates into the database. The ruby code for this
+ # can be found in db/populate/notification_templates.rb
+ rake db:populate
+  
+# Now unused settings or setting which are used for smartportfolio are removed from the general settings tab
+# following are the settings which have been removed 
+1 - Allow Chatting
+2 - Module - Portfolio 
+3 - Financial 
+# Till the following code version old changes in general settings tab were present
+# code version - 7ca8717
+
+# TODO: do we still support this doc? -> make up to date

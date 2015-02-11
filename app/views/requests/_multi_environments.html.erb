@@ -1,0 +1,4 @@
+<%= render :partial => 'shared/inline_multiple_picker', locals: {items_name: 'environment'} %>
+<% @items[:all].each do |item| %>
+    <%= hidden_field_tag "deployment_policy_#{item.id}", item.deployment_policy %>
+<% end %>

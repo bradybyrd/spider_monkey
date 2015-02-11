@@ -1,0 +1,29 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<h3>Requests:</h3>
+<p class='self_p'>
+  <%= image_tag('self_services/4_outbound_requests.png', border: '0', align: 'top') %>
+  <span>
+    <%= link_to_function I18n.t('request.outbound_count', count: @request_dashboard[:total_outbound_request]),
+                         "addInboundOutboundFilter('outbound_requests')",
+                         id: 'outbound_requests_count',
+                         title: I18n.t('request.outbound_title')
+    %>
+  </span>
+</p>
+<p class='self_p'>
+  <%= image_tag('self_services/8_inbound_requests.png', border: '0', align: 'top') %>
+  <span>
+    <%= link_to_function I18n.t('request.inbound_count', count: @request_dashboard[:total_inbound_request]),
+                         "addInboundOutboundFilter('inbound_requests')",
+                         id: 'inbound_requests_count',
+                         title: I18n.t('request.inbound_title')
+    %>
+  </span>
+</p>

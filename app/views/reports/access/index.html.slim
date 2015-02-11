@@ -1,0 +1,12 @@
+- content_for :head do
+  = static_javascript_include_tag 'access'
+
+- page_settings title: t('reports.view_access.title'), content_class: 'mainContent'
+
+- content_for :page_section do
+  = render 'reports/tabs', selected: 'view_access'
+
+- content_for :sidebar do
+  = render partial: 'reports/access/links'
+
+p= t('reports.select_report')

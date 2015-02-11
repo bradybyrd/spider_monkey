@@ -1,0 +1,55 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<table class='tablesorter four_column_sorter formatted_table' <%= tag_options({id: "my_applications_#{@page_no || 1}"}, false) %>>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Releases</th>
+      <th>Environment</th>
+      <th>Recent Activity</th>
+      <% if @can_update_app.any? %>
+        <th>&nbsp;</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @my_applications.blank? %>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    <% end %>
+    <% @my_applications.each_with_index do |app, _| %>
+      <% requests = current_user.decorate.visible_recent_activity_requests(app) %>
+      <% request_ids = requests.map(&:number) %>
+      <tr <%= tag_options({:class => cycle('alt', '')}, false) %>>
+        <td><%= link_to_if @can_edit_app[app.id], index_title(ensure_string(app.name, '-')), edit_app_path(app) %></td>
+        <td><%= find_releases(requests, app) %></td>
+        <% envs = current_user.accessible_visible_environments_of_app(app).map(&:name).to_sentence%>
+        <td <%= tag_options({:title => envs}, false) %>><%= ensure_string(truncate(envs, :length => 25), '-') %></td>
+        <td <%= tag_options({:title => format_to_sentence(request_ids)}, false) %>>
+          <%= latest_requests(requests).html_safe %>
+        </td>
+        <% if @can_update_app.any? %>
+          <td><%= link_to "Edit", edit_app_path(app) if @can_update_app[app.id] %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<table class='my_dashboard_pagination' <%= tag_options({:id => "my_applications_pagination_#{@page_no || 1}"}, false) %>>
+  <tr>
+    <td><%= will_paginate(@my_applications, class: 'my_data_pagination', rel: 'my_applications') %></td>
+    <% if @can_create_app %>
+      <td><%= button_to I18n.t(:create_application), new_app_url, method: :get, class: 'button', style: 'float: right;' %></td>
+    <% end %>
+  </tr>
+</table>

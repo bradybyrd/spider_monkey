@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>Add New Component Template</h2>
+<%= form_for @component_template, :as =>:component_template, :url => component_templates_path, :remote => true, :html => { :method => :post, :class => 'cssform' } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <div class='button_bar'>
+    <%= f.submit "Add",:class => "button" %>
+  </div>
+<% end %>
+

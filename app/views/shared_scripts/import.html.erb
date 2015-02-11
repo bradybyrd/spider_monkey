@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>Import Scripts</h2>
+<div class='facebox_scroll'>
+  <%= form_for :script, :url => import_selected_scripts_path, :remote => true,:html => {:rel => "direct_submit", :method => :put } do |f| %>
+    <p>
+      <%= f.label :import_integration_id, "Streamstep Server:" %>
+      <%= f.select :import_integration_id, ProjectServer.select_list("streamstep"), :include_blank => "Select" %>
+    </p>
+    <div id='rest_script_list'>
+      <p>
+        select an integration server
+      </p>
+    </div>
+  <% end %>
+
+</div>

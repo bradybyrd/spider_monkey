@@ -1,0 +1,6 @@
+<%= form_tag "/activity_categories/#{params[:id]}" do %>
+	<%= current_budget_year %>
+	<%= text_field_tag :key, params[:key], :size => '15' %>
+	<%= submit_tag 'Search',:class =>'button' %>
+        <%= link_to "clear", "/activity_categories/#{params[:id]}" %>
+<% end %>

@@ -1,0 +1,42 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+img, div#Header h1 a { behavior: url(/javascripts/iepngfix.htc) }
+.cell_contents_wrapper img { behavior: none; }
+#Header .floatright { /* screen.css, fixes double margin bug. */
+  display: inline;
+}
+.customLogo img { /* screen.css, fixes lack of max-width */
+  width: expression(this.width > 201 ? 200: true);
+}
+.pageSection { /* screen.css, fixes disappearing h1 */
+  zoom: 1;
+}
+.col .section_tab {
+  zoom: 1;
+}
+#request_header {
+  zoom: 1;
+}
+.cssform, .cssform table, .content { zoom: 1; }
+.cssform p {
+  padding-left: 0;
+}
+.cssform p label {
+  margin-right: 10px;
+  margin-left: 0;
+}
+div.step_phase, div.procedure_step_phase, div.component_level, div.environment_level { float: none; }
+#steps_container .subheader { zoom: 1; }
+table.calendar tbody td div.request { zoom: 1; }
+th.filterable {
+  position: relative;
+}
+th.filterable .cell_contents_wrapper {
+  zoom: 1;
+  position: static;
+}
+.filter_box { top: 20px; }

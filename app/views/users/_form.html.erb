@@ -1,0 +1,89 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'users' %>
+<% end %>
+<%= form_for user , :remote => true do |f| %>
+  <div id='error_messages'><%= f.error_messages %></div>
+  <div class='field'>
+    <%= f.label :first_name, '*First name', :class => 'required' %>
+    <%= f.text_field :first_name, :size => 30, :autocomplete => 'off', :class => 'initialFocus' %>
+  </div>
+  <div class='field'>
+    <%= f.label :last_name, '*Last name', :class => 'required' %>
+    <%= f.text_field :last_name, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <div class='field'>
+    <%= f.label :email, '*Email', :class => 'required' %>
+    <%= f.text_field :email, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <span class='true_fields'>
+    <div class='field'>
+      <%= f.label :login, '*Login', :class => 'required' %>
+      <%= f.text_field :login, :size => 30, :autocomplete => 'off' %>
+    </div>
+    <% if password_changable?(@user, current_user) %>
+      <div class='field'>
+        <%= f.label :password, '*Password', :class => 'required' %>
+        <%= f.password_field :password, :size => 30, :autocomplete => 'off', :class => "password" %>
+        <%= help_question_mark_with_text(t 'user.password_help_message') %>
+      </div>
+      <div class='field'>
+        <%= f.label :password_confirmation, '*Confirm Password', :class => 'required' %>
+        <%= f.password_field :password_confirmation, :size => 30, :autocomplete => 'off', :class => "password" %>
+        <div class='helperText'>
+          (please re-enter password to confirm)
+        </div>
+      </div>
+    <% end %>
+  </span>
+  <div class='field'>
+    <%= f.label :contact_number, 'Contact Number' %>
+    <%= f.text_field  :contact_number, :size => 30, :autocomplete => 'off' %>
+  </div>
+  <div class='field inline_radio'>
+    <label>
+      <%= f.radio_button :employment_type, "permanent" %>
+      Permanent
+    </label>
+    <label>
+      <%= f.radio_button :employment_type, "contractor" %>
+      Contractor
+    </label>
+  </div>
+  <div class='field'>
+    <%= f.label :max_allocation, 'Max Allocation' %>
+    <%= f.text_field :max_allocation %>
+  </div>
+  <div class='field'>
+    <%= f.label :location, 'Location' %>
+    <%= f.select :location, resource_location_options(user.location) %>
+  </div>
+  <div class='field'>
+    <%= label_tag :time_zone, 'Time Zone' %>
+    <%= time_zone_select :user, :time_zone, ActiveSupport::TimeZone.us_zones, { :default => (@user.new_record? or current_user.time_zone.nil?) ? "Central Time (US & Canada)" : current_user.time_zone} %>
+  </div>
+  <div class='field'>
+    <%= f.label :groups %>
+    <%= link_to_multiple_picker(:group, object: @user, item_display_field: 'name') %>
+    <%= f.hidden_field :group_ids %>
+  </div>
+  <%= hidden_field_tag "page", params[:page] %>
+  <%= hidden_field_tag "key", params[:key] %>
+  <div>
+    <%= submit_tag user.new_record? ? "Create User" : "Update User",:class =>'button', data: {confirmation: "Assigning Not Visible flag may affect requests / step actions."} %>
+    <span>
+      or
+    </span>
+    <span>
+      <%= link_to "cancel", users_path(:page => params[:page], :key => params[:key]) %>
+    </span>
+  </div>
+  <%= javascript_tag("setVisibleApps(#{f.object.direct_assigned_app_ids.to_json})") unless f.object.new_record? %>
+<% end %>

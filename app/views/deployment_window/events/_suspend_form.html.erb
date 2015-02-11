@@ -1,0 +1,39 @@
+<div class="event_popups_container">
+  <div class="error">
+    <% if event.requests.active.any? && !event.suspended? %>
+      <div class="bg-warning event_popups_container_warnings">
+        <% link_to_active_requests = link_to_active_requests(event.series, event.requests.active, event.environment_id) %>
+        <p class="bold"><%= t 'deployment_window.warnings.has_active_requests_html', action: t(:suspend), link_to_active_requests: link_to_active_requests %></p>
+        <p class="bold"><%= t 'deployment_window.warnings.suspend' %></p>
+      </div>
+    <% end %>
+    <div class="error-messages"></div>
+  </div>
+  <h2><%= event.suspended? ? 'Resume' : 'Suspend' %> Deployment Window</h2>
+  <%= form_for event, url: suspend_deployment_window_event_path(event), remote: true do |f| %>
+  <%- if event.suspended? %>
+    <%= f.hidden_field :state, value: DeploymentWindow::Event::RESUMED %>
+    <div class="field">
+      <%= f.label :state %>
+      <label>Resumed</label>
+    </div>
+
+  <% else %>
+    <%= f.hidden_field :state, value: DeploymentWindow::Event::SUSPENDED %>
+    <div class="field">
+      <%= f.label :state %>
+      <label>Suspended</label>
+    </div>
+  <% end %>
+    <div class="field">
+      <%= f.label :reason %>
+      <%= f.text_area :reason, rows: 6, cols: 30, :class => 'initialFocus' %>
+    </div>
+
+    <div class="divider"></div>
+    <div class="actions">
+      <%= f.submit event.suspended? ? "Resume" : "Suspend", :class => "button submit-button" %>
+      <%= button_to_function "Cancel", "javascript:jQuery(document).trigger('close.facebox')", :class => "button" %>
+    </div>
+  <% end %>
+</div>

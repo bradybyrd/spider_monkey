@@ -1,0 +1,11 @@
+Dear <%= @user.name %></br>
+</br>
+Your request <strong><%= link_to @request.number, request_url(@request) %></strong> is affected by the creation/update of the Deployment Window &quot;<%= @dws.name %>&quot;.</br>Please verify the following parameters for the request <%= @request.id %>
+<ul>
+  <li>Deployment Window: <%= @dws.name %></li>
+  <li>Estimate: <%= @request.estimate %></li>
+  <li>Planned Start <%= @request.start %></li>
+</ul>
+
+Thanks,
+BRPM Admin

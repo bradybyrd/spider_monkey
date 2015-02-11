@@ -1,0 +1,64 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% request = Request.includes(:temporary_current_property_values, {:plan_member => :run}).find(request.id) %>
+<% request_top_level_steps = request.get_all_top_level_steps %>
+<% @last_step_of_req = request.last_step_of_req %>
+<div class="subheader">
+  <br/>
+ <div class="step_links_wrapper">
+
+		<table id="steps_list" class="formatted_steps_table" style="color:inherit; background:none ; margin: 0 0;width: 100%;text-align: center;">
+		  <thead>
+		    <tr id="first_step_row">
+		      <th class="step_position" >STEP</th>
+		      <th>Status</th>
+		      <th>Name</th>
+		      <th>Component</th>
+		      <th>Servers</th>
+		      <th>Task</th>
+		      <th>EST</th>
+		      <th>Assigned To</th>
+		      <th>Version</th>
+                      <th>On/Off</th>
+		    </tr>
+		  </thead>
+
+		  <tbody>
+        <tr id="first_step_row_tbody" class='dn'><td>&nbsp;</td></tr>
+		  <% step_headers = request.request_view_step_headers %>
+		  <% request_top_level_steps.each_with_index do |step, index| %>
+		    <%= render :partial => 'steps/step_rows/step_table_header_for_pdf.html.erb', 
+		               :locals => { :step => step,:request => request, :unfolded_steps => local_assigns[:unfolded_steps],
+		                            :unfolded => false,
+		                            :steps_with_invalid_components => (local_assigns[:steps_with_invalid_components] || []),
+		                            :step_headers => step_headers,
+		                            :step_position => index + 1 } %>
+		  <% end %>
+                  </tbody>
+		</table>
+   </div>
+  <div class="step_links_wrapper">
+    <br/>     
+		  <% step_headers = request.request_view_step_headers %>
+		  <% request_top_level_steps.each_with_index do |step, index| %>
+        <table id="steps_list" class="formatted_steps_table" style="background:none ; margin: 0 0;width: 100%">
+		  <tbody>
+        <tr id="first_step_row_tbody" class='dn'><td>&nbsp;</td></tr>
+
+                  <%= render :partial => 'steps/step_rows/step_for_pdf.html.erb', 
+		               :locals => { :step => step,:request => request, :unfolded_steps => local_assigns[:unfolded_steps],
+		                            :unfolded => true,
+		                            :steps_with_invalid_components => (local_assigns[:steps_with_invalid_components] || []),
+		                            :step_headers => step_headers,
+		                            :step_position => index + 1 } %>
+                  </tbody>
+		</table>
+        <% end %>
+   </div>
+</div>

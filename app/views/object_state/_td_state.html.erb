@@ -1,0 +1,25 @@
+<%
+
+################################################################################
+
+# BMC Software, Inc.
+
+# Confidential and Proprietary
+
+# Copyright (c) BMC Software, Inc. 2001-2012
+
+# All Rights Reserved.
+
+################################################################################
+
+%>
+
+  <td <%= tag_options({:title => ''}, false) %>>
+
+    <div id="td_state_<%= passed_obj.id %>">
+    <% unless passed_obj.aasm_state.nil? %>
+      <%= h(truncate(passed_obj.aasm_state.humanize, :length => 25)) %>
+     <% end %>
+    </div>
+
+  </td>

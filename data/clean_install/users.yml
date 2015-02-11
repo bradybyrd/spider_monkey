@@ -1,0 +1,21 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+users_001:
+  password_salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  updated_at: 2009-01-09 15:41:11 Z
+  encrypted_password: 29c7ab0bfc11d4ec48955d65fa1f57ebf9aac4d0
+  remember_token_expires_at:
+  id: 1
+  remember_token: 9e4f9cbd024637cdf0361f929ba23c6e9d155055
+  first_name: John
+  login: admin
+  last_name: Administrator
+  email: admin@example.com
+  created_at: 2009-01-09 15:41:11 Z
+  active: true
+

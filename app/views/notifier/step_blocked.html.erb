@@ -1,0 +1,7 @@
+<p>Step <%= @params['step_number'] %> on Request <%= @params['request_id'] %> is blocked.</p>
+
+<% unless @note.blank? %>
+  <p><%= @note %></p>
+<% end %>
+<p>Request: <%= @params['SS_edit_request_url'] %></p>
+

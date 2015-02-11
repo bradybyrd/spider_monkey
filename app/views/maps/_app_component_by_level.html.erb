@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% selected_app.each_component_level do |components, level| %>
+  <% components.each do |component| %>
+    <tr class="<%= 'odd' if level.odd? %>">
+      <td><%= print_component_level(level, components, component) %>&nbsp;</td>
+      <td><%= h(component.name) %>&nbsp;</td>
+      <% selected_application_environments.each do |application_environment| %>
+        <% installed_component = selected_app.installed_components.find_by_application_component_id_and_application_environment_id(component.id, application_environment.id) %>
+        <td class="leftBorder <%= "no_installed_component" if installed_component.nil? %>">
+          <%= raw(print_installed_component_version(installed_component)) %>&nbsp;
+        </td>
+        <td class="leftBorder <%= "no_installed_component" unless installed_component %>"><%= installed_component.last_deploy || "Never" if installed_component %>&nbsp;</td>
+        <% if defined?(env) && env %>
+        	<td align="center"><%= check_box_tag 'component[]', component.id, false %></td>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>

@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="ticket_select_wrapper" >
+  <div class="ticket_header_with_toggle">
+    <h2>Select Tickets</h2>
+    <p>Select tickets from plan</p>
+    <div id='tickets_list_div' class="ticket_toggle" >
+      <div id='toggleFilterLink'>
+        <%= link_to_function "Open Filters", "toggleFiltersSection()", :rel => "Close Filters", :class => "filterSection", :id => "filter_section", :style =>'margin-right:22px!important' %>
+      </div>
+    </div>
+  </div>
+  <div id='modelFilterSection' class="ticket_model_filter_selection"><%= render 'tickets/filters/ticket_filters' %></div>
+  <div class="ticket_pagination_in_facebox"><%= render :partial => 'tickets/ticket_pagination', :locals => {:tickets => tickets, :position => "top" } %></div>
+  <%= form_tag tickets_path(:actions => ["disassociate", "unpaged"]), :id => 'select_tickets_form',:class => 'cssform',:style=>"display:block;zoom:1;width:850px;", :method => :get do %>
+    <%= render :partial => 'tickets/tickets_table', :locals => {:tickets => tickets, :actions => @actions } %>
+    <br/>
+    <div class='button_bar' >
+      <%= submit_tag 'Add Selected', :class =>'button' %>
+      <%= button_to_function "Done", "$.facebox.close()", :class =>'btn_done' %>
+    </div>
+    <%# = render :partial => 'tickets/ticket_pagination', :locals => {:tickets => tickets, :position => "bottom" } %>
+  <% end %>
+</div>
+<%= javascript_tag('disableCheckBoxes();'); %>
+<%= javascript_tag('sortable_table_header_arrow_assignment();'); %>

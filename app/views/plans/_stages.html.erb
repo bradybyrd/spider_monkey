@@ -1,0 +1,98 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='stage_list_wrapper' id='plan_stages'>
+  <% plan_stages.each_with_index do |stage, index| %>
+    <% if @run.blank? || stage.id == @run.plan_stage_id -%>
+      <a <%= tag_options({name: "stage_#{stage.id}"}, false) %>></a>
+      <div class='stage_name'>
+        <span style='font-size: 1.5em;color: #004376'>
+          <%= "#{index+1}." %>
+          <%= link_to_unless @run.blank?, "#{h(stage.name)}", plan_path(plan) + "#stage_#{stage.id}", title: "Show stage with all requests." %>
+        </span>
+        <span style='padding: 5px;'>
+          <strong>Environment Type</strong>:<%= stage.environment_type.try(:label) || 'None' %> |
+          <strong>Required</strong>:<%= stage.required? ? 'Yes' : 'No' %>
+        </span>
+      </div>
+
+      <% psi = stage.plan_stage_instance_for_plan_id(plan) -%>
+
+      <div class='stage_timelines'>
+        <% if psi.try(:valid_for_requests?) %>
+          <div id='request_menu'>
+            <%= render partial: 'run_menu', locals: { plan: plan, stage: stage, grouped_members: grouped_members } %>
+            <% if can? :create, Request.new %>
+              <%= form_tag new_request_path, method: :get do %>
+                <%= hidden_field_tag :plan_id, plan.id %>
+                <%= hidden_field_tag :plan_stage_id, stage.id %>
+                <%= submit_tag "Create Request", class: 'button',
+                                                 name: nil,
+                                                 disabled: (@run.present? || plan.archived?) %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if psi.present? %>
+        <%= render partial: 'plan_stage_instance_row', locals: {plan: plan, stage: stage, psi: psi, grouped_members: grouped_members} %>
+      <% end %>
+
+      <% if @run && @run.plan_stage_id == stage.id && @run.plan_id == plan.id %>
+        <%= render partial: 'run_header', locals: { run: @run, plan: plan, stage: stage } %>
+      <% end %>
+
+      <%= request_auto_start_errors_of(@run) if @run && (@run.started? || @run.blocked?) && @run.requests.with_auto_start_errors.any? %>
+
+      <%= form_tag update_members_statuses_plan_path(plan), id: dom_id(stage), "data-plan-stage-id" => stage.id, "data-plan-id" => plan.id, "data-filters-sort-scope" => @filters[:sort_scope] || "", "data-filters-sort-direction" => @filters[:sort_direction] || "", class: 'member_statuses' do %>
+        <table class='requestList table_sorter formatted_table' <%= tag_options({id: "table#{index}", style: 'padding-bottom:15px; clear:left;', table_stage_id: stage.id}, false) %>>
+          <thead>
+            <%= render partial: "plans/request_table_header", locals: {plan_view: true, stage_id: stage.id.to_s} %>
+          </thead>
+          <tbody>
+            <%= render 'plans/members/list', stage: stage,
+                                             grouped_members: grouped_members,
+                                             plan: plan,
+                                             run: @run %>
+          </tbody>
+        </table>
+      <% end %>
+
+      <hr/>
+    <% end %>
+  <% end %>
+  <% if @run.blank? %>
+    <div class='stage_name'>
+      <h2><%= h(default_stage.name) %></h2>
+    </div>
+    <div class='stage_timelines'>
+      <% if can? :create, Request.new %>
+        <div id='request_menu'>
+          <%= form_tag new_request_path, method: :get do %>
+            <%= hidden_field_tag :plan_id, plan.id %>
+            <%= submit_tag "Create Request", class: 'button', name: nil, disabled: plan.archived? %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <%= form_tag update_members_statuses_plan_path(plan), "data-plan-stage-id" => 0, "data-plan-id" => plan.id, "data-filters-sort-scope" => @filters[:sort_scope] || "", "data-filters-sort-direction" => @filters[:sort_direction] || "", class: 'member_statuses' do %>
+      <table class='table_sorter formatted_table requestList' id='table_unassigned' style='padding-bottom:15px; clear:left;' table_stage_id='0'>
+        <thead>
+          <%= render partial: "plans/request_table_header", locals: {plan_view: true, stage_id: "0"} %>
+        </thead>
+        <tbody>
+          <%= render 'plans/members/list', stage: default_stage,
+                                           grouped_members: grouped_members,
+                                           plan: plan,
+                                           run: @run %>
+        </tbody>
+      </table>
+    <%end%>
+  <% end %>
+</div>

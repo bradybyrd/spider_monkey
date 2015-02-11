@@ -1,0 +1,53 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @plans.keys.size > 0 %>
+  <table>
+    <tr></tr>
+    <% @duration.each do |date| %>
+      <td>
+        <table class='tablesorter releases formatted_table'>
+          <thead>
+            <tr>
+              <td <%= tag_options({:colspan => 5}, false) %>><%= date.strftime('%B %Y') %></td>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th>Application</th>
+              <th>Project</th>
+              <th>Release</th>
+              <th>Release Manager</th>
+              <th>Release Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @plans[date.strftime('%B %Y')].each do |plan| %>
+              <tr>
+                <td><%= (can? :inspect, Plan.new) ? link_to(h(plan.name), plan) : h(plan.name) %></td>
+                <td><%= ensure_space plan.members.first.try(:name) %></td>
+                <td>
+                  <% activity = plan.members.first.activities.last rescue nil %>
+                  <% unless activity.nil? %>
+                    <%= (can? :edit, activity) ? link_to(h(activity.name), activity) : h(activity.name) %>
+                  <% else %>
+                    &nbsp;
+                  <% end %>
+                </td>
+                <td><%= ensure_space plan.release.try(:name) %></td>
+                <td><%= ensure_space plan.release_manager.try(:name_for_index) %></td>
+                <td><%= ensure_string(default_format_date(plan.release_date), "unassigned") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </td>
+    <% end %>
+  </table>
+<% else %>
+  <p align='center'>No Releases found for selected period.</p>
+<% end %>

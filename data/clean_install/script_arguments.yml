@@ -1,0 +1,100 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+script_arguments_000001: 
+  id: "1"
+  script_id: "6"
+  argument: command
+  name: Name of command
+  position: "A1:B2"
+  is_required: false
+  argument_type: "in-text"
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000002:
+  id: "2"
+  script_id: "6"
+  argument: success
+  name: Term or Phrase to indicate success
+  position: "A3:B4"
+  is_required: false
+  argument_type: "in-text"
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000003:
+  id: "3"
+  script_id: "7"
+  argument: hosts
+  name: IP address remote server - leave blank for step servers
+  position: "A1:B2"
+  is_required: false
+  argument_type: "in-text"  
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000004:
+  id: "4"
+  script_id: "7"
+  argument: user
+  name: Login for remote server
+  position: "A3:B4"
+  is_required: false
+  argument_type: "in-text"  
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000005:
+  id: "5"
+  script_id: "7"
+  argument: password
+  name: Password for remote server - leave blank for public key
+  position: "A5:B6"
+  is_required: false
+  argument_type: "in-text"
+  is_private: true
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000006:
+  id: "6"
+  script_id: "7"
+  argument: command
+  name: Name of command
+  position: "A7:B8"
+  is_required: false
+  argument_type: "in-text"  
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000007:
+  id: "7"
+  script_id: "7"
+  argument: sudo
+  name: Use sudo? (yes or no/blank)
+  position: "A9:B10"
+  is_required: false
+  argument_type: "in-text"  
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+script_arguments_000008:
+  id: "8"
+  script_id: "7"
+  argument: arguments
+  name: Arguments to script
+  position: "A11:B12"
+  is_required: false
+  argument_type: "in-text"  
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22
+capistrano_scripts_arguments_000008:
+  id: "9"
+  script_id: "7"
+  argument: ignore_exit_codes
+  name: Ignore exit codes
+  position: "A13:B14"
+  is_required: false
+  argument_type: in-list-single
+  list_pairs: false,no|true,yes
+  created_at: 2011-04-29 04:20:22
+  updated_at: 2011-04-29 04:20:22

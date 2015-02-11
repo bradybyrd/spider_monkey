@@ -1,0 +1,7 @@
+<% if @server_aspect.valid? %>
+  <%= click_server_tab tab_for_server_level(@server_level) %>
+<% else %>
+  <%= set_cancel_link_for_server_level(@server_level) %>
+  <%= load_partial_into_server_window('server_aspects/form')%>
+<% end %>
+

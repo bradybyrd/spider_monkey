@@ -1,0 +1,16 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div class='pageSection'>
+  <% draw_tabs :selected => selected do %>
+      <%= sub_tab "App", {:path => app_path(app)} %>
+      <% if can? :list, Route.new %>
+        <%= sub_tab "Routes", {:path => app_routes_path(app)} %>
+      <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,11 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% str_xml = render(:file => '/reports/problem_trend.builder', :locals => {:problem_trend_report => @problem_trend_report, :selected_options => @selected_options})  %>
+<%render_chart "#{context_root}/assets/FusionCharts/ScrollArea2D.swf", "", str_xml, "myFirst", (@width.blank? ? 900 : @width), 500, false, false do-%> 
+<%end%>

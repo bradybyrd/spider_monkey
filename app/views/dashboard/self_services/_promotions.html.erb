@@ -1,0 +1,41 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% if can? :view, :dashboard_promotions %>
+    <% content_for :head do %>
+        <%= static_javascript_include_tag 'promotions' %>
+    <% end %>
+    <div class='cls'></div>
+    <% if can? :create, Request.new %>
+        <%= link_to_function image_tag('btn-create-promotion.png'), "showPromoteTable()", :id => "btn-create-promotion" %>
+    <% end %>
+    <br/>
+    <br/>
+    <div class='cls'></div>
+    <% if can? :create, Request.new %>
+        <div id='create_promotion' style='display:none;'>
+          <%= render :partial => '/promotions/create_promotion' %>
+        </div>
+    <% end %>
+    <div style='clear:left;text-align: right'>
+      <div id='toggleFilterLink'>
+        <% if params[:filter_block_collapse_state_flag] == '1' %>
+            <%= link_to "Close Filters", "#", :id => "close_request_filters", :class => "filterSection" %>
+        <% else %>
+            <%= link_to "Open Filters", "#", :id => "close_request_filters", :class => "filterSection" %>
+        <% end %>
+      </div>
+    </div>
+    <div id='filters-requests'>
+      <div id='filterSection'><%= render 'requests/filters' %></div>
+      <%= render 'core_content', :requests => @request_dashboard[:requests] %>
+      <%= render :partial => 'dashboard/request_pagination_dashboard' %>
+    </div>
+
+    <%= javascript_tag("#{toggel_inbound_outbound_section_links}") %>
+<% end %>

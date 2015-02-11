@@ -1,0 +1,40 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3>Recent Activity</h3>
+<table style='font-weight:bold;'>
+  <% @recent_activities.each do |recent_activity| %>
+    <tr>
+      <td>
+        <%= image_tag("self_services/sales_icon.gif", :border => "0") %>
+      </td>
+      <td>
+        <%= recent_activity.context %>
+        <% unless recent_activity.object_type.eql?('Request') %>
+          <br>
+          <!-- = recent_activity.object_type -->
+          <%= recent_activity.object_id %>
+        <% end %>
+        <span class='gray_text'>
+          <br>
+          <%= recent_activity.actor.name %>
+          <br>
+          <i>
+            <%= my_datetime(recent_activity.timestamp) %>
+          </i>
+        </span>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan='2'>
+      <%= link_to 'More activity...', recent_activities_path, :rel => 'facebox', :class => "default_link" %>
+    </td>
+    <td></td>
+  </tr>
+</table>

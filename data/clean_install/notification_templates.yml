@@ -1,0 +1,567 @@
+---
+notification_templates_001:
+  id: 1
+  title: Exception Raised
+  format: text/html
+  event: exception_raised
+  description: A system notification for application exceptions.
+  body: |+
+    <p>The following exception was raised at {{params.SS_company_name}}:</p> <br/>
+    {% if params.SS_exception_message %}
+    <p><strong>Message:</strong></p>
+    <p>{{params.SS_exception_message}}</p>
+    {% endif %}
+    {% if params.SS_exception_backtrace %}
+    <p><strong>Backtrace:</strong></p>
+    <p>{{params.SS_exception_backtrace}}</p>
+    {% endif %}
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.045
+  updated_at: 2012-02-28 21:12:23.045
+  subject: Exception raised at {{params.SS_company_name}}
+notification_templates_002:
+  id: 2
+  title: Login
+  format: text/html
+  event: login
+  description: A user notification when user requests their login.
+  body: |+
+    <p>Hi {{ params.SS_user_first_name }},</p>
+    <p>You have recently requested User ID.</p>
+    <p>YOUR ACCOUNT<br />
+      ============<br />
+      Your account username is:<br />
+    {{ params.SS_user_login }}</p>
+    <p>KEEP THIS EMAIL<br />
+      ===============<br />
+      This email contains important information about your account <br />
+      so you'll want to keep it for future reference should you have any<br />
+      questions.<br />
+    </p>
+
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.065
+  updated_at: 2012-02-28 21:12:23.065
+  subject: Login requested for {{ params.SS_user_login }}
+notification_templates_003:
+  id: 3
+  title: Password Reset
+  format: text/html
+  event: password_reset
+  description: A user notification when user resets their account password.
+  body: |+
+    <p>Hi {{ params.SS_user_first_name }},</p>
+    <p>You have recently requested to reset your account password</p>
+    <p>YOUR ACCOUNT<br />
+      ============<br />
+      Your account username is:<br />
+    {{ params.SS_user_login }}</p>
+      Your initial account password is:<br />
+    {{ params.SS_user_password }}</p>
+    <p>If you did not request to reset your password, please <br>
+    contact your system administrator so that the security <br>
+    of your account may be confirmed.</p>
+    <p>KEEP THIS EMAIL<br />
+      ===============<br />
+      This email contains important information about your account <br />
+      so you'll want to keep it for future reference should you have any<br />
+      questions.<br />
+    </p>
+
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.086
+  updated_at: 2012-02-28 21:12:23.098
+  subject: Your password has been reset
+notification_templates_004:
+  id: 7
+  title: Step Started
+  format: text/html
+  event: step_started
+  description: A step notification when a step has started.
+  body: |+
+    <p>Step {{params.step_number}}: "{{params.step_name}}" on
+    Request {{params.request_id}}: {{params.request_name}}
+    has started.</p>
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.151
+  updated_at: 2012-02-28 21:12:23.151
+  subject: Step {{params.step_number}} on Request {{params.SS_request_number}} has started
+notification_templates_005:
+  id: 8
+  title: Step Completed
+  format: text/html
+  event: step_completed
+  description: A step notification when a step has completed.
+  body: |+
+    <p>Step {{params.step_number}}: "{{params.step_name}}" on
+    Request {{params.request_id}}: {{params.request_name}}
+    is complete.</p>
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.16
+  updated_at: 2012-02-28 21:12:23.16
+  subject: Step {{params.step_number}} on Request {{params.SS_request_number}} is complete
+notification_templates_006:
+  id: 9
+  title: Step Problem
+  format: text/html
+  event: step_problem
+  description: A step notification when a step has a problem.
+  body: |+
+    <p>Step {{params.step_number}}: "{{params.step_name}}" on
+    Request {{params.request_id}}: {{params.request_name}}
+    has been marked 'Problem':</p>
+    {% if note %}
+      <p>Message: {{note}}</p>
+    {% endif %}
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.182
+  updated_at: 2012-02-28 21:12:23.182
+  subject: Step {{params.step_number}} on Request {{params.SS_request_number}} has a problem
+notification_templates_007:
+  id: 10
+  title: Step Blocked
+  format: text/html
+  event: step_blocked
+  description: A step notification when a step is blocked.
+  body: |+
+    <p>Step {{params.step_number}}: "{{params.step_name}}" on
+    Request {{params.request_id}}: {{params.request_name}}
+    has been marked 'Blocked':</p>
+    {% if note %}
+      <p>Message: {{note}}</p>
+    {% endif %}
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.189
+  updated_at: 2012-02-28 21:12:23.189
+  subject: Step {{params.step_number}} on Request {{params.SS_request_number}} is blocked
+notification_templates_008:
+  id: 11
+  title: User Admin Created
+  format: text/html
+  event: user_admin_created
+  description: A user notification when user is created from ldap or single sign-on.
+  body: |+
+    <p>Dear BRPM Admin,</p>
+    <p>A new account was added from a remote or single sign-on service.</p>
+    <p>NEW ACCOUNT<br />
+      ============<br />
+      Account username is:<br />
+    {{ params.SS_user_login }}</p>
+    <p>The user has a temporary name, email, and password upon first creation.
+    They will be prompted to add details upon their first login.</p>
+    <p>The account currently has no rights. Please assign these users
+      appropriate roles and permissions.</p>
+    <p>KEEP THIS EMAIL<br />
+      ===============<br />
+      This email contains important information about your account <br />
+      so you'll want to keep it for future reference should you have any<br />
+      questions.<br />
+    </p>
+
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.201
+  updated_at: 2012-02-28 21:12:23.201
+  subject: New remote user account added to BMC Release Process Management - {{ params.SS_user_login }}
+notification_templates_009:
+  id: 6
+  title: Request Completed
+  format: text/html
+  event: request_completed
+  description: A request notification when a request has completed.
+  body: |
+    <p>Request {{params.SS_request_number}}: {{params.request_name}} is complete.</p>
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.137
+  updated_at: 2012-04-17 01:32:57.911
+  subject: Request {{params.SS_request_number}} is complete
+notification_templates_010:
+  id: 5
+  title: Request Message
+  format: text/html
+  event: request_message
+  description: A request notification when user sends a comment to another user.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.124
+  updated_at: 2012-02-28 21:12:23.124
+  subject: Request message
+notification_templates_011:
+  id: 12
+  title: Password Changed
+  format: text/html
+  event: password_changed
+  description: Message sent when the password is changed by the user or admin
+  body: |
+    <p>Hi {{ params.SS_user_first_name }},</p>
+    <p>You have recently requested to change your account password</p>
+    <p>YOUR ACCOUNT<br />
+      ============<br />
+      Your account username is:<br />
+    {{ params.SS_user_login }}</p>
+
+    <p>If you did not request to change your password, please <br>
+    contact your system administrator so that the security <br>
+    of your account may be confirmed.</p>
+    <p>KEEP THIS EMAIL<br />
+      ===============<br />
+      This email contains important information about your account <br />
+      so you'll want to keep it for future reference should you have any<br />
+      questions.<br />
+    </p>
+
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-04-17 02:12:00.474
+  updated_at: 2012-04-17 02:12:00.474
+  subject: Password changed
+notification_templates_012:
+  id: 4
+  title: User Created
+  format: text/html
+  event: user_created
+  description: A user notification when user is created.
+  body: |
+    <p>Hi {{ params.SS_user_first_name }},</p>
+    <p>A user account has recently been created:</p>
+    <p>YOUR ACCOUNT<br />
+      ============<br />
+      Your account username is:<br />
+    {{ params.SS_user_login }}</p>
+      Your initial account password is:<br />
+    {{ params.SS_user_password }}</p>
+    <p>This password is temporary; you will be asked to change it on first login.</p>
+    <p>KEEP THIS EMAIL<br />
+      ===============<br />
+      This email contains important information about your account <br />
+      so you'll want to keep it for future reference should you have any<br />
+      questions.<br />
+    </p>
+
+    <p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+      ==============================<br />
+      {{ params.SS_login_url }}<br />
+    </p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.116
+  updated_at: 2012-04-17 02:38:46.797
+  subject: Welcome to BMC Release Process Management - {{ params.SS_user_first_name }}
+
+notification_templates_013:
+  id: 13
+  title: Request Cancelled
+  format: text/html
+  event: request_cancelled
+  description: A request notification when a request is cancelled.
+  body: |
+    <p>Request {{params.SS_request_number}}: {{params.request_name}} is cancelled.</p>
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.116
+  updated_at: 2012-04-17 02:38:46.797
+  subject: Request {{params.SS_request_number}} is cancelled
+
+notification_templates_014:
+  id: 14
+  title: Step Ready
+  format: text/html
+  event: step_ready
+  description: A request notification when a request is cancelled.
+  body: |
+    <p>Step {{params.step_number}}: "{{params.step_name}}" on
+    Request {{params.request_id}}: {{params.request_name}}
+    is ready.</p>
+    <p>Request: {{params.SS_edit_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+  template:
+  active: true
+  created_at: 2012-02-28 21:12:23.116
+  updated_at: 2012-04-17 02:38:46.797
+  subject: Step {{params.step_number}} on Request {{params.SS_request_number}} is Ready
+
+notification_templates_015:
+  id: 15
+  title: Request Planned
+  format: text/html
+  event: request_planned
+  description: A request notification for planned requests.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+notification_templates_016:
+  id: 16
+  title: Request Started
+  format: text/html
+  event: request_started
+  description: A request notification for started requests.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+notification_templates_017:
+  id: 17
+  title: Request in Problem
+  format: text/html
+  event: request_in_problem
+  description: A request notification for requests in problem.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+notification_templates_018:
+  id: 18
+  title: Request Resolved
+  format: text/html
+  event: request_resolved
+  description: A request notification for resolved requests.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+notification_templates_019:
+  id: 19
+  title: Request On Hold
+  format: text/html
+  event: request_on_hold
+  description: A request notification for requests that have been put on hold.
+  body: |+
+    <p>{{ message }}</p>
+    <p>Request: {{params.SS_request_url}}</p>
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+
+notification_templates_020:
+  id: 20
+  title: Request not Started due to DW
+  format: text/html
+  event: request_failed_to_start_of_deployment_window
+  description: A request notification when a request has failed to start because of Deployment Window validations.
+  body: |+
+    <p>Your request {{params.SS_request_number}} has failed to start because of certain reasons:</p>
+    <p>{{params.SS_message}}</p>
+
+    <span>Please verify the following parameters for the request :</span>
+    <ul>
+      <li>Planned Start</li>
+      <li>Estimate</li>
+      <li>Deployment Window</li>
+    </ul>
+    <p>Request: {{params.SS_request_url}}</p>
+
+    <p>ISSUES<br />
+      ==============================<br />
+      {{ params.default_support_email }}<br />
+      and we will respond as quickly as possible--usually within 1 hour between 8am <br />
+      and 5pm EST.</p>
+    <p>Thanks,</p>
+    <p>BRPM Admin</p>
+  subject: Request {{params.SS_request_number}} has failed to start because of Deployment Window validations
+
+notification_templates_021:
+  id: 21
+  title: New user email notification failed
+  format: text/html
+  event: new_user_email_verification_failed
+  description: A system notification for email notification failed.
+  body: |
+    Hi BRPM Admin,<br /><br />
+    A user account for {{params.SS_user_first_name}}, {{params.SS_user_last_name}} has recently been created, but email notification failed:<br /><br />
+    NEW ACCOUNT<br />
+    ============<br />
+    Account username is:<br />
+    {{params.SS_user_login}}<br /><br />
+    {{params.SS_user_email}}<br /><br />
+    KEEP THIS EMAIL<br />
+    ===============<br />
+    This email contains important information about your account<br />
+    so you'll want to keep it for future reference should you have any<br />
+    questions.<br /><br />
+    LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+    ==============================<br />
+    {{params.SS_login_url}}<br /><br />
+    ISSUES<br />
+    ==============================<br />
+    {{params.default_support_email}}<br />
+    and we will respond as quickly as possible--usually within 1 hour between 8am<br />
+    and 5pm EST.<br /><br />
+    Thanks,<br /><br />
+    BRPM Admin<br />
+  subject: New user email notification failed

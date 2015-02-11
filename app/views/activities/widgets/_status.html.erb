@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= find_and_preserve(Haml::Filters::Javascript.render_with_options(
+"#{Activity.status_javascript} 
+\n", _hamlout.options)) %>
+<div class='field select status'>
+  <label for='activity_status'>Status</label>
+  <% if current_user.present? %>
+    <%= select("activity", "status", activity_status_options, {} , {:onchange => "change_status();"}) %>
+    <%= hidden_field_tag("old_status", @activity.status.to_s, :id => "old_status") %>
+    <%= hidden_field_tag("closed_statuses", Activity::ClosedStatuses.join('|'), :id => "closed_statuses") %>
+  <% else %>
+    <%= activity.status %>
+  <% end %>
+</div>

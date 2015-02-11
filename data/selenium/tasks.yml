@@ -1,0 +1,204 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+tasks_008: 
+  name: Truncate
+  updated_at: <%= -721599.537055.seconds.ago %>
+  id: 8
+  position: 9
+  active: true
+  created_at: <%= 3444264.463006.seconds.ago %>
+tasks_019: 
+  name: Backup - other
+  updated_at: <%= -711551.536963.seconds.ago %>
+  id: 19
+  position: 21
+  active: false
+  created_at: <%= 619515.463068.seconds.ago %>
+tasks_020: 
+  name: P2V Image - Ghost
+  updated_at: <%= -721618.536904.seconds.ago %>
+  id: 20
+  position: 19
+  active: true
+  created_at: <%= 618953.46313.seconds.ago %>
+tasks_009: 
+  name: Change
+  updated_at: <%= -711551.536842.seconds.ago %>
+  id: 9
+  position: 8
+  active: true
+  created_at: <%= 3444264.463191.seconds.ago %>
+tasks_010: 
+  name: Copy
+  updated_at: <%= -711551.536781.seconds.ago %>
+  id: 10
+  position: 10
+  active: true
+  created_at: <%= 3444264.463253.seconds.ago %>
+tasks_021: 
+  name: Run P2V Converter
+  updated_at: <%= -711551.536719.seconds.ago %>
+  id: 21
+  position: 22
+  active: true
+  created_at: <%= 450831.463314.seconds.ago %>
+tasks_011: 
+  name: Load
+  updated_at: <%= -711551.536658.seconds.ago %>
+  id: 11
+  position: 11
+  active: true
+  created_at: <%= 3444264.463376.seconds.ago %>
+tasks_022: 
+  name: P2V Image - Acronis
+  updated_at: <%= -711551.536597.seconds.ago %>
+  id: 22
+  position: 23
+  active: true
+  created_at: <%= 450780.463437.seconds.ago %>
+tasks_001: 
+  name: Stage
+  updated_at: <%= -711551.536535.seconds.ago %>
+  id: 1
+  position: 1
+  active: true
+  created_at: <%= 3444264.463498.seconds.ago %>
+tasks_012: 
+  name: Launch
+  updated_at: <%= -711551.536474.seconds.ago %>
+  id: 12
+  position: 12
+  active: true
+  created_at: <%= 3444264.46356.seconds.ago %>
+tasks_023: 
+  name: P2V Image - Other
+  updated_at: <%= -711551.536413.seconds.ago %>
+  id: 23
+  position: 24
+  active: true
+  created_at: <%= 450769.46362.seconds.ago %>
+tasks_002: 
+  name: Deploy
+  updated_at: <%= -711551.536352.seconds.ago %>
+  id: 2
+  position: 2
+  active: true
+  created_at: <%= 3444264.463682.seconds.ago %>
+tasks_013: 
+  name: Start
+  updated_at: <%= -711551.536291.seconds.ago %>
+  id: 13
+  position: 13
+  active: true
+  created_at: <%= 3444264.463743.seconds.ago %>
+tasks_024: 
+  name: Notify
+  updated_at: <%= -721623.536228.seconds.ago %>
+  id: 24
+  position: 14
+  active: true
+  created_at: <%= 449775.463804.seconds.ago %>
+tasks_003: 
+  name: Install
+  updated_at: <%= -711551.536166.seconds.ago %>
+  id: 3
+  position: 3
+  active: false
+  created_at: <%= 3444264.463864.seconds.ago %>
+tasks_014: 
+  name: Backup
+  updated_at: <%= -711551.536108.seconds.ago %>
+  id: 14
+  position: 15
+  active: true
+  created_at: <%= 3444264.463925.seconds.ago %>
+tasks_025: 
+  name: Restore to VM
+  updated_at: <%= -711551.536047.seconds.ago %>
+  id: 25
+  position: 25
+  active: true
+  created_at: <%= 449665.463986.seconds.ago %>
+tasks_004: 
+  name: Stop
+  updated_at: <%= -721612.535987.seconds.ago %>
+  id: 4
+  position: 5
+  active: true
+  created_at: <%= 3444264.464046.seconds.ago %>
+tasks_015: 
+  name: Verify
+  updated_at: <%= -711551.535926.seconds.ago %>
+  id: 15
+  position: 16
+  active: true
+  created_at: <%= 3444264.464107.seconds.ago %>
+tasks_026: 
+  name: Clean Up VM Image
+  updated_at: <%= -711551.535865.seconds.ago %>
+  id: 26
+  position: 26
+  active: true
+  created_at: <%= 449213.464168.seconds.ago %>
+tasks_005: 
+  name: Reboot
+  updated_at: <%= -711551.535804.seconds.ago %>
+  id: 5
+  position: 4
+  active: true
+  created_at: <%= 3444264.464229.seconds.ago %>
+tasks_016: 
+  name: Approve
+  updated_at: <%= -711551.535744.seconds.ago %>
+  id: 16
+  position: 17
+  active: true
+  created_at: <%= 1559387.46429.seconds.ago %>
+tasks_027: 
+  name: Approve - Change Mgmt
+  updated_at: <%= -711551.535683.seconds.ago %>
+  id: 27
+  position: 27
+  active: true
+  created_at: <%= 443904.46435.seconds.ago %>
+tasks_006: 
+  name: Restart
+  updated_at: <%= -711551.535622.seconds.ago %>
+  id: 6
+  position: 6
+  active: true
+  created_at: <%= 3444264.464411.seconds.ago %>
+tasks_017: 
+  name: Backup - ghost
+  updated_at: <%= -711551.535562.seconds.ago %>
+  id: 17
+  position: 18
+  active: false
+  created_at: <%= 619550.464468.seconds.ago %>
+tasks_028: 
+  name: Restore
+  updated_at: <%= -711551.535504.seconds.ago %>
+  id: 28
+  position: 28
+  active: true
+  created_at: <%= -87830.535471.seconds.ago %>
+tasks_007: 
+  name: Uninstall
+  updated_at: <%= -711551.535443.seconds.ago %>
+  id: 7
+  position: 7
+  active: true
+  created_at: <%= 3444264.46459.seconds.ago %>
+tasks_018: 
+  name: Backup - acronis
+  updated_at: <%= -711551.535383.seconds.ago %>
+  id: 18
+  position: 20
+  active: false
+  created_at: <%= 619530.464647.seconds.ago %>

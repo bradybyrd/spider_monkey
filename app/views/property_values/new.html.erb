@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<h3 class='no_margin servers_h2'>Override Property</h3>
+<%= form_for [@reference, @property_value], html: { class: 'cssform' } do |f| %>
+  <div class='field'>
+    <%= f.label :property %>
+    <%= f.collection_select :property, @properties, :id, :name %>
+  </div>
+  <div class='field'>
+    <%= f.label :value %>
+    <%= f.text_field :value, class: 'initialFocus' %>
+  </div>
+  <div class='field'>
+    <%= f.submit 'Create Property', class: 'button' %>
+  </div>
+<% end %>

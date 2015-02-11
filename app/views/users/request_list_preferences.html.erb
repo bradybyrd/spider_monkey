@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Request List Preferences' %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= render :partial => "users/profile_tabs",:locals => {:request_list_pref=>'selected'} %>
+<%= render :partial => "users/request_list_preferences" %>

@@ -1,0 +1,20 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<% draw_tabs :selected => selected, :only_ul => local_assigns[:only_ul] ? only_ul : nil, :ul_class => local_assigns[:ul_class] ? ul_class : nil do %>
+  <% if can? :view, :process_reports %>
+    <%= sub_tab 'Process', path: reports_tab_path %>
+  <% end %>
+  <% if can? :view, :maps_reports %>
+    <%= sub_tab 'Maps', :path => maps_path %>
+  <% end %>
+  <% if can?(:view, :calendar) %>
+    <%= sub_tab 'Calendars', path: release_calendar_reports_path(report: 'release_calendar') %>
+  <% end %>
+  <% if can? :view, :access_reports %>
+    <%= sub_tab t('reports.view_access.title'), path: reports_access_index_path, tab: 'view_access' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='field'>
+  <%= f.label :activity_category_id, "*#{activity_or_project?} Category",:class => 'required' %>
+  <%= f.collection_select :activity_category_id, ActivityCategory.order("activity_categories.name"), :id, :name, {}, :id => 'activity_category_id', 'data-template-url' => creation_attributes_activities_path %>
+</div>
+<div id='activity_creation_attributes'>
+  <%= render :partial => 'creation_attributes', :locals => { :activity_category => @activity.activity_category || ActivityCategory.default, :f => f } %>
+</div>

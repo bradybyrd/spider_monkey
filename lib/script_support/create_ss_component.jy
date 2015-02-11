@@ -1,0 +1,38 @@
+# ========================================================================
+# SCRIPT NAME   : CREATE_SS_COMPONENT
+#  Requires standard bladelogic script header
+#  BJB - Based on example work by M. Makabeli
+bl_profile_name = os.environ["_SS_PROFILE"]
+bl_role_name	= os.environ["_SS_ROLENAME"]
+
+common_manager = common.CommonManager()
+
+# Load the input parameters file and parse as yaml
+params = load_input_params(os.environ["_SS_INPUTFILE"]) 
+
+# Open the output file and note it in the return message: sets FHandle
+FHandle = open(params["output_file"], "a")
+# Use text input file for component names
+
+for item, val in params.items():
+	if item.find("comp_") > -1:
+		items = val.split("__")
+		ss_application = items[0].replace("'", "")
+		ss_component   = items[1].replace("'", "")
+		bl_component_template = item.replace("comp_","")
+		msg = "Creating component template: " + item + ", comp: " + ss_component + ", app: " + ss_application
+		writeTo(msg)
+		common_manager.printInfo("SS APPLICATION: " + ss_application)
+		common_manager.printInfo("SS COMPONENT  : " + ss_component)
+		common_manager.printInfo("BL COMP TEMP  : " + bl_component_template)
+		# ========================================================================
+		# MAIN SCRIPT
+		# ========================================================================
+		ss_object = streamstep.Streamstep(bl_profile_name,bl_role_name)
+		ss_component = ss_object.createStreamstepComponent(ss_application,ss_component)
+		ss_component.createTemplate(bl_component_template)
+
+FHandle.close()
+
+sys.exit(0)
+ 

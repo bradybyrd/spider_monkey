@@ -1,0 +1,37 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='edit_activity_index'>
+  <h1>Edit Index Columns</h1>
+  <%= form_tag destroy_index_columns_activity_category_path(@activity_category), :id => '', :class => 'cssform', :method => "delete" do %>
+    <ul id='current_columns'>
+      <%= render :partial => 'column', :collection => @activity_category.index_columns %>
+      <li class='no_drag'></li>
+    </ul>
+    <div id='available_columns'>
+      <span>
+        <ul class='available_columns'>
+          <%= render :partial => 'available_index_column', :collection => @activity_category.unused_static_columns %>
+        </ul>
+      </span>
+    </div>
+    <div class='clear'></div>
+    <%= hidden_field_tag 'column[activity_category_id]', @activity_category.id %>
+    <%= hidden_field_tag 'column_destroy_ids' %>
+    <%= submit_tag 'Update',:class =>'button' %>
+  <% end %>
+
+  <%= form_tag update_index_columns_activity_category_path(@activity_category), :class => "hidden modify_columns", :method => "put", :id => "update_columns" do %>
+    <%= hidden_field_tag 'column[activity_category_id]', @activity_category.id %>
+  <% end %>
+
+  <%= form_tag create_index_columns_activity_category_path(@activity_category), :class => "hidden modify_columns", :method => "post", :id => "create_columns" do %>
+    <%= hidden_field_tag 'column[activity_category_id]', @activity_category.id %>
+  <% end %>
+
+</div>

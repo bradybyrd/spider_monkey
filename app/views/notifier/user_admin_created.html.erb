@@ -1,0 +1,21 @@
+<p>Dear BRPM Admin,</p>
+<p>A new account was added from a remote or single sign-on service.</p>
+<p>NEW ACCOUNT<br />
+  ============<br />
+  Account username is:<br />
+<%= @params['SS_user_login'] %></p>
+
+<p>The user has a temporary name, email, and password upon first creation. 
+They will be prompted to add details upon their first login.</p>
+<p>The account currently has no rights. Please assign these users 
+	appropriate roles and permissions.</p>
+<p>LOGGING IN TO BMC RELEASE PROCESS MANAGEMENT<br />
+  ============================================<br />
+Log in at:  <%= @params['SS_login_url'] %></p>
+
+<p>ISSUES<br />
+  ==============================<br />
+  If you have any problems or questions - please email <%= DEFAULT_SUPPORT_EMAIL_ADDRESS %><br />
+  and we will respond as quickly as possible - usually within 1 hour between 8am and 5pm EST.</p>
+<p>Thanks,</p>
+<p>BMC Release Process Management Admin</p>

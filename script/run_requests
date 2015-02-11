@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+PIDFILE = File.dirname(__FILE__) + '/../tmp/run_requests.pid'
+
+exit if File.exist? PIDFILE
+File.open PIDFILE, 'w' do |file|
+  file.write Process.pid
+end
+
+require File.dirname(__FILE__) + '/../config/environment'
+
+def log(message)
+  Rails.logger.info "[Request Runner][#{Time.zone.now.to_s}] :: #{message}"
+end
+
+log "Launching automated request runner..."
+
+trap 'SIGTERM' do
+  log "Shutting down automated request runner..."
+  FileUtils.rm_f PIDFILE
+  exit
+end
+
+loop do
+  sleep Time.now.seconds_until_next_quarter_hour
+  Request.automatic_request_execution
+end

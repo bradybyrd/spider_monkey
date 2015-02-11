@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "BMC Release Process Management #{get_version_from_file} - Login", :heading => 'Please login', :store_url => false %>
+<%# TODO:Once ldap/sso changes become clear the code for the login can be put in partials/js implementation based on combo box %>
+<%= image_tag "Login_background.gif",:alt=>"Please login to BMC Release Process Management",:class=>"bmcLogin" %>
+<div style='float:left;'>
+  <%= flash_div :success, :error %>
+  <%= yield :error_messages %>
+  <% if !cas_login_error? %>
+    <p>
+      <%= "Please log in." %>
+    </p>
+    <%= render :partial => "sessions/form_basic" %>
+  <% end %>
+  <%# 'Helper method that pick the right partial according to params specific, options: ldap, nil' %>
+  <div class='forgot_password_username'>
+    <%= link_to_forgot_password if GlobalSettings.default_authentication_enabled? %>
+    <%= link_to_forgot_userid if GlobalSettings.default_authentication_enabled? %>
+  </div>
+</div>
+<%= hidden_field_tag 'stomp_js_path', stomp_js_path %>
+<div style='clear:both;'></div>
+
+<script>$(function() { checkStompPath(); });</script>
+

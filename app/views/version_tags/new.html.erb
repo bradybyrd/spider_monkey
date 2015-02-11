@@ -1,0 +1,29 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% backlink = version_tags_path %>
+<% title = I18n.t(:'version_tag.titles.create') %>
+<% page_settings :title => title %>
+<% content_for :page_section do %>
+  <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= render :partial => 'environments/metadata_heading', :locals => {:backlink => backlink, :title => title} %>
+<br class='clear'/>
+<br>
+<%= form_for @version_tag, :html => { :class => 'cssform' } do |f| %>
+  <%= render 'form', :f => f, :version_tag => @version_tag %>
+  <div class='field'>
+    <%= f.submit I18n.t(:create), :class => 'button' %>
+    or
+    <%= link_to I18n.t(:cancel), version_tags_path %>
+  </div>
+<% end %>
+

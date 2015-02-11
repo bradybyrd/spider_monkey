@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :page_section do %>
+  <ul>
+    <li <%= tag_options({:class=>defined?(profile) ? 'selected':''}, false) %>><%= link_to 'Your profile', profile_path %></li>
+    <li <%= tag_options({:class=>defined?(calendar_pref) ? 'selected':''}, false) %>><%= link_to 'Calendar Preferences', user_calendar_preferences_path %></li>
+    <li <%= tag_options({:class=>defined?(request_list_pref) ? 'selected':''}, false) %>><%= link_to 'Request List Preferences', user_request_list_preferences_path %></li>
+    <li <%= tag_options({:class=>defined?(step_list_pref) ? 'selected':''}, false) %>><%= link_to 'Step List Preferences', user_step_list_preferences_path %></li>
+  </ul>
+<% end %>

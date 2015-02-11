@@ -1,0 +1,109 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='properties'>
+
+  <% if can?(:list, Property.new) %>
+      <% unless @active_properties.blank? %>
+          <h2><%= I18n.t(:active) %></h2>
+
+          <div class='line_h_20px'><%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => properties_path, :class_name => 'properties'} %></div>
+          <table class='tablesorter two_column_sorter formatted_table' style='clear:left'>
+            <thead>
+            <tr>
+              <th width='220'><%= I18n.t(:'table.name') %></th>
+              <th width='220'><%= I18n.t(:'table.components') %></th>
+              <th width='130'><%= I18n.t(:'table.last_modified') %></th>
+              <th width='200'><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @active_properties.each do |property| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <% if can?(:edit, property) %>
+                        <%= link_to index_title(h(property.name)), edit_property_path(property, :key => params[:key], :page => params[:page]) %>
+                    <% else %>
+                        <%= index_title(h(property.name)) %>
+                    <% end %>
+                  </td>
+                  <% field_names = name_list_sentence(property.components) %>
+                  <td <%= tag_options({:title => field_names.size > 70 ? field_names : ''}, false) %>>
+                    <%= truncate field_names, :length => 70 %>
+                  </td>
+                  <td>
+                    <%= default_format_date(property.updated_at) %>
+                  </td>
+                  <td class='action_links'>
+                    <% if can?(:edit, Property.new) %>
+                        <%= link_to I18n.t(:edit), edit_property_path(property, :key => params[:key], :page => params[:page]) %>
+                    <% end %>
+
+                    <% if can?(:make_active_inactive, Property.new) %>
+                        <%= '|'.html_safe if can?(:edit, Property.new) %>
+                        <%= link_to I18n.t(:make_inactive), deactivate_property_path(property, :key => params[:key], :page => params[:page]), :method => :put %>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+          <div class='line_h_20px'><%= render :partial => 'shared/alphabetical_pagination', :locals => {:path => properties_path, :class_name => 'properties'} %></div>
+      <% else %>
+          <%= I18n.t(:'property.no_active') %>
+      <% end %>
+      <% unless @inactive_properties.blank? %>
+          <h2><%= I18n.t(:inactive) %></h2>
+          <table class='tablesorter two_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th width='220'><%= I18n.t(:'table.name') %></th>
+              <th width='220'><%= I18n.t(:'table.components') %></th>
+              <th width='130'><%= I18n.t(:'table.last_modified') %></th>
+              <th width='200'><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @inactive_properties.each do |property| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <% if can?(:edit, Property.new) %>
+                        <%= link_to index_title(h(property.name)), edit_property_path(property, :key => params[:key], :page => params[:page]) %>
+                    <% else %>
+                        <%= index_title(h(property.name)) %>
+                    <% end %>
+                  </td>
+                  <td><%= name_list_sentence property.components %></td>
+                  <td><%= default_format_date(property.updated_at) %></td>
+                  <td class='action_links'>
+                    <% if can?(:edit, Property.new) %>
+                        <%= link_to I18n.t(:edit), edit_property_path(property, :key => params[:key], :page => params[:page]) %>
+                    <% end %>
+
+                    <% if can?(:make_active_inactive, Property.new) %>
+                        <%= '|'.html_safe if can?(:edit, Property.new) %>
+                        <%= link_to I18n.t(:make_active), activate_property_path(property, :key => params[:key], :page => params[:page]), :method => :put %>
+                    <% end %>
+
+                    <% if property.destroyable? %>
+                        <%= '|'.html_safe if can?(:edit, Property.new) || can?(:make_active_inactive, Property.new) %>
+                        <%= link_to I18n.t(:delete),
+                                    property_path(property, :page => params[:page], :key => params[:key]),
+                                    :method => :delete,
+                                    confirm: I18n.t(:confirm_deletion, item: I18n.t(:'activerecord.models.property'))
+                        %>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+  <% end %>
+
+</div>

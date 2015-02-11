@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Request Modification' %>
+<%= static_javascript_include_tag "activities" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/tabs', :locals => { :selected => 'request modification' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<form class='cssform' id='update_req_form'>
+  <div class='field'>
+    <label><%= "Enter request number" %></label>
+    <%= text_field_tag 'request_id' %>
+  </div>
+  <%= button_to_function 'Modify', "jQuery.facebox({ ajax: '#{modify_request_url}' + '/?' + jQuery.param(jQuery('#update_req_form').serializeArray()) })", :class => "button" %>
+</form>

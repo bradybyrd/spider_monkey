@@ -1,0 +1,91 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= hidden_field_tag 'show_tickets_url', tickets_path(:actions => @actions), :id => 'show_tickets_url' %>
+<%= hidden_field_tag 'step[ticket_ids][]', '', :id => "step_ticket_dummy" %>
+
+<% is_export_to_PDF = params[:format] == 'pdf' %>
+
+<div id='tickets_list'>
+  <table class='formatted_table four_column_sorter tablesorter'>
+    <% if tickets.empty? %>
+      <tr>
+        <td colspan='0'>
+          There are no associated tickets
+        </td>
+      </tr>
+    <% else %>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <% if is_export_to_PDF %>
+              <th>URL</th>
+          <% end %>
+          <th>Ticket Name</th>
+          <th>Status</th>
+          <th>Type</th>
+          <th>Integration</th>
+          <%  if ( !@actions.blank? && (can? :edit, request)) %>
+            <th>Action</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% tickets.each do |ticket| %>
+          <tr <%= tag_options({:id => "unpaged_ticket_#{ticket.id}", :class => cycle('even', 'odd')}, false) %>>
+            <td title="<%= h(ticket.url.blank? ? '' : ticket.url) %>">
+              <% if ticket.url.blank? %>
+                  <%= h(ticket.foreign_id) %>
+              <% else  %>
+                  <%= link_to index_title(h(ticket.foreign_id)), ticket.url, :target => "_blank" %>
+              <% end %>
+            </td>
+            <% if is_export_to_PDF %>
+            <td>
+              <% if ticket.url.present? %>
+                  <%= link_to index_title(h(ticket.url)), ticket.url, :target => "_blank" %>
+              <% end %>
+            </td>
+            <% end %>
+            <td>
+              <%= h(ticket.name) %>
+            </td>
+            <td>
+              <%= h(ticket.status) %>
+            </td>
+            <td>
+              <%= ticket.ticket_type.blank? ? "&nbsp;" : h(ticket.ticket_type) %>
+            </td>
+            <td>
+              <%= h(ticket.project_server.try(:name)) %>
+            </td>
+            <% if ( !@actions.blank? && (can? :edit, request)) %>
+              <td>
+                <% pipe = nil %>
+                <% if @actions.include?('refresh') %>
+                  <%= image_tag('icons/arrow_refresh.png', :height => '12px') %>
+                  <% pipe = true %>
+                <% end %>
+                <% if @actions.include?('disassociate') %>
+                  <% if current_user.can?(:edit, Ticket.new) %>
+                    <% if pipe %>
+                      |
+                    <% end %>
+                    <% pipe = true %>
+                    <%= link_to_function image_tag('closex_hover.gif', :height => '12px'), "disconnectTicket('#{ticket.id}')" %>
+                  <% end %>
+                <% end %>
+              </td>
+            <% end %>
+            <%= hidden_field_tag 'step[ticket_ids][]', ticket.id, :id => "step_ticket_#{ticket.id}" %>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+  </table>
+</div>

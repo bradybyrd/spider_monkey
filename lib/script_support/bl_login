@@ -1,0 +1,75 @@
+# ================ StreamStep, Inc ================
+# Copyright 2010
+# Routine to check bladelogic profile status
+# CHeck if cred session is active 
+# get new session if needed
+#" _BL_IP='#{GlobalSettings[:bladelogic_ip_address]}'"       +
+#" _BL_USERNAME='#{GlobalSettings[:bladelogic_username]}'"   +
+#" _BL_PASSWORD='#{GlobalSettings[:bladelogic_password]}'"   +
+#" _BL_ROLE='#{GlobalSettings[:bladelogic_rolename]}'"
+#" _BL_PROFILE='#{GlobalSettings[:bladelogic_profile]}'"
+
+def argument_hash
+	$args = Hash.new
+	ARGV.each do |arg|
+		ipos = arg.index('=')
+		$args[arg.slice(0..(ipos-1))] = arg.slice((ipos + 1)..arg.length)
+	end
+end
+
+argument_hash
+$args.each do |arg, val|
+ puts "#{arg} | #{arg.downcase.include?("password") ? "********" : val}"
+end
+
+# find the bladelogic installation, if not in /usr/nsh
+#   Add to the list of supported directories here since 8.1 is not a likely
+#   to support future versioned products.
+bl_install_dirs = (['/opt/bmc/BladeLogic/8.1/NSH'])
+
+bl_install_dir = '/usr/nsh'
+
+found = false
+if ! File.directory? bl_install_dir
+   bl_install_dirs.each do |dir|
+      bl_install_dir = dir
+      if File.directory? bl_install_dir
+		found = true
+         break
+      end
+   end
+end
+
+unless found
+	$stderr.puts "ERROR: Cannot find Bladelogic in: #{bl_install_dirs.inspect}"
+	$stdout.puts "ERROR: Cannot find Bladelogic in: #{bl_install_dirs.inspect}"
+	exit(1)
+end
+
+bl_cred_path = bl_install_dir + '/bin/blcred'
+
+cred_status = `#{bl_cred_path} cred -list`
+puts "Blcred Status: #{cred_status}"
+if (cred_status.include?("EXPIRED") || cred_status.include?("cache is empty"))
+  bl_profile = $args['_BL_PROFILE']
+  bl_username = $args['_BL_USERNAME']
+  bl_password = $args['_BL_PASSWORD']
+
+  if bl_profile.nil?
+     #    perhaps have a set of default values here and lookup an initialization file
+     #    when missing parameters.
+     bl_profile = 'BLAdmin'
+     bl_username = 'BLAdmin'
+     bl_password = 'bladelogic'
+  end
+
+  cmd = "#{bl_cred_path} cred -acquire -profile #{bl_profile} -username #{bl_username} -password #{bl_password}"
+  puts "Executing: #{cmd}"
+ 	cred_status = `#{cmd}`
+ 	puts "Blcred Acquire: #{cred_status}"
+	unless cred_status.downcase.include?("authentication succeeded")
+		$stderr.puts "ERROR: failed to acquire credential: #{cred_status}"
+		exit(1)
+	end
+end
+

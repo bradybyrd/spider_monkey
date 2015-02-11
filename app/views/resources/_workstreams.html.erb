@@ -1,0 +1,73 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if Activity.count.zero? %>
+  <h3>
+    There are currently no activities to add this resource to.
+    <%= link_to "Create one?", new_activity_path(ActivityCategory.default) %>
+  </h3>
+<% else %>
+  <div <%= tag_options({:style => ("display: none" if @resource.workstreams.empty?)}, false) %>>
+    <div class='inline'>
+      <%= link_to '<<<', shift_workstreams_resource_path(@resource, :month_offset => @month_offset - 6), :class => 'ajax spinner' %>
+    </div>
+    <div class='right'>
+      <%= link_to '>>>', shift_workstreams_resource_path(@resource, :month_offset => @month_offset + 6), :class => 'ajax spinner' %>
+    </div>
+  </div>
+  <%= form_tag update_workstreams_resource_path(@resource), :method => :put, :id => 'update_workstreams', :class => "ajax dont-mark-changes" do %>
+    <table id='edit_resource_allocations'>
+      <thead <%= tag_options({:style => ("display: none" if @resource.workstreams.empty?)}, false) %>>
+        <tr>
+          <th>Portfolio Level</th>
+          <th>Stream</th>
+          <% ResourceAllocation.month_range_names(@months_ago, @months_from_now).each_with_index do |name, index| %>
+            <th><%= "#{name}#{yearstring name, index, @months_ago, @months_from_now}" %></th>
+          <% end %>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resource.workstreams.each do |stream| %>
+          <tr class='workstreams'>
+            <td><%= activity_or_project? %></td>
+            <td><%= h stream.name %></td>
+            <% if !Activity::ClosedStatuses.include?(stream.activity.status? ? stream.activity.status.titleize : "") %>
+              <%= resource_allocation_input_tds stream, @months_ago, @months_from_now %>
+            <% else %>
+              <%= Date.act_on_month_range(@months_ago, @months_from_now) { |m, y| "<td>&nbsp; #{stream.allocation_for_year_and_month y, m} %</td>" } %>
+            <% end %>
+            <td><%= link_to image_tag('bin_empty.png', :alt => 'remove'), remove_workstream_resource_path(@resource, stream),  :class => 'submit_form spinner', 'data-form-method' => 'delete', 'data-use-ajax' => true %></td>
+          </tr>
+        <% end %>
+        <tr class='workstreams_totals'>
+          <td>&nbsp;</td>
+          <td>TOTAL</td>
+          <%= Date.act_on_month_range(@months_ago, @months_from_now) { |m, y| "<td class=\"#{total_value_class @resource.allocation_total_for_year_and_month(y, m)}\">&nbsp; #{@resource.allocation_total_for_year_and_month y, m} %</td>" } %>
+        </tr>
+        <tr id='new_workstream_row' style='display: none'>
+          <td>Activity</td>
+          <td colspan='13'>
+            <%= select_tag 'activity_ids[]', options_from_collection_for_select(@available_activities, :id, :name), :disabled => true %>
+            <%= submit_tag 'Add', :class => 'in_place spinner' %>
+          </td>
+          <td><%= link_to image_tag('bin_empty.png', :alt => 'remove'), '#', :class => 'remove_workstream' %></td>
+        </tr>
+        <tr id='add_workstream' <%= tag_options({:style => ("display: none" if @available_activities.empty?)}, false) %>>
+          <td colspan='15'><%= link_to('add work', '#') %></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class='multiple_submits'>
+      <%= submit_tag 'Save', :class => 'spinner' %>
+      <%= submit_tag 'Save &amp; Close', :name => 'save_and_close' %>
+    </div>
+  <% end %>
+
+  <%# = flash_div :success %>
+<% end %>

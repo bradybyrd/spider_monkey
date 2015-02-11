@@ -1,0 +1,12 @@
+Dear <%= @user.name %></br>
+</br>
+Your request <strong><%= link_to @request.id, request_url(@request) %></strong> is affected by the suspending of the Deployment Window Event &quot;<%= @event.id %>&quot;.</br>Please verify the following parameters for the request id: <%= @request.id %>
+<ul>
+  <li>Deployment Window: <%= @dws.name %></li>
+  <li>Estimate: <%= @request.estimate %></li>
+  <li>Planned Start <%= @request.start %></li>
+  <li>Suspend Reason: <%= @event.reason %></li>
+</ul>
+
+Thanks,
+BRPM Admin

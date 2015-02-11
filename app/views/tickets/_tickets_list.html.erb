@@ -1,0 +1,36 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<% if ((params[:filters][:plan_id].blank? || !defined?(plan) || plan.blank?) && !@actions.include?('select')) %>
+<div class='searchform_ticket'>
+	<%= form_tag(tickets_path, :method => :get) do %>
+	<%= text_field_tag :key, params[:key], :size => '15',:title =>'Based on Id and Name' %>
+	<%= submit_tag 'Search',:class =>'button' %>
+	<span> <%= link_to "Clear", "#{context_root}/environment/metadata/tickets" %> </span>
+	<% end %>
+
+</div>
+<% end %>
+<div id='tickets_list_div' style='clear:both;text-align: right'>
+	<% if defined?(plan) && plan.present? %>
+		<div id="external_ticket_filters" style='text-align:left;display:inline;'>
+	    <%= link_to "External Ticket Filters", query_tickets_path(:plan_id => plan.try(:id)), :rel => "facebox[.external_ticket_filter_facebox]", :class => "link_external_details" %>
+		</div>
+	<% end -%>
+	<div id='toggleFilterLink' style='display:inline;'>
+		<%= link_to_function "Open Filters", "toggleFiltersSection()", :rel => "Close Filters", :class => "filterSection", :id => "filter_section" %>
+	</div>
+</div>
+<div id='modelFilterSection' class="inside_tab">
+	<%= render 'tickets/filters/ticket_filters' %>
+</div>
+<br/>
+<%= render :partial => 'tickets/ticket_pagination', :locals => {:tickets => tickets, :position => "top", :is_facebox => false, :clazz => 'pagination' } %>
+<%= render :partial => 'tickets/tickets_table', :locals => {:tickets => tickets, :actions => @actions} %>
+<%= render :partial => 'tickets/ticket_pagination', :locals => {:tickets => tickets, :position => "bottom", :is_facebox => false, :clazz => 'pagination' } %>
+<%= javascript_tag('sortable_table_header_arrow_assignment();'); %>

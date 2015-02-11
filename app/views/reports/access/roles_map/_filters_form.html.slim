@@ -1,0 +1,23 @@
+= form_tag reports_access_roles_map_report_path, class: 'properties_maps_server_form', id: 'roles_map_form', remote: true do
+  .section
+    label for="team_ids"= t('reports.view_access.roles_map.teams')
+    p#teams
+      = select_tag :team_ids, options_from_collection_for_select(teams_for_select, :id, :name),
+            class: "customize_multiselect", multiple: true
+      br/
+      = select_clear_links('team_ids', eval: "$('#group_ids,  #user_ids').html('')", env: "$('#team_ids').trigger('change')")
+    label for='group_ids'= t('reports.view_access.roles_map.groups')
+    p#groups
+      = select_tag :group_ids, '', multiple: true, class: 'use_remote_options customize_multiselect', rel: 'team_ids', click_env: true
+      br/
+      = hidden_field_tag('group_ids_url', reports_access_groups_options_for_teams_path)
+      = hidden_field_tag('multiple_selected_group_ids', [].to_json)
+      = select_clear_links('group_ids', eval: "$('#user_ids').html('')", env: "$('#group_ids').trigger('change')")
+    label for='user_ids'= t('reports.view_access.roles_map.users')
+    p#users
+      = select_tag :user_ids, '', multiple: true, class: 'use_remote_options customize_multiselect', rel: 'group_ids', click_env:  true
+      br/
+      = hidden_field_tag :user_ids_url, reports_access_users_options_for_groups_path
+      = hidden_field_tag :multiple_selected_user_ids, [].to_json
+      = select_clear_links('user_ids')
+    p= submit_tag "Report", class: 'button'

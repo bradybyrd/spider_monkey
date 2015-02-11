@@ -1,0 +1,5 @@
+$("#<%= @div %>").html("<%= escape_javascript(raw(@div_content)) %>");
+if ("<%= @scroll %>" == "true")
+{
+    $("#<%= @div %>").scrollTo(500);
+}

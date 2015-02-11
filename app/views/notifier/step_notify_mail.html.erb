@@ -1,0 +1,5 @@
+<%= "#{@step.request_id}, #{@step.request.name}" %>
+<br/>
+Message from script <%= @step.script.try(:name) %> : <%= @step.job_runs.last.try(:started_at) %>
+<br/>
+<%= @message_body %>

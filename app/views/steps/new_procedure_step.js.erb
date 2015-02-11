@@ -1,0 +1,20 @@
+<%= refresh_steps_list(@request) %>
+
+var procedure_row = $('#<%= dom_id(@step) %>');
+var last_step_row = procedure_row.nextAll('tr[data-parent-id="<%= @step.id %>"]:last');
+if (last_step_row.length == 0) last_step_row = procedure_row;
+var klass = '';
+if ($(last_step_row).attr('class').indexOf('even_step_phase') != -1) {
+    klass = 'odd_step_phase';
+}
+else
+{
+    klass = 'even_step_phase';
+}
+last_step_row.after("<tr class=\"procedure_step " + klass + "\"><%= escape_javascript(render(:partial => 'steps/step_rows/step_form',
+                               :locals => { :request => @request, :procedure => true, :step => @step.steps.build(:request => @request,
+                                            :owner => current_user, :different_level_from_previous => true) })) %></tr>");
+
+last_step_row.removeClass('last');
+last_step_row.next().addClass('last');
+

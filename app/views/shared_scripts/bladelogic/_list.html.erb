@@ -1,0 +1,60 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless @scripts.blank? %>
+  <div class='line_h_20px'>
+    <%= render :partial => "/shared/alphabetical_pagination", :locals => {:path => path, :class_name => "automation_content"} %>
+  </div>
+  <table class='tablesorter four_column_sorter formatted_table' id='scripts_list' style='margin-bottom:0'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Last Modified</th>
+        <th># Refs</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% odd = true %>
+      <% scripts.each_with_index do |script, idx| %>
+        <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <% if @script == script %>
+            <%= form_for :script, @script, :url => shared_script_path(@script, page => params[:page], :script =>    params[:script]), :html => { :method => :put, :class => 'basic_form' } do |f| %>
+              <td class="no_hover",  colspan="5">
+              <%= "#{render :partial => "shared_scripts/bladelogic/form", :locals => {:script => @script, :f => f}}" %>
+            <% end %>
+
+          <% else %>
+            <%= render :partial => "shared_scripts/bladelogic/script", :locals => { :script => script, :idx => idx, :page => params[:page]} %>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if scripts.blank? %>
+        <tr>
+          <td colspan='5'>
+            <%= "There are no #{script_type}scripts in the system" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <% if @script and @script.new_record? %>
+      <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+        <td class='test' colspan='5'>
+          <%= form_for :script, @script, :url => shared_scripts_path(:script => params[:script]), :html => { :class => 'basic_form' } do |f| %>
+            <%= render :partial => "shared_scripts/bladelogic/form", :locals => {:script => @script, :f => f } %>
+          <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <div class='line_h_20px' style='margin-top:5px;'>
+    <%= render :partial => "/shared/alphabetical_pagination", :locals => {:path => path, :class_name => "automation_content"} %>
+  </div>
+<% end %>

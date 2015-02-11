@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<%= static_javascript_include_tag "automation" %>
+<div <%= tag_options({:id => "#{@script.class.to_s.underscore}_error_messages"}, false) %>></div>
+<%= render :partial => "shared_scripts/integration_header", :locals => {:f => f, :script => script} %>
+<div class='field'>
+  <%= f.label :name, (script.new_record? ? "Script Name:" : "Script Name:") %>
+  <%= f.text_field :name %>
+</div>
+<div class='field'>
+  <%= f.label :description, "Description:" %>
+  <%= f.text_field :description, :size => 50, :style => "width:352px" %>
+</div>
+<div class='field'>
+  <%= f.label :content, "Script body:" %>
+  <%= f.text_area :content, :style => 'width: 90%' %>
+</div>
+<div class='field'>
+  <%= f.label :tag_id, "Script type:" %>
+  <%= f.select :tag_id, Script::Tag, :include_blank => "Select" %>
+</div>
+<%= f.hidden_field :script_type, :value => script.class.to_s %>
+<br>
+<div id='parsed_parameter'>
+  <%= render :partial => 'shared_scripts/parsed_parameters', :locals => { :script => @script } %>
+</div>
+<%= f.hidden_field :authentication, :value => 'default' if bladelogic? %>
+<%= hidden_field_tag 'page', params[:page] %>
+<%= hidden_field_tag 'key', params[:key] %>
+<br>
+<div class='fl marbtm_5 clear'>
+  <%= f.submit script.new_record? ? "Add script" : "Update script",:class=>'button' %>
+  or
+  <%= link_to 'cancel', shared_script_index_path(params[:page], params[:key]), :class => "automation_cancel" %>
+</div>
+<hr class='clear'>
+<div style='display:none'>
+  <span id='pending'></span>
+</div>

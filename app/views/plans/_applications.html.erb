@@ -1,0 +1,25 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%# TODO: didn't find usage %>
+<table class='app_env app_tbl formatted_table'>
+  <thead>
+    <tr>
+      <th <%= tag_options({:width => 80}, false) %>>Name</th>
+      <th <%= tag_options({:width => 33}, false) %>>Environments</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @plan.applications.each do |app| %>
+      <tr <%= tag_options({:class => "#{cycle('', 'alt' )}"}, false) %>>
+        <td><%= link_to "#{h(app.name)}", app_path(app) %></td>
+        <td><%= plan_environments_list(@plan, app) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

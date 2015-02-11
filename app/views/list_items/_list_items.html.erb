@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if list.is_hash? %>
+  <%= collection_select(:list, :list_item_ids, @list_items, :id, :value_hash, {}, :multiple => true,:class => 'multiselectbox') %>
+<% elsif list.is_text? %>
+  <%= collection_select(:list, :list_item_ids, @list_items, :id, :value_text, {}, :multiple => true,:class => "multiselectbox") %>
+<% else %>
+  <%= collection_select(:list, :list_item_ids, @list_items, :id, :value_num, {}, :multiple => true,:class => "multiselectbox") %>
+<% end %>

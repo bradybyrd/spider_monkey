@@ -1,0 +1,11 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= select :plan, :plan_template_id, @plan_templates.collect { |l| [l.name, l.id ]}, { :include_blank => 'Select' } %>
+
+<%= observe_field :plan_plan_template_id, :url => update_plan_member_list_plans_path, :frequency => 0.25, :with => "'template_id=' + value" %>

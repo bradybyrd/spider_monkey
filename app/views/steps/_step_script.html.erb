@@ -1,0 +1,102 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if script %>
+  <%if local_assigns[:output_parameters]%>
+    <% script_arguments = script.arguments.output_arguments.sort %>
+  <%else%>
+    <% script_arguments = script.arguments.input_arguments.sort %>
+  <%end%>
+  <table id="argument_grid" class="width714 argument_grid argument_grid_<%=script.id%>">
+      <tbody>
+  <% if script.warning_state? %>
+    <div class="bg-warning"><p class="bold"><%= script.warning_state %></p></div>
+  <% end %>
+  
+    <% if script_arguments.blank? %>
+        <tr><th colspan = "6">The selected script has no parameters.</th></tr>
+    <% else %>
+        <%
+          rownums = script_arguments.map{|ar| ar.position}.map{|br| br.split(':')}.flatten.map{|cr| cr.scan(/\d+/)[0].to_i}
+        %>
+        <% for r in 1..rownums.max  %>
+          <tr id="R<%= r %>" class="grid_row">
+            <td id="A" class="grid_cell">&nbsp;</td>
+            <td id="B" class="grid_cell">&nbsp;</td>
+            <td id="C" class="grid_cell">&nbsp;</td>
+            <td id="D" class="grid_cell">&nbsp;</td>
+            <td id="E" class="grid_cell">&nbsp;</td>
+            <td id="F" class="grid_cell">&nbsp;</td>
+          </tr>
+        <% end %>
+  </tbody>
+
+    <% end %>
+  </table>
+  <% script_arguments.each_with_index do |argument,index| %>
+    <% pos = argument.position
+       fixed_cols = ["A","B","C","D","E","F"]
+       locs = pos.split(':')
+       pos1 = {:row => locs[0].scan(/\d+/)[0].to_i,:col => fixed_cols.index(locs[0].scan(/[A-F]/)[0])}
+
+       pos2 = {:row => locs[1].scan(/\d+/)[0].to_i,:col => fixed_cols.index(locs[1].scan(/[A-F]/)[0])}
+
+  %>
+    <%#= pos  %>
+
+    <%= javascript_tag("
+      var cell = $('table.argument_grid_#{script.id} tr.grid_row:eq(#{pos1[:row]-1}) td:eq(#{pos1[:col]})');
+      var v = '';
+      var h = '';
+      for(j=#{pos1[:row]}; j< #{pos2[:row]};j++){
+        h = 'table.argument_grid tr.grid_row:eq(' + j + ')';
+        rw = $(h);
+        cl = rw.children('td:eq(#{pos1[:col]})');
+        for(i=#{pos1[:col]}; i< #{pos2[:col]+1};i++){
+           del = cl.next();
+           cl.remove();
+           cl = del;
+         }
+      }
+      for(k = 1; k < #{(pos2[:col] + 1)- pos1[:col]}; k++){
+         cell.next().remove();
+      }
+      cell.attr('rowspan', #{pos2[:row]- pos1[:row] + 1})
+      cell.attr('colspan',#{(pos2[:col]+1) - (pos1[:col] +1) + 1})
+      cell.html('#{escape_javascript(render :partial => 'steps/script_argument', :locals => {:step => step, :argument => argument,:installed_component => installed_component,:argument_values => argument_values,
+        :output_parameters => local_assigns[:output_parameters]})}');
+      ") %>
+
+  <% end %>
+<% end %>
+
+<% if script && local_assigns[:hide_inline_form].blank? %>
+  <%= form_tag update_resource_automation_parameters_scripts_path, :method => :get, :id => 'update_resource_automation_parameters' do %>
+    <%= hidden_field_tag :resource_script_id, script.try(:id) %>
+    <%= hidden_field_tag :resource_installed_component_id, installed_component.try(:id) %>
+    <%= hidden_field_tag :resource_step_owner_type, @step_owner_type %>
+    <%= hidden_field_tag :resource_step_owner_id, @step_owner_id %>
+    <%if step && step.new_record?%>
+      <%= hidden_field_tag :resource_request_id, @request.try(:id) %>
+      <%= hidden_field_tag :resource_script_type, @script_type %>
+      <%= hidden_field_tag :resource_component_id, @component_id %>
+    <%else%>
+      <%= hidden_field_tag :resource_step_id, step.try(:id) %>
+    <%end%>
+    <%= hidden_field_tag :resource_old_installed_component_id, @old_installed_component_id if @old_installed_component_id%>
+  <% end %>
+  <%script.arguments.each do |arg|%>
+    <%if arg.external_resource.present?%>
+      <% external_script = Script.find_by_unique_identifier(arg.external_resource) %>
+      <%if external_script.present? && external_script.arguments.blank?%>
+        <%= hidden_field_tag "available_script_arguments_#{arg.id}", arg.id, :class => "available_script_arguments"  %>
+      <%end%>
+    <%end%>
+  <%end%>
+<%end%>
+

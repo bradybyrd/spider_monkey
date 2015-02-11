@@ -1,0 +1,26 @@
+- ################################################################################
+- # BMC Software, Inc.
+- # Confidential and Proprietary
+- # Copyright (c) BMC Software, Inc. 2001-2012
+- # All Rights Reserved.
+- ################################################################################
+
+- page_settings title: 'Roles', content_class: 'mainContent'
+
+- content_for :sidebar do
+  p
+    - if can?(:create, Role.new)
+      = link_to t('role.create'), new_role_path(:page => params[:page], :key => params[:key]), class: 'create_role'
+
+
+- content_for :page_section do
+  = render :partial => 'users/tabs', :locals => {:selected => 'roles',:tab_view => true}
+
+= render partial: 'shared/search_form', locals: { path: roles_path, key: @search_params[:q] }
+
+- if can?(:list, Role.new)
+  #roles
+    - if @roles.blank?
+      = render partial: 'shared/blank_data_message', locals: { message: t('role.none') }
+    - else
+      = render 'lists'

@@ -1,0 +1,30 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tbody>
+  <tr>
+    <td><%= check_box_tag "step[#{server.class.to_s.underscore}_ids][]", server.id, step.new_record? ? (@server_association_ids ? @server_association_ids : server_association_ids).include?(server.id) : step.send("#{server.class.to_s.underscore}_ids").include?(server.id), :id => "#{server.class.to_s.underscore}_#{server.id}" %></td>
+    <td><strong><%= h server.path_string %><strong></td>
+          <td>
+            <table id="compact">
+
+              <% server.properties.each do |property| %>
+                <tr>
+                  <td> 
+                    <%= property_value_label "property_values[#{server.class.to_s.underscore}][#{server.id}]", 
+                      property,
+                      step.try(:literal_property_value_for, property, server),
+                      :class => "property_field server_property_value" %>
+                  </td>
+                </tr>
+              <% end %>
+
+            </table>
+          </td>
+          </tr>
+          </tbody>

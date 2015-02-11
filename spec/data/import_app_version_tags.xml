@@ -1,0 +1,249 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <a-sorting-comps type="boolean">true</a-sorting-comps>
+  <a-sorting-envs type="boolean">true</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version>1.00.01</app-version>
+  <name>import_app_version_tags</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array">
+    <component>
+      <active type="boolean">true</active>
+      <name>Comp_01-01</name>
+      <active-properties type="array">
+        <active-property>
+          <active type="boolean">true</active>
+          <default-value>value_01-01</default-value>
+          <is-private type="boolean">true</is-private>
+          <name>Property_01-01_component</name>
+        </active-property>
+      </active-properties>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>Comp_01-02</name>
+      <active-properties type="array">
+        <active-property>
+          <active type="boolean">true</active>
+          <default-value>value_01-01</default-value>
+          <is-private type="boolean">true</is-private>
+          <name>Property_01-01_component</name>
+        </active-property>
+      </active-properties>
+    </component>
+  </components>
+  <environments type="array">
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>Env_01-01</name>
+      <environment-type>
+        <description>Description Development_01-01</description>
+        <label-color>#D3D3D3</label-color>
+        <name>Development_01-01</name>
+        <position type="integer">2</position>
+        <strict type="boolean">false</strict>
+      </environment-type>
+      <active-server-groups type="array">
+        <active-server-group>
+          <active type="boolean">true</active>
+          <description>Description ServerGroup_01-01</description>
+          <name>ServerGroup_01-01</name>
+        </active-server-group>
+      </active-server-groups>
+    </environment>
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>closed</deployment-policy>
+      <name>Env_01-02</name>
+      <environment-type>
+        <description>Description Testing_01-01</description>
+        <label-color>#FFD700</label-color>
+        <name>Testing_01-01</name>
+        <position type="integer">1</position>
+        <strict type="boolean">false</strict>
+      </environment-type>
+      <active-server-groups type="array">
+        <active-server-group>
+          <active type="boolean">true</active>
+          <description>Description ServerGroup_01-02</description>
+          <name>ServerGroup_01-02</name>
+        </active-server-group>
+      </active-server-groups>
+    </environment>
+  </environments>
+  <active-packages type="array">
+    <active-package>
+      <instance-name-format>0.0.0.[#]</instance-name-format>
+      <name>Package_01-01</name>
+      <next-instance-number type="integer">2</next-instance-number>
+      <properties type="array">
+        <property>
+          <active type="boolean">true</active>
+          <default-value>value_01-02</default-value>
+          <is-private type="boolean">false</is-private>
+          <name>Property_01-02_package</name>
+        </property>
+      </properties>
+      <references type="array"/>
+      <package-instances type="array">
+        <package-instance>
+          <name>0.0.0.1</name>
+          <property-values type="array"/>
+          <instance-references type="array"/>
+        </package-instance>
+      </package-instances>
+    </active-package>
+    <active-package>
+      <instance-name-format>0.0.0.[#]</instance-name-format>
+      <name>Package_01-02</name>
+      <next-instance-number type="integer">2</next-instance-number>
+      <properties type="array"/>
+      <references type="array"/>
+      <package-instances type="array">
+        <package-instance>
+          <name>0.0.0.1</name>
+          <property-values type="array"/>
+          <instance-references type="array"/>
+        </package-instance>
+      </package-instances>
+    </active-package>
+  </active-packages>
+  <installed-components type="array">
+    <installed-component>
+      <location nil="true"/>
+      <version>01.01</version>
+      <find-properties type="array">
+        <find-property type="PropertyValue">
+          <locked type="boolean">false</locked>
+          <value>U2FsdGVkX18IZFRKUNB+a9wp7rnqcA7FH15oVsWXE4xOQkN6XeiiWyawQG7xSfAq8mvcTl4l2qpZOr6AO1eUNA==</value>
+          <name>Property_01-01_component</name>
+        </find-property>
+      </find-properties>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>Comp_01-01</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>Env_01-01</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version>01.02</version>
+      <find-properties type="array">
+        <find-property type="PropertyValue">
+          <locked type="boolean">false</locked>
+          <value>U2FsdGVkX19cOEZB5vqPAU/bPLV6/HSNhi0MtGgRFZSNnIYUVeW0AjiB5no+0U5Smd+JjVRPBrf87Oc0wl1q7A==</value>
+          <name>Property_01-01_component</name>
+        </find-property>
+      </find-properties>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">2</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>Comp_01-02</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>Env_01-02</name>
+      </application-environment>
+    </installed-component>
+  </installed-components>
+  <active-routes type="array">
+    <active-route>
+      <description>Description Route_01-03</description>
+      <name>Route_01-03</name>
+      <route-type>open</route-type>
+      <route-gates type="array"/>
+    </active-route>
+    <active-route>
+      <description>Description Route_01-02</description>
+      <name>Route_01-02</name>
+      <route-type>open</route-type>
+      <route-gates type="array">
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <environment>
+            <name>Env_01-01</name>
+          </environment>
+        </route-gate>
+      </route-gates>
+    </active-route>
+    <active-route>
+      <description>Description Route_01-01</description>
+      <name>Route_01-01</name>
+      <route-type>open</route-type>
+      <route-gates type="array">
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <environment>
+            <name>Env_01-01</name>
+          </environment>
+        </route-gate>
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">false</different-level-from-previous>
+          <position type="integer">2</position>
+          <environment>
+            <name>Env_01-02</name>
+          </environment>
+        </route-gate>
+      </route-gates>
+    </active-route>
+  </active-routes>
+  <active-business-processes type="array">
+    <active-business-process>
+      <label-color>#F0F8FF</label-color>
+      <name>Process_01-01</name>
+    </active-business-process>
+    <active-business-process>
+      <label-color>#FAEBD7</label-color>
+      <name>Process_01-02</name>
+    </active-business-process>
+  </active-business-processes>
+  <version-tags type="array">
+    <version-tag>
+      <artifact-url>http://something2.com</artifact-url>
+      <name>VerTag_01-02</name>
+      <component-name nil="true"/>
+      <environment-name>Env_01-01</environment-name>
+    </version-tag>
+    <version-tag>
+      <artifact-url>http://something.com</artifact-url>
+      <name>VerTag_01-01</name>
+      <component-name>Comp_01-01</component-name>
+      <environment-name>Env_01-01</environment-name>
+    </version-tag>
+  </version-tags>
+  <application-packages type="array">
+    <application-package>
+      <property-values type="array"/>
+      <package>
+        <name>Package_01-01</name>
+      </package>
+    </application-package>
+    <application-package>
+      <property-values type="array"/>
+      <package>
+        <name>Package_01-02</name>
+      </package>
+    </application-package>
+  </application-packages>
+  <brpm_version>4.6.00</brpm_version>
+</app>
+</app_import>

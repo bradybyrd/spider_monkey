@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "#{@script.class.to_s.humanize} #{@script.name}" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'automation' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <br>
+    <%= render :partial => 'shared_scripts/help', :locals => { :script_type => @script.get_script_type } %>
+  </br>
+<% end %>
+<tr class='no_hover'>
+  <td colspan='5'>
+    <%= form_for :script, @script, :url => shared_scripts_path,:remote => true, :html => { :class => 'basic_form' } do |f| %>
+      <%= f.error_messages %>
+      <%= render :partial => 'shared_scripts/form', :locals => {:script => @script, :f => f} %>
+    <% end %>
+
+  </td>
+</tr>

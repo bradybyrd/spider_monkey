@@ -1,0 +1,50 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='appList'>
+  <table cellspacing='0' padding='0'>
+    <tr>
+      <td colspan='2'>
+        <h3>Edit Applications</h3>
+        <p>By default the user can not see any applications. The user's default role is applied to all visible applications.</p>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align='right' colspan='2'>
+        <p style='text-align:left;'>
+          Select which application will be visible to the user.
+        </p>
+        <div class='scr_div'>
+          <table align='left' class='tablesorter one_column_sorter formatted_table' id='visible_apps'>
+            <thead>
+              <tr>
+                <th class='sortable'><%= link_to "Application" %></th>
+                <th class='sortable'>Visible</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% App.active.name_order.each do |app| %>
+                <tr <%= tag_options({:class => cycle("alt", "")}, false) %>>
+                  <td style='height:20px!important'><%= app.name %></td>
+                  <td style='height:20px!important'><%= check_box_tag "user[visible_apps][]", app.id, false,  { :id => "user_app_#{app.id}", :onchange => "loadAppEnvTable($(this))" } %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div style='margin-top:15px; clear: left; text-align:left;'>
+          <%= link_to_function "Select all", "selectAllapps()" %>
+          |
+          <%= link_to_function "Clear all", "clearAllapps()" %>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div><%= link_to_function "Close application role details", "toggleAppList($(this))", :rel => "Open application role details", :class => "appList" %></div>

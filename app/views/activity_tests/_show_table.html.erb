@@ -1,0 +1,53 @@
+<link rel="STYLESHEET" type="text/css" href="/dhtmlxGrid/codebase/dhtmlxgrid.css">
+<link rel="stylesheet" type="text/css" href="/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_skyblue.css">
+<script  src="/dhtmlxGrid/codebase/dhtmlxcommon.js"></script>
+<script  src="/dhtmlxGrid/codebase/dhtmlxgrid.js"></script>
+<script  src="/dhtmlxGrid/codebase/dhtmlxgridcell.js"></script>
+<script  src="/dhtmlxTreeGrid/codebase/dhtmlxtreegrid.js"></script>
+<script src="/dhtmlxGrid/codebase/ext/dhtmlxgrid_filter.js" type="text/javascript"></script>
+<script src="/dhtmlxTreeGrid/codebase/ext/dhtmlxtreegrid_filter.js" type="text/javascript"></script>
+<script  src="/dhtmlxGrid/codebase/ext/dhtmlxgrid_mcol.js"></script>
+
+<div class="grid-loader"><img src="/images/loader.gif"> Loading...</div>
+<div id="custom_div" style="width:1150px;"><div id="gridbox"></div></div>
+<script>
+mygrid = new dhtmlXGridObject('gridbox');
+mygrid.selMultiRows = true;
+mygrid.enableAutoHeight(true, "800");
+mygrid.imgURL = "/dhtmlxGrid/codebase/imgs/icons_greenfolders/";
+var headers = new Array();
+var col_widths = new Array();
+var col_aligns = new Array();
+var col_types = new Array();
+var col_sortings = new Array();
+var col_filters = new Array();
+var col_searchs = new Array();
+ 
+<% @activity_category.index_columns.each_with_index do |col, idx| %>
+  headers[<%= idx%>] = "<%= col.name.to_s %>";
+  col_widths[<%= idx%>] = headers[<%= idx%>] == "Name" ? 150 : 100;
+  col_aligns[<%= idx%>] = "left";
+  col_types[<%= idx%>] = headers[<%= idx%>] == "Health" ? "img" : "ed";
+  col_sortings[<%= idx%>] = "str";
+  col_filters[<%= idx%>] = "#select_filter";
+  col_searchs[<%= idx%>] = "#text_search";
+<% end %>
+
+mygrid.setHeader("Leading Group ID,"+ headers +",Bottom-up Forecast,&nbsp;,&nbsp;");
+mygrid.setInitWidths("150,"+col_widths+",100,25,25");
+mygrid.setColAlign("left,"+col_aligns+",left,right,left");
+mygrid.setColTypes("tree,"+col_types+",ed,ro,ro");
+mygrid.setColSorting("str,"+col_sortings+",str");
+mygrid.attachHeader("&nbsp;,"+col_filters+",&nbsp;,&nbsp;,&nbsp;");
+mygrid.attachHeader("#text_search,"+col_searchs+",&nbsp;,&nbsp;,&nbsp;");
+mygrid.init();
+mygrid.setSkin("dhx_skyblue");
+mygrid.attachEvent("onXLE", function(grid_obj,count){
+    $('.grid-loader').hide();
+  }); 
+var source = '/activity_tests/31.xml';
+mygrid.loadXML(source);
+	
+</script>
+
+

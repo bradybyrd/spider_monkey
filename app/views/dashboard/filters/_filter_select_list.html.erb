@@ -1,0 +1,25 @@
+<%
+ # #############################################################################
+ # BMC Software, Inc.
+ # Confidential and Proprietary
+ # Copyright (c) BMC Software, Inc. 2001-2012
+ # All Rights Reserved.
+ # #############################################################################
+%>
+
+<div class="selected_values" id="selected_values_<%= filter %>" style="width:100px;">
+  <div class="selected">
+    <%= link_to_function 'add', "return false", 'data-attr-id' => "#{filter}", :class => 'ignore-pending', :id => "f_#{filter}" %>
+  </div>
+</div>
+<div class="values_to_select" id="values_to_select_<%= filter %>" style="display: none">
+  <%= select_tag "filters[#{filter}][]",
+                 local_assigns[:options_from_collection_for_select] ?
+                    options_from_collection_for_select :  options_for_select(filter_options, (filter_selected_values if local_assigns[:filter_selected_values])),
+                 :multiple => true, :size => 5, :style => "width:100px; height:100px;", 'data-attr-id' => "#{filter}"
+  %>
+  <br/>
+  <%= link_to_function 'done', "return false", :class => 'hide ignore-pending filter_done', 'data-attr-id' => filter, :id => "done_#{filter}" %>
+  <%= link_to_function 'cancel', "return false", :style => 'display:none', :class => 'cancel_select filter_cancel_select', 'data-attr-id' => "#{filter}", :id => "cencel_#{filter}" %>
+  <%= link_to_function 'clear', "return false", :class => 'clear filter_clear ignore-pending', 'data-attr-id' => filter, :id => "clear_#{filter}" %>
+</div>

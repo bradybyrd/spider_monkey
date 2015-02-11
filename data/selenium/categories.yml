@@ -1,0 +1,168 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+categories_009: 
+  name: Unknown
+  updated_at: <%= 498180.755869.seconds.ago %>
+  id: 9
+  associated_events: problem_encountered
+  categorized_type: request
+  active: true
+  created_at: <%= 498180.755934.seconds.ago %>
+categories_020: 
+  name: Unknown
+  updated_at: <%= 496387.755966.seconds.ago %>
+  id: 20
+  associated_events: resolve
+  categorized_type: step
+  active: true
+  created_at: <%= 496387.756009.seconds.ago %>
+categories_010: 
+  name: Unknown
+  updated_at: <%= 498163.756038.seconds.ago %>
+  id: 10
+  associated_events: problem
+  categorized_type: step
+  active: true
+  created_at: <%= 498163.75608.seconds.ago %>
+categories_011: 
+  name: Individual resolution - Retry
+  updated_at: <%= 498123.75611.seconds.ago %>
+  id: 11
+  associated_events: resolve
+  categorized_type: request
+  active: true
+  created_at: <%= 498123.756151.seconds.ago %>
+categories_001: 
+  name: Hardware
+  updated_at: <%= 498327.75618.seconds.ago %>
+  id: 1
+  associated_events: problem_encountered
+  categorized_type: request
+  active: true
+  created_at: <%= 498327.756222.seconds.ago %>
+categories_012: 
+  name: Individual resolution - Retry
+  updated_at: <%= 498101.756251.seconds.ago %>
+  id: 12
+  associated_events: resolve
+  categorized_type: step
+  active: true
+  created_at: <%= 498101.756292.seconds.ago %>
+categories_002: 
+  name: Hardware
+  updated_at: <%= 498306.756321.seconds.ago %>
+  id: 2
+  associated_events: problem
+  categorized_type: step
+  active: true
+  created_at: <%= 498306.756362.seconds.ago %>
+categories_013: 
+  name: Assistance required - Development
+  updated_at: <%= 496569.756391.seconds.ago %>
+  id: 13
+  associated_events: resolve
+  categorized_type: request
+  active: true
+  created_at: <%= 496569.756432.seconds.ago %>
+categories_003: 
+  name: Software
+  updated_at: <%= 498282.756462.seconds.ago %>
+  id: 3
+  associated_events: problem_encountered
+  categorized_type: request
+  active: true
+  created_at: <%= 498282.756503.seconds.ago %>
+categories_014: 
+  name: Assistance required - Development
+  updated_at: <%= 496543.756533.seconds.ago %>
+  id: 14
+  associated_events: resolve
+  categorized_type: step
+  active: true
+  created_at: <%= 496543.756574.seconds.ago %>
+categories_004: 
+  name: Software
+  updated_at: <%= 498265.756603.seconds.ago %>
+  id: 4
+  associated_events: problem
+  categorized_type: step
+  active: true
+  created_at: <%= 498265.756645.seconds.ago %>
+categories_015: 
+  name: Assistance required - Infrastructure
+  updated_at: <%= 496523.756674.seconds.ago %>
+  id: 15
+  associated_events: resolve
+  categorized_type: request
+  active: true
+  created_at: <%= 496523.756716.seconds.ago %>
+categories_005: 
+  name: Operations
+  updated_at: <%= 498239.756745.seconds.ago %>
+  id: 5
+  associated_events: problem_encountered
+  categorized_type: request
+  active: true
+  created_at: <%= 498239.756786.seconds.ago %>
+categories_016: 
+  name: Assistance required - Infrastructure
+  updated_at: <%= 496506.756815.seconds.ago %>
+  id: 16
+  associated_events: resolve
+  categorized_type: step
+  active: true
+  created_at: <%= 496506.756856.seconds.ago %>
+categories_006: 
+  name: Operations
+  updated_at: <%= 498226.756886.seconds.ago %>
+  id: 6
+  associated_events: problem
+  categorized_type: step
+  active: true
+  created_at: <%= 498226.756927.seconds.ago %>
+categories_017: 
+  name: Assistance required - Operations
+  updated_at: <%= 496480.756957.seconds.ago %>
+  id: 17
+  associated_events: resolve
+  categorized_type: request
+  active: true
+  created_at: <%= 496480.756998.seconds.ago %>
+categories_007: 
+  name: Infrastructure
+  updated_at: <%= 498208.757028.seconds.ago %>
+  id: 7
+  associated_events: problem_encountered
+  categorized_type: request
+  active: true
+  created_at: <%= 498208.75707.seconds.ago %>
+categories_018: 
+  name: Assistance required - Operations
+  updated_at: <%= 496464.757099.seconds.ago %>
+  id: 18
+  associated_events: resolve
+  categorized_type: step
+  active: true
+  created_at: <%= 496464.757139.seconds.ago %>
+categories_008: 
+  name: Infrastructure
+  updated_at: <%= 498194.757168.seconds.ago %>
+  id: 8
+  associated_events: problem
+  categorized_type: step
+  active: true
+  created_at: <%= 498194.757209.seconds.ago %>
+categories_019: 
+  name: Unknown
+  updated_at: <%= 496403.757238.seconds.ago %>
+  id: 19
+  associated_events: resolve
+  categorized_type: request
+  active: true
+  created_at: <%= 496403.757279.seconds.ago %>

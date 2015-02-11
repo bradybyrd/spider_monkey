@@ -1,0 +1,70 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='wrapper'>
+  <strong>Estimated Stage Transitions</strong>
+  <table cellspacing='0' class='activity_phases'>
+    <% @activity.activity_phases.each do |phase| %>
+      <thead>
+        <tr>
+          <td class='top first last' colspan='7'>
+            <div class='activity_phase field'>
+              <h2><%= "#{h phase.name}:" %></h2>
+              <% if current_user.present? %>
+                <%= date_field_tag "activity[phase_start_dates][#{phase.id}]", @activity.phase_start_date(phase).try(:to_s, :simple), :class => 'persist' %>
+                <% if @activity.phase_start_date(phase) && @activity.phase_end_date(phase) %>
+                  <% if @activity.last_phase_end_on.present? %>
+                    <%= link_to "add end-user deliverable", modify_deliverable_activity_path(@activity, :phase_id => phase, :start_phase => @activity.phase_start_date(phase).strftime('%Y/%m/%d'), :last_phase =>  @activity.last_phase_end_on.strftime('%Y/%m/%d')) ,  :class => "modify_deliverable", :rel => 'facebox' %>
+                  <% else %>
+                    <%= link_to "add end-user deliverable", modify_deliverable_activity_path(@activity, :phase_id => phase, :start_phase => @activity.phase_start_date(phase).strftime('%Y/%m/%d'), :last_phase =>  "") ,  :class => "modify_deliverable", :rel => 'facebox' %>
+                  <% end %>
+                <% else %>
+                  <span class='note modify_deliverable'>Phase needs dates to add deliverables.</span>
+                <% end %>
+              <% else %>
+                <%= @activity.phase_start_date(phase).try(:to_s, :simple) %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      </thead>
+      <% unless @activity.deliverables.on_phase(phase).empty? %>
+        <thead>
+          <tr>
+            <th class='first'>Name</th>
+            <th>Description</th>
+            <th>Projected Delivery</th>
+            <th>Delivered On</th>
+            <th>Delivery Highlights</th>
+            <th class='last'>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render :partial => 'activities/widgets/deliverables/deliverable', :collection => @activity.deliverables.on_phase(phase), :locals => { :phase => phase } %>
+        </tbody>
+      <% end %>
+      <tbody>
+        <tr height='2px'>
+          <td class='top' colspan='7'></td>
+        </tr>
+      </tbody>
+    <% end %>
+    <tr>
+      <td colspan='7'>
+        <div class='activity_phase field'>
+          <label for='activity_last_phase_end_on'>End</label>
+          <% if current_user.present? %>
+            <%= date_field_tag "activity[last_phase_end_on]", @activity.last_phase_end_on.try(:to_s, :simple), :id => 'activity_last_phase_end_on', :class => 'persist' %>
+          <% else %>
+            <%= @activity.last_phase_end_on.try(:to_s, :simple) %>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

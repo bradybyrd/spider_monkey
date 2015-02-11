@@ -1,0 +1,11 @@
+<div id="deployment_window_series_list" class="list">
+  <%= render 'list', scope: :unarchived %>
+</div>
+
+<% if @deployment_window_series.archived.any? %>
+  <h3><%= I18n.t(:archived) %></h3>
+
+  <div id="archived_deployment_window_series_list" class="list">
+    <%= render 'list', scope: :archived %>
+  </div>
+<% end %>

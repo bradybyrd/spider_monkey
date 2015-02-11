@@ -1,0 +1,33 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<td colspan="10" class="<%= step.parent ? 'procedure_step_form' : 'step_form' %>">
+  <div style="float:left;">
+	 <% if step.new_record? %>
+	    <%= link_to(image_tag("triangle_unfolded_dark.gif", :alt => "cancel"), add_request_steps_path(request, :is_procedure_step => step.parent.to_bool), :class => "ajax cancel", :style => "border:none;") %>
+	 <% else %>
+	    <%= link_to(image_tag("triangle_unfolded_dark.gif", :alt => "cancel"), abstract_request_step_path(step.request, step), :class => 'replace_row', :style => "border:none;") %>
+	 <% end %>
+  </div>
+  <h3>&nbsp;&nbsp;<%= step_form_header(step) %></h3>
+  <%= form_for [request, step], :html => {:id => "new_step_form", :multipart => true} do |f| %>
+    <%= render :partial => 'steps/step_rows/form_for_pdf.html', :locals => { :request => request, :step => step, :f => f } %>
+  <% end %>
+
+  <%= form_tag update_script_request_steps_path(request), :method => :post, :id => "#{dom_id(step)}_update_script", :class => "step_update_script" do %>
+		<div id="script_hidden_fields">
+    	<%= hidden_field_tag 'bladelogic_script_id', '', :class => "BladelogicScript_hidden" %>
+    	<%= hidden_field_tag 'capistrano_script_id', '', :class => "CapistranoScript_hidden" %>
+    	<%= hidden_field_tag 'hudson_script_id', '', :class => "HudsonScript_hidden" %>
+		</div>
+    <%= hidden_field_tag 'step_owner_id' %>
+    <%= hidden_field_tag 'step_owner_type' %>
+    <%= hidden_field_tag 'id', step.id %>
+    <%= hidden_field_tag 'component_id' %>
+  <% end %>
+</td>

@@ -1,0 +1,43 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% draw_tabs :selected => selected, :only_ul => local_assigns[:only_ul] ? only_ul : nil, :ul_class => local_assigns[:ul_class] ? ul_class : nil do %>
+    <% if can?(:list, Property.new) %>
+        <%= sub_tab I18n.t(:'property.properties'), :path => properties_path, :controller => 'properties', :right => true %>
+    <% end %>
+
+    <% if can?(:view, :server_tabs) %>
+      <%= sub_tab "Servers", path: servers_tab_path %>
+    <% end %>
+
+    <% if can?(:list, Component.new) %>
+        <%= sub_tab I18n.t(:'component.components') %>
+    <% end %>
+
+    <% if can?(:list, Package.new) %>
+      <%= sub_tab "Packages" %>
+    <% end %>
+
+    <% if can?(:list, Environment.new) %>
+        <%= sub_tab I18n.t(:'environment.environments') %>
+    <% end %>
+
+    <% if GlobalSettings.automation_enabled? %>
+      <%= sub_tab("Automation",:path => automation_scripts_path) if can?(:list, :automation) %>
+    <% end %>
+
+    <% if GlobalSettings.bladelogic_enabled? %>
+      <%= sub_tab "BMC BladeLogic", :path => bladelogic_path if can?(:list, :automation) %>
+    <% end %>
+
+    <% if can?(:access, :metadata) %>
+      <%= sub_tab "Metadata", :path => manage_metadata_path %>
+    <% end %>
+
+    <%= plugin_tabs %>
+<% end %>

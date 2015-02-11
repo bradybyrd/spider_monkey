@@ -1,0 +1,11 @@
+<% obj_name = ActiveModel::Naming.param_key(@step) %>
+<% builder_obj = instantiate_builder(obj_name, @step, {}) %>
+<% @disable_fields = disable_all_form_fields(@step) %>
+<% if params[:li_id].eql?('st_automation') %>
+<%= render 'steps/step_form_tabs/automation',
+  :f => builder_obj,
+  :request => @request,
+  :step => @step,
+  :disable_fields => @disable_fields
+%>
+<% end %>

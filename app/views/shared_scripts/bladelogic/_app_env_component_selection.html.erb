@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='field'>
+  <label for='app_id'>Application</label>
+  <%= select_tag 'app_id', raw("<option></option> #{options_from_collection_for_select(App.active.name_order, :id, :name)}") %>
+</div>
+<div class='field'>
+  <label for='app_env_id'>Environment</label>
+  <%= select_tag 'app_env_id', [], :class => 'use_remote_options', :rel => 'app_id' %>
+  <%= hidden_field_tag 'app_env_id_url', app_env_remote_options_shared_scripts_path %>
+</div>
+<div class='field'>
+  <label for='component_id'>Component</label>
+  <%= select_tag 'installed_component_id', [], :class => 'use_remote_options get_mapped_values', :rel => 'app_env_id' %>
+  <%= hidden_field_tag 'installed_component_id_url', installed_component_remote_options_shared_scripts_path %>
+</div>
+<%= hidden_field_tag 'mapped_values_url', default_values_from_properties_shared_script_path(@script) %>

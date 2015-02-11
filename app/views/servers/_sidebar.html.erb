@@ -1,0 +1,25 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% content_for :sidebar do %>
+  <% if can?(:create, Server.new) %>
+    <p><%= link_to image_tag("create_server.png"), new_server_path(:page => params[:page], :key => params[:key]) %></p>
+  <% end %>
+
+  <% if can?(:create, ServerLevel.new) %>
+    <p><%= link_to image_tag("create_server_level.png"), new_server_level_path(:page => params[:page], :key => params[:key]), :rel => 'facebox' %></p>
+  <% end %>
+
+  <% if can?(:create, ServerGroup.new) %>
+    <p><%= link_to image_tag("create_server_group.png"), new_server_group_path(:page => params[:page], :key => params[:key]), :class => "ajax" %></p>
+  <% end %>
+
+  <% if can? :create, ServerAspectGroup.new %>
+    <p><%= link_to image_tag("create_server_level_group.png"), new_server_aspect_group_path(:page => params[:page], :key => params[:key]), :class => "ajax" %></p>
+  <% end %>
+<% end %>

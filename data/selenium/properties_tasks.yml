@@ -1,0 +1,47 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+properties_tasks_003: 
+  task_id: 1
+  property_id: 20
+properties_tasks_004: 
+  task_id: 14
+  property_id: 88
+properties_tasks_005: 
+  task_id: 2
+  property_id: 20
+properties_tasks_006: 
+  task_id: 14
+  property_id: 41
+properties_tasks_007: 
+  task_id: 17
+  property_id: 42
+properties_tasks_008: 
+  task_id: 2
+  property_id: 39
+properties_tasks_009: 
+  task_id: 1
+  property_id: 87
+properties_tasks_010: 
+  task_id: 20
+  property_id: 66
+properties_tasks_011: 
+  task_id: 20
+  property_id: 67
+properties_tasks_001: 
+  task_id: 3
+  property_id: 87
+properties_tasks_012: 
+  task_id: 20
+  property_id: 46
+properties_tasks_002: 
+  task_id: 1
+  property_id: 21
+properties_tasks_013: 
+  task_id: 27
+  property_id: 69

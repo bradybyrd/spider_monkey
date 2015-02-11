@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+DeployTime, Week
+<% @data.each do |deploy_time, week| -%>
+<% next if number_with_precision(deploy_time, 2).to_f.zero? -%>
+<%= number_with_precision(deploy_time, 2) %>, <%= week %>
+<% end -%>
+2.25, 20
+2.5, 20
+8.5, 19
+4.0, 21
+2.75, 21
+3.25, 20
+4.5, 20
+7.5, 20
+3.25, 21
+2.25, 21
+2.5, 20
+3.25, 20
+4.5, 20
+7.5, 20
+3.25, 21
+2.25, 21
+2.5, 20

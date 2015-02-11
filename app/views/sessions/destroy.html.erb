@@ -1,0 +1,43 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'You have been logged out', :heading => 'Logout' %>
+<%= flash_div :success, :error %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<br>
+<br>
+<br>
+<table>
+  <% if GlobalSettings.cas_enabled? %>
+    <tr <%= tag_options({:height => 100}, false) %>>
+      <td <%= tag_options({:colspan => "2", :style=>"font-size:12px;color:#000;font-weight:bold;"}, false) %>>
+        CAS Authentication is enabled, click below to logout from CAS
+        <br>
+        <br>
+        <%= link_to 'CAS logout', cas_logout_path, :style =>"color:#000" %>
+      </td>
+    </tr>
+  <% end %>
+  <% if @sso_enabled %>
+    <tr <%= tag_options({:height => 100}, false) %>>
+      <td <%= tag_options({:colspan => "2", :style=>"font-size:12px;color:#000;font-weight:bold;"}, false) %>>
+        Single Sign-On Authentication is enabled
+        <br>
+        You have been logged out of
+        <%= application_name_for_view %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% if @sso_enabled || GlobalSettings.cas_enabled? %>
+  <center>
+    <b>You have been logged out. Please close your browser window.</b>
+  </center>
+<% end %>

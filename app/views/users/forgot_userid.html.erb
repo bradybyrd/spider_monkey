@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%# This might be a candidate for deletion. %>
+<% page_settings :title => 'Forgot User ID', :heading => 'Forgot User ID' %>
+<img alt='Please login to BMC Release Process Management' class='bmcLogin' src='images/Login_background.gif'>
+<div style='float:left;'>
+  <div id='errorExplanation' style='display:none;'>
+    <div id='errors'></div>
+  </div>
+  <p class='forgot_userid_message'>
+    We will have you back in to BMC Release Process Management in just a minute.
+    <br>
+    Please enter email address and answer to your security question.
+  </p>
+  <%= form_tag forgot_userid_path, :remote => true, :id => 'login_box', :class => 'loginform'  do %>
+    <div class='field'>
+      <%= label_tag :email_address, "Email Address" %>
+      <%= text_field_tag :email, '', :class => 'initialFocus', :autocomplete => 'off' %>
+    </div>
+    <div class='field'>
+      <%= label_tag :security_question, t('forgot_userid.security_question') %>
+      <span id='question'>
+        Provide email to see security question
+      </span>
+    </div>
+    <div class='field'>
+      <%= label_tag :answer %>
+      <%= text_field_tag :answer %>
+    </div>
+    <div class='field submit clear'>
+      <label>&nbsp;</label>
+      <%= submit_tag "Send",:class =>'button' %>
+      or
+      <%= link_to "Cancel", login_path,:style => "color: #FFF !important;" %>
+    </div>
+  <% end %>
+
+</div>
+<div style='clear:both;'></div>

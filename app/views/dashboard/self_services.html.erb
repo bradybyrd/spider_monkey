@@ -1,0 +1,63 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings title: @request_dashboard[:title] %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'self_services', 'dashboard', 'request' %>
+  <%= static_javascript_include_tag 'self_services', 'dashboard', 'promotions' %>
+<% end %>
+<%= hidden_field_tag 'default_tab_field', "#{current_user.default_tab.try(:tab_name)}" %>
+<% content_for :sidebar do %>
+  <div id='recent_activities_container'></div>
+  <div class='section request_buttons'>
+
+    <% if @request_dashboard[:view_my_requests] %>
+      <% if @request_dashboard[:can_create_requests] %>
+        <p class='self_p'>
+          <%= link_to image_tag('btn-create.png'), new_request_path %>
+        </p>
+        <hr/>
+      <% end %>
+      <span id="inbound_outbound_request_links"><%= render partial: 'dashboard/self_services/requests_stats' %></span>
+    <% end %>
+
+    <div class='users_online' id='users_online'><%= render partial: 'users/online_users' %></div>
+  </div>
+<% end %>
+
+<% if @request_dashboard[:view_my_applications] || @request_dashboard[:view_my_environments] ||
+    @request_dashboard[:view_my_servers]
+%>
+  <ul class='my_dashboard_tabs app_env_srvr'>
+    <% if @request_dashboard[:view_my_applications] %>
+      <li tab='my_applications'><%= link_to_function 'My Applications', nil %></li>
+    <% end %>
+
+    <% if @request_dashboard[:view_my_environments] %>
+      <li tab='my_environments'><%= link_to_function 'My Environments', nil %></li>
+    <% end %>
+
+    <% if @request_dashboard[:view_my_servers] %>
+      <li tab='my_servers'><%= link_to_function 'My Servers', nil %></li>
+    <% end %>
+  </ul>
+  <div class='app_env_srvr_content'></div>
+<% end %>
+
+
+<% if @request_dashboard[:view_my_requests] %>
+  <%= form_tag root_path, class: 'searchform', method: :get do %>
+    <%= text_field_tag :q, params[:q], class: 'searchbox' %>
+    <%= submit_tag 'Search', class: 'searchButton' %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'dashboard/self_services/tabs' %>
+
+<%= javascript_tag('loadRecentActivities()') %>
+<%= javascript_tag('updateRecentActivities()') %>

@@ -1,0 +1,6 @@
+page.replace_html 'error_messages', ''
+page.replace_html 'packageTemplates', :partial => 'package_templates/templates'
+page << "insertPktiEditForm('#{@package_template.id}');"
+page.replace_html "editPackageTemplate_#{@package_template.id}", :partial => 'package_templates/edit'
+page << "$('#add_new_package_template_item').show();"
+page << close_facebox

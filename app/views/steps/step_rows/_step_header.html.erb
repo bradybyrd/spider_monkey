@@ -1,0 +1,183 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<%
+   request_editable    = @request_editable_by_user
+   request_holden      = request.hold?
+   step_manageable     = @can_run_step
+   step_cached_permissions = {}
+   step_cached_permissions[:can_edit_step] = @can_edit_step unless @can_edit_step.nil?
+   step_cached_permissions[:request_available_for_user] = @request_available_for_user unless @request_available_for_user.nil?
+   step_editable       = step.editable_by?(current_user, request, step_cached_permissions)
+   step_position       ||= step.position
+   targeted_servers    = step.targeted_servers
+   server_names        = targeted_servers.empty? ? step_header['server'].join(', ') : targeted_servers.map { |s| s.name }.join(', ')
+   step_class_cached_permissions = {}
+   step_class_cached_permissions[:can_run_step] = @can_run_step unless @can_run_step.nil?
+   step_class_cached_permissions[:step_editable] = step_editable unless step_editable.nil?
+%>
+<%# cache(step_cache_key) do %>
+
+<tr id="step_<%= step.id %>_<%= step.position %>_heading"
+    class="<%= step_error_package(step, available_package_ids) %>
+    <%= step_row_class(step, nil, invalid_component, request, step_class_cached_permissions) %>">
+  <% if request_holden %>
+      <% step_class = 'padding-left:20px; padding-right:0px !important; text-align:center; margin-right:4px;' %>
+  <% else %>
+      <% step_class = '' %>
+  <% end %>
+  <td class="step_position first <%= switch_class_hold_step(request) %>" style="<%= step_class %>" title="<%= 'This step is protected' if step.protected? %>">
+    <%= check_box_tag "#{dom_id(step)}_select", step.id, params[:apply_action].present?,
+                      class: "select_step #{step.should_execute? ? 'ON' : 'OFF'} #{request_editable ? '' : 'dn'}"
+    %>
+
+    <div class="step_numbers_p">
+      <%= step_position %>
+    </div>
+
+    <% if request_holden %>
+        <span class="state" style="padding-top:2px !important;padding-bottom:2px !important;"> <%= 'On Hold' %></span>
+    <% end %>
+  </td>
+
+  <td class="status">
+    <div class="<%= dom_id(step) %> inline_tiny_step_buttons">
+      <%= form_tag abstract_update_status_request_step_path(request, step) do %>
+          <%= render 'steps/step_rows/status_buttons', unfolded_steps: true, step: step, request: request %>
+      <% end %>
+    </div>
+  </td>
+
+  <td class="step_name">
+    <strong><%= ensure_space h(truncate(step.name, length: 60, omission: '...')) %></strong>
+  </td>
+  <% if defined?(step_preferences) && !step_preferences.blank? %>
+      <% step_preferences.each do |sp| %>
+          <% step_pref = sp.step_preference_label %>
+          <% if step_pref == 'components' %>
+              <td>
+                <%= step.decorate.component_name_formatted %>
+              </td>
+          <% elsif step_pref == 'servers' %>
+              <td title='<%= server_names %>'>
+                <%= truncate(ensure_space(server_names), length: 14).html_safe %>
+              </td>
+          <% elsif step_pref == 'task'
+              task_val = task_column_value(step, step_header)
+              title_val = task_column_title(step, task_val) %>
+              <td title="<%= title_val if title_val %>" class="task">
+                <%= (ensure_space h(truncate(task_val, :length => 15))).html_safe %>
+              </td>
+          <% elsif step_pref == 'est' %>
+              <td>
+                <%= h step.estimate %>
+              </td>
+          <% elsif step_pref == 'assigned_to' %>
+              <td>
+          <span class='step_owner' different_level_from_previous="<%= step.different_level_from_previous %>">
+            <% if step.manual? %>
+              <%= h step_header['assigned_to'] %>
+            <% else %>
+              Automatic
+            <% end %>
+          </span>
+              </td>
+          <% elsif step_pref == 'version' %>
+              <td>
+                <%= (ensure_space step.version_name).html_safe %>
+              </td>
+          <% end %>
+      <% end %>
+  <% else %>
+      <td>
+        <%= step.decorate.component_name_formatted %>
+      </td>
+
+      <td title='<%= server_names %>' class="truncated" style="max-width: 100px;">
+        <%= ensure_space(server_names).html_safe %>
+      </td>
+      <%
+        task_val = task_column_value(step, step_header)
+        title_val = task_column_title(step, task_val) %>
+      <td title="<%= title_val if title_val %>" class="task">
+        <%= (ensure_space h(truncate(task_val, :length => 15))).html_safe %>
+      </td>
+      <td>
+        <%= h step.estimate %>
+      </td>
+      <td>
+        <span class='step_owner' different_level_from_previous="<%= step.different_level_from_previous %>">
+            <% if step.manual? %>
+                <%= h step_header['assigned_to'] %>
+            <% else %>
+                Automatic
+            <% end %>
+        </span>
+      </td>
+      <td>
+        <%= (ensure_space step.version_name).html_safe %>
+      </td>
+  <% end %>
+  <td class="last">
+    <%= hidden_field_tag "step_#{step.id}_#{step.position}_edit_path", abstract_edit_request_step_path(request, step) %>
+
+    <% if step.resettable_by?(current_user) && @can_reset_step %>
+        <%= form_tag abstract_update_status_request_step_path(request, step), class: 'spinner reset_step' do %>
+            <%= hidden_field_tag 'reset.x', true %>
+            <%= image_submit_tag 'reset-icon-button.png', class: 'button_action', title: 'Reset' %>
+        <% end %>
+    <% end %>
+
+    <% if step_editable %>
+        <%if @can_edit_step %>
+            <%= link_to image_tag('editIcon.gif', alt: 'Edit'), edit_request_step_path(request, step), rel: 'facebox',
+                        title: 'Edit', class: 'step_editable_link' %>
+        <% elsif @can_inspect_steps %>
+            <%= link_to image_tag('editIcon.gif', alt: 'Edit'), get_section_request_step_path(request, step),
+                        rel: 'facebox', title: 'Edit', class: 'step_editable_link' %>
+        <% end %>
+
+        <% if !step.protected? && @can_delete_steps %>
+            <%= form_for step, as: :step, url: abstract_request_step_path(request, step),
+                         html: {method: :delete, class: 'inline'} do %>
+              <%= image_submit_tag 'bin_empty.png', alt: 'delete', id: "delete-#{request.id}-#{step.id}",
+                                   onclick: "return can_delete_step(#{step.id});",
+                                   title: 'This action will delete this step from current request' %>
+            <% end %>
+        <% end %>
+    <% elsif @can_inspect_steps %>
+        <%= link_to image_tag('editIcon.gif', alt: 'Edit'), get_section_request_step_path(request, step),
+                    rel: 'facebox', title: 'Edit', class: 'step_editable_link' %>
+    <% end %>
+
+    <% if @can_turn_on_off_steps %>
+        <% if request.started? %>
+            <%= link_to_on_off_step(step, true) %>
+        <% else %>
+            <%= form_for step, url: update_should_execute_request_step_path(request, step),
+                         html: {method: :put, class: 'inline no_submit'} do |f| %>
+                <%= link_to_on_off_step(step, false) %>
+                <%= f.check_box :should_execute, id: "#{dom_id(step)}_should_execute", class: 'step_should_execute', style: 'display:none;' %>
+            <% end -%>
+        <% end -%>
+    <% end %>
+
+    <% if step_manageable && !step.script.nil? && !request.started? -%>
+        <%= form_for step, url: run_now_request_step_path(request, step), html: {method: :put, class: 'inline no_submit'} do |f| %>
+            <%= link_to_function(image_tag('icons/script_go.png', alt: 'run script'),
+                                 'change_run_now_status($(this))', id: "#{dom_id(step)}_run_now", class: 'RUN',
+                                 title: 'run step now')
+            %>
+            <%= f.check_box :run_now, id: "#{dom_id(step)}_run_now", class: 'step_should_execute', style: 'display:none;' %>
+        <% end -%>
+    <% end -%>
+  </td>
+</tr>
+<span class="dummy_span"></span>
+
+<%# end %>

@@ -1,0 +1,40 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= javascript_include_tag "app_test_env_component_selection" %>
+<div class='field'>
+  <label for='app_id'>Application</label>
+  <%= select_tag 'app_id', raw("<option></option> #{options_from_collection_for_select(App.active.name_order, :id, :name)}") %>
+</div>
+<div class='field'>
+  <label for='app_env_id'>Environment</label>
+  <%= select_tag 'app_env_id', [], :class => 'use_remote_options', :rel => 'app_id' %>
+  <%= hidden_field_tag 'app_env_id_url', app_env_remote_options_scripts_path %>
+</div>
+<div class='field'>
+  <label for='step_related_object_type'>Type</label>
+  <%= select_tag 'step_related_object_type', raw("#{options_for_select(%w(Component Package))}") %>
+</div>
+<div class='field' id="component_group">
+  <label for='component_id'>Component</label>
+  <%= select_tag 'installed_component_id', [], :class => 'use_remote_options get_mapped_values', :rel => 'app_env_id' %>
+  <%= hidden_field_tag 'installed_component_id_url', installed_component_remote_options_scripts_path %>
+</div>
+<div id="package_group" style="display:none">
+<div class='field'>
+  <label for='package_id'>Package</label>
+  <%= select_tag 'package_id', [], :class => 'use_remote_options get_mapped_values', :rel => 'app_env_id' %>
+  <%= hidden_field_tag 'package_id_url', package_remote_options_scripts_path %>
+</div>
+<div class='field'>
+  <label for='package_instance_id'>Instance</label>
+  <%= select_tag 'package_instance_id', [], :class => 'use_remote_options get_mapped_values', :rel => 'package_id' %>
+  <%= hidden_field_tag 'package_instance_id_url', package_instance_remote_options_scripts_path %>
+</div>
+</div>
+<%= hidden_field_tag 'mapped_values_url', default_values_from_properties_script_path(@script) %>

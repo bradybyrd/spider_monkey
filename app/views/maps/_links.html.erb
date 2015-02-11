@@ -1,0 +1,41 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<ul class="side_links">
+  <% if can? :view, :component_versions_map %>
+    <li>
+      <%= link_to "Component Versions Map by Application", versions_by_app_maps_path, :class => current_report?(:and => action_name == "versions_by_app")  %>
+      <br />
+    </li>
+  <% end %>
+  <% if can? :view, :properties_map %>
+    <li>
+      <%= link_to "Properties Map by Environment/Application", properties_maps_path, :class => current_report?(:and => action_name == "properties") %>
+      <br />
+    </li>
+  <% end %>
+  <% if can? :view, :servers_map_by_app %>
+    <li>
+      <%= link_to "Servers Map by Application", servers_by_app_maps_path, :class => current_report?(:and => action_name == "servers_by_app") %>
+      <br />
+    </li>
+  <% end %>
+  <% if can? :view, :server_map %>
+    <li>
+      <%= link_to "Servers Map", servers_maps_path, :class => current_report?(:and => action_name == "servers") %>
+      <br />
+    </li>
+  <% end %>
+  <% if can? :view, :app_component_summary_map %>
+    <li>
+      <%= link_to "Application Component Summary", application_component_summary_maps_path, :class => current_report?(:and => action_name == "application_component_summary") %>
+      <br />
+    </li>
+  <% end %>
+</ul>
+

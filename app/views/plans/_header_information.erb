@@ -1,0 +1,72 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @plan.archived?%>
+  <h3 class="warning-message">
+    <span>Warning:</span>
+    <%= t :archived_plan_message %>
+  </h3>
+
+<% end %>
+<div class='request cssform'>
+  <div class='contentCol1'>
+    <div class='field'>
+      <label>Status</label>
+      <%= status_label(@plan) %>
+    </div>
+    <div class='field'>
+      <label>Release Manager</label>
+      <%= ensure_string(@plan.release_manager.try(:name_for_index), "-") %>
+    </div>
+    <div class='field'>
+      <label>Teams</label>
+      <%= ensure_string(@plan.teams.map(&:name).sort.to_sentence, "-") %>
+    </div>
+    <div class='field' <%= tag_options({:title => ensure_string(@plan.try(:description), "-")}, false) %>>
+      <label>Release Description</label>
+      <%= truncate(ensure_string(@plan.try(:description), "-"), :length => 50) %>
+    </div>
+    <div class='field'>
+      <label>Applications</label>
+      <div id="dates_div_show">
+        <%= render :partial => "plans/env_app_dates" %>
+      </div>
+    </div>
+    <div class='field'>
+      <% unless read_only %>
+        <% if can? :edit, @plan %>
+          <%= link_to "Edit Plan Details", edit_plan_path(@plan, :selected => selected), :rel => "facebox[.plan_edit_facebox]", :class => "link_life_details" %>
+        <% end %>
+      <% end %>
+    </div>
+    <p>&nbsp;</p>
+  </div>
+  <div class='contentCol2'>
+    <div class='field'>
+      <label>Release Tag</label>
+      <%= ensure_string(@plan.release.try(:name), "-") %>
+    </div>
+    <div class='field'>
+      <label>Release Date</label>
+      <%= ensure_string(@plan.release_date.try(:default_format_date), "-") %>
+    </div>
+    <div class='field'>
+      <label>Foreign Id</label>
+      <%= ensure_string(@plan.foreign_id, "-") %>
+    </div>
+    <div class='field'>
+      <label>Project Server</label>
+      <%= ensure_string(@plan.project_server.try(:name), "-") %>
+    </div>
+    <div class='field'>
+      <label>Stage Dates</label>
+      <%= render :partial => "plans/stage_dates" %>
+    </div>
+  </div>
+</div>
+<div class='cls'></div>

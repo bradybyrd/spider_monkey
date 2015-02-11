@@ -1,0 +1,47 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+#facebox div.multiple_submits
+ { position: absolute; right: 18px; bottom:10px!important;  }
+.sessions input[type=text], .sessions input[type=password] { width:160px!important;}
+.sessions .field{ margin-bottom:8px}
+.edit_user input[type='text'] { width:200px!important}
+.new_user input[type='text'], .edit_user input[type='text'] { width:200px!important}
+.add_proc_table td input[type=submit] { margin-top:15px!important;}
+.uploads_fl_wrap { max-height:91px!important; }
+ul.userMenu
+{
+    background: url(<%= asset_path 'banner/user_menu_background.gif' %>) 170px  0 no-repeat!important;
+}
+
+/*This is to solve the IE9 hover bug for containers having fixed width and  auto scroll turned on  with
+hover elements within.The strange behaviour is to expand the container on hover destroying layout completely.
+*/
+.cont_horizontal_scroll
+{
+    min-height:0%
+}
+
+#loginCredentials p{
+    padding-top: 30px;
+}
+
+.forgot_password_username
+{
+    margin: -5px 0 -25px 115px!important;
+}
+
+.Right{width: 18.5%}
+
+
+#apps_view
+{
+    padding-bottom: 20px;
+    overflow-y:none!important;
+}
+#Wrapper{
+  background : none !important;
+}/*  Fix applied against defect DE76334. There are some css overlapped on the wrapper div. I wasn't able to identify specific case but giving importance to background of wrapper class, fixes the issue. - RF*/

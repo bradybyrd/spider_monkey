@@ -1,0 +1,49 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<table <%= tag_options({cellspacing: '0', style: 'border:1px solid #000000', class: 'user_role_list_by_app'}, false) %>>
+  <thead>
+  <tr>
+    <th><%= I18n.t(:'table.groups') %></th>
+    <% environments.each do |env| %>
+        <th><%= env.name %></th>
+    <% end %>
+  </tr>
+  </thead>
+
+  <tbody class="team_applications">
+  <% team.groups.each do |group| %>
+      <tr>
+        <td title="<%= group.name %>"><%= truncate(group.name, length: 40) %></td>
+        <% environments.each do |env| %>
+            <td>
+              <%
+                 roles                      = group.roles.collect{ |r| [r.name, r.id] }
+                 team_group_id              = data[:team_group].detect{|tg| tg.group_id == group.id}.id
+                 application_environment_id = data[:application_environment].detect{|ae| ae.environment_id == env.id}.id
+                 selected                   = data[:selected_per_app_env_roles].detect{|r| r.team_group_id == team_group_id &&
+                         r.application_environment_id == application_environment_id}
+
+              %>
+              <%= select_tag "app_roles[#{app.id}][#{env.id}][#{group.id}]",
+                             options_for_select(roles, selected.present? ? selected.role_id : false),
+                             class: 'role_in_app_list',
+                             data: {
+                                     app_id: app.id,
+                                     team_group_id: team_group_id,
+                                     application_environment_id: application_environment_id
+                             },
+                             prompt: 'All Roles',
+                             disabled: team.inactive?
+              %>
+            </td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

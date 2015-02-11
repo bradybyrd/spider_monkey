@@ -1,0 +1,51 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<% unless script.class == BladelogicScript %>
+    <h3>
+      <%#= script.get_script_type.humanize %>
+      <span class="script_automation_type"></span>
+      Integration Settings
+      <span><%= link_to_function "(#{script.new_record? ? "hide" : "show"})", "toggleSection($(this))", :rel => "(#{script.new_record? ? "show" : "hide"})", :class => "integration_header" %></span>
+    </h3>
+    <div id='integration_header' <%= tag_options({:style => "display: #{script.new_record? ? "block" : "none"};"}, false) %>>
+      <% if script.automation_category == "Hudson/Jenkins" || script.new_record? %>
+        <p class='helper_text hudson_content'>
+          Hudson integration parameters allow BMC Release Process Management to query the CI server and list the available jobs.
+          <br>
+          You can choose to insert custom job build parameters into your script.
+        </p>
+      <% end %>
+      <div class='field'>
+        <% unless f.object.new_record? %>
+          <% f.object.template_script = "#{f.object.template_script_type}_#{f.object.template_script_id}" %>
+        <% end %>
+        <%= label_tag "Apply template:" %>
+        <span class="apply_template_section">
+          <% unless script.new_record? %>
+            <%= select :script, "template_script", Script.tagged_as_template(script.automation_category, script.automation_type).collect{|s| [s.name, "#{script.automation_category}Script_#{s.id}"]}, :include_blank => "Select" %>
+          <% end %>
+        </span>        
+        Use a template script as a basis for this one.
+      </div>
+      <div class='field'>
+        <%= f.label :integration_id, "#{script.get_script_type.humanize} integration server:" %>
+        <span class="integration_server_section">
+          <% unless script.new_record? %>
+            <%= f.select :integration_id, ProjectServer.select_list(script.get_script_type), :include_blank => "Select" %>          
+          <% end %>
+        </span>        
+      </div>
+    </div>
+  <br/>
+  <% if script.new_record? %>
+    <%= javascript_tag( "display_apply_template_section( $('#script_automation_category').val(), #{script.to_json}, $('#script_automation_type').val() );" )  %>
+    <%= javascript_tag( "displayScriptForm( $('#script_automation_category').val() );" )  %> 
+    <%= javascript_tag( "createTextAreaWithLines();" ) if script.errors.present? %> 
+  <% end %>
+<% end %>

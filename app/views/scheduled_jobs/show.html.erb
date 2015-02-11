@@ -1,0 +1,41 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Subject:</b>
+  <%= resource_name_with_link(@scheduled_job) %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= @scheduled_job.resource_type %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @scheduled_job.status %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= name_of(@scheduled_job.owner) %>
+</p>
+
+<p>
+  <b>Planned at:</b>
+  <%= @scheduled_job.planned_at %>
+</p>
+
+<p>
+  <b>Log:</b>
+  <%= @scheduled_job.log %>
+</p>
+
+<%= link_to 'Back', scheduled_jobs_path %>

@@ -1,0 +1,487 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <a-sorting-comps type="boolean">false</a-sorting-comps>
+  <a-sorting-envs type="boolean">false</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version>1</app-version>
+  <name>import_app_with_processes</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array">
+    <component>
+      <active type="boolean">true</active>
+      <name>AppContainer</name>
+      <active-properties type="array">
+        <active-property>
+          <active type="boolean">true</active>
+          <default-value>AppContProp1</default-value>
+          <is-private type="boolean" nil="true"/>
+          <name>AppContProp1</name>
+        </active-property>
+      </active-properties>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Apache</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Passenger</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_MySQL</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_RailsApp</name>
+      <active-properties type="array"/>
+    </component>
+  </components>
+  <environments type="array">
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>aws_cloud</name>
+      <active-server-groups type="array"/>
+      <active-environment-servers type="array"/>
+    </environment>
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>closed</deployment-policy>
+      <name>production</name>
+      <environment-type>
+        <description>A default environment type.</description>
+        <label-color>#FF0000</label-color>
+        <name>Production</name>
+        <position type="integer">4</position>
+        <strict type="boolean">false</strict>
+      </environment-type>
+      <active-server-groups type="array">
+        <active-server-group>
+          <active type="boolean">true</active>
+          <description nil="true"/>
+          <name>ServerGroup1</name>
+          <active-servers type="array">
+            <active-server>
+              <active type="boolean">true</active>
+              <dns nil="true"/>
+              <ip-address nil="true"/>
+              <name>server1</name>
+              <os-platform nil="true"/>
+              <properties type="array">
+                <property>
+                  <active type="boolean">true</active>
+                  <default-value>ServerProp1</default-value>
+                  <is-private type="boolean">false</is-private>
+                  <name>ServerProp1</name>
+                </property>
+              </properties>
+              <current-property-values type="array">
+                <current-property-value type="PropertyValue">
+                  <locked type="boolean">false</locked>
+                  <value>ServerProp1-adjusted</value>
+                  <name>ServerProp1</name>
+                </current-property-value>
+              </current-property-values>
+            </active-server>
+            <active-server>
+              <active type="boolean">true</active>
+              <dns>server2.dns.blah</dns>
+              <ip-address nil="true"/>
+              <name>Server2</name>
+              <os-platform>winders</os-platform>
+              <properties type="array">
+                <property>
+                  <active type="boolean">true</active>
+                  <default-value>SomeProperty</default-value>
+                  <is-private type="boolean">false</is-private>
+                  <name>SomeProperty</name>
+                </property>
+              </properties>
+              <current-property-values type="array"/>
+            </active-server>
+          </active-servers>
+        </active-server-group>
+      </active-server-groups>
+      <active-environment-servers type="array">
+        <active-environment-server>
+          <server>
+            <active type="boolean">true</active>
+            <dns nil="true"/>
+            <ip-address nil="true"/>
+            <name>server1</name>
+            <os-platform nil="true"/>
+            <properties type="array">
+              <property>
+                <active type="boolean">true</active>
+                <default-value>ServerProp1</default-value>
+                <is-private type="boolean">false</is-private>
+                <name>ServerProp1</name>
+              </property>
+            </properties>
+            <current-property-values type="array">
+              <current-property-value type="PropertyValue">
+                <locked type="boolean">false</locked>
+                <value>ServerProp1-adjusted</value>
+                <name>ServerProp1</name>
+              </current-property-value>
+            </current-property-values>
+          </server>
+        </active-environment-server>
+        <active-environment-server>
+          <server>
+            <active type="boolean">true</active>
+            <dns nil="true"/>
+            <ip-address nil="true"/>
+            <name>server3</name>
+            <os-platform nil="true"/>
+            <properties type="array"/>
+            <current-property-values type="array">
+              <current-property-value type="PropertyValue">
+                <locked type="boolean">false</locked>
+                <value>ServerProp1-adjusted</value>
+                <name>ServerProp1</name>
+              </current-property-value>
+            </current-property-values>
+          </server>
+        </active-environment-server>
+        <active-environment-server>
+        </active-environment-server>
+      </active-environment-servers>
+    </environment>
+  </environments>
+  <installed-components type="array">
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">4</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_MySQL</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">5</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_RailsApp</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array">
+        <find-property type="PropertyValue">
+          <locked type="boolean">false</locked>
+          <value>AppContProp1-cloud</value>
+          <name>AppContProp1</name>
+        </find-property>
+      </find-properties>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>AppContainer</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">3</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Passenger</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">2</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Apache</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version></version>
+      <find-properties type="array"/>
+      <server-aspects type="array">
+        <server-aspect>
+          <description></description>
+          <name>SL1-Inst1</name>
+          <parent-type>Server</parent-type>
+          <server-level>
+            <description></description>
+            <name>SL1</name>
+            <properties type="array">
+              <property>
+                <active type="boolean">true</active>
+                <default-value>SomeProperty</default-value>
+                <is-private type="boolean">false</is-private>
+                <name>SomeProperty</name>
+              </property>
+            </properties>
+          </server-level>
+          <parent type="Server">
+            <active type="boolean">true</active>
+            <dns nil="true"/>
+            <ip-address nil="true"/>
+            <name>server1</name>
+            <os-platform nil="true"/>
+          </parent>
+          <current-property-values type="array"/>
+        </server-aspect>
+      </server-aspects>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">2</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Apache</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version></version>
+      <find-properties type="array"/>
+      <server-group>
+        <name>ServerGroup1</name>
+      </server-group>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">4</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_MySQL</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version></version>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array">
+        <server-aspect-group>
+          <name>SLGroup1</name>
+          <server-level>
+            <description></description>
+            <name>SL1</name>
+            <properties type="array">
+              <property>
+                <active type="boolean">true</active>
+                <default-value>SomeProperty</default-value>
+                <is-private type="boolean">false</is-private>
+                <name>SomeProperty</name>
+              </property>
+            </properties>
+          </server-level>
+          <server-aspects type="array">
+            <server-aspect>
+              <description></description>
+              <name>SL1-Inst1</name>
+              <parent-type>Server</parent-type>
+              <parent type="Server">
+                <active type="boolean">true</active>
+                <dns nil="true"/>
+                <ip-address nil="true"/>
+                <name>server1</name>
+                <os-platform nil="true"/>
+              </parent>
+              <current-property-values type="array"/>
+            </server-aspect>
+            <server-aspect>
+              <description></description>
+              <name>SL2</name>
+              <parent-type>ServerGroup</parent-type>
+              <parent type="ServerGroup">
+                <active type="boolean">true</active>
+                <description nil="true"/>
+                <name>ServerGroup1</name>
+              </parent>
+              <current-property-values type="array">
+                <current-property-value type="PropertyValue">
+                  <locked type="boolean">false</locked>
+                  <value nil="true"/>
+                  <name>SomeProperty</name>
+                </current-property-value>
+              </current-property-values>
+            </server-aspect>
+          </server-aspects>
+        </server-aspect-group>
+      </server-aspect-groups>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">5</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_RailsApp</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+      <servers type="array"/>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version></version>
+      <find-properties type="array">
+        <find-property type="PropertyValue">
+          <locked type="boolean">false</locked>
+          <value>AppContProp1-prod</value>
+          <name>AppContProp1</name>
+        </find-property>
+      </find-properties>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>AppContainer</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+      <servers type="array">
+        <server>
+          <name>server1</name>
+        </server>
+        <server>
+          <name>server3</name>
+        </server>
+      </servers>
+    </installed-component>
+  </installed-components>
+  <active-routes type="array">
+  <active-route>
+      <description>i have no gates</description>
+      <name>nogate</name>
+      <route-type>open</route-type>
+      <route-gates type="array"/>
+    </active-route>
+    <active-route>
+      <description>first route</description>
+      <name>route1</name>
+      <route-type>open</route-type>
+      <route-gates type="array">
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <environment>
+            <name>production</name>
+          </environment>
+        </route-gate>
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">false</different-level-from-previous>
+          <position type="integer">2</position>
+          <environment>
+            <name>aws_cloud</name>
+          </environment>
+        </route-gate>
+      </route-gates>
+    </active-route>
+    <active-route>
+      <description>The default route for an application includes all environments and cannot be modified directly.</description>
+      <name>[default]</name>
+      <route-type>open</route-type>
+      <route-gates type="array">
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <environment>
+            <name>aws_cloud</name>
+          </environment>
+        </route-gate>
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">2</position>
+          <environment>
+            <name>production</name>
+          </environment>
+        </route-gate>
+      </route-gates>
+    </active-route>
+  </active-routes>
+  <active-business-processes type="array">
+    <active-business-process>
+      <label-color>#9ACD32</label-color>
+      <name>Test Process</name>
+    </active-business-process>
+  </active-business-processes>
+</app>
+</app_import>

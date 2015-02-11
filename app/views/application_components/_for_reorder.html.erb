@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class="component component_color_1" title="<%= component.name %>">
+  <p><%= truncate(component.name, :length => 12) %></p>
+  
+
+  <!-- form is used for drag and drop components -->
+  <%= form_for [app, component], :url => app_application_component_path(app, component) do |f| %>
+  <% end %>
+</div>
+

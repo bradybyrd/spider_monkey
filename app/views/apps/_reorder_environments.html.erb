@@ -1,0 +1,35 @@
+<div id="environment">
+
+  <div class="subheader">
+    <h2>
+      <%= link_to "Applications", apps_path %> -
+      <%= link_to app.name, edit_app_path(app) %> -
+      Environments
+    </h2>
+    <%= link_to 'done grouping', edit_app_path(app) %>
+  </div>
+
+  <div>
+
+    <div class="environment_level_divider"><p></p></div>
+
+    <% app.each_environment_level do |environment_level, level| %>
+      <div class="environment_level">
+        <div class="level_number"><%= level %></div>
+
+        <% environment_level.each do |environment| %>
+          <%= render :partial => 'application_environments/for_reorder', :locals => { :app => app, :environment => environment } %>
+        <% end %>
+
+      </div>
+
+      <div class="environment_level_divider"><p></p></div>
+    <% end %>
+
+    <div style="clear:both"></div>
+
+  </div>
+</div>
+
+    <%= link_to 'done grouping', edit_app_path(app, :page => params[:page], :key => params[:key]) %>
+

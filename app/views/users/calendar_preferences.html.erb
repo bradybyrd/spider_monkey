@@ -1,0 +1,20 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Calendar Preferences' %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<%= render :partial => "users/profile_tabs",:locals => {:calendar_pref=>'selected'} %>
+<%= form_tag user_calendar_preferences_path do %>
+  <%= render :partial => "users/calendar_preferences", :locals => { :preferences => @user.calendar_preferences, :tbl_object => 'user', :calendar_fields => @calendar_fields} %>
+  <p>
+    <%= submit_tag "Save",:class =>'button' %>
+  </p>
+<% end %>
+

@@ -1,0 +1,13 @@
+# This file is the property of StreamStep, Inc.
+# The contents of this file are covered by Copyright by StreamStep, Inc.
+# Any unauthorized and unlicensed use is strictly prohibited.
+# The software source code can be used only with a valid software license from StreamStep, Inc.
+# In NO WAY is this software open source, free, or in the public domain.
+
+--- 
+development_teams_000002:
+  created_at: 2011-04-29 04:13:51
+  updated_at: 2011-04-29 04:13:51
+  app_id: "0" # For "[default]" App
+  id: "1"
+  team_id: "0" # For "[default]" Team

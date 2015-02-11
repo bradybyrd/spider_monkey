@@ -1,0 +1,1 @@
+require File.join(File.expand_path('../../../config/initializers', __FILE__), 'file_in_utf')

@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr>
+  <td class="topBorder" colspan="2">Last Deploy:</td>
+  <% selected_application_environments.each do |dest| %>
+  <td colspan="2" class="topBorder leftBorder">
+    <% request = Request.functional.last_successful_deploy_for_application_and_environment(selected_app.id, dest.environment_id) %>
+    <% if request %>
+      <%= request.completed_at.default_format %>
+    <% else %>
+      Never
+    <% end %>
+  </td>
+  <% end %>
+</tr>

@@ -1,0 +1,3 @@
+$("#saved_query_selector").html("<%= escape_javascript(render(:partial => 'tickets/saved_query_selector', :locals => { :saved_queries => saved_queries, :plan => plan })) %>");
+$("#select_tickets_table").html("<%= escape_javascript(render(:partial => 'tickets/filter_results_table', :locals => { :external_script_output => external_script_output, :project_server_id => project_server_id})) %>");
+

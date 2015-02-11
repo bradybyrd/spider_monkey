@@ -1,0 +1,6 @@
+ul
+  - roles.each do |role|
+    li
+      = role.name
+      - if role.description.present?
+        = ' - ' + role.description

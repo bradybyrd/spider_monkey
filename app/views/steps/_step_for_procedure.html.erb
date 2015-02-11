@@ -1,0 +1,99 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr id="step_<%= step.id %>_<%= step.position %>_heading"
+class="<%= step_error_class(step) %> <%= step_row_class step, local_assigns[:unfolded], invalid_component %> listable"
+data-collapse-child-filter=":not('.last')"<%= "data-parent-id=#{step.parent_id}" if step.parent %>
+data-section-url="<%= get_procedure_step_section_procedure_path(step, preview: 'yes') %>"
+ data-extra-toggle-selector=".tiny_step_buttons.<%= dom_id step %>">
+    <td class="step_position first state_column_width">
+        <%= check_box_tag "#{dom_id(step)}_select",
+                          step.id,
+                          params[:apply_action].present?,
+                          class: "select_step #{step.should_execute? ? 'ON' : 'OFF'}" unless step.archived_procedure? %>
+        <%= defined?(step_position) ? step_position : step.position %>
+    </td>
+    <td class="status step_status_<%= step.aasm_state %>">
+        <div class="state">
+            <%= step.aasm.current_state.to_s.humanize %>
+        </div>
+    </td>
+    <td>
+        <%= step.name if step.name.present? %>
+    </td>
+    <%if defined?(step_preferences) && !step_preferences.blank? %>
+        <%step_preferences.each do |sp|%>
+            <%step_pref = sp.step_preference_label%>
+            <%if step_pref == "components"%>
+                <td>
+                    <%= h (step.component && step.component.name) %>
+                </td>
+            <%elsif step_pref == "task"%>
+                <td>
+                    <% if step.manual? %>
+                    <%= raw(ensure_space(h step.work_task && step.work_task.name)) %>
+                    <% else %>
+                    <%= raw(ensure_space(h truncate(step.script ? step.script.name : "SCRIPT DELETED", length: 15))) %>
+                    <% end %>
+                </td>
+            <%elsif step_pref == "assigned_to"%>
+                <td>
+                    <% if step.manual?  %>
+                    <%= h step.owner.name if step.owner.present?  %>
+                    <% else %>
+                    Automatic<% end %>
+                </td>
+            <%elsif step_pref == "est"%>
+                <td>
+                    <%= step.estimate.nil? ? 'not specified' : step.estimate %>
+                </td>
+            <%end%>
+        <%end%>
+    <%else%>
+        <td>
+            <%= h (step.component && step.component.name) %>
+        </td>
+        <td>
+          <% if step.manual? %>
+            <%= raw(ensure_space(h step.work_task && step.work_task.name)) %>
+          <% else %>
+            <%= raw(ensure_space(h truncate(step.script ? step.script.name : "SCRIPT DELETED", length: 15))) %>
+          <% end %>
+        </td>
+        <td>
+          <% if step.manual?  %>
+            <%= h step.owner.name if step.owner.present?  %>
+          <% else %>
+            Automatic
+          <% end %>
+        </td>
+        <td>
+            <%= step.estimate.nil? ? 'not specified' : step.estimate %>
+        </td>
+    <%end%>
+    <td class="last">
+      <% if can?(:edit_step, Request.new) && !step.archived_procedure? %>
+        <%= link_to image_tag('editIcon.gif', alt: 'Edit'),
+                    edit_step_in_procedure_step_path(id: step.id, procedure_id: step.floating_procedure.id,
+                                                     app_id: step.floating_procedure.apps.first.try(:id)),
+                    rel: 'facebox', title: "Edit", class: "step_editable_link" %>
+      <% end %>
+      <% if can?(:delete_steps, Request.new) && !step.archived_procedure? %>
+        <%= link_to image_tag('bin_empty.png', alt: 'Delete'),
+                    destroy_step_in_procedure_steps_path(id: step.id),
+                    title: "Delete", method: :delete, confirm: "Are you sure you want to delete the step?" %>
+      <% end %>
+      <% if can?(:turn_on_off_steps, Request.new) && !step.archived_procedure? %>
+        <%= form_for step, url: change_step_status_steps_path(id: step.id),
+          html: { method: :put, class: 'inline no_submit' } do |f| %>
+          <%= link_to_on_off_step(step, false) %>
+          <%= f.check_box :should_execute, id: "#{dom_id(step)}_should_execute", class: 'step_should_execute', style: "display:none;" %>
+        <% end -%>
+      <% end %>
+    </td>
+</tr>

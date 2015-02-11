@@ -1,0 +1,19 @@
+<p>Dear <%= @params['SS_user_first_name'].nil? ? 'User' : @params['SS_user_first_name'] %>,</p>
+
+<p>Your request <%= @params['SS_request_number'] %> has failed to start because of certain reasons:</p>
+<p><%= @params['SS_message'] %></p>
+
+<span>Please verify the following parameters for the request :</span>
+<ul>
+  <li>Planned Start</li>
+  <li>Estimate</li>
+  <li>Deployment Window</li>
+</ul>
+<br />
+
+<p>ISSUES<br />
+  ==============================<br />
+  If you have any problems or questions - please email <%= DEFAULT_SUPPORT_EMAIL_ADDRESS %><br />
+  and we will respond as quickly as possible - usually within 1 hour between 8am and 5pm EST.</p>
+<p>Thanks,</p>
+<p>BMC Release Process Management Admin</p>

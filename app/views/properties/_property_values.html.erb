@@ -1,0 +1,29 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table class="index_table formatted_table">
+  <thead>
+    <tr>
+      <th width="45%">Value Holder (<%= assoc.include?("temp") ? "Request - " : "" %>App/Server - component - environment)</th>
+      <th width="25%"><%= assoc.include?("delete") ? "Deleted at" : "Created at"%></th>
+      <th width="25%">Value</th>
+      <th width="5%">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% # FIXME, 2012-07-26, mbhandek, If we put a limit on view there is no other way to see values. Need pagination or such functionality instead. %>
+    <% @property.send(assoc).limited(150).in_order.each do |val| %>
+    <tr class ="<%= cycle('', 'alt') %>">
+      <td><span style="<%= val.deleted_at.nil? ? 'font-weight: bold' : 'color: #666' %>"><%= val.value_label %></span></td>
+      <td><%= (assoc.include?("delete") ? val.deleted_at : val.created_at).default_format_date_time %></td>
+      <td><%= val.display_value %></td>
+      <td>&nbsp;</td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

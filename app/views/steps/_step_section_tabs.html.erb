@@ -1,0 +1,89 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% url_for_tab_loading = if (local_assigns[:request])
+                           step.new_record? ? load_tab_data_request_steps_path(request) : load_tab_data_request_steps_path(request, :id => step.id,:display_only => true)
+                         else
+                           step.new_record? ? load_tab_data_procedure_path(procedure) : load_tab_data_procedure_path(procedure,:step_id => step.id, :display_only => true)
+                         end
+%>
+
+<div id="step_form_tabs" data-url="<%= url_for_tab_loading  %>">
+  <div class="pageSection" >
+    <ul style="padding-left: 0px;">
+      <%= step_tab_li(step,"general") %>
+      <%= step_tab_li(step,"automation") %>
+      <%= step_tab_li(step,"tickets") %>
+      <%= step_tab_li(step,"notes") %>
+      <%= step_tab_li(step,"documents") %>
+      <%= step_tab_li(step,"properties") %>
+      <%= step_tab_li(step,"server_properties") %>
+      <%= step_tab_li(step, "design") %>
+      <%= step_tab_li(step, 'content') %>
+    </ul>
+  </div>
+
+  <div id="content_box" class="content">
+    <% if can? :view_step_general_tab, request %>
+      <!--tab- general- start-->
+      <div id="st_general_step_tab_area" class="step_tab_area" style="padding:5px;">
+        <%= render :partial => "steps/step_form_tabs/general_readonly", :locals => {:step => step, :request => request} %>
+      </div>
+      <!--Tab-general-end-->
+    <% end %>
+
+    <% if can? :view_step_automation_tab, request %>
+      <!--Tab -2 automation-->
+      <div id="st_automation_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+      </div>
+    <% end %>
+
+    <% if can? :list, Ticket.new %>
+      <!--Tab tickets-->
+      <div id="st_tickets_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+        <% if step.try(:plan) && !step.request.plan.tickets.blank? %>
+          <div id="tickets_section">
+           <%= render :partial => 'tickets/unpaged_tickets_table',
+                        :locals => { :request => step.request, :step => step, :tickets => step.tickets } %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if can? :view_step_notes_tab, request %>
+      <!--tab notes -->
+      <div id="st_notes_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+      </div>
+    <% end %>
+
+    <% if can? :view_step_documents_tab, request %>
+      <!--Tab documents-->
+      <div id="st_documents_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+      </div>
+    <% end %>
+
+    <% if can? :view_step_properties_tab, request %>
+      <!--Tab properties-->
+      <div id="st_properties_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+      </div>
+    <% end %>
+
+    <% if can? :view_step_server_properties_tab, request %>
+      <!--Tab server properties-->
+      <div id="st_server_properties_step_tab_area" class="step_tab_area" style="display:none;padding:5px;width:700px">
+      </div>
+    <% end %>
+
+    <% if can_show_design_tab?(step) %>
+      <div id="st_design_step_tab_area" class="step_tab_area width720 padding5 hide"></div>
+    <% end %>
+
+    <div id='st_content_step_tab_area' class='step_tab_area padding5 hide'></div>
+  </div>
+</div>
+

@@ -1,0 +1,15 @@
+page << "$('.ui-button').hide()"
+page << "$('.online_user').hide()"
+page << "$('#user_list').show()"
+
+if @logged_in_users.count - 1 == 0
+  page << "$('#no_users').show()"
+else  
+  @logged_in_users.each do |u|
+    page << "$('#no_users').hide()"
+    unless current_user.id == u.id
+      page << "$('#user_#{u.id}').show()"
+    end
+    page << "$('#create-user_#{current_user.id}_#{u.id}').show()"
+  end
+end

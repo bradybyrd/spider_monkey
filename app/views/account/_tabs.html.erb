@@ -1,0 +1,33 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% draw_tabs selected: selected, only_ul: local_assigns[:only_ul] ? only_ul : nil, ul_class: local_assigns[:ul_class] ? ul_class : nil do %>
+
+    <% if can?(:view, GlobalSettings.new) %>
+        <%= sub_tab I18n.t(:'tabs.general'), path: settings_path %>
+    <% end %>
+
+    <% if can?(:manage_calendar_preferences, GlobalSettings.new) %>
+        <%= sub_tab I18n.t(:'tabs.calendar_preferences'), path: calendar_preferences_path %>
+    <% end %>
+
+    <% if can?(:view, :statistics) %>
+        <%= sub_tab I18n.t(:'tabs.statistic') %>
+    <% end %>
+
+    <%= sub_tab 'Bulk Delete Requests', path: bulk_destroy_path if can?(:delete, Request.new) %>
+
+    <% if can?(:view, :automation_monitor) %>
+        <%= sub_tab I18n.t(:'tabs.automation_monitor'), path: automation_monitor_path %>
+    <% end %>
+
+    <% if can?(:list, NotificationTemplate.new) %>
+        <%= sub_tab I18n.t(:'tabs.notification_template'), path: notification_templates_path %>
+    <% end %>
+
+<% end %>

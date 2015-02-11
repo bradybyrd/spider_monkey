@@ -1,0 +1,86 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% javascript_tag do %>
+  $(document).ready(function(){
+  if ($('#errorExplanation').length == 1){
+  var group = $('#group').val();
+  var sponsor = $('#sponsor').val();
+  var name = $('#name').val();
+  var opportunity = $('#opportunity').val();
+  var estimated = $('#estimated').val();
+  var finish = $('#finish').val();
+  var type = $('#type').val();
+  var budget = $('#budget').val();
+  var description = $('#description').val();
+  var priority = $('#priority').val();
+  if (priority == 'true'){var priority_value = true;}
+  else{var priority_value = false;}
+  $('#activity_leading_group_id').val(group);
+  $('#activity_custom_attrs_887').val(sponsor);
+  $('#activity_name').val(name);
+  $('#activity_custom_attrs_870').val(type);
+  $('#activity_estimated_start_for_spend').val(estimated);
+  $('#activity_problem_opportunity').val(opportunity);
+  $('#selected_values_872 span.selected').html(portfolio);
+  $('#activity_service_description').val(description);
+  $('input[type = checkbox]').attr('checked', priority_value);
+  }
+  });
+<% end %>
+<%= hidden_field_tag :group, session[:group] %>
+<%= hidden_field_tag :sponsor, session[:sponsor] %>
+<%= hidden_field_tag :name, session[:act_name] %>
+<%= hidden_field_tag :opportunity, session[:opportunity] %>
+<%= hidden_field_tag :estimated, session[:estimated] %>
+<%= hidden_field_tag :finish, session[:finish] %>
+<%= hidden_field_tag :type, session[:type] %>
+<%= hidden_field_tag :description, session[:srv_description] %>
+<%= hidden_field_tag :priority, session[:priority] %>
+<% page_settings :title => "Create #{h @activity_category.name}" %>
+<% content_for :sidebar do %>
+  <!-- This sidebar deliberately left blank. -->
+<% end %>
+<%= render 'activity_categories/tabs', :selected => 'request projects' %>
+<div class='content'>
+  <h3>
+    <%= "Create #{activity_or_project?}" %>
+  </h3>
+  <%= form_for @activity, :html => { :class => 'cssform activity', :multipart => true } do |f| %>
+    <%= error_messages_for :activity %>
+    <br class='clear'/>
+    <%= render 'form', :f => f %>
+    <div class='activity_customer_fields' <%= tag_options({:style => (params[:activity_creation_type] != "activity_and_customer") ? "display: none" :""}, false) %>>
+      <div class='field'>
+        <label for='app_id_to_copy'>
+          Application
+        </label>
+        <%= select_tag 'app_id_to_copy', options_from_collection_for_select(App.active.name_order, :id, :name) %>
+      </div>
+      <div class='field'>
+        <label for='app_name_for_copy'>
+          New Application Name
+        </label>
+        <%= text_field_tag "app_name_for_copy", '', :class => "app_name_for_copy" %>
+      </div>
+      <div class='field'>
+        <label for='shared_infrastructure'>
+          Shared Infrastructure
+        </label>
+        <%= check_box_tag :shared_infrastructure, 1, false, :class => 'checkbox' %>
+      </div>
+    </div>
+    <div class='field'>
+      <br>
+      <%= f.submit "Create #{activity_or_project?}", :class => "button_mid button button" %>
+      or
+      <%= link_to "cancel", activities_path %>
+    </div>
+  <% end %>
+
+</div>

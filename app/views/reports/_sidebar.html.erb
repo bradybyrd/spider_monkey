@@ -1,0 +1,98 @@
+<% if sidebar_type == "process" %>
+	<h3>Select Report</h3>
+	<% if can? :view, :volume_report %>
+		<p><%= link_to 'Volume Report', reports_path(:report_type => 'volume_report',:filters => params[:filters]) %></p>
+	<% end %>
+	<% if can? :view, :time_to_complete_report %>
+		<p><%= link_to 'Time to Complete Report', reports_path(:report_type => 'time_to_complete',:filters => params[:filters]) %></p>
+	<% end %>
+	<% if can? :view, :problem_trend_report %>
+		<p><%= link_to 'Problem Trend Report', reports_path(:report_type => 'problem_trend_report',:filters => params[:filters]) %></p>
+	<% end %>
+	<% if can? :view, :time_to_problem_report %>
+		<p><%= link_to 'Time of Problem Report', reports_path(:report_type => 'time_of_problem',:filters => params[:filters]) %></p>
+	<% end %>
+
+	<hr>
+
+	<strong>Process Report Tips:</strong>
+	<%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "process_rep" %>
+	<br/><br/>
+	<div id='process_rep' style='display:none;'>
+		<% if can? :view, :volume_report %>
+			<strong>Volume Report:</strong>
+			<p>
+				Provides information about the total number of requests in the completed, problem, hold, or cancelled state for each application for a specified period and matching the filter criteria.
+			</p>
+			<p>
+				You can also set in-depth data filters to view this information for different applications, environments and processes.
+			</p>
+		<% end %>
+
+		<% if can? :view, :time_to_complete_report %>
+			<strong>Time to Complete Report:</strong>
+			<p>
+				Provides information about the time taken to complete the requests for each application for a specified period and matching the filter criteria.
+			</p>
+			<p>
+				You can also set in-depth data filters to view this information for different applications, environments and processes.
+			</p>
+		<% end %>
+
+		<% if can? :view, :problem_trend_report %>
+			<strong>Problem Trend Report:</strong>
+			<p>
+				Provides information about the number of requests in the problem state (that could not complete successfully) for a specified period. This report also provides information about the users who created these requests.
+			</p>
+			<p>
+				You can also set in-depth data filters to view this information for different applications, components, environments, request status, processes, work tasks, and so on.
+			</p>
+		<% end %>
+
+		<% if can? :view, :time_to_problem_report %>
+			<strong>Time of Problem Report:</strong>
+			<p>
+				Provides information about the time for which a request remained in the problem state for each user who created the request. This report also provides you information such as the minimum, maximum and average time for a request between reporting (entering the problem state) and actually getting fixed (entering the completed state). This helps you determine how quickly a request in a problem state got fixed.
+			</p>
+			<p>
+				You can also set in-depth data filters to view this information for different applications, components, environments, request status, processes, work tasks, and so on.
+			</p>
+		<% end %>
+
+	</div>
+
+<% else %>
+
+	<h3>Select Calendar</h3>
+  <% if can? :view, :release_calendar %>
+	  <p><%= link_to 'Release Calendar', release_calendar_reports_path %></p>
+  <% end %>
+  <% if can? :view, :environment_calendar %>
+    <p><%= link_to 'Environment Calendar', environment_calendar_reports_path %></p>
+  <% end %>
+  <% if can? :view, :deployment_windows_calendar %>
+    <p><%= link_to 'Deployment Windows Calendar', deployment_windows_calendar_reports_path %></p>
+  <% end %>
+	<hr>
+
+	<strong>Calendar Report Tips:</strong>
+	<%= link_to_function "(show)", "toggleSection($(this))", :rel => "(hide)", :class => "calendar_rep" %>
+	<br/><br/>
+	<div id='calendar_rep' style='display:none;'>
+	    <strong>Release Calendar Report:</strong>
+		<p>
+		  Provides a release calendar to view environments being used for the various releases, release dates, and the applications using those environments.
+		</p>
+
+
+		<strong>Environment Calendar Report:</strong>
+		<p>
+		  Provides an environment calendar to view the various environments used in a particular release or across release plans.
+		</p>
+
+		<strong>Deployment Windows Calendar Report:</strong>
+		<p>
+			Provides an event calendar to view and edit various events (windows) being used for deployment activities on particular environment, to view and schedule requests assigned for execution per environment in particular event's timeframe.
+		</p>
+	</div>
+<% end %>

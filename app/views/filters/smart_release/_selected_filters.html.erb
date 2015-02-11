@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @params[:used_filters].present? %>
+  <b><%= "Filters" %></b>
+  <form class='cssform deliverableFilters'>
+    <div class='contentCol1' style='width:100%;'>
+      <% if @params[:used_filters][:aasm_state].present? %>
+        <p>
+          <label><%= "Status:" %></label>
+          <span><%= @params[:used_filters][:aasm_state] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:activity_id].present? %>
+        <p>
+          <label><%= "Project:" %></label>
+          <span><%= @params[:used_filters][:activity_id] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:package_content_id].present? %>
+        <p>
+          <label><%= "Package Contents:" %></label>
+          <span><%= @params[:used_filters][:package_content_id] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:release_id].present? %>
+        <p>
+          <label><%= "Release:" %></label>
+          <span><%= @params[:used_filters][:release_id] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:app_id].present? %>
+        <p>
+          <label><%= "Application:" %></label>
+          <span><%= @params[:used_filters][:app_id] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:environment_id].present? %>
+        <p>
+          <label><%= "Environment:" %></label>
+          <span><%= @params[:used_filters][:environment_id] %></span>
+        </p>
+      <% end %>
+      <% if @params[:used_filters][:team_id].present? %>
+        <p>
+          <label><%= "Team:" %></label>
+          <span><%= @params[:used_filters][:team_id] %></span>
+        </p>
+      <% end %>
+    </div>
+  </form>
+  <div class='clear'></div>
+<% end %>

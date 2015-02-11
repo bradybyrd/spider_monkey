@@ -1,0 +1,66 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <a-sorting-comps type="boolean">false</a-sorting-comps>
+  <a-sorting-envs type="boolean">false</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version>5</app-version>
+  <name>app_with_prevents</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array"/>
+  <environments type="array">
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>open_env_with_prevent</name>
+      <active-server-groups type="array"/>
+      <active-environment-servers type="array"/>
+      <active-deployment-window-series type="array">
+        <active-deployment-window-series>
+          <aasm-state>pending</aasm-state>
+          <behavior>prevent</behavior>
+          <duration-in-days type="integer">0</duration-in-days>
+          <finish-at type="datetime">2044-12-31T11:00:00-05:00</finish-at>
+          <name>Prevent02</name>
+          <recurrent type="boolean">true</recurrent>
+          <start-at type="datetime">2044-10-15T10:30:00-04:00</start-at>
+          <creator type="User">
+            <first-name>John</first-name>
+            <last-name>Administrator</last-name>
+          </creator>
+          <schedule-data type="array">
+            <schedule-datum>
+              <json-string type="Hash">{"validations":{},"rule_type":"IceCube::DailyRule","interval":1}</json-string>
+            </schedule-datum>
+          </schedule-data>
+        </active-deployment-window-series>
+        <active-deployment-window-series>
+          <aasm-state>released</aasm-state>
+          <behavior>prevent</behavior>
+          <duration-in-days type="integer">0</duration-in-days>
+          <finish-at type="datetime">2044-10-31T11:00:00-04:00</finish-at>
+          <name>prevent01</name>
+          <recurrent type="boolean">true</recurrent>
+          <start-at type="datetime">2044-10-15T10:30:00-04:00</start-at>
+          <creator type="User">
+            <first-name>John</first-name>
+            <last-name>Administrator</last-name>
+          </creator>
+          <schedule-data type="array">
+            <schedule-datum>
+              <json-string type="Hash">{"validations":{},"rule_type":"IceCube::DailyRule","interval":1}</json-string>
+            </schedule-datum>
+          </schedule-data>
+        </active-deployment-window-series>
+      </active-deployment-window-series>
+    </environment>
+  </environments>
+  <active-packages type="array"/>
+  <installed-components type="array"/>
+  <active-routes type="array"/>
+  <active-business-processes type="array"/>
+  <version-tags type="array"/>
+  <application-packages type="array"/>
+  <brpm_version>4.6.00</brpm_version>
+</app>
+</app_import>

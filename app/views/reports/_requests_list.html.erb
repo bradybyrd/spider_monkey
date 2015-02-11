@@ -1,0 +1,101 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2014 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<%= form_tag generate_csv_reports_path,:id=>"form_generate_csv" do %>
+    <%= hidden_field_tag 'request_ids',params[:request_ids] %>
+    <%= hidden_field_tag 'format', 'csv'%>
+<% end %>
+
+<table class='requestList formatted_table'>
+  <% if @requests.empty? %>
+    <tr>
+      <td colspan='0'>
+        No requests found
+      </td>
+    </tr>
+  <% else %>
+    <%= link_to "Export to csv","#",:onclick=>"javascript:document.getElementById('form_generate_csv').submit();" %>
+
+    <thead>
+      <tr>
+        <%= sortable_th 'status', :column => "aasm_state" %>
+        <%= sortable_th 'id' %>
+        <%= sortable_th 'name' %>
+        <th>RP/P</th>
+        <%= sortable_th 'owner' %>
+        <%= sortable_th 'process', :column => 'business_process' %>
+        <%= sortable_th 'release' %>
+        <%= sortable_th 'app' %>
+        <%= sortable_th 'env', :column => 'environment' %>
+        <%= sortable_th 'scheduled', :class => 'scheduled', :column => "scheduled_at" %>
+        <%= sortable_th 'duration(in minutes)' %>
+        <%= sortable_th 'due by', :column => 'target_completion_at' %>
+        <th>participants</th>
+        <%= sortable_th 'steps', :class => 'last', :column => "executable_step_count" %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @requests.each do |recent_request| %>
+        <tr <%= tag_options({:style => "cursor:auto;", :class => "#{cycle('white_bg', 'alt' )} request_row", :id => "request_row_#{recent_request.id}"}, false) %>>
+          <td <%= tag_options({:class => "status#{' person_cell' if current_user.involved_with_request?(recent_request)}", :nowrap => "", :style => "width: 80px;"}, false) %>>
+            <%= link_to_if can?(:inspect, recent_request),
+                           content_tag(:div, 
+                                       h(recent_request.aasm.current_state), 
+                                       :class => "#{recent_request.aasm.current_state}RequestStep state" ), 
+                           recent_request, 
+                           :style => 'border-bottom:none;', 
+                           :onclick => "return false;" %>
+          </td>
+          <td class='request_number'>
+            <%= recent_request.number %>
+          </td>
+          <td <%= tag_options({:title => h(recent_request.name)}, false) %>>
+            <%= ensure_space(h(truncate(recent_request.name, :length => 25))) %>
+          </td>
+          <td class='escape_lp'>
+            <%= link_to "RP", recent_request.plan, :onclick => "return false;" if recent_request.plan %>
+            <%= link_to "P", recent_request.activity, :onclick => "return false;" if recent_request.activity %>
+          </td>
+          <%= request_owner_td(recent_request) %>
+          <td><%= ensure_space h(recent_request.business_process_name) %></td>
+          <%= request_release_td(recent_request) %>
+          <td <%= tag_options({:title => ensure_space(recent_request.app_name.to_sentence)}, false) %>>
+            <%= ensure_space(h(truncate(recent_request.app_name.to_sentence, :length => 25))) %>
+          </td>
+          <% if recent_request.environment && !recent_request.environment.default? %>
+            <td <%= tag_options({:title => h(recent_request.environment_label)}, false) %>>
+              <%= ensure_space h(truncate(recent_request.environment_label, :length => 25)) %>
+            </td>
+          <% else %>
+            <td>&nbsp;</td>
+          <% end %>
+          <td class='date scheduled' <%= tag_options({'data-sort-value' => recent_request.calendar_order_time.to_i}, false) %>>
+            <%= recent_request.calendar_order_time.try(:default_format_date_time) if recent_request.calendar_order_time %>
+          </td>
+          <td>
+            <%= ensure_space h((recent_request).total_duration) %>
+          </td>
+          <td class='date' <%= tag_options({'data-sort-value' => recent_request.target_completion_at.to_i}, false) %>>
+            <%= recent_request.target_completion_at.try(:default_format_date_time) if recent_request.target_completion_at %>
+          </td>
+          <td>
+            <%= recent_request.participant_names.to_sentence %>
+          </td>
+          <td style='text-align: right'>
+            <%= recent_request.executable_steps.count %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>
+
+<% unless @requests.empty? %>
+    <p><b><%=@requests.size%> Items</b></p>
+    <% if params[:request_ids].size > 1000 %>
+          <p>To view all(<%=params[:request_ids].size %>) requests please check csv file. </p>
+    <% end %>
+<% end %>

@@ -1,0 +1,40 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless script.new_record? || script.arguments.blank? %>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th>Parsed Parameter</th>
+        <th>Name</th>
+        <th>Infrastructure Mapping</th>
+        <th>Application Mapping</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% script.arguments.sort.each do |argument| %>
+        <tr>
+          <td><%= argument.argument %></td>
+          <td><%= argument.name %></td>
+          <td><%= argument.infrastructure_mappings.map { |mapping| mapping.property_name }.to_sentence %></td>
+          <td><%= argument.group_app_mappings.map { |mapping| mapping.property_name }.to_sentence %></td>
+          <%unless script.class == BladelogicScript%>
+            <% unless (["in-file", "in-date", "in-datetime", "in-time"]+Script::SUPPORTED_AUTOMATION_OUTPUT_DATA_TYPES).include?(argument.argument_type) %>
+              <td><%= link_to 'map', map_properties_to_argument_script_path(script, argument), :rel => 'facebox' %></td>
+            <%else%>
+              <td style='text-decoration:line-through'>map</td>
+            <%end%>
+          <%else%>
+            <td><%= link_to 'map', map_properties_to_argument_shared_script_path(script, argument), :rel => 'facebox' %></td>            
+          <%end%>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

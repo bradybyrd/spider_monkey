@@ -1,0 +1,6 @@
+<%= form_for @script, :as => :script, :url => scripts_path, :html => { :class => 'basic_form' } do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'shared_scripts/script_form', :locals => { :script => @script, :f => f } %>
+  <%#= hidden_field_tag "automation_script_type", "Automation"%>
+  <%= hidden_field_tag "script[automation_type]", "Automation"%>
+<% end %>

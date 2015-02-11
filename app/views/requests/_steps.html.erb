@@ -1,0 +1,128 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+
+<% is_editable_by_user = request.editable_by?(current_user) %>
+<% step_list_preferences_lists = current_user.step_list_preferences.active.all %>
+
+<div class="subheader">
+  <br/>
+
+  <div class="step_header_wrapper">
+    <span class="step_h2label">Steps</span>
+
+    <% if is_editable_by_user %>
+        <% if can?(:reorder_steps, request) %>
+          <%= link_to image_tag('btn-reorder.png', border: 0, id: 'reorder_image'),
+                      reorder_steps_request_path(request), id: 'reorder_steps' %>
+        <% end %>
+
+        <% if can?(:apply_template, request) && request.created? %>
+          <%= link_to image_tag('btn-apply-template.png', alt: 'Apply Template'),
+                      apply_template_request_path(request), id: 'apply_template' %>
+        <% end %>
+
+        <% if can?(:add_procedure, request) %>
+          <%= link_to image_tag('btn-add-procedure.png', alt: 'Add procedure'),
+                      add_procedure_request_path(request), rel: 'facebox', id: 'add_procedure' %>
+        <% end %>
+    <% end %>
+
+    <div id="step_search">
+      <%= text_field_tag :query, nil, style: 'padding-bottom:1px;', class: 'search_for_step' %>
+      <%= button_to_function 'Search', 'localSearch($(this))', id: 'search_for_step', class: 'button' %>
+      <%= button_to_function 'Clear', 'clearQuery($(this))', class: 'button' %>
+    </div>
+
+    <% if is_editable_by_user %>
+        <div id="step_action_links" class="<%= request.steps.blank? ? 'dn' : '' %>">
+          <span class="step_link_spacer">Select:</span>
+          <span id="check_all"><%= link_to_function 'All', 'checkSteps(1)' %>&nbsp;&#124;</span>
+          <span id="check_visible"><%= link_to_function 'Visible', 'checkSteps(5)' %>&nbsp;&#124;</span>
+          <%= link_to_function 'None', 'checkSteps(2)' %>&nbsp;&#124;
+          <%= link_to_function 'On', 'checkSteps(3)' %>&nbsp;&#124;
+          <%= link_to_function 'Off', 'checkSteps(4)' %>
+          <span class="step_link_spacer">Actions:</span>
+          <% if can? :delete_steps, request %>
+            <%= link_to_function 'Delete', "bulkUpdate('delete', 'This action will permanently delete the selected steps with associated procedure execution condition. Click OK to proceed.', true)" %>&nbsp;&#124;
+          <% end %>
+          <% if can?(:edit_step_owner, request) %>
+            <%= link_to_function 'Modify Assignment', "bulkUpdate('modify_assignment')" %>&nbsp;&#124;
+          <% end %>
+          <% if can?(:select_step_component, request) %>
+            <%= link_to_function 'Modify Component', "bulkUpdate('modify_app_component')" %>&nbsp;&#124;
+          <% end %>
+          <% if can?(:edit_task_phase, request) %>
+            <%= link_to_function 'Modify Task/Phase', "bulkUpdate('modify_task_phase')" %>&nbsp;&#124;
+          <% end %>
+          <% if can? :turn_on_off_steps, request %>
+            <%= link_to_function 'Turn On/Off', "bulkUpdate('modify_should_execute')" %>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+
+
+  <div class="step_links_wrapper">
+
+    <table id="steps_list" class="formatted_table formatted_steps_table" style="margin: 0 0;">
+      <thead>
+      <tr id="first_step_row">
+        <th class="step_position">Step</th>
+        <th>Status</th>
+        <th>Name</th>
+        <% if step_list_preferences_lists.blank? %>
+            <th>Component / Package</th>
+            <th>Servers</th>
+            <th>Task</th>
+            <th>Est</th>
+            <th>Assigned To</th>
+            <th>Version</th>
+        <% else %>
+            <% step_list_preferences_lists.map { |srp| srp.step_preference_label }.each do |step_pref| %>
+                <th><%= step_pref.humanize %></th>
+            <% end %>
+        <% end %>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr id="first_step_row_tbody" class='dn'></tr>
+      <div id="request_steps_in_table" data-url="<%= show_steps_request_path(request) %>"></div>
+      <tr id="steps_placeholder" style="text-align: center;">
+        <td id="steps_loader_placeholder" colspan="100">
+          <div class="loading"><img src="<%=asset_path 'waiting.gif' %>"/></div>
+        </td>
+      </tr>
+
+      <%# Steps are now rendered ajaxy with RequestController#show_steps action %>
+      <%#= render partial: 'steps/step_rows/step', collection: request_top_level_steps, as: :step,
+                 locals: {
+                         request: request,
+                         steps_with_invalid_components: (local_assigns[:steps_with_invalid_components] || []),
+                         step_headers: step_headers,
+                         step_preferences: step_list_preferences_lists
+                 }
+      %>
+      <% if is_editable_by_user %>
+          <tr class="container">
+            <%= render :partial => 'steps/add', :locals => {:request => request} %>
+          </tr>
+      <% end %>
+      <%= hidden_field_tag 'hidden_divs_list' %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% unless local_assigns[:update_steps].present? %>
+    <%= javascript_tag('checkStepAlertInCookie()') %>
+<% end %>
+<% if local_assigns[:update_steps] %>
+    <%= javascript_tag('loadRequestSteps()') %>
+<% end %>

@@ -1,0 +1,2 @@
+page.replace_html "select_list_for_members", :partial => "updated_plan_member_list"
+page << "change_plan_template_id();"

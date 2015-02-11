@@ -1,0 +1,33 @@
+<div id="edit_chart_details" class="w_415">
+  <h2><%= "Copy components from #{environment_to_clone.name} to:" %></h2>
+  <%= form_tag clone_components_app_application_components_path(app), :method => :put, :class => 'add_remove cssform', :style => "display:block;zoom:1;" do %>
+    <table class="clone_components">
+      <tr>
+        <td> <%= hidden_field_tag 'env_to_clone_id', "#{environment_to_clone.id}" %>
+          <%= hidden_field_tag "page", params[:page]  %>
+          <%= hidden_field_tag "key", params[:key]  %> </td>
+      </tr>
+      <% environments.each do |environment| %>
+        <tr>
+          <td> <% if app.requests.present.map(&:environment).include?(environment) %>
+              <%= check_box_tag 'environment_ids[]', environment.id, true, :disabled => 'disabled', :id => dom_id(environment) %>
+              <%= hidden_field_tag 'environment_ids[]', environment.id %>
+            <% else %>
+              <%= check_box_tag 'environment_ids[]', environment.id, app.environments.include?(environment), :id => dom_id(environment) %>
+            <% end %> <label for="<%= dom_id(environment) %>"><%= environment.name %></label></td>
+        </tr>
+      <% end %>
+      <% if can? :create, Environment.new %>
+        <tr class="new_item">
+          <td> <%= check_box_tag '', '', true, :disabled => 'disabled' %>
+            <%= text_field_tag 'new_environments[][name]', '', :disabled => 'disabled', :size => 25 %> </td>
+        </tr>
+        <tr class="create_item">
+          <td><%= link_to 'Create new environment', '#' %></td>
+        </tr>
+      <% end %>
+
+    </table>
+    <div class="button_bar"><%= submit_tag 'Save',:class =>'button', :id => "clone_components_save" %></div>
+  <% end %>
+</div>

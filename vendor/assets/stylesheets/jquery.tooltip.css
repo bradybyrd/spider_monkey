@@ -1,0 +1,27 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+#tooltip {
+	position: absolute;
+	z-index: 3000;
+	border: 1px solid #111;
+	background-color: #eee;
+	padding: 5px;
+	opacity: 0.85;
+  text-align: left;
+  width:220px;  /* by PB */
+	text-decoration:none;
+
+}
+#tooltip h3, #tooltip div { margin: 0; word-break:break-all; word-wrap:break-word; white-space:pre-line; } /* by PB */
+#tooltip a {
+  text-decoration:none;
+	color:#000000;
+}
+
+#tooltip span.lighter {
+  font-weight: lighter;
+}

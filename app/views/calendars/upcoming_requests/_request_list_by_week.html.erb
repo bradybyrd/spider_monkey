@@ -1,0 +1,62 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3><%= duration_of_week(week) %></h3>
+<% week.days.each do |day| %>
+  <b>
+    <i><%= day.strftime('%A') %></i>
+  </b>
+  <div class='cls'></div>
+  <% if day.requests.empty? %>
+    <p style='margin-top:1px;'>There are no requests scheduled for this time.</p>
+  <% else %>
+    <table class='calendar formatted_table'>
+      <thead>
+        <tr>
+          <td style='width:4%'>ID</td>
+          <td style='width:3%'>Status</td>
+          <td style='width:2%'>Process</td>
+          <td style='width:7%'>Owner Name</td>
+          <td style='width:2%'>Name</td>
+          <td style='width:34%'>Description</td>
+          <td style='width:11%'>Application</td>
+          <td style='width:11%'>Release</td>
+          <td style='width:9%'>Environment</td>
+          <td style='width:7%'>Planned Start</td>
+          <td style='width:7%'>Due by</td>
+          <td style='width:5%'>Wiki</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% day.requests.each do |request| %>
+          <tr>
+            <td style='width:4%'><%= link_to request.number, request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:3%'><%= link_to ensure_space(request.aasm.current_state), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:2%'><%= link_to ensure_space(request.business_process.try(:name)), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:7%'><%= link_to ensure_space(request.owner_name), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:2%'><%= link_to "#{ensure_space(request.name)}", request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:34%'><%= link_to ensure_space(request.description), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:11%'><%= link_to ensure_space(request.app_name.to_sentence), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:11%'><%= link_to ensure_space(request.release.try(:name)), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:9%'><%= link_to ensure_space(request.environment_label), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:7%'><%= link_to ensure_space(request.scheduled_at.blank? ? "--" : request.scheduled_at.try(:default_format_date_time) ), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:7%'><%= link_to ensure_space(request.target_completion_at.blank? ? "--" : request.target_completion_at.try(:default_format_date_time)), request_path(request.number), :style =>"border-bottom:none;" %></td>
+            <td style='width:5%'>
+              <% if request.wiki_url.present? %>
+                <%= button_to "Wiki", request.wiki_url %>
+              <% else %>
+                &nbsp;
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  <% end %>
+<% end %>

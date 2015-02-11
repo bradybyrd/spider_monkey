@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='request_and_calendar'>
+  <div id='toggleFilterLink'>
+    <% if params[:filter_block_collapse_state_flag] == '1' %>
+      <%= link_to "Close Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+    <% else %>
+      <%= link_to "Open Filters","#", :id => "close_request_filters",:class => "filterSection" %>
+    <% end %>
+  </div>
+  <div id='requestFilters' style='display:none'>
+    <%= render 'dashboard/filters/filters' %>
+    <%= form_tag request_resources_path, :method => :get, :style => 'display: inline', :id => 'filter_form' do %>
+      <table>
+        <tr>
+          <td>
+            <label for='filters_user_id'>
+              User
+            </label>
+          </td>
+          <td>
+            <% user_id = @selected_user ? @selected_user.id : '' %>
+            <% user_filter_options = options_from_collection_for_select(@users, :id, :name_for_index, user_id) %>
+            <%= select_tag 'filters[user_id]', user_filter_options, :include_blank => true, :id => 'filters_user_id', :class => 'resource_filters' %>
+          </td>
+          <td align='left' nowrap='' width='100%'>
+            <%= hidden_field_tag 'filters[include_groups]', 'false' %>
+            <%= check_box_tag 'filters[include_groups]', 'true', @filters[:include_groups]=='true', :class => 'checkbox_request_filters', :id => 'filters_include_groups' %>
+            Include Groups for User
+          </td>
+          <td width='100%'></td>
+        </tr>
+        <tr>
+          <td>
+            <label for='filters_group_id'>
+              Group
+            </label>
+          </td>
+          <td>
+            <% group_id = @selected_group ? @selected_group.id : '' %>
+            <% group_filter_options = options_from_collection_for_select(@groups, :id, :name, group_id) %>
+            <%= select_tag 'filters[group_id]', group_filter_options, :include_blank => true, :id => 'filters_group_id', :class => 'resource_filters' %>
+          </td>
+        </tr>
+      </table>
+      &nbsp;
+      <%= render 'display_options' %>
+    <% end %>
+
+  </div>
+  <% user_group_params = @selected_user ? {:selected_user => @selected_user} : {} %>
+  <% user_group_params.merge!(@selected_group ? {:selected_group => @selected_group} : {}) %>
+  <%= render :partial => 'core_content', :locals => { :requests => @requests, :start_date => @start_date }.merge(user_group_params) %>
+  <%= render :partial => 'dashboard/request_pagination_dashboard' %>
+</div>

@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Calendar' %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'dashboard' %>
+  <%= stylesheet_link_tag 'dashboard' %>
+<% end %>
+<% content_for :page_section do %>
+  <% draw_tabs :selected => "calendar" do %>
+    <li><%= link_to whose_requests, @show_all ? requests_path : root_path %></li>
+    <%= sub_tab "Calendar", @show_all ? request_calendar_path : my_calendar_path %>
+  <% end %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, Request.new %>
+    <div class='section'>
+      <%= link_to image_tag("btn-create.png", :border => 0), new_request_path %>
+    </div>
+  <% end %>
+  <%= render :partial => 'shared/process_map' %>
+<% end %>
+<%= render :partial => "dashboard/self_services/calendar" %>

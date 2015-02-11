@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<html>
+  <head>
+    <%= stylesheet_link_tag  "extra", "calendar", 'jquery.tooltip',  :media => 'screen'%>
+    <%= static_javascript_include_tag 'jquery.min','jquery.tooltip.min', 'jquery.livequery' %>
+    <!--[if lt IE 8]>
+      <%= stylesheet_link_tag "ie7.css" %>
+    <![endif]-->
+    <!--[if IE 8]>
+      <%= stylesheet_link_tag "ie8.css" %>
+    <![endif]-->
+    <%= yield :head %>
+  </head>
+  <body>
+    <div id='WrapperPDF'>
+      <table class='layout'>
+        <tbody>
+          <tr>
+            <td class='left'>
+              <div class='col'>
+                <div class='unauthenticated_content'>
+                  <%= yield :layout %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

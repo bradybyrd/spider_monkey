@@ -1,0 +1,39 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% id_stg = version_tag.new_record? ? "" : "?id=#{version_tag.id}" %>
+<%= f.error_messages %>
+<br>
+<br>
+<div class='field'>
+  <%= f.label :name, '*Version' %>
+  <%= f.text_field :name, :class => 'initialFocus', :style => 'width: 200px' %>
+</div>
+<div class='field'>
+  <label for='app_id'>*Application</label>
+  <%= select_tag 'app_id', raw("<option></option> #{options_from_collection_for_select(App.active.order("LOWER(name) asc"), :id, :name, version_tag.app_id)}"), :style => 'width: 200px' %>
+</div>
+<div class='field'>
+  <label for='app_env_id'>*Environment</label>
+  <%= select_tag 'app_env_id', [], :class => 'use_remote_options', :rel => 'app_id' , :include_blank => true, :style => 'width: 200px' %>
+  <%= hidden_field_tag 'app_env_id_url', app_env_remote_options_version_tags_path + id_stg %>
+</div>
+<div class='field'>
+  <label for='component_id'>Component</label>
+  <%= select_tag 'installed_component_id', [], :class => 'use_remote_options get_mapped_values', :rel => 'app_env_id', :include_blank => true, :style => 'width: 200px' %>
+  <span style='font-size:90%; padding-left:15px;'>(leave blank for application version)</span>
+  <%= hidden_field_tag 'installed_component_id_url', installed_component_remote_options_version_tags_path + id_stg %>
+</div>
+<div class='field'>
+  <%= f.label :artifact_url, 'Artifact URL' %>
+  <%= f.text_field :artifact_url, :style => 'width: 300px' %>
+</div>
+<div class='field'>
+  <%= render :partial => 'property_values', :locals => {:property_values => version_tag.properties_values, :@object => version_tag}%>
+</div>
+

@@ -1,0 +1,245 @@
+<app_import team="[default]">
+  <app>
+  <a-sorting-comps type="boolean">false</a-sorting-comps>
+  <a-sorting-envs type="boolean">false</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version>2.0.4</app-version>
+  <name>EmptyRequest</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array">
+    <component>
+      <active type="boolean">true</active>
+      <name>AppContainer</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Apache</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_Passenger</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_MySQL</name>
+      <active-properties type="array"/>
+    </component>
+    <component>
+      <active type="boolean">true</active>
+      <name>SS_RailsApp</name>
+      <active-properties type="array">
+        <active-property>
+          <active type="boolean">true</active>
+          <default-value>package_property_1</default-value>
+          <is-private type="boolean">false</is-private>
+          <name>package_property_1</name>
+        </active-property>
+      </active-properties>
+    </component>
+  </components>
+  <environments type="array">
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>aws_cloud</name>
+      <active-server-groups type="array"/>
+    </environment>
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>production</name>
+      <active-server-groups type="array"/>
+    </environment>
+  </environments>
+  <active-packages type="array"/>
+  <installed-components type="array">
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">4</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_MySQL</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">4</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_MySQL</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">5</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_RailsApp</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>AppContainer</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>AppContainer</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">2</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Apache</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">2</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Apache</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">3</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Passenger</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>aws_cloud</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version nil="true"/>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">3</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_Passenger</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+    </installed-component>
+    <installed-component>
+      <location nil="true"/>
+      <version>1</version>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array"/>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">5</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>SS_RailsApp</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>production</name>
+      </application-environment>
+    </installed-component>
+  </installed-components>
+  <active-routes type="array"/>
+  <active-business-processes type="array"/>
+  <version-tags type="array"/>
+  <requests-for-export type="array"/>
+</app>
+</app_import>

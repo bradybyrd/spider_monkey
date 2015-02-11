@@ -1,0 +1,42 @@
+<script>
+$(function () {
+  // copy the href for multi picker to new anchor
+  var ele = $("#show_picker_link_for_package_id");
+  ele.hide();
+  var ele2 = $("#add_rmv_packages_link_id");
+  ele2.attr('href', $(ele).attr('href') );
+
+  if ( $( ".selected #link_packages").size() > 0 ){
+      showAppPackages();
+  }
+
+});
+</script>
+
+<% if can? :add_remove_package, @app %>
+  <div class="package_link_div" style="display: none">
+    <%= link_to t('packaging.add_or_remove'), '#', rel: 'facebox', id: 'add_rmv_packages_link_id' %>
+    <%= link_to_multiple_picker(:package, object: @app, item_display_field: 'name', auto_submit: true, form_name: 'multipicker_packages'  ) %>
+  </div>
+<% end %>
+
+<thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+	<% @app.application_packages.each do | application_package | %>
+		<tr class=<%= cycle('', 'alt') %>>
+          <td align="left"><%= application_package.position %></td>
+	      <td align="left"><%= application_package.name %></td>
+          <td align="left">
+            <% if application_package.package.properties.present? && can?(:edit_properties, application_package) %>
+              <%= link_to "Properties", edit_property_values_application_package_path(application_package, {object: 'application_package'}), rel: 'facebox' %>
+              <% end %>
+          </td>
+	    </tr>
+	<% end %>
+</tbody>

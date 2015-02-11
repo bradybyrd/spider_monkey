@@ -1,0 +1,148 @@
+<%
+   # #############################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   # #############################################################################
+%>
+
+
+<div class="alt" id="financials_filters">
+  <strong>Filters:</strong>
+
+  <form id="dashboard_range">
+    <table cellpadding="0" cellspacing="0" style="width:950px;">
+      <tbody>
+      <tr>
+        <td style="background: transparent;">
+          <div>Filter by Date –&nbsp;&nbsp;&nbsp;From:</div>
+          <div><%= date_field_tag 'beginning_date',
+                                  @request_dashboard[:beginning_of_calendar].present? ? Date.generate_from(@request_dashboard[:beginning_of_calendar]) : '' %>
+          </div>
+          <div>&nbsp;&nbsp;To:</div>
+          <div><%= date_field_tag 'end_date',
+                                  @request_dashboard[:end_of_calendar].present? ? Date.generate_from(@request_dashboard[:end_of_calendar]) : '' %>
+          </div>
+          <div><%= submit_tag 'Set', :class => 'button' %></div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+
+  <%= form_tag @request_dashboard[:page_path], id: 'filter_form', style: 'display: inline' do %>
+    <% if request.xhr? %>
+      <table align="center" cellpadding="0" cellspacing="0" style="width:100%">
+        <tbody>
+        <tr>
+          <td>
+            <label for="filters_aasm_state">Status:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "aasm_state", :filter_options => Request.status_filters_for_select} %>
+          </td>
+          <td>
+            <label for="filters_team">Team:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "team_id", :options_from_collection_for_select => options_from_collection_for_select(Team.order("LOWER(name) asc").select("id, name"), :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_release_id">Release:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "release_id", :options_from_collection_for_select => options_from_collection_for_select(Release.unarchived.select("id, name").order("LOWER(name) asc"), :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_app_id">Application</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "app_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_apps.select("apps.id, apps.name"), :id, :name)} %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="filters_environment_id">Environment:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "environment_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_environments, :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_activity_id"><%= activity_or_project? %>:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "activity_id", :options_from_collection_for_select => options_from_collection_for_select(Activity.select("id, name").order("LOWER(name) asc"), :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_requestor_id">Requestor:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "requestor_id", :options_from_collection_for_select => options_from_collection_for_select(User.select("id, first_name, last_name, type").order("LOWER(last_name) asc"), :id, :name_for_index)} %>
+          </td>
+          <td>
+            <label for="filters_assignee_id">Assignee:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "assignee_id", :options_from_collection_for_select => options_from_collection_for_select(User.select("id, first_name, last_name, type").order("LOWER(last_name) asc"), :id, :name_for_index)} %>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <label for="filters_owner_id">Owner:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "owner_id", :options_from_collection_for_select => options_from_collection_for_select(User.select("id, first_name, last_name, type").order("LOWER(last_name) asc"), :id, :name_for_index)} %>
+          </td>
+          <td>
+            <label for="filters_group_id">Group:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "group_id", :options_from_collection_for_select => options_from_collection_for_select(Group.select("id, name").order("LOWER(name) asc"), :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_package_content_id">Package Contents:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "package_content_id", :options_from_collection_for_select => options_from_collection_for_select(PackageContent.unarchived.select("id, name").order("LOWER(name) asc"), :id, :name)} %>
+          </td>
+          <td>
+            <label for="filters_plan_run_id">Plan Run:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {:filter => "plan_run_id", :filter_options => plan_run_select_list_with_stage} %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="filters_deployment_window_series_id">Deployment Window:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => {
+                                                                             :filter => "deployment_window_series_id",
+                                                                             :options_from_collection_for_select => options_from_collection_for_select(
+                                                                                 DeploymentWindow::Series.allowed.unarchived.order('LOWER(name) asc'), :id, :name
+                                                                             ) + raw("<option value='no_dws'>None</option>")
+                                                                         } %>
+          </td>
+          <td>
+            <label for="filters_inbound_outbound">Inbound/Outbound:</label>
+            <%= render partial: 'dashboard/filters/filter_select_list',
+                       locals: {
+                           filter: 'inbound_outbound',
+                           filter_options: [
+                               %w(Inbound inbound_requests),
+                               %w(Outbound outbound_requests)
+                           ]
+                       }
+            %>
+          </td>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align: left">&nbsp;</td>
+          <td style="text-align: right"><%= link_to "clear", '#', :class => 'clear_request_filters' %></td>
+        </tr>
+        </tbody>
+      </table>
+    <% end %>
+
+    <%= hidden_field_tag 'display_format', params[:display_format], :id => 'hidden_display_format' %>
+    <%= hidden_field_tag 'filter_block_collapse_state_flag', params[:filter_block_collapse_state_flag] %>
+    <%= hidden_field_tag 'beginning_of_calendar', @request_dashboard[:beginning_of_calendar] %>
+    <%= hidden_field_tag 'end_of_calendar', @request_dashboard[:end_of_calendar] %>
+    <%= hidden_field_tag 'page', @request_dashboard[:page] %>
+    <%= hidden_field_tag 'filters[per_page]', @request_dashboard[:per_page] %>
+    <%= hidden_field_tag 'filters[ignore_month]', @request_dashboard[:request_filters][:ignore_month] %>
+    <%= hidden_field_tag 'filters[sort_scope]', @request_dashboard[:request_filters][:sort_scope] %>
+    <%= hidden_field_tag 'filters[sort_direction]', @request_dashboard[:request_filters][:sort_direction] %>
+  <% end %>
+
+  <% if @request_dashboard[:request_filters] %>
+    <% @request_dashboard[:request_filtered_columns].each do |filter| %>
+      <% if @request_dashboard[:request_filters][filter] %>
+        <% @request_dashboard[:request_filters][filter].each do |values| %>
+          <%= hidden_field_tag "filters[#{filter}][]", values, class: 'filter_hidden' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+
+<%= javascript_tag("setFilters(#{@request_dashboard[:request_filters].to_json})") %>

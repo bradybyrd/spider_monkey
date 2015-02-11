@@ -1,0 +1,19 @@
+<p>Hi <%= @user.present? ? @user.first_name : @params['SS_user_first_name'] %>,</p>
+<p>You have recently requested User ID. Following are your user ID:</p>
+<p>YOUR ACCOUNT<br />
+  ============<br />
+  Your account username is:<br />
+  <%= @params['SS_user_login'] %></p>
+<p>KEEP THIS EMAIL<br />
+  ===============<br />
+  This email contains important information about your account 
+  so you'll want to keep it for future reference should you have any
+  questions.</p>
+<p>LOGGING IN TO STREAMSTEP<br />
+  ==============================<br />
+  Log in at: <%= @params['SS_login_url'] %></p>
+<p>ISSUES<br />
+  ==============================<br />
+  <%= DEFAULT_SUPPORT_EMAIL_FOOTER %></p>
+<p>Thanks,</p>
+<p>BMC Release Process Management Admin</p>

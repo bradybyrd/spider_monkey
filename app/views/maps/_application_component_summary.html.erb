@@ -1,0 +1,14 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless local_assigns[:map] %>
+  Please select applications, environments and components to the right.
+<% else %>
+	<h3>Application Component Summary</h3>
+  <%= @map.generate_application_component_summary(apps, application_environments, components) %>
+<% end %>

@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<% draw_tabs selected: selected,
+             only_ul: local_assigns[:only_ul] ? only_ul : nil,
+             ul_class: local_assigns[:ul_class] ? ul_class : nil do %>
+    <%= users_sub_tabs %>
+    <% if can? :access, :settings %>
+      <% if local_assigns[:tab_view] %>
+        <%= sub_tab 'Settings' %>
+      <% else %>
+        <%= next_level_sub_tab 'Settings', { path: settings_path } %>
+      <% end %>
+    <% end %>
+    <%= sub_tab 'Integrations', path: project_servers_path if can? :list, ProjectServer.new %>
+<% end %>

@@ -1,0 +1,80 @@
+<div class="field textarea">
+  <label for="step_description">Step Description</label>
+  <% if step.description.blank? %>
+    <p class="no_value">No description provided</p>
+  <% else %>
+        <span class="right">
+                        [<a href="#" id="step_description_expand_<%= step.id %>" onclick="toggleTextarea('step_description_<%= step.id %>', 'step_description_expand_<%= step.id %>'); return false;"
+                            style="color:blue;font-size:-4px">expand</a>]
+        </span>
+    <textarea id="step_description_<%= step.id %>" rows="0" class="expand" readonly="true"><%= step.description %></textarea>
+  <% end %>
+</div>
+<div class="field textarea">
+  <label>Step Time</label>
+
+  <div style="min-width:680px;padding:5px">
+    <div class=" start_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+      <nobr>
+        <label for="step_start_by_date" style="display:inline-block;" >Start</label>
+        <%= step_attribute_value(step.start_by && step.start_by.to_s(:simple_with_time)) %>
+      </nobr>
+    </div>
+    <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:27px;">&nbsp;</div>
+    <div class="step_estimate" style="white-space: nowrap; text-align: left; vertical-align: bottom; float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+
+      <label>Estimate</label>
+      <%= step_attribute_value(step.estimate && hour_minute_estimate(step.estimate)) %>
+    </div>
+    <div style="background-image:url(<%= asset_path 'right_arrow_small.gif' %>); background-position: center center; display:block;background-repeat:no-repeat;float:left;width:36px;height:27px;">&nbsp;</div>
+    <div class=" complete_by_fields step_times" style="float:left;background-color: #EEEEEE;border: 1px solid #CCCCCC;padding:5px;">
+      <nobr>
+        <label for="step_complete_by_date" style="display:inline-block;" >Complete</label>
+        <%= step_attribute_value(step.complete_by && step.complete_by.to_s(:simple_with_time)) %>
+      </nobr>
+    </div>
+  </div>
+</div>
+
+<br class="clear"/><br/>
+
+<hr class="clear"/>
+<div class="form_column left left_column">
+  <div class="field">
+    <label>Phase</label>
+    <div>
+      <%= step_attribute_value(step.phase_name) %>
+    </div>
+  </div>
+</div>
+
+<div class="form_column">
+  <%- if step.request.present? %>
+    <% if step.request.complete? %>
+      <label>Runtime Phase</label>
+      <%= content_tag :span, step.runtime_phase.try(:name)%>
+    <% else %>
+      <% unless step.phase_id.nil? %>
+        <div class="field">
+          <label>Runtime Phase</label>
+          <% if can? :edit_task_phase, association_or_new_instance(step, :request) %>
+            <%= select_tag :runtime_phase_id, options_from_collection_for_select(step.phase.runtime_phases, :id, :name, step.runtime_phase.try(:id)), :include_blank => true %>
+            <%= link_to('Apply', update_runtime_phase_request_step_path(request, step), class: 'small_btn submit_runtime_phase') if step.belongs_to?(current_user) %>
+            <%= image_tag 'loading.gif', id: 'runtime_updating', class: 'hide'%>
+          <% else %>
+            <%= content_tag :span, step.runtime_phase.try(:name)%>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <%- end %>
+</div>
+
+<br class="clear"/>
+<hr class="clear"/>
+<div class="form_column left left_column">
+  <div class="field step_manual_only">
+    <label>Work Task</label>
+    <%= step_attribute_value(step.work_task_name) %>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+environment_servers_008: 
+  server_id: 10
+  updated_at: <%= 1587958.810955.seconds.ago %>
+  default_server: false
+  id: 8
+  environment_id: 19
+  created_at: <%= 1587958.81102.seconds.ago %>
+environment_servers_019: 
+  server_id: 6
+  updated_at: <%= 633743.81105.seconds.ago %>
+  default_server: true
+  id: 19
+  environment_id: 25
+  created_at: <%= 633743.811086.seconds.ago %>
+environment_servers_009: 
+  server_id: 12
+  updated_at: <%= 1587958.811113.seconds.ago %>
+  default_server: false
+  id: 9
+  environment_id: 19
+  created_at: <%= 1587958.811144.seconds.ago %>
+environment_servers_020: 
+  server_id: 7
+  updated_at: <%= 633743.811171.seconds.ago %>
+  default_server: false
+  id: 20
+  environment_id: 25
+  created_at: <%= 633743.8112.seconds.ago %>
+environment_servers_010: 
+  server_id: 8
+  updated_at: <%= 1587947.811227.seconds.ago %>
+  default_server: true
+  id: 10
+  environment_id: 20
+  created_at: <%= 1587947.811261.seconds.ago %>
+environment_servers_021: 
+  server_id: 10
+  updated_at: <%= 633743.811287.seconds.ago %>
+  default_server: false
+  id: 21
+  environment_id: 25
+  created_at: <%= 633743.811317.seconds.ago %>
+environment_servers_011: 
+  server_id: 12
+  updated_at: <%= 1587947.811343.seconds.ago %>
+  default_server: false
+  id: 11
+  environment_id: 20
+  created_at: <%= 1587947.811373.seconds.ago %>
+environment_servers_022: 
+  server_id: 12
+  updated_at: <%= 633743.811399.seconds.ago %>
+  default_server: false
+  id: 22
+  environment_id: 25
+  created_at: <%= 633743.811429.seconds.ago %>
+environment_servers_001: 
+  server_id: 1
+  updated_at: <%= 1587958.811456.seconds.ago %>
+  default_server: true
+  id: 1
+  environment_id: 19
+  created_at: <%= 3035939.811489.seconds.ago %>
+environment_servers_012: 
+  server_id: 6
+  updated_at: <%= 1587935.811516.seconds.ago %>
+  default_server: true
+  id: 12
+  environment_id: 21
+  created_at: <%= 1587935.811548.seconds.ago %>
+environment_servers_002: 
+  server_id: 2
+  updated_at: <%= 3035939.811574.seconds.ago %>
+  default_server: false
+  id: 2
+  environment_id: 19
+  created_at: <%= 3035939.811604.seconds.ago %>
+environment_servers_013: 
+  server_id: 8
+  updated_at: <%= 1587935.811631.seconds.ago %>
+  default_server: false
+  id: 13
+  environment_id: 21
+  created_at: <%= 1587935.811661.seconds.ago %>
+environment_servers_003: 
+  server_id: 3
+  updated_at: <%= 3035939.811687.seconds.ago %>
+  default_server: false
+  id: 3
+  environment_id: 19
+  created_at: <%= 3035939.811717.seconds.ago %>
+environment_servers_014: 
+  server_id: 10
+  updated_at: <%= 1587935.811743.seconds.ago %>
+  default_server: false
+  id: 14
+  environment_id: 21
+  created_at: <%= 1587935.811773.seconds.ago %>
+environment_servers_004: 
+  server_id: 6
+  updated_at: <%= 1587971.811799.seconds.ago %>
+  default_server: true
+  id: 4
+  environment_id: 18
+  created_at: <%= 1587971.811832.seconds.ago %>
+environment_servers_015: 
+  server_id: 11
+  updated_at: <%= 1587935.811858.seconds.ago %>
+  default_server: false
+  id: 15
+  environment_id: 21
+  created_at: <%= 1587935.811887.seconds.ago %>
+environment_servers_005: 
+  server_id: 9
+  updated_at: <%= 1587971.811914.seconds.ago %>
+  default_server: false
+  id: 5
+  environment_id: 18
+  created_at: <%= 1587971.811944.seconds.ago %>
+environment_servers_016: 
+  server_id: 13
+  updated_at: <%= 1587833.811969.seconds.ago %>
+  default_server: true
+  id: 16
+  environment_id: 22
+  created_at: <%= 1587833.812003.seconds.ago %>
+environment_servers_006: 
+  server_id: 11
+  updated_at: <%= 1587971.812029.seconds.ago %>
+  default_server: false
+  id: 6
+  environment_id: 18
+  created_at: <%= 1587971.812058.seconds.ago %>
+environment_servers_017: 
+  server_id: 15
+  updated_at: <%= 1587833.812085.seconds.ago %>
+  default_server: false
+  id: 17
+  environment_id: 22
+  created_at: <%= 1587833.812115.seconds.ago %>
+environment_servers_007: 
+  server_id: 7
+  updated_at: <%= 1587958.812141.seconds.ago %>
+  default_server: false
+  id: 7
+  environment_id: 19
+  created_at: <%= 1587958.81217.seconds.ago %>
+environment_servers_018: 
+  server_id: 16
+  updated_at: <%= 1587833.812196.seconds.ago %>
+  default_server: false
+  id: 18
+  environment_id: 22
+  created_at: <%= 1587833.812226.seconds.ago %>

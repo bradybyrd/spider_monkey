@@ -1,0 +1,21 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% pagination_links = will_paginate model_list, :params => {:controller => params[:controller], :paginated => true } %>
+<% if pagination_links %>
+  <table class='pagination_links' width='100%'>
+    <tr>
+      <td>
+        <strong><%= page_entries_info model_list %></strong>
+      </td>
+      <td class="my_data_pagination fr <%= 'server_groups_pagination' if params[:controller].eql?('server_groups') %>">
+        <%= pagination_links %>
+      </td>
+    </tr>
+  </table>
+<% end %>

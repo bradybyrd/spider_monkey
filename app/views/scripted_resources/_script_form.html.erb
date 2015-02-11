@@ -1,0 +1,64 @@
+<% if @script.new_record? %>
+  <div class='field automation_category_div'>
+    <%= f.label :automation_category, "Choose Automation Category:" %>
+    <%= f.select :automation_category, List.get_list_items("AutomationCategory"), :include_blank => "Select" %>
+  </div>
+<% end %>
+<br>  
+<div class='script_form' style="<%= 'display:none' if script.new_record? && script.errors.blank?%> ">
+  <div <%= tag_options({:id => "#{@script.class.to_s.underscore}_error_messages"}, false) %>></div>
+  <%= render :partial => "shared_scripts/integration_header", :locals => {:f => f, :script => script} %>
+  <div class='field'>
+    <%= f.label :unique_identifier, "Resource Id:" %>
+    <%disable_status = disable_resource_id?(@script)%>
+    <%if disable_status%>
+        <%= f.text_field :unique_identifier, :readonly => true, :disabled=>true %>
+    <%else%>
+        <%= f.text_field :unique_identifier %>
+    <%end%>
+  </div>
+  <div class='field'>
+    <%= f.label :name, "Resource Name:" %>
+    <%= f.text_field :name, :size => 50, :style => "width:352px" %>
+  </div>
+  <div class='field'>
+    <%= f.label :render_as, "Render as:" %>
+    <%= f.select :render_as, ['List', 'Table', 'Tree'], :style => "width:352px" %>
+  </div>
+  <div>
+    <%= f.label :content, "Script body:" %>
+    <%= f.text_area :content, :style => 'width: 90%', :class => 'script_body' %>
+  </div>
+  <div class='field'>
+    <%= f.label :tag_id, "Script type:" %>
+    <%= f.select :tag_id, Script::Tag, :include_blank => "Select" %>
+  </div>
+  <br>
+  <div id='parsed_parameter'>
+    <%= render :partial => 'shared_scripts/parsed_parameters', :locals => { :script => @script } %>
+  </div>
+  <br>
+
+  <div class='field'>
+    <%= f.label :maps_to, "Maps to:" %>
+    <%=f.radio_button :maps_to, "None" %>
+    None
+    <%=f.radio_button :maps_to, "Ticket" %>
+    Ticket
+    <%=f.radio_button :maps_to, "Component" %>
+    Component
+  </div>
+
+  <%= hidden_field_tag 'page', params[:page] %>
+  <%= hidden_field_tag 'key', params[:key] %>
+  <br>
+  <div class='fl marbtm_5 clear'>
+    <%= f.submit script.new_record? ? "Add script" : "Update script",:class=>'button' %>
+    or
+    <%= link_to 'cancel', automation_scripts_path(:page => params[:page] , :key => params[:key]), :class => "automation_cancel" %>
+  </div>
+  <hr class='clear'>
+  <div style='display:none'>
+    <span id='pending'></span>
+  </div>
+</div>

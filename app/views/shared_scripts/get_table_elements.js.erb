@@ -1,0 +1,3 @@
+$('#table_arg_<%= @container %>').replaceWith('<%= escape_javascript(table_type_argument_body(@container,@external_script_output,@arg_val,@step,@page).html_safe).html_safe %>');
+$('#table_argument_with_pagination_container_<%= @container %>').show();
+restoreSelectionOfCheckboxesForTableArgument('<%= @container %>');

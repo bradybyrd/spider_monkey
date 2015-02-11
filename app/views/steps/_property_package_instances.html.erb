@@ -1,0 +1,35 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% if package_instance %>
+    <% disable_fields = disable_all_form_fields(step) %>
+    <% the_properties = package_instance.properties.active %>
+    <table class="formatted_table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% the_properties.each_with_index do |property, index| %>
+          <tr>
+            <td width="350" title="<%= property.name %>"><%= truncate(property.name, length: 50) %></td>
+            <td>
+              <%= property_value_input_field "property_values[package_instance][#{package_instance.id}]",
+                                             property,
+                                             step.try(:literal_property_value_for, property, package_instance),
+                                             class: "property_field",
+                                             disabled: (field_disabled_on_step_creation?(work_task, property) || disable_fields),
+                                             title: "#{step.try(:literal_property_value_for, property, package_instance)}" %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

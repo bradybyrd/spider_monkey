@@ -1,0 +1,38 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% disable_field = disabled_step_editing?(step) %>
+<tbody>
+  <tr>
+    <% unless step.complete? || step.request.try(:already_started?) %>
+      <td><%= check_box_tag "step[#{server.class.to_s.underscore}_ids][]", server.id,
+              step.new_record? ? (@server_association_ids ? @server_association_ids : server_association_ids).include?(server.id) : step.send("#{server.class.to_s.underscore}_ids").include?(server.id),
+              :id => "#{server.class.to_s.underscore}_#{server.id}", :disabled => disable_field, :title => "@server_association_ids: #{server_association_ids.inspect}, server_association_ids: #{server_association_ids.inspect},  server: #{server.class.to_s} #{server.id}, step.server_ids: #{step.server_ids}"
+          %>
+      </td>
+    <% end %>
+    <td>
+      <%= h server.path_string %>
+    </td>
+    <td>
+      <table id="compact">
+        <% server.properties.each do |property| %>
+          <tr>
+            <td width="160" style="vertical-align:top; padding:0;" title="<%= h property.name %>"><%= raw truncate(property.name, :length => 50 )%></td>
+            <td>
+                <%= property_value_input_field "property_values[#{server.class.to_s.underscore}][#{server.id}]",
+                                             property,
+                                             step.try(:literal_property_value_for, property, server),
+                                             :class => "property_field server_property_value", :disabled => disable_field, :title => "#{step.try(:literal_property_value_for, property, server)}" %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+  </tr>
+</tbody>

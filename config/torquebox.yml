@@ -1,0 +1,41 @@
+web:
+  context: "/brpm"
+
+topics:
+  /topics/stomplets/event_bindable:
+  /topics/messaging/brpm_event_queue:
+    exported: true
+
+queues:
+  /queues/backgroundable/automation:
+  /queues/audit:
+  /queues/activity_log:
+
+stomp:
+  host: localhost
+  stomplets:
+    stomplet.eventable:
+      route: '/stomplets/eventable/:event/:model/:selector'
+      class: EventableStomplet
+      config:
+        destination: /topics/stomplets/event_bindable
+
+messaging:
+  /queues/backgroundable/automation:
+    AutomationHandler:
+      concurrency: 3
+
+jobs:
+  audit.storage:
+    job: AuditHandler::MessagesProcessor
+    cron: '0 * * * * ?'
+    timeout: 50000 ms
+    description: Stores queued audit messages
+
+services:
+  rescheduler-service:
+    service: ScheduledJobService::ReschedulerService
+    singleton: true
+
+ruby:
+  interactive: true

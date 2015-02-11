@@ -1,0 +1,1856 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+activity_logs_002: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready, Clyde Logue"
+  request_id: 125
+  id: 225
+  user_id: 4
+  created_at: <%= 3581799.509517.seconds.ago %>
+activity_logs_003: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 125
+  id: 226
+  user_id: 4
+  created_at: <%= 3581783.509614.seconds.ago %>
+activity_logs_110: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 148
+  id: 338
+  user_id: 4
+  created_at: <%= 2707296.509659.seconds.ago %>
+activity_logs_004: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem, Clyde Logue"
+  request_id: 125
+  id: 227
+  user_id: 4
+  created_at: <%= 3581753.509703.seconds.ago %>
+activity_logs_030: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Ready, Clyde Logue"
+  request_id: 129
+  id: 253
+  user_id: 4
+  created_at: <%= 3554959.509745.seconds.ago %>
+activity_logs_111: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, In process"
+  request_id: 148
+  id: 339
+  user_id: 4
+  created_at: <%= 2707294.509788.seconds.ago %>
+activity_logs_005: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 125
+  id: 228
+  user_id: 4
+  created_at: <%= 3581743.50983.seconds.ago %>
+activity_logs_031: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, In process, Clyde Logue"
+  request_id: 129
+  id: 254
+  user_id: 4
+  created_at: <%= 3554917.509873.seconds.ago %>
+activity_logs_112: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Problem"
+  request_id: 148
+  id: 340
+  user_id: 4
+  created_at: <%= 2707291.509916.seconds.ago %>
+activity_logs_006: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete, Clyde Logue"
+  request_id: 125
+  id: 229
+  user_id: 4
+  created_at: <%= 3581740.509958.seconds.ago %>
+activity_logs_032: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Complete, Clyde Logue"
+  request_id: 129
+  id: 255
+  user_id: 4
+  created_at: <%= 3554913.51.seconds.ago %>
+activity_logs_113: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 148
+  id: 341
+  user_id: 4
+  created_at: <%= 2707289.510043.seconds.ago %>
+activity_logs_220: 
+  usec_created_at: 
+  activity: "Step 3: Stage Optima, Ready"
+  request_id: 217
+  id: 575
+  user_id: 1
+  created_at: <%= 300517.510085.seconds.ago %>
+activity_logs_007: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Ready, Tim Tester"
+  request_id: 125
+  id: 230
+  user_id: 15
+  created_at: <%= 3581739.510128.seconds.ago %>
+activity_logs_033: 
+  usec_created_at: 
+  activity: Complete, Clyde Logue
+  request_id: 129
+  id: 256
+  user_id: 4
+  created_at: <%= 3554913.510169.seconds.ago %>
+activity_logs_114: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Problem"
+  request_id: 148
+  id: 342
+  user_id: 4
+  created_at: <%= 2707288.510211.seconds.ago %>
+activity_logs_140: 
+  usec_created_at: 
+  activity: Started
+  request_id: 155
+  id: 368
+  user_id: 4
+  created_at: <%= 2092176.510253.seconds.ago %>
+activity_logs_221: 
+  usec_created_at: 
+  activity: "Step 4: Stage Rules Engine, Ready"
+  request_id: 217
+  id: 576
+  user_id: 1
+  created_at: <%= 300517.510295.seconds.ago %>
+activity_logs_008: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Ready, Clyde Logue"
+  request_id: 125
+  id: 231
+  user_id: 4
+  created_at: <%= 3581739.510337.seconds.ago %>
+activity_logs_034: 
+  usec_created_at: 
+  activity: Started, Clyde Logue
+  request_id: 137
+  id: 261
+  user_id: 4
+  created_at: <%= 3471892.51038.seconds.ago %>
+activity_logs_060: 
+  usec_created_at: 
+  activity: "Step 3: Stage Portal, Ready, Quentin Tester"
+  request_id: 140
+  id: 287
+  user_id: 1
+  created_at: <%= 3214060.510422.seconds.ago %>
+activity_logs_115: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 148
+  id: 343
+  user_id: 4
+  created_at: <%= 2707283.510465.seconds.ago %>
+activity_logs_141: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 155
+  id: 369
+  user_id: 4
+  created_at: <%= 2092171.510507.seconds.ago %>
+activity_logs_222: 
+  usec_created_at: 
+  activity: "Step 5: Stage Portal, Ready"
+  request_id: 217
+  id: 577
+  user_id: 1
+  created_at: <%= 300517.51055.seconds.ago %>
+activity_logs_009: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, In process, Clyde Logue"
+  request_id: 125
+  id: 232
+  user_id: 4
+  created_at: <%= 3581727.510591.seconds.ago %>
+activity_logs_035: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready, Clyde Logue"
+  request_id: 137
+  id: 262
+  user_id: 4
+  created_at: <%= 3471892.510634.seconds.ago %>
+activity_logs_061: 
+  usec_created_at: 
+  activity: "Step 4: Stage Portal, Ready, Duane Tharp"
+  request_id: 140
+  id: 288
+  user_id: 13
+  created_at: <%= 3214060.510676.seconds.ago %>
+activity_logs_116: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Problem"
+  request_id: 148
+  id: 344
+  user_id: 4
+  created_at: <%= 2707282.510718.seconds.ago %>
+activity_logs_142: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 176
+  id: 414
+  user_id: 4
+  created_at: <%= 1666838.51076.seconds.ago %>
+activity_logs_223: 
+  usec_created_at: 
+  activity: "Step 5: Stage Portal, In process"
+  request_id: 217
+  id: 578
+  user_id: 1
+  created_at: <%= 300517.510802.seconds.ago %>
+activity_logs_036: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Rules Engine, Ready, Tim Tester"
+  request_id: 137
+  id: 263
+  user_id: 15
+  created_at: <%= 3471892.510844.seconds.ago %>
+activity_logs_062: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Duane Tharp"
+  request_id: 140
+  id: 289
+  user_id: 13
+  created_at: <%= 3214047.510888.seconds.ago %>
+activity_logs_117: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 148
+  id: 345
+  user_id: 4
+  created_at: <%= 2707281.51093.seconds.ago %>
+activity_logs_143: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 180
+  id: 428
+  user_id: 4
+  created_at: <%= 1584860.510972.seconds.ago %>
+activity_logs_224: 
+  usec_created_at: 
+  activity: "Step 6: Stage Portal, Ready"
+  request_id: 217
+  id: 579
+  user_id: 1
+  created_at: <%= 300517.511015.seconds.ago %>
+activity_logs_250: 
+  usec_created_at: 218068
+  activity: Planned
+  request_id: 236
+  id: 620
+  user_id: 4
+  created_at: <%= -700129.48894.seconds.ago %>
+activity_logs_037: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 137
+  id: 264
+  user_id: 4
+  created_at: <%= 3471869.511102.seconds.ago %>
+activity_logs_063: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem, Duane Tharp"
+  request_id: 140
+  id: 290
+  user_id: 13
+  created_at: <%= 3213972.511144.seconds.ago %>
+activity_logs_118: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Complete"
+  request_id: 148
+  id: 346
+  user_id: 4
+  created_at: <%= 2707280.511186.seconds.ago %>
+activity_logs_144: 
+  usec_created_at: 
+  activity: Started
+  request_id: 180
+  id: 429
+  user_id: 4
+  created_at: <%= 1584844.511228.seconds.ago %>
+activity_logs_170: 
+  usec_created_at: 
+  activity: Hold
+  request_id: 176
+  id: 484
+  user_id: 4
+  created_at: <%= 637343.511269.seconds.ago %>
+activity_logs_225: 
+  usec_created_at: 
+  activity: "Step 7: Stage Portal, Ready"
+  request_id: 217
+  id: 580
+  user_id: 1
+  created_at: <%= 300517.511311.seconds.ago %>
+activity_logs_251: 
+  usec_created_at: 502741
+  activity: Started
+  request_id: 236
+  id: 621
+  user_id: 4
+  created_at: <%= -700137.488643.seconds.ago %>
+activity_logs_038: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete, Clyde Logue"
+  request_id: 137
+  id: 265
+  user_id: 4
+  created_at: <%= 3471792.511399.seconds.ago %>
+activity_logs_064: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Duane Tharp"
+  request_id: 140
+  id: 291
+  user_id: 13
+  created_at: <%= 3213965.511465.seconds.ago %>
+activity_logs_090: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, Ready"
+  request_id: 132
+  id: 318
+  user_id: 15
+  created_at: <%= 2713129.511515.seconds.ago %>
+activity_logs_119: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Complete"
+  request_id: 148
+  id: 347
+  user_id: 4
+  created_at: <%= 2707277.511559.seconds.ago %>
+activity_logs_145: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 180
+  id: 430
+  user_id: 4
+  created_at: <%= 1584843.511601.seconds.ago %>
+activity_logs_171: 
+  usec_created_at: 
+  activity: Started
+  request_id: 176
+  id: 485
+  user_id: 4
+  created_at: <%= 637311.511643.seconds.ago %>
+activity_logs_226: 
+  usec_created_at: 
+  activity: "Step 7: Stage Portal, In process"
+  request_id: 217
+  id: 581
+  user_id: 1
+  created_at: <%= 300517.511686.seconds.ago %>
+activity_logs_252: 
+  usec_created_at: 540273
+  activity: "Step 1: Stop Rules Engine, Ready"
+  request_id: 236
+  id: 622
+  user_id: 4
+  created_at: <%= -700137.488269.seconds.ago %>
+activity_logs_039: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Rules Engine, In process, Tim Tester"
+  request_id: 137
+  id: 266
+  user_id: 15
+  created_at: <%= 3471670.511773.seconds.ago %>
+activity_logs_065: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem, Duane Tharp"
+  request_id: 140
+  id: 292
+  user_id: 13
+  created_at: <%= 3213961.511816.seconds.ago %>
+activity_logs_091: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, In process"
+  request_id: 132
+  id: 319
+  user_id: 15
+  created_at: <%= 2713014.511858.seconds.ago %>
+activity_logs_146: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Ready"
+  request_id: 180
+  id: 431
+  user_id: 4
+  created_at: <%= 1584843.511902.seconds.ago %>
+activity_logs_172: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, In process"
+  request_id: 176
+  id: 486
+  user_id: 15
+  created_at: <%= 637285.511944.seconds.ago %>
+activity_logs_227: 
+  usec_created_at: 
+  activity: "Step 5: Stage Portal, Complete"
+  request_id: 217
+  id: 582
+  user_id: 1
+  created_at: <%= 300505.511986.seconds.ago %>
+activity_logs_253: 
+  usec_created_at: 551290
+  activity: "Step 2: Stop Portal, Ready"
+  request_id: 236
+  id: 623
+  user_id: 4
+  created_at: <%= -700137.487967.seconds.ago %>
+activity_logs_066: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Duane Tharp"
+  request_id: 140
+  id: 293
+  user_id: 13
+  created_at: <%= 3213959.512075.seconds.ago %>
+activity_logs_092: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, Problem"
+  request_id: 132
+  id: 320
+  user_id: 15
+  created_at: <%= 2713010.512118.seconds.ago %>
+activity_logs_147: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 180
+  id: 432
+  user_id: 4
+  created_at: <%= 1584314.51216.seconds.ago %>
+activity_logs_173: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, Complete"
+  request_id: 176
+  id: 487
+  user_id: 15
+  created_at: <%= 637280.512202.seconds.ago %>
+activity_logs_228: 
+  usec_created_at: 
+  activity: "Step 7: Stage Portal, Complete"
+  request_id: 217
+  id: 583
+  user_id: 1
+  created_at: <%= 300505.512245.seconds.ago %>
+activity_logs_254: 
+  usec_created_at: 561305
+  activity: "Step 3: Stop ESB, Ready"
+  request_id: 236
+  id: 624
+  user_id: 4
+  created_at: <%= -700137.487709.seconds.ago %>
+activity_logs_067: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem, Duane Tharp"
+  request_id: 140
+  id: 294
+  user_id: 13
+  created_at: <%= 3213956.512333.seconds.ago %>
+activity_logs_093: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, In process"
+  request_id: 132
+  id: 321
+  user_id: 15
+  created_at: <%= 2713000.512394.seconds.ago %>
+activity_logs_148: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem"
+  request_id: 180
+  id: 433
+  user_id: 4
+  created_at: <%= 1584301.51244.seconds.ago %>
+activity_logs_174: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, Ready"
+  request_id: 176
+  id: 488
+  user_id: 15
+  created_at: <%= 637280.512482.seconds.ago %>
+activity_logs_229: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, In process"
+  request_id: 217
+  id: 584
+  user_id: 4
+  created_at: <%= 298557.512525.seconds.ago %>
+activity_logs_255: 
+  usec_created_at: 570878
+  activity: "Step 4: Stage Portal, Ready"
+  request_id: 236
+  id: 625
+  user_id: 4
+  created_at: <%= -700137.48743.seconds.ago %>
+activity_logs_068: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Duane Tharp"
+  request_id: 140
+  id: 295
+  user_id: 13
+  created_at: <%= 3213955.512613.seconds.ago %>
+activity_logs_094: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, Complete"
+  request_id: 132
+  id: 322
+  user_id: 15
+  created_at: <%= 2712977.512655.seconds.ago %>
+activity_logs_149: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 180
+  id: 434
+  user_id: 4
+  created_at: <%= 1584224.512697.seconds.ago %>
+activity_logs_175: 
+  usec_created_at: 
+  activity: "Step 5: Stage ESB, Ready"
+  request_id: 176
+  id: 489
+  user_id: 4
+  created_at: <%= 637280.51274.seconds.ago %>
+activity_logs_256: 
+  usec_created_at: 614443
+  activity: "Step 1: Stop Rules Engine, In process"
+  request_id: 236
+  id: 626
+  user_id: 4
+  created_at: <%= -700178.487215.seconds.ago %>
+activity_logs_069: 
+  usec_created_at: 
+  activity: "Step 2: Stage Optima, In process, Duane Tharp"
+  request_id: 140
+  id: 296
+  user_id: 13
+  created_at: <%= 3213953.512827.seconds.ago %>
+activity_logs_095: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, Ready"
+  request_id: 132
+  id: 323
+  user_id: 15
+  created_at: <%= 2712977.51287.seconds.ago %>
+activity_logs_176: 
+  usec_created_at: 
+  activity: "Step 5: Stage ESB, In process"
+  request_id: 176
+  id: 507
+  user_id: 4
+  created_at: <%= 612767.512912.seconds.ago %>
+activity_logs_257: 
+  usec_created_at: 214558
+  activity: "Step 1: Stop Rules Engine, Complete"
+  request_id: 236
+  id: 627
+  user_id: 4
+  created_at: <%= -700181.487043.seconds.ago %>
+activity_logs_096: 
+  usec_created_at: 
+  activity: "Step 5: Stage ESB, Ready"
+  request_id: 132
+  id: 324
+  user_id: 4
+  created_at: <%= 2712977.513.seconds.ago %>
+activity_logs_177: 
+  usec_created_at: 
+  activity: "Step 5: Stage ESB, Complete"
+  request_id: 176
+  id: 508
+  user_id: 4
+  created_at: <%= 612750.513043.seconds.ago %>
+activity_logs_258: 
+  usec_created_at: 244909
+  activity: "Step 2: Stop Portal, In process"
+  request_id: 236
+  id: 628
+  user_id: 4
+  created_at: <%= -700186.486912.seconds.ago %>
+activity_logs_097: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, In process"
+  request_id: 132
+  id: 325
+  user_id: 15
+  created_at: <%= 2712966.51313.seconds.ago %>
+activity_logs_178: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, In process"
+  request_id: 176
+  id: 509
+  user_id: 15
+  created_at: <%= 612673.513178.seconds.ago %>
+activity_logs_259: 
+  usec_created_at: 194527
+  activity: "Step 2: Stop Portal, Complete"
+  request_id: 236
+  id: 629
+  user_id: 4
+  created_at: <%= -700189.486776.seconds.ago %>
+activity_logs_098: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, Complete"
+  request_id: 132
+  id: 326
+  user_id: 15
+  created_at: <%= 2712960.513265.seconds.ago %>
+activity_logs_179: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, Problem"
+  request_id: 176
+  id: 510
+  user_id: 15
+  created_at: <%= 612641.513308.seconds.ago %>
+activity_logs_099: 
+  usec_created_at: 
+  activity: "Step 3: Stage ESB, In process"
+  request_id: 137
+  id: 327
+  user_id: 4
+  created_at: <%= 2712883.513351.seconds.ago %>
+activity_logs_100: 
+  usec_created_at: 
+  activity: "Step 3: Stage ESB, Complete"
+  request_id: 137
+  id: 328
+  user_id: 4
+  created_at: <%= 2712879.513392.seconds.ago %>
+activity_logs_020: 
+  usec_created_at: 
+  activity: Started, Clyde Logue
+  request_id: 129
+  id: 243
+  user_id: 4
+  created_at: <%= 3555084.513435.seconds.ago %>
+activity_logs_101: 
+  usec_created_at: 
+  activity: "Step 4: Verify Portal, In process"
+  request_id: 137
+  id: 329
+  user_id: 4
+  created_at: <%= 2712866.513477.seconds.ago %>
+activity_logs_021: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready, Clyde Logue"
+  request_id: 129
+  id: 244
+  user_id: 4
+  created_at: <%= 3555084.513519.seconds.ago %>
+activity_logs_102: 
+  usec_created_at: 
+  activity: "Step 4: Verify Portal, Complete"
+  request_id: 137
+  id: 330
+  user_id: 4
+  created_at: <%= 2712862.513562.seconds.ago %>
+activity_logs_022: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 129
+  id: 245
+  user_id: 4
+  created_at: <%= 3555068.513603.seconds.ago %>
+activity_logs_103: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 137
+  id: 331
+  user_id: 4
+  created_at: <%= 2712863.513645.seconds.ago %>
+activity_logs_210: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 204
+  id: 556
+  user_id: 4
+  created_at: <%= 527630.513688.seconds.ago %>
+activity_logs_023: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete, Clyde Logue"
+  request_id: 129
+  id: 246
+  user_id: 4
+  created_at: <%= 3555021.51373.seconds.ago %>
+activity_logs_104: 
+  usec_created_at: 
+  activity: Started
+  request_id: 148
+  id: 332
+  user_id: 4
+  created_at: <%= 2707320.513772.seconds.ago %>
+activity_logs_130: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 153
+  id: 358
+  user_id: 4
+  created_at: <%= 2092304.513814.seconds.ago %>
+activity_logs_211: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete"
+  request_id: 204
+  id: 557
+  user_id: 4
+  created_at: <%= 527628.513856.seconds.ago %>
+activity_logs_024: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Ready, Clyde Logue"
+  request_id: 129
+  id: 247
+  user_id: 4
+  created_at: <%= 3555020.513899.seconds.ago %>
+activity_logs_050: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, Ready, Clyde Logue"
+  request_id: 131
+  id: 277
+  user_id: 4
+  created_at: <%= 3384346.513941.seconds.ago %>
+activity_logs_105: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 148
+  id: 333
+  user_id: 4
+  created_at: <%= 2707320.513983.seconds.ago %>
+activity_logs_131: 
+  usec_created_at: 
+  activity: Started
+  request_id: 153
+  id: 359
+  user_id: 4
+  created_at: <%= 2092297.514025.seconds.ago %>
+activity_logs_212: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Ready"
+  request_id: 204
+  id: 558
+  user_id: 2
+  created_at: <%= 527628.514068.seconds.ago %>
+activity_logs_025: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process, Clyde Logue"
+  request_id: 129
+  id: 248
+  user_id: 4
+  created_at: <%= 3555016.514109.seconds.ago %>
+activity_logs_051: 
+  usec_created_at: 
+  activity: "Step 3: Stage ESB, Ready, Clyde Logue"
+  request_id: 131
+  id: 278
+  user_id: 4
+  created_at: <%= 3384346.514151.seconds.ago %>
+activity_logs_106: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 148
+  id: 334
+  user_id: 4
+  created_at: <%= 2707299.514193.seconds.ago %>
+activity_logs_132: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 153
+  id: 360
+  user_id: 1
+  created_at: <%= 2092297.514235.seconds.ago %>
+activity_logs_213: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 204
+  id: 559
+  user_id: 2
+  created_at: <%= 527628.514277.seconds.ago %>
+activity_logs_026: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Complete, Clyde Logue"
+  request_id: 129
+  id: 249
+  user_id: 4
+  created_at: <%= 3555014.514319.seconds.ago %>
+activity_logs_052: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Portal, Ready, Tim Tester"
+  request_id: 131
+  id: 279
+  user_id: 15
+  created_at: <%= 3384346.514361.seconds.ago %>
+activity_logs_107: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete"
+  request_id: 148
+  id: 335
+  user_id: 4
+  created_at: <%= 2707298.514404.seconds.ago %>
+activity_logs_133: 
+  usec_created_at: 
+  activity: Problem
+  request_id: 153
+  id: 361
+  user_id: 4
+  created_at: <%= 2092293.514446.seconds.ago %>
+activity_logs_214: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Complete"
+  request_id: 204
+  id: 560
+  user_id: 2
+  created_at: <%= 527438.514488.seconds.ago %>
+activity_logs_240: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 225
+  id: 609
+  user_id: 4
+  created_at: <%= 268216.514531.seconds.ago %>
+activity_logs_027: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Ready, Tim Tester"
+  request_id: 129
+  id: 250
+  user_id: 15
+  created_at: <%= 3555014.514573.seconds.ago %>
+activity_logs_053: 
+  usec_created_at: 
+  activity: "Step 3: Stage ESB, In process, Clyde Logue"
+  request_id: 131
+  id: 280
+  user_id: 4
+  created_at: <%= 3384235.514614.seconds.ago %>
+activity_logs_108: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Ready"
+  request_id: 148
+  id: 336
+  user_id: 4
+  created_at: <%= 2707297.514656.seconds.ago %>
+activity_logs_134: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 155
+  id: 362
+  user_id: 4
+  created_at: <%= 2092260.514697.seconds.ago %>
+activity_logs_160: 
+  usec_created_at: 
+  activity: Started
+  request_id: 176
+  id: 474
+  user_id: 4
+  created_at: <%= 637694.51474.seconds.ago %>
+activity_logs_215: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 204
+  id: 561
+  user_id: 4
+  created_at: <%= 527438.514781.seconds.ago %>
+activity_logs_241: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete"
+  request_id: 225
+  id: 610
+  user_id: 4
+  created_at: <%= 268214.514823.seconds.ago %>
+activity_logs_028: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, In process, Tim Tester"
+  request_id: 129
+  id: 251
+  user_id: 15
+  created_at: <%= 3554974.514866.seconds.ago %>
+activity_logs_054: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, In process, Clyde Logue"
+  request_id: 131
+  id: 281
+  user_id: 4
+  created_at: <%= 3384234.514908.seconds.ago %>
+activity_logs_080: 
+  usec_created_at: 
+  activity: Complete, Duane Tharp
+  request_id: 140
+  id: 307
+  user_id: 13
+  created_at: <%= 3213549.51495.seconds.ago %>
+activity_logs_109: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Ready"
+  request_id: 148
+  id: 337
+  user_id: 4
+  created_at: <%= 2707297.514991.seconds.ago %>
+activity_logs_135: 
+  usec_created_at: 
+  activity: Started
+  request_id: 155
+  id: 363
+  user_id: 4
+  created_at: <%= 2092255.515034.seconds.ago %>
+activity_logs_161: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, Ready"
+  request_id: 176
+  id: 475
+  user_id: 4
+  created_at: <%= 637694.515076.seconds.ago %>
+activity_logs_216: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 217
+  id: 571
+  user_id: 4
+  created_at: <%= 300523.515118.seconds.ago %>
+activity_logs_242: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 225
+  id: 611
+  user_id: 4
+  created_at: <%= 268214.515159.seconds.ago %>
+activity_logs_029: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Complete, Tim Tester"
+  request_id: 129
+  id: 252
+  user_id: 15
+  created_at: <%= 3554959.515201.seconds.ago %>
+activity_logs_055: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, Complete, Clyde Logue"
+  request_id: 131
+  id: 282
+  user_id: 4
+  created_at: <%= 3384232.515243.seconds.ago %>
+activity_logs_081: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 148
+  id: 309
+  user_id: 4
+  created_at: <%= 2718945.515286.seconds.ago %>
+activity_logs_136: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 155
+  id: 364
+  user_id: 1
+  created_at: <%= 2092254.515329.seconds.ago %>
+activity_logs_162: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Ready"
+  request_id: 176
+  id: 476
+  user_id: 4
+  created_at: <%= 637694.51537.seconds.ago %>
+activity_logs_217: 
+  usec_created_at: 
+  activity: Started
+  request_id: 217
+  id: 572
+  user_id: 4
+  created_at: <%= 300517.515412.seconds.ago %>
+activity_logs_243: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 220
+  id: 613
+  user_id: 4
+  created_at: <%= -74488.484545.seconds.ago %>
+activity_logs_056: 
+  usec_created_at: 
+  activity: Planned, Duane Tharp
+  request_id: 140
+  id: 283
+  user_id: 13
+  created_at: <%= 3214194.515497.seconds.ago %>
+activity_logs_082: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 132
+  id: 310
+  user_id: 4
+  created_at: <%= 2713316.515539.seconds.ago %>
+activity_logs_137: 
+  usec_created_at: 
+  activity: Hold
+  request_id: 155
+  id: 365
+  user_id: 4
+  created_at: <%= 2092248.515581.seconds.ago %>
+activity_logs_163: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, In process"
+  request_id: 176
+  id: 477
+  user_id: 4
+  created_at: <%= 637634.515622.seconds.ago %>
+activity_logs_218: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, Ready"
+  request_id: 217
+  id: 573
+  user_id: 4
+  created_at: <%= 300517.515664.seconds.ago %>
+activity_logs_244: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 163
+  id: 614
+  user_id: 3
+  created_at: <%= -74524.484293.seconds.ago %>
+activity_logs_057: 
+  usec_created_at: 
+  activity: Started, Duane Tharp
+  request_id: 140
+  id: 284
+  user_id: 13
+  created_at: <%= 3214061.515749.seconds.ago %>
+activity_logs_083: 
+  usec_created_at: 
+  activity: Started
+  request_id: 132
+  id: 311
+  user_id: 4
+  created_at: <%= 2713274.515792.seconds.ago %>
+activity_logs_138: 
+  usec_created_at: 
+  activity: Cancelled
+  request_id: 155
+  id: 366
+  user_id: 4
+  created_at: <%= 2092195.515834.seconds.ago %>
+activity_logs_164: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, Complete"
+  request_id: 176
+  id: 478
+  user_id: 4
+  created_at: <%= 637580.515876.seconds.ago %>
+activity_logs_190: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 199
+  id: 534
+  user_id: 4
+  created_at: <%= 528284.515918.seconds.ago %>
+activity_logs_219: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Ready"
+  request_id: 217
+  id: 574
+  user_id: 1
+  created_at: <%= 300517.51596.seconds.ago %>
+activity_logs_245: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 224
+  id: 615
+  user_id: 4
+  created_at: <%= -74616.483999.seconds.ago %>
+activity_logs_058: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready, Duane Tharp"
+  request_id: 140
+  id: 285
+  user_id: 13
+  created_at: <%= 3214060.516043.seconds.ago %>
+activity_logs_084: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, Ready"
+  request_id: 132
+  id: 312
+  user_id: 4
+  created_at: <%= 2713274.516085.seconds.ago %>
+activity_logs_139: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 155
+  id: 367
+  user_id: 4
+  created_at: <%= 2092184.516127.seconds.ago %>
+activity_logs_165: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, In process"
+  request_id: 176
+  id: 479
+  user_id: 4
+  created_at: <%= 637572.516169.seconds.ago %>
+activity_logs_191: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem"
+  request_id: 199
+  id: 535
+  user_id: 4
+  created_at: <%= 528214.516211.seconds.ago %>
+activity_logs_246: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 198
+  id: 616
+  user_id: 4
+  created_at: <%= -74659.483747.seconds.ago %>
+activity_logs_059: 
+  usec_created_at: 
+  activity: "Step 2: Stage Optima, Ready, Duane Tharp"
+  request_id: 140
+  id: 286
+  user_id: 13
+  created_at: <%= 3214060.516295.seconds.ago %>
+activity_logs_085: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Ready"
+  request_id: 132
+  id: 313
+  user_id: 4
+  created_at: <%= 2713274.516337.seconds.ago %>
+activity_logs_166: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Problem"
+  request_id: 176
+  id: 480
+  user_id: 4
+  created_at: <%= 637482.51638.seconds.ago %>
+activity_logs_192: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 199
+  id: 536
+  user_id: 4
+  created_at: <%= 528167.516422.seconds.ago %>
+activity_logs_247: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 233
+  id: 617
+  user_id: 4
+  created_at: <%= -74722.483536.seconds.ago %>
+activity_logs_086: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, In process"
+  request_id: 132
+  id: 314
+  user_id: 4
+  created_at: <%= 2713216.516506.seconds.ago %>
+activity_logs_167: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, In process"
+  request_id: 176
+  id: 481
+  user_id: 4
+  created_at: <%= 637440.516548.seconds.ago %>
+activity_logs_193: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete"
+  request_id: 199
+  id: 537
+  user_id: 4
+  created_at: <%= 528162.51659.seconds.ago %>
+activity_logs_248: 
+  usec_created_at: 
+  activity: Cancelled
+  request_id: 217
+  id: 618
+  user_id: 4
+  created_at: <%= -75178.483368.seconds.ago %>
+activity_logs_087: 
+  usec_created_at: 
+  activity: "Step 1: Stage Rules Engine, Complete"
+  request_id: 132
+  id: 315
+  user_id: 4
+  created_at: <%= 2713147.516674.seconds.ago %>
+activity_logs_168: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Complete"
+  request_id: 176
+  id: 482
+  user_id: 4
+  created_at: <%= 637437.516716.seconds.ago %>
+activity_logs_194: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, Ready"
+  request_id: 199
+  id: 538
+  user_id: 4
+  created_at: <%= 528162.516757.seconds.ago %>
+activity_logs_249: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 152
+  id: 619
+  user_id: 3
+  created_at: <%= -75202.4832.seconds.ago %>
+activity_logs_088: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, In process"
+  request_id: 132
+  id: 316
+  user_id: 4
+  created_at: <%= 2713143.516841.seconds.ago %>
+activity_logs_169: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Rules Engine, Ready"
+  request_id: 176
+  id: 483
+  user_id: 15
+  created_at: <%= 637437.516883.seconds.ago %>
+activity_logs_195: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Portal, Ready"
+  request_id: 199
+  id: 539
+  user_id: 15
+  created_at: <%= 528162.516924.seconds.ago %>
+activity_logs_089: 
+  usec_created_at: 
+  activity: "Step 2: Stage Portal, Complete"
+  request_id: 132
+  id: 317
+  user_id: 4
+  created_at: <%= 2713129.516966.seconds.ago %>
+activity_logs_196: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Portal, In process"
+  request_id: 199
+  id: 540
+  user_id: 15
+  created_at: <%= 528140.517011.seconds.ago %>
+activity_logs_197: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, In process"
+  request_id: 199
+  id: 541
+  user_id: 4
+  created_at: <%= 528127.517054.seconds.ago %>
+activity_logs_198: 
+  usec_created_at: 
+  activity: "Step 2: Stage Rules Engine, Complete"
+  request_id: 199
+  id: 542
+  user_id: 4
+  created_at: <%= 528125.517097.seconds.ago %>
+activity_logs_199: 
+  usec_created_at: 
+  activity: "Step 3: Deploy Portal, Complete"
+  request_id: 199
+  id: 543
+  user_id: 15
+  created_at: <%= 528113.517138.seconds.ago %>
+activity_logs_010: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process, Tim Tester"
+  request_id: 125
+  id: 233
+  user_id: 15
+  created_at: <%= 3581666.517181.seconds.ago %>
+activity_logs_011: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Complete, Tim Tester"
+  request_id: 125
+  id: 234
+  user_id: 15
+  created_at: <%= 3581663.517224.seconds.ago %>
+activity_logs_200: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Ready"
+  request_id: 199
+  id: 544
+  user_id: 15
+  created_at: <%= 528113.517265.seconds.ago %>
+activity_logs_012: 
+  usec_created_at: 
+  activity: "Step 3: Stage Rules Engine, Complete, Clyde Logue"
+  request_id: 125
+  id: 235
+  user_id: 4
+  created_at: <%= 3581585.517308.seconds.ago %>
+activity_logs_120: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Ready"
+  request_id: 148
+  id: 348
+  user_id: 4
+  created_at: <%= 2707277.51735.seconds.ago %>
+activity_logs_201: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Ready"
+  request_id: 199
+  id: 545
+  user_id: 15
+  created_at: <%= 528113.517391.seconds.ago %>
+activity_logs_013: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Ready, Tim Tester"
+  request_id: 125
+  id: 236
+  user_id: 15
+  created_at: <%= 3581585.517433.seconds.ago %>
+activity_logs_121: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, In process"
+  request_id: 148
+  id: 349
+  user_id: 4
+  created_at: <%= 2707275.517475.seconds.ago %>
+activity_logs_202: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, In process"
+  request_id: 199
+  id: 546
+  user_id: 15
+  created_at: <%= 528081.517518.seconds.ago %>
+activity_logs_014: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, In process, Tim Tester"
+  request_id: 125
+  id: 237
+  user_id: 15
+  created_at: <%= 3580888.517561.seconds.ago %>
+activity_logs_040: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Rules Engine, Complete, Tim Tester"
+  request_id: 137
+  id: 267
+  user_id: 15
+  created_at: <%= 3471656.517603.seconds.ago %>
+activity_logs_122: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Complete"
+  request_id: 148
+  id: 350
+  user_id: 4
+  created_at: <%= 2707273.517644.seconds.ago %>
+activity_logs_203: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Complete"
+  request_id: 199
+  id: 547
+  user_id: 15
+  created_at: <%= 528074.517688.seconds.ago %>
+activity_logs_015: 
+  usec_created_at: 
+  activity: "Step 4: Deploy Rules Engine, Complete, Tim Tester"
+  request_id: 125
+  id: 238
+  user_id: 15
+  created_at: <%= 3580887.517732.seconds.ago %>
+activity_logs_041: 
+  usec_created_at: 
+  activity: "Step 3: Stage ESB, Ready, Clyde Logue"
+  request_id: 137
+  id: 268
+  user_id: 4
+  created_at: <%= 3471656.517774.seconds.ago %>
+activity_logs_123: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Ready"
+  request_id: 148
+  id: 351
+  user_id: 4
+  created_at: <%= 2707273.517816.seconds.ago %>
+activity_logs_204: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, In process"
+  request_id: 199
+  id: 548
+  user_id: 15
+  created_at: <%= 528065.517859.seconds.ago %>
+activity_logs_230: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, Problem"
+  request_id: 217
+  id: 585
+  user_id: 4
+  created_at: <%= 298555.5179.seconds.ago %>
+activity_logs_016: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Ready, Tim Tester"
+  request_id: 125
+  id: 239
+  user_id: 15
+  created_at: <%= 3580887.517943.seconds.ago %>
+activity_logs_042: 
+  usec_created_at: 
+  activity: "Step 4: Verify Portal, Ready, Clyde Logue"
+  request_id: 137
+  id: 269
+  user_id: 4
+  created_at: <%= 3471656.517985.seconds.ago %>
+activity_logs_124: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, In process"
+  request_id: 148
+  id: 352
+  user_id: 4
+  created_at: <%= 2707271.518027.seconds.ago %>
+activity_logs_150: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete"
+  request_id: 180
+  id: 435
+  user_id: 4
+  created_at: <%= 1584221.51807.seconds.ago %>
+activity_logs_205: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Complete"
+  request_id: 199
+  id: 549
+  user_id: 15
+  created_at: <%= 528053.518113.seconds.ago %>
+activity_logs_231: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, In process"
+  request_id: 217
+  id: 586
+  user_id: 4
+  created_at: <%= 298538.518155.seconds.ago %>
+activity_logs_017: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, In process, Tim Tester"
+  request_id: 125
+  id: 240
+  user_id: 15
+  created_at: <%= 3580884.518199.seconds.ago %>
+activity_logs_043: 
+  usec_created_at: 
+  activity: Planned, Clyde Logue
+  request_id: 131
+  id: 270
+  user_id: 4
+  created_at: <%= 3384464.518241.seconds.ago %>
+activity_logs_125: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Complete"
+  request_id: 148
+  id: 353
+  user_id: 4
+  created_at: <%= 2707270.518284.seconds.ago %>
+activity_logs_151: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, In process"
+  request_id: 180
+  id: 436
+  user_id: 4
+  created_at: <%= 1584108.518326.seconds.ago %>
+activity_logs_206: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 199
+  id: 550
+  user_id: 4
+  created_at: <%= 528053.518367.seconds.ago %>
+activity_logs_232: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, Complete"
+  request_id: 217
+  id: 587
+  user_id: 4
+  created_at: <%= 298531.518409.seconds.ago %>
+activity_logs_018: 
+  usec_created_at: 
+  activity: "Step 5: Verify Portal, Complete, Tim Tester"
+  request_id: 125
+  id: 241
+  user_id: 15
+  created_at: <%= 3580882.51845.seconds.ago %>
+activity_logs_044: 
+  usec_created_at: 
+  activity: Started, Clyde Logue
+  request_id: 131
+  id: 271
+  user_id: 4
+  created_at: <%= 3384381.518493.seconds.ago %>
+activity_logs_070: 
+  usec_created_at: 
+  activity: "Step 4: Stage Portal, In process, Duane Tharp"
+  request_id: 140
+  id: 297
+  user_id: 13
+  created_at: <%= 3213944.518535.seconds.ago %>
+activity_logs_152: 
+  usec_created_at: 
+  activity: "Step 2: Deploy Portal, Complete"
+  request_id: 180
+  id: 437
+  user_id: 4
+  created_at: <%= 1584103.518579.seconds.ago %>
+activity_logs_207: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 204
+  id: 553
+  user_id: 4
+  created_at: <%= 527706.518621.seconds.ago %>
+activity_logs_233: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 225
+  id: 602
+  user_id: 4
+  created_at: <%= 268280.518663.seconds.ago %>
+activity_logs_019: 
+  usec_created_at: 
+  activity: Complete, Clyde Logue
+  request_id: 125
+  id: 242
+  user_id: 4
+  created_at: <%= 3580882.518706.seconds.ago %>
+activity_logs_045: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready, Clyde Logue"
+  request_id: 131
+  id: 272
+  user_id: 4
+  created_at: <%= 3384381.518749.seconds.ago %>
+activity_logs_071: 
+  usec_created_at: 
+  activity: "Step 4: Stage Portal, Complete, Duane Tharp"
+  request_id: 140
+  id: 298
+  user_id: 13
+  created_at: <%= 3213943.518791.seconds.ago %>
+activity_logs_126: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 148
+  id: 354
+  user_id: 4
+  created_at: <%= 2707270.518832.seconds.ago %>
+activity_logs_127: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 152
+  id: 355
+  user_id: 3
+  created_at: <%= 2188036.518874.seconds.ago %>
+activity_logs_072: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete, Duane Tharp"
+  request_id: 140
+  id: 299
+  user_id: 13
+  created_at: <%= 3213940.518916.seconds.ago %>
+activity_logs_046: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 131
+  id: 273
+  user_id: 4
+  created_at: <%= 3384368.518958.seconds.ago %>
+activity_logs_153: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 180
+  id: 438
+  user_id: 4
+  created_at: <%= 1584103.519001.seconds.ago %>
+activity_logs_208: 
+  usec_created_at: 
+  activity: Started
+  request_id: 204
+  id: 554
+  user_id: 4
+  created_at: <%= 527634.519044.seconds.ago %>
+activity_logs_234: 
+  usec_created_at: 
+  activity: Started
+  request_id: 225
+  id: 603
+  user_id: 4
+  created_at: <%= 268271.519086.seconds.ago %>
+activity_logs_260: 
+  usec_created_at: 524395
+  activity: Problem
+  request_id: 236
+  id: 630
+  user_id: 4
+  created_at: <%= -700401.480869.seconds.ago %>
+activity_logs_154: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 190
+  id: 463
+  user_id: 4
+  created_at: <%= 1137892.519173.seconds.ago %>
+activity_logs_128: 
+  usec_created_at: 
+  activity: Started
+  request_id: 152
+  id: 356
+  user_id: 3
+  created_at: <%= 2187992.519216.seconds.ago %>
+activity_logs_073: 
+  usec_created_at: 
+  activity: "Step 2: Stage Optima, Complete, Duane Tharp"
+  request_id: 140
+  id: 300
+  user_id: 13
+  created_at: <%= 3213938.519257.seconds.ago %>
+activity_logs_047: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem, Clyde Logue"
+  request_id: 131
+  id: 274
+  user_id: 4
+  created_at: <%= 3384358.519299.seconds.ago %>
+activity_logs_209: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 204
+  id: 555
+  user_id: 4
+  created_at: <%= 527634.519341.seconds.ago %>
+activity_logs_180: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, In process"
+  request_id: 176
+  id: 511
+  user_id: 15
+  created_at: <%= 612588.519384.seconds.ago %>
+activity_logs_235: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 225
+  id: 604
+  user_id: 1
+  created_at: <%= 268270.519427.seconds.ago %>
+activity_logs_261: 
+  usec_created_at: 276536
+  activity: Cancelled
+  request_id: 236
+  id: 631
+  user_id: 4
+  created_at: <%= -700432.480529.seconds.ago %>
+activity_logs_155: 
+  usec_created_at: 
+  activity: Started
+  request_id: 190
+  id: 464
+  user_id: 4
+  created_at: <%= 1137862.519515.seconds.ago %>
+activity_logs_129: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 152
+  id: 357
+  user_id: 1
+  created_at: <%= 2187992.519558.seconds.ago %>
+activity_logs_074: 
+  usec_created_at: 
+  activity: Problem, Duane Tharp
+  request_id: 140
+  id: 301
+  user_id: 13
+  created_at: <%= 3213923.5196.seconds.ago %>
+activity_logs_048: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process, Clyde Logue"
+  request_id: 131
+  id: 275
+  user_id: 4
+  created_at: <%= 3384348.519643.seconds.ago %>
+activity_logs_181: 
+  usec_created_at: 
+  activity: "Step 4: Stage Database, Complete"
+  request_id: 176
+  id: 512
+  user_id: 15
+  created_at: <%= 612584.519685.seconds.ago %>
+activity_logs_236: 
+  usec_created_at: 
+  activity: Hold
+  request_id: 225
+  id: 605
+  user_id: 4
+  created_at: <%= 268239.519727.seconds.ago %>
+activity_logs_262: 
+  usec_created_at: 110701
+  activity: Hold
+  request_id: 247
+  id: 643
+  user_id: 3
+  created_at: <%= 2262.519772.seconds.ago %>
+activity_logs_182: 
+  usec_created_at: 
+  activity: "Step 6: Deploy ESB, Ready"
+  request_id: 176
+  id: 513
+  user_id: 15
+  created_at: <%= 612584.519814.seconds.ago %>
+activity_logs_156: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, Ready"
+  request_id: 190
+  id: 465
+  user_id: 4
+  created_at: <%= 1137862.519857.seconds.ago %>
+activity_logs_075: 
+  usec_created_at: 
+  activity: Cancelled, Duane Tharp
+  request_id: 140
+  id: 302
+  user_id: 13
+  created_at: <%= 3213588.519899.seconds.ago %>
+activity_logs_049: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Complete, Clyde Logue"
+  request_id: 131
+  id: 276
+  user_id: 4
+  created_at: <%= 3384347.519942.seconds.ago %>
+activity_logs_237: 
+  usec_created_at: 
+  activity: Started
+  request_id: 225
+  id: 606
+  user_id: 4
+  created_at: <%= 268226.519983.seconds.ago %>
+activity_logs_263: 
+  usec_created_at: 588161
+  activity: Started
+  request_id: 247
+  id: 644
+  user_id: 3
+  created_at: <%= 2220.520028.seconds.ago %>
+activity_logs_183: 
+  usec_created_at: 
+  activity: "Step 6: Deploy ESB, In process"
+  request_id: 176
+  id: 514
+  user_id: 15
+  created_at: <%= 612568.520071.seconds.ago %>
+activity_logs_157: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, In process"
+  request_id: 190
+  id: 466
+  user_id: 4
+  created_at: <%= 1137838.520113.seconds.ago %>
+activity_logs_076: 
+  usec_created_at: 
+  activity: Planned, Duane Tharp
+  request_id: 140
+  id: 303
+  user_id: 13
+  created_at: <%= 3213577.520155.seconds.ago %>
+activity_logs_238: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, In process"
+  request_id: 225
+  id: 607
+  user_id: 4
+  created_at: <%= 268221.520197.seconds.ago %>
+activity_logs_264: 
+  usec_created_at: 705949
+  activity: "Step 1: Stage Optima, Ready"
+  request_id: 247
+  id: 645
+  user_id: 3
+  created_at: <%= 2220.520242.seconds.ago %>
+activity_logs_184: 
+  usec_created_at: 
+  activity: "Step 6: Deploy ESB, Complete"
+  request_id: 176
+  id: 515
+  user_id: 15
+  created_at: <%= 612565.520284.seconds.ago %>
+activity_logs_158: 
+  usec_created_at: 
+  activity: "Step 1: Deploy OFAC Update, Complete"
+  request_id: 190
+  id: 467
+  user_id: 4
+  created_at: <%= 1137810.520327.seconds.ago %>
+activity_logs_077: 
+  usec_created_at: 
+  activity: Started, Duane Tharp
+  request_id: 140
+  id: 304
+  user_id: 13
+  created_at: <%= 3213570.520369.seconds.ago %>
+activity_logs_239: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Problem"
+  request_id: 225
+  id: 608
+  user_id: 4
+  created_at: <%= 268219.520411.seconds.ago %>
+activity_logs_185: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 176
+  id: 516
+  user_id: 4
+  created_at: <%= 612565.520453.seconds.ago %>
+activity_logs_159: 
+  usec_created_at: 
+  activity: Complete
+  request_id: 190
+  id: 468
+  user_id: 4
+  created_at: <%= 1137810.520496.seconds.ago %>
+activity_logs_078: 
+  usec_created_at: 
+  activity: Hold, Duane Tharp
+  request_id: 140
+  id: 305
+  user_id: 13
+  created_at: <%= 3213566.520539.seconds.ago %>
+activity_logs_186: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 199
+  id: 517
+  user_id: 4
+  created_at: <%= 552207.52058.seconds.ago %>
+activity_logs_079: 
+  usec_created_at: 
+  activity: Started, Duane Tharp
+  request_id: 140
+  id: 306
+  user_id: 13
+  created_at: <%= 3213558.520622.seconds.ago %>
+activity_logs_187: 
+  usec_created_at: 
+  activity: Planned
+  request_id: 203
+  id: 520
+  user_id: 4
+  created_at: <%= 552023.520665.seconds.ago %>
+activity_logs_188: 
+  usec_created_at: 
+  activity: Started
+  request_id: 199
+  id: 532
+  user_id: 4
+  created_at: <%= 528343.520707.seconds.ago %>
+activity_logs_189: 
+  usec_created_at: 
+  activity: "Step 1: Stage Portal, Ready"
+  request_id: 199
+  id: 533
+  user_id: 4
+  created_at: <%= 528343.520749.seconds.ago %>
+activity_logs_001: 
+  usec_created_at: 
+  activity: Started, Clyde Logue
+  request_id: 125
+  id: 224
+  user_id: 4
+  created_at: <%= 3581798.520791.seconds.ago %>

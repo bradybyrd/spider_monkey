@@ -1,0 +1,72 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if active %>
+  <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => groups_path, :class_name => "groups" } %></div>
+<% end %>
+<table class='tablesorter group_list_sorter formatted_table five_columns'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Roles</th>
+      <th>Teams</th>
+      <th>Root</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <% unless groups.blank? %>
+    <tbody>
+      <% groups.each do |group| %>
+        <tr id="group_<%= group.id %>" <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <td>
+            <strong>
+              <%= link_to_name(group) %>
+            </strong>
+          </td>
+          <td>
+            <div class='truncated' title='<%= group.roles.map(&:name).join(', ') %>'><%= group.roles.map(&:name).join(', ') %></div>
+          </td>
+          <td>
+            <div class='truncated' title='<%= group.teams.map(&:name).join(', ') %>'><%= group.teams.map(&:name).join(', ') %></div>
+          </td>
+          <td><%= t(group.root?.class) %></td>
+          <td class='action_links'>
+            <% if active && can?(:edit, group) %>
+              <span><%= link_to I18n.t(:edit), edit_group_path(group, page: params[:page], key: params[:key]), class: 'edit_group' %></span>
+            <% end %>
+            <% if group.default? %>
+              <span <%= tag_options({:style => "color:#999"}, false) %>>Default</span>
+            <% else %>
+              <% if active %>
+                <% if can?(:make_default, group) %>
+                  <span><%= link_to 'Make Default', set_default_group_path(group, page: params[:page], key: params[:key]), method: :put, class: 'make_default_group' %></span>
+                <% end %>
+                <% if can?(:make_active_inactive, group) && group.can_be_deactivated? %>
+                  <span><%= link_to 'Make Inactive', deactivate_group_path(group, page: params[:page], key: params[:key]), method: :put, class: 'make_inactive_group' %></span>
+                <% end %>
+              <% else %>
+                <% if can?(:make_active_inactive, group) %>
+                  <span><%= link_to "Make Active", activate_group_path(group, page: params[:page], key: params[:key]), method: :put, class: 'make_inactive_group' %></span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% else %>
+    <tr>
+      <td colspan='2'>
+        No Groups Found
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% if active %>
+  <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => groups_path, :class_name => "groups" } %></div>
+<% end %>

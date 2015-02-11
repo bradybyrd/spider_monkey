@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='plan_stage_error_messages'></div>
+<%= f.error_messages %>
+<div id="request_template_warning"></div>
+
+<div class='field'>
+  <%= f.label :name %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :environment_type %>
+  <%= f.collection_select(:environment_type_id, @environment_types, :id, :short_name, {:include_blank => 'None'}) %>
+</div>
+<div class='field'>
+  <%= f.label :required %>
+  <%= f.check_box :required %>
+</div>
+<div class='field'>
+  <%= f.label :request_template_ids, "Default Request Template" %>
+  <%= f.collection_select :request_template_ids, request_templates, :id, :name, {}, :multiple => true, :size => 8, :include_blank => true %>
+</div>
+<br class="clear">
+
+<%= static_javascript_include_tag 'plan_stages' %>

@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h2>
+  Editing
+  <%= h @plan_stage.name %>
+</h2>
+<%= form_for([@plan_template, @plan_stage], :remote => true, :html => { :class => 'plan_stages cssform' }) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, :request_templates => @request_templates } %>
+  <div class='button_bar'><%= f.submit "Update" %></div>
+<% end %>
+

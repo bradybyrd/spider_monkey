@@ -1,0 +1,57 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr id="step_<%= step.id %>_<%= step.position %>_heading"
+class="<%= step_error_class(step) %> <%= step_row_class step, local_assigns[:unfolded], invalid_component %>"
+data-collapse-child-filter=":not('.last')"<%= "data-parent-id=#{step.parent_id}" if step.parent %>
+data-section-url="<%= get_procedure_step_section_procedure_path(step, :preview => 'yes') %>"
+ data-extra-toggle-selector=".tiny_step_buttons.<%= dom_id step %>">
+    <td class="step_position first">
+        <%= defined?(step_position) ? step_position : step.position %>
+        <%= "&nbsp;".html_safe if step.position < 10 %>
+        <span class="state" style="padding-top:2px !important;padding-bottom:2px !important;"></span>
+        <div class="<%= dom_id(step)%> tiny_step_buttons"<%= 'style="display: none"' if local_assigns[:unfolded] %>>
+        </div>
+    </td>
+    <td class="status step_status_<%= step.aasm_state %>">
+        <div class="state">
+            <%= step.aasm.current_state.to_s.humanize %>
+        </div>
+    </td>
+    <td>
+        <%= step.name if step.name.present? %>
+    </td>
+    <td>
+        <%= h (step.component && step.component.name) %>
+    </td>
+    <td>
+        <%= raw(ensure_space(h name_list_sentence(step.servers))) %>
+    </td>
+    <td>
+        <% if step.manual? %>
+        <%= raw(ensure_space(h step.work_task && step.work_task.name)) %>
+        <% else %>
+        <%= raw(ensure_space(h truncate(step.script ? step.script.name : "SCRIPT DELETED", :length => 15))) %>
+        <% end %>
+    </td>
+    <td>
+        <%= ensure_space(step.version_name).html_safe %>
+    </td>
+    <td>
+        <% if step.manual?  %>
+        <%= h step.owner.name if step.owner.present?  %>
+        <% else %>
+        Automatic<% end %>
+    </td>
+    <td>
+        <%= step.estimate.nil? ? 'not specified' : hour_minute_estimate(step.estimate) %>
+    </td>
+    <td>
+        <%= step.complete_by.nil? ? 'not specified' : step.complete_by.to_s(:simple_with_time) %>
+    </td>
+</tr>

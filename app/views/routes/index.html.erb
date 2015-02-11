@@ -1,0 +1,25 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% backlink = manage_metadata_path %>
+<% task_title = "Routes" %>
+<% page_settings :title => task_title %>
+<% content_for :page_section do %>
+    <%= render 'account/environment_tabs', :selected => 'metadata' %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can?(:create, Route.new) %>
+      <p>
+        <%= button_to 'Create Route', new_app_route_path(@app), class: 'create_route button', method: :get %>
+      </p>
+  <% end %>
+<% end %>
+<%= render :partial => "environments/metadata_heading", :locals => {:backlink => backlink, :title => task_title} %>
+<br class='clear'/>
+
+<%= render partial => 'routes/_index', :locals => {:routes => @routes, :archived_routes => @archived_routes, :app => @app} %>

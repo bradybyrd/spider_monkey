@@ -1,0 +1,7 @@
+<div class='field'>
+  <%= label_tag 'request[plan_member_attributes][plan_id]', 'Plan:' %>
+  <%= select_tag 'request[plan_member_attributes][plan_id]', options_for_select(@available_plans_for_select, params[:plan_id]), {include_blank: true} %>
+
+  <span class='label_look'>Stage:</span>
+  <%= select_tag 'request[plan_member_attributes][plan_stage_id]', options_for_select(@available_plan_stages_for_select, selected: @plan_stage.try(:id), disabled: @stages_requestor_can_not_select) %>
+</div>

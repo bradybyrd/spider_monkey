@@ -1,0 +1,50 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+<% end %>
+<% page_settings :title => h(@component.name) %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'components' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<h3 class='no_margin servers_h2'><%= h @component.name %></h3>
+<%= form_for @component, :html => { :class => 'cssform' } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <div class='field'>
+    <%= f.submit "Update", :class => "button" %>
+    or
+    <%= link_to 'cancel', components_path(:page => params[:page], :key => params[:key]) %>
+  </div>
+<% end %>
+
+<% unless @component.properties.active.empty? %>
+  <br>
+  <h3>Properties</h3>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th width='20'></th>
+        <th>
+          Name
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render :partial => 'properties/property_list', :locals => { :properties => @component.properties.active, :component_id => @component.id } %>
+    </tbody>
+  </table>
+  <%= form_tag reorder_properties_path, :method => :put, :id => 'reorder_properties' do %>
+    <%= hidden_field_tag :component_id, @component.id %>
+  <% end %>
+
+<% end %>

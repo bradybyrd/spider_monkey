@@ -1,0 +1,157 @@
+<%# ############################################################################# %>
+<%# BMC Software, Inc. %>
+<%# Confidential and Proprietary %>
+<%# Copyright (c) BMC Software, Inc. 2001-2012 %>
+<%# All Rights Reserved. %>
+<%# ############################################################################# %>
+<% content_for :head do %>
+  <style>
+    /*<![CDATA[*/
+      #financials_filters.alt td {background:none;}
+    /*]]>*/
+  </style>
+<% end %>
+
+<%
+  sdate = session[@report_type.to_sym][:filters][:beginning_of_calendar] if session[@report_type.to_sym]
+  edate = session[@report_type.to_sym][:filters][:end_of_calendar] if session[@report_type.to_sym]
+%>
+
+<div class='alt' id='financials_filters'>
+  <strong>Filters:</strong>
+  <form id='dashboard_range'>
+    <table cellpadding='0' cellspacing='0' style='width:950px;'>
+      <tr>
+        <td style='background:transparent;'>
+          <div>Filter by Date &ndash;&nbsp;&nbsp;&nbsp;From:</div>
+          <div><%= date_field_tag 'beginning_date', sdate %></div>
+          <div>&nbsp;&nbsp;To:</div>
+          <div><%= date_field_tag 'end_date', edate %></div>
+          <div><%= submit_tag 'Set',:class =>'button' %></div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <%= form_tag nil, id: 'report_filter_form' do %>
+    <table align='center' cellpadding='0' cellspacing='0' style='width:100%'>
+      <tr>
+        <% if @report_type == "time_of_problem" %>
+          <td>
+            <label for='filters_aasm_state'>Status:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "aasm_state", :filter_options => Request.status_filters_for_select} %>
+          </td>
+        <% end %>
+        <td>
+          <label for='filters_app_id'>Application:</label>
+          <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "app_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_apps, :id, :name)} %>
+        </td>
+        <td>
+          <label for='filters_environment_id'>Environment:</label>
+          <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "environment_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_environments, :id, :name)} %>
+        </td>
+        <% if @report_type == "problem_trend_report" ||@report_type == "time_of_problem" %>
+          <td>
+            <label for='filters_environment_id'>Component:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "component_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_components, :id, :name)} %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+       <% if @report_type.in? %w(release_calendar environment_calendar deployment_windows_calendar) %>
+         <td>
+          <label for='filters_plan_id'>Plan:</label>
+          <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "plan_id", :options_from_collection_for_select => options_from_collection_for_select(Plan.entitled(current_user).where("plans.aasm_state != ?", "deleted").order("plans.name ASC").all, :id, :name)} %>
+         </td>
+
+        <% unless @report_type == 'deployment_windows_calendar' %>
+          <td>
+            <label for='filters_plan_aasm_state'>Plan Status:</label>
+            <%= render partial: 'dashboard/filters/filter_select_list',
+                       locals:  { filter: 'aasm_state', filter_options: Plan.status_filters_for_select } %>
+          </td>
+        <% end %>
+
+         <% if session[:scale_unit] == "m" %>
+		    <% options = "<option value='m' selected='selected'>Month</option><option value='d'>Day</option><option value='w'>Week</option>".html_safe %>
+		 <% elsif session[:scale_unit] == "d" %>
+		    <% options = "<option value='m'>Month</option><option value='d' selected='selected'>Day</option><option value='w'>Week</option>".html_safe %>
+         <% elsif session[:scale_unit] == "w" %>
+		    <% options = "<option value='m'>Month</option><option value='d'>Day</option><option value='w' selected='selected'>Week</option>".html_safe %>
+		 <% else %>
+		     <% options = "<option value='m'>Month</option><option value='d'>Day</option><option value='w'>Week</option>".html_safe %>
+		 <% end %>
+
+		 <td>
+          <label for='filters_scale_unit'>Scale:</label>
+          <%= select_tag "scale_unit", options %>
+         </td>
+
+	   <% end %>
+
+        <% unless @report_type.in? %w(release_calendar environment_calendar deployment_windows_calendar) %>
+		<td>
+          <label for='filters_environment_id'>Processes:</label>
+          <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "business_process_id", :options_from_collection_for_select => options_from_collection_for_select(BusinessProcess.order("LOWER(name) asc"), :id, :name)} %>
+         </td>
+		<% end %>
+
+        <% if @report_type == "problem_trend_report" ||@report_type == "time_of_problem" %>
+          <td>
+            <label for='filters_work_task_id'>Work Task:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "work_task_id", :options_from_collection_for_select => options_from_collection_for_select(WorkTask.order("LOWER(name) asc"), :id, :name)} %>
+          </td>
+        <% end %>
+        <% if @report_type == "problem_trend_report" ||@report_type == "time_of_problem" %>
+          <%users = User.order("LOWER(last_name) asc")%>
+          <td>
+            <label for='filters_owner_id'>Part of Users:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "owner_id", :options_from_collection_for_select => options_from_collection_for_select(users,:id,:name) } %>
+          </td>
+          <td>
+          <%groups = Group.order("LOWER(name) asc")%>
+          <label for="filters_group_id">Part of Groups:</label>
+            <%= render :partial => "dashboard/filters/filter_select_list", :locals => { :filter => "group_id", :options_from_collection_for_select => options_from_collection_for_select(groups, :id, :name) } %>
+          </td>
+        <% end %>
+        <!-- %td -->
+        <!-- %label From date: -->
+        <!-- = date_field_tag 'filters[beginning_of_calendar]', @beginning_of_calendar -->
+        <!-- %td -->
+        <!-- %label To date: -->
+        <!-- = date_field_tag 'filters[end_of_calendar]', @end_of_calendar -->
+      </tr>
+      <tr>
+        <% if @report_type == "problem_trend_report" || @report_type == "time_of_problem" %>
+          <td>
+            <label>Group ON:</label>
+            <%= select_tag "filters[group_on]", options_for_select([["Work Task", "work task"], ["Component", "component"], ["Part of Users", "part of"],["Part of Groups","group"]], (select_group_on(@selected_options)) ), :include_blank => true %>
+          </td>
+        <% end %>
+        <% if @report_type == "problem_trend_report" %>
+          <td>
+            <label>Precision</label>
+            <%= select_tag "filters[precision]", options_for_select([ ["Week", "week"], ["Month", "month"]], select_precision(@selected_options)), :include_blank => true %>
+            <span style='text-align: right'><%= submit_tag "Filter" %></span>
+          </td>
+        <% end %>
+        <%= hidden_field_tag 'filters[beginning_of_calendar]', selected_date(@beginning_of_calendar) %>
+        <%= hidden_field_tag 'filters[end_of_calendar]',  selected_date(@end_of_calendar) %>
+        <%= hidden_field_tag 'report_type', params[:report_type].blank? ? params[:action] : params[:report_type] %>
+        <%= hidden_field_tag 'screen_resolution', (@width.present? ? @width.to_i : nil) %>
+        <td colspan='2'></td>
+      </tr>
+      <tr>
+        <td colspan='3' style='text-align: left'>&nbsp;</td>
+        <%# %td{ :style => "text-align: right" }= submit_tag "Filter" if @report_type == "problem_trend_report" %>
+        <%# %td{ :style => "text-align: right" }= link_to_function "clear", "reset_filter_session()" %>
+		<td style='text-align: right'>
+          <% if @report_type.in? %w(release_calendar environment_calendar deployment_windows_calendar) %>
+              <%= submit_tag 'Filter',:class =>'button' %>
+          <% end %>
+          <%= submit_tag 'Clear Filter', :onclick => 'reset_filter_session()', :class =>'button' %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <%= javascript_tag("setFilters(#{@selected_options.to_json})") %>
+</div>

@@ -1,0 +1,128 @@
+/*******************************************************************************
+* BMC Software, Inc.
+* Confidential and Proprietary
+* Copyright (c) BMC Software, Inc. 2001-2012
+* All Rights Reserved.
+*******************************************************************************/
+
+.add_remove_env_link, .compnent_link_div, .compnent_temp_link_div
+{
+	float:left;
+	padding-left:2px;
+	height:auto;
+	font-weight: normal;
+	padding-bottom:6px;
+}
+.comp_table td.tabs {padding-bottom: 0;}
+.comp_table { width:315px; }
+.compnent_link_div.a
+{
+	color:#30F;
+}
+
+/*.compnent_link_div a:hover{color:#960;} */
+#component_templates_list td a
+{
+	 text-decoration:underline;
+}
+
+table.highlight tr:hover td{background-color:#C1E1F5;}
+#apps_view tr.no_hover:hover td{background-color:#FFF;}
+#apps_view tr.no_hover td{background-color:#FFF;}
+#apps_view tr:hover td.no_hover{background-color:#FFF!important;}
+#apps_view td.no_hover {text-align:right;padding-top:3px;padding-right:3px;}
+#apps_view td.no_hover:hover td{background-color:#FFF;}
+#apps_view td.no_hover{background-color:#FFF;}
+#apps_view #component_templates_list.highlight.formatted_table{border-top:1px solid #AEBAC1;}
+#component_templates_list .no_hover { padding-bottom:7px;}
+#app_environments .fr { padding-right:13px!important;}
+.properties_tbl th, .properties_tbl td{ vertical-align:top; text-align:left; padding:5px!important;}
+tr.old_even_component_level { background: #ccc; }
+tr.old_odd_component_level { background: #eee; }
+tr.even_component_level { background: #EDF3FD; }
+tr.odd_component_level { background: #FFF; }
+.environment_color_1, table#map th.environment_color_1 { background: #EDF3FD; }
+.environment_color_2, table#map th.environment_color_2 { background: #FFF; }
+table.installed_components tr:hover td{background-color:#C1E1F5;}
+.apps table.installed_components {  width:100%}
+.apps table.installed_components tr td { }
+table.properties_tbl, table.installed_components{
+	border:1px solid #CCC;
+}
+table.members_inner { width:98%!important;}
+.apps table#application_components_list, #component_templates_list
+{ width:96%; min-width:310px!important;}
+.apps table#packages_list, #component_templates_list
+{ width:96%; min-width:310px!important;}
+.members_inner table{  min-width:400px; width:100% }
+table.properties_tbl .value { border-left:1px solid #CCC; }
+.properties_tbl input[type=text], .properties_tbl input[type=password] { width:140px; }
+.viewby_span { font-weight:bold; color:#666666; }
+#properties_wrapper { width:825px; }
+.err_h2 { margin:0; padding:0!important; }
+#apps_view #environmentComponents .comp_table .tabs .pageSection ul
+{
+    padding:0!important;
+    margin-left: -1px!important;
+}
+/* below css for safari- 4.0 */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+#add_property { clear:both; margin-bottom:15px;}
+.edit_new_properties_table { margin-top:15px; }
+}
+
+/* shared uploads form css  */
+#upload_form, .argument_upload_form {
+	width: 360px;
+	padding-left: 100px;
+}
+
+#upload_form, .argument_upload_form fieldset {
+	padding: 0px;
+}
+#upload_form, .argument_upload_form p.in_form {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#field_for_clone {
+}
+input.upload_file_field {
+	width: auto;
+}
+.truncated {
+  max-width:      200px;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
+  white-space:    nowrap;
+}
+
+/* step uploads form css  */
+#st_documents_step_tab_area #upload_form {
+  width: 100%;
+}
+#st_documents_step_tab_area .field #upload_form textarea.expand, #st_documents_step_tab_area textarea{
+  width: 99%
+}
+#st_documents_step_tab_area fieldset {
+  padding-top: 0;
+}
+#st_documents_step_tab_area .remove_fields {
+  padding-left: 10px;
+}
+#st_documents_step_tab_area .actions {
+  float: right;
+  padding: 5px 0;
+}
+#st_documents_step_tab_area .history {
+  color: #666666;
+  padding: 5px 0 0 10px;
+}
+#st_documents_step_tab_area .truncated {
+  max-width: 50%;
+}
+
+.import-app-popup-warning > p{
+  white-space: nowrap;
+  padding-right: 15px;
+}
+

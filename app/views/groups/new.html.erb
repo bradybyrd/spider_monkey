@@ -1,0 +1,27 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Create Resource Group' %>
+<% content_for :sidebar do %>
+  <!-- No content... -->
+<% end %>
+<% content_for :page_section do %>
+  <%= render :partial => 'users/tabs', :locals => { :selected => 'groups' ,:tab_view => true} %>
+<% end %>
+<h3>
+  Create Resource Group
+</h3>
+<%= form_for @group, :url => groups_path, :html => { :class => 'cssform group', :style => "width:805px" } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <div class='field'>
+    <%= f.submit I18n.t(:create), :class => "button" %>
+    or
+    <%= link_to 'cancel', groups_path %>
+  </div>
+<% end %>
+

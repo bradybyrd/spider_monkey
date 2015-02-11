@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "BMC Release Process Management #{get_version_from_file} - Login", :heading => 'Please login', :store_url => false %>
+<%# TODO:Once ldap/sso changes become clear the code for the login can be put in partials/js implementation based on combo box %>
+<img alt='Please login to BMC Release Process Management' class='bmcLogin' src='images/Login_background.gif'>
+<%= flash_div :success, :error %>
+<%= yield :error_messages %>
+<p>
+  <strong>
+    <%= "Please log in." %>
+  </strong>
+  <%# 'Helper method that pick the right partial according to params specific, options: ldap, nil' %>
+  <%# = render :partial => "sessions/form_basic" %>
+</p>
+<%= form_tag session_path, { :id => 'login_box', :class => "loginform" } do %>
+  <div class='field'>
+    <%= label_tag "login:" %>
+    <%= text_field_tag 'login', '', { :tabindex => 1, :class => 'initialFocus', :autocomplete => 'off' } %>
+  </div>
+  <div class='field'>
+    <%= label_tag "password:" %>
+    <%= password_field_tag 'password', '', { :tabindex => 2, :class => 'pass_field' } %>
+  </div>
+  <div class='field'>
+    <%= label_tag "authentication:" %>
+    <%= select_tag "authenticaiton", "<option>Basic</option><option>LDAP</option><option>SSO</option>", :disabled => true %>
+  </div>
+  <%= hidden_field_tag 'authentication', 'basic' %>
+  <div class='field submit'>
+    <%= label_tag("&nbsp") %>
+    <%= submit_tag("Log In",:tabindex=>4,:class=>'button') %>
+  </div>
+<% end %>
+
+<div class='forgot_password_username'>
+  <%= link_to_forgot_password %>
+  <%= link_to_forgot_userid %>
+</div>

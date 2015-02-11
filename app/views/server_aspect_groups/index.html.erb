@@ -1,0 +1,26 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Server Level Groups' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => {:selected => "servers"} %>
+<% end %>
+<%= render :partial => "servers/sidebar" %>
+<!-- /- content_for :server_tab_actions do -->
+<!-- /  = link_to("Add a new server level group", new_server_aspect_group_path, :class => 'ajax') -->
+<div class='pageSection'>
+  <% draw_tabs :for => :server do %>
+    <%= render "servers/tabs", :selected => "server_level_groups", :server_level_groups_page => params[:letter] %>
+  <% end %>
+</div>
+<div class='sidebar'>
+  <nbsp></nbsp>
+</div>
+<div id='server_container'>
+  <%= render :partial => 'server_aspect_groups/index' %>
+</div>

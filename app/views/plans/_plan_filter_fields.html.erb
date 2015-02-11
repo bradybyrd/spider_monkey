@@ -1,0 +1,83 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <style>
+    /*<![CDATA[*/
+      #financials_filters .alt td {background:none;}
+    /*]]>*/
+  </style>
+<% end %>
+<div class='alt' id='financials_filters'>
+  <strong>Filters:</strong>
+  <%= form_tag filter_plans_path, :method => :post, :id => 'filter_form', :style => 'display: inline' do %>
+    <table align='center' cellpadding='0' cellspacing='0' style='width:100%'>
+      <tr>
+        <td>
+          <label for='filters_plan_type_id'>Plan Template:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "plan_template_id", :options_from_collection_for_select => options_from_collection_for_select(@plan_templates, :id, :name) } %>
+        </td>
+        <td>
+          <label for='filters_plan_type_id'>Plan Template Type:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "plan_type", :options_from_collection_for_select => options_for_select(PlanTemplate::TYPES) } %>
+        </td>
+        <td>
+          <label for='filters_aasm_state'>Status:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "aasm_state", :filter_options => Plan.status_filters_for_select} %>
+        </td>
+        <td>
+          <label for='filters_stage_id'>Stage:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "stage_id", :options_from_collection_for_select => options_from_collection_for_select(PlanStage.order("LOWER(name) asc"), :id, :name) } %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for='filters_app_id'>Application:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "app_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_apps, :id, :name) } %>
+        </td>
+        <td>
+          <label for='filters_environment_id'>Environment:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "environment_id", :options_from_collection_for_select => options_from_collection_for_select(current_user.accessible_environments, :id, :name)} %>
+        </td>
+        <td>
+          <label for='filters_release_id'>Release:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "release_id", :options_from_collection_for_select => options_for_select(@releases) } %>
+        </td>
+        <td>
+          <label for='filters_release_manager_id'>Release Manager:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "release_manager_id", :options_from_collection_for_select => options_for_select(@release_managers) } %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for='filters_team'>Team:</label>
+          <%= render :partial => "plan_filter_select_list", :locals => { :filter => "team_id", :options_from_collection_for_select => options_from_collection_for_select(@teams, :id, :name)} %>
+        </td>
+      </tr>
+      <tr>
+        <td colspan='3' style='text-align: left'>&nbsp;</td>
+        <td style='text-align: right'><%= link_to "clear", '#', :class => 'clear_request_filters' %></td>
+      </tr>
+    </table>
+    <%= hidden_field_tag 'filters[per_page]', @filters[:per_page] %>
+    <%= hidden_field_tag 'filters[sort_scope]', @filters[:sort_scope] || "" %>
+    <%= hidden_field_tag 'filters[sort_direction]', @filters[:sort_direction] || "" %>
+    <%= hidden_field_tag 'filter_block_collapse_state_flag', params[:filter_block_collapse_state_flag] %>
+  <% end %>
+
+  <% if @filters %>
+    <% ['aasm_state', 'plan_type', 'app_id', 'stage_id', 'environment_id', 'release_manager_id','team_id', "release_id"].each do |f| %>
+      <% if @filters[f] %>
+        <% @filters[f].each do |v| %>
+          <%= hidden_field_tag "filters[#{f}][]", v, :class => 'filter_hidden' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= javascript_tag("setFilters(#{@filters.to_json})") %>
+</div>

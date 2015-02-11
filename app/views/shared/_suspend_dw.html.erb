@@ -1,0 +1,50 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= static_javascript_include_tag 'multiple_picker'%>
+<%= stylesheet_link_tag 'multiple_picker'%>
+
+<div id="multiple_picker_container_for_<%= item_class%>" class='multiple-picker-container'>
+  <%= text_field_tag :key, params[:key], :size => '15', :class=>'search' %><br />
+  <div class="multiple-picker-data" id="left_multiple_picker">
+     <select class="multiple_picker_to_select" multiple size="10">
+       <% items.each do |item|  %>
+        <option value="<%= item[0]%>"><%=item[1]%></option>
+       <%end # each  %>
+     </select>
+  </div>
+  <div class="multiple-picker-controls">
+        <%= button_tag ">", :class => 'select' %><br />
+        <%= button_tag "<", :class => 'deselect' %><br /><br />
+        <%= button_tag ">>", :class => 'select-all' %><br />
+        <%= button_tag "<<", :class => 'deselect-all' %>
+  </div>
+  <div class="multiple-picker-data" id="right_multiple_picker">
+    <select name="multiple_picker_selected" class="multiple_picker_selected" multiple size="10">
+       <% selected_items.each do |item| %>
+        <option value="<%= item[0]%>"><%=item[1]%></option>
+       <%end # each  %>
+    </select>
+  </div>
+</div>
+<div class="button_bar options" style="text-align:right;">
+  <div class="form_action_btns">
+    <% processFunction = "processMultiplePickerObject" %>
+    <%
+    processSelect_args = {
+      :item_class => item_class,
+      :item_class_plural => item_class.camelize.pluralize,
+      :object_class => object_class.underscore.pluralize
+    }
+    %>
+    <%= button_to_function "Select #{item_class.capitalize.pluralize}",
+      "MultiPickerSelect.processSelect(\'#{processFunction}\', #{processSelect_args.to_json} )" %>
+    <%= button_to_function "Cancel", "javascript:jQuery(document).trigger('close.facebox')" %>
+    &nbsp;
+  </div>
+</div>

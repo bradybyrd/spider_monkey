@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless @report_view %>
+	Order by:
+	time |
+	<%= link_to 'user', activity_by_user_request_path(request), :class => 'activity_ordering' %> |
+	<%= link_to 'step', activity_by_step_request_path(request), :class => 'activity_ordering' %>
+<% end %>
+<ul id="activities">
+  <% log_groups.each do |log_group| %>
+    <%= h log_group.first %>:
+    <ul>
+      <% log_group[1].each do |log| %>
+        <li style="font-weight:normal;">
+          <%= h log.user.name %> -
+          <%= h(log.activity) %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>  			
+</ul>
+

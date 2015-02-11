@@ -1,0 +1,31 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2015
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_for :request, url: paste_steps_request_path(@request), html: {class: 'cssform'} do %>
+  <span class='uploads dynamic_fields'>
+    <h2>Import/Paste Steps</h2>
+    <br>
+    <br>
+    Paste rows as tab or comma delimited data with column titles as first row.
+    <br>
+    <%= "Acceptable fields are: #{Request::ALLOWED_IMPORT_FIELDS.join(', ')}" %>
+    <br>
+    (multi-line and punctuated data needs to be quoted)
+    <p>
+      <label>
+        Paste Data
+        <br>
+      </label>
+      <%= text_area_tag 'paste_data', nil, rows: 15, cols: 55 %>
+    </p>
+    <br>
+    <div class='button_bar'>
+      <%= submit_tag 'Create Steps', class: 'button' %>
+    </div>
+  </span>
+<% end %>

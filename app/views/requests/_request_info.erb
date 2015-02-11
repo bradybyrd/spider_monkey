@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<h3>Request Info</h3>
+<ul>
+  <li>
+    <%= @request.total_step %>
+    steps
+    <li>
+      <%= @request.steps.find_procedure.count %>
+      procedures
+    </li>
+    <li>
+      <%= @request.count_components_related %>
+      components
+    </li>
+    <li>
+      <%= @request.total_participants %>
+      users assigned to steps
+    </li>
+    <li>
+      <%= @request.total_groups %>
+      groups assigned to steps
+    </li>        
+    <% if @request.complete? %>
+      <li>
+        <%= time_for_completion(@request) %>
+        took for completion
+      </li>
+    <% end %>
+    <li>
+      <%= total_activity_time(@request) %>
+      total activity time
+    </li>
+    <li>
+      <%= total_duration_for_request(@request) %>
+      total duration
+    </li>
+
+<!--     <li title='Total time spent on the critical path'>
+      <%= estimated_time_for_steps(@request) %>
+      hours duration
+    </li>
+    <li title='Addition for all the time for every step'>
+      <%= total_time_for_steps(@request) %>
+      Total time
+    </li>
+    <li>
+      <%= @request.count_users_assigned_steps %>
+      assigned to steps
+    </li> -->
+  </li>
+</ul>

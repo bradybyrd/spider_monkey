@@ -1,0 +1,44 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'groups', 'multi_select' %>
+<% end %>
+<%= f.error_messages %>
+<div class='field'>
+  <%= f.label :name, '*Name',:class => 'required' %>
+  <%= f.text_field :name, :class => 'initialFocus' %>
+</div>
+<div class='field'>
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+</div>
+<div class='field'>
+  <%= f.label :resource_ids, 'Current Members' %>
+  <span id='current_members'>
+    <%= render 'group_checkbox_select_list',
+               form_object: @group, collection: User.active.index_order, object: 'group',
+               method: 'resource_ids', label: 'name_for_index', value: 'id'
+    %>
+  </span>
+  <span class='sl_links' id='current_members_select_links'>
+    <%= select_clear_chk('current_members') %>
+  </span>
+</div>
+<div class='field'>
+  <%= label_tag :root, 'Root Group' %>
+  <%= check_box :group, :root %>
+</div>
+<div class="field">
+  <%= f.label :roles %>
+  <%= link_to_multiple_picker(:role, object: @group, item_display_field: 'name') %>
+  <%= f.hidden_field :role_ids %>
+</div>
+<%= f.hidden_field :updated_at, value: @group.updated_at.utc if @group.persisted? %>
+<%= javascript_tag("set_options_of_select_list(#{(User.active.ids - @group.resource_ids).to_json}, '.select_1')") %>
+<%= javascript_tag("set_options_of_select_list(#{@group.resource_ids.to_json}, '.select_2')") %>

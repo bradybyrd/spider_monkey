@@ -1,0 +1,37 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<!-- This gets displayed for editable activities - list for read-only -->
+<% page_settings :title => h(@activity_category.name.pluralize) %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag "activity_index_columns", "stdlib" %>
+  <%= stylesheet_link_tag "financials" %>
+<% end %>
+<% content_for :sidebar do %>
+  <p>
+    <%= link_to activity_or_project_image?, new_activity_path(@activity_category) %>
+  </p>
+  <% if current_user.admin? %>
+    <p>
+      <%= button_to_function "", "jQuery.facebox({ ajax: '/activity_tests/#{@activity_category.id}/edit_index_columns'})", :class => "customize" %>
+    </p>
+  <% end %>
+<% end %>
+<div class='clear'></div>
+<br>
+<% content_for :page_section do %>
+  <%= render 'tabs', :selected => @activity_category %>
+<% end %>
+<% if @activity_category.activities.blank? %>
+  <h2>
+    There are no activities in this category.
+    <%= link_to "Create one?", new_activity_path(@activity_category) %>
+  </h2>
+<% else %>
+  <%= render 'show_table' %>
+<% end %>

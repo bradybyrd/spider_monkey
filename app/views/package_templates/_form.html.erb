@@ -1,0 +1,63 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table>
+  <tbody>
+    <tr>
+      <td <%= tag_options({:id => "error_messages", :colspan => 3, :class => 'validation_errors'}, false) %>></td>
+    </tr>
+    <tr>
+      <td align='right' style='width:20%;'><%= f.label :name, 'Package Template Name' %></td>
+      <td>
+        <% if defined?(new_record) %>
+          <%= f.text_field :name, :value => @package_template.try(:name) %>
+        <% else %>
+          <strong class='gray_text'><%= @package_template.try(:name) %></strong>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :version %></td>
+      <td>
+        <% if defined?(new_record) %>
+          <%= f.text_field :version, :value => @package_template.try(:version) %>
+        <% else %>
+          <strong class='gray_text'><%= @package_template.try(:version) %></strong>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td <%= tag_options({:colspan => 2}, false) %>>
+        <% if defined?(new_record) %>
+          <%= submit_tag 'Add Package Template',:class =>'button' %>
+        <% else %>
+          <%= link_to("Edit Package Template", edit_app_package_template_path(@app, @package_template, :simple_update => true), :class => "default_link", :rel => "facebox") %>
+        <% end %>
+        &nbsp;
+        |
+        &nbsp;
+        <%= link_to_function "Back", "$('.editPackageTemplateform').hide() && $('#newPackageTemplate').hide() && $('#packageTempalteList').show()", :class => "default_link" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% unless defined?(new_record) %>
+  <table>
+    <tbody>
+      <tr>
+        <td id='reorder_package_template_items'><%= render :partial => 'package_templates/template_items' %></td>
+      </tr>
+      <tr>
+        <td <%= tag_options({:id => "error_messages#{@package_template.try(:id)}", :colspan => 3, :class => 'validation_errors'}, false) %>></td>
+      </tr>
+      <tr <%= tag_options({:class => "newTemplateItem_pkg_#{@package_template.id}", :style => "display:none; background-color:#DDDDDD;"}, false) %>>
+        <td><%= render :partial => 'package_templates/template_items/forms/form', :locals => {:f => f} %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

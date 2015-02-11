@@ -1,0 +1,59 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%# %table %>
+<%# - if request_sso_enabled? || GlobalSettings.cas_enabled? %>
+<%# %tr %>
+<%# %td{:colspan => "2", :style => "font-size:12px;color:#666;font-weight:bold;"} Password Authentication (always enabled) %>
+<%# %tr %>
+<%# %td{:colspan => "2"} %>
+<%# = hidden_field_tag 'authentication', 'basic' %>
+<%# .field %>
+<%# = f.label :login %>
+<%# = f.text_field :login, :tabindex => 1, :class => 'initialFocus', :autocomplete => 'off' %>
+<%# .field %>
+<%# = f.label :password %>
+<%# = f.password_field :password, :tabindex => 2 , :class => "pass_field" %>
+<%# %tr %>
+<%# %td.chkbox_login %>
+<%# - if devise_mapping.rememberable? %>
+<%# = f.check_box :remember_me, :id => 'remember_me', :tabindex => 3, :name => 'remember_me', :value => "yes" %>
+<%# %span %>
+<%# = f.label :remember_me_for_24_hours %>
+<%# %span %>
+<%# %td %>
+<%# %tr %>
+<%# - if GlobalSettings.ldap_enabled? %>
+<%# %td.ldap_login %>
+<%# %input#authentication_mode{:name => "authentication_mode", :tabindex => "3", :type => "checkbox", :checked => true, :value => "ldap"}/ %>
+<%# %span LDAP Authentication %>
+<%# %td %>
+<%# %tr %>
+<%# %td{:style => "padding-left:124px"} %>
+<%# .field.submit %>
+<%# %label %>
+<%# = f.submit "Login" %>
+<%# \ %>
+<%# \#{link_to_forgot_password} %>
+<%# %td %>
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:id => 'login_box', :class => "loginform"}) do |f| %>
+  <div class='field'>
+    <%= f.label :login %>
+    <%= f.text_field :login, :tabindex => 1, :class => 'initialFocus', :autocomplete => 'off' %>
+  </div>
+  <div class='field'>
+    <%= f.label :password %>
+    <%= f.password_field :password, :tabindex => 2 , :class => "pass_field" %>
+  </div>
+  <%= hidden_field_tag 'authentication', 'basic' %>
+  <div class='field submit'>
+    <%= label_tag('login', "&nbsp".html_safe) %>
+    <%= submit_tag("Log In",:tabindex=>4,:class=>'button') %>
+  </div>
+<% end %>
+

@@ -1,0 +1,23 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Servers' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'servers' } %>
+<% end %>
+
+<div class='pageSection'>
+  <%= render :partial => 'servers/tabs', :locals => { :selected => 'servers' } %>
+</div>
+<%= render :partial => "servers/sidebar" %>
+
+<div id='server_container'>
+  <% if can? :list, Server.new %>
+    <%= render 'list', active_servers: @active_servers, inactive_servers: @inactive_servers, model_name: Server, path: servers_path %>
+  <% end %>
+</div>

@@ -1,0 +1,35 @@
+/*
+ * Styles unique to the runs screens
+ */
+div.plan_member_level { float: left; clear: left; width: 100%; }
+div.plan_member_level_divider { clear: left; width: 100%; height: 21px; }
+div.plan_member_level_divider p { height: 10px; margin: 0 10px; border-bottom: 1px solid #ccc; }
+div.plan_member { float: left; width: 130px; margin: 2px; padding: 0px; cursor: move; overflow: hidden; }
+div.plan_member p { margin: 3px 5px; white-space: nowrap; }
+div.plan_member_level.hover, div.member_level_divider.hover { background-color: #ffa; }
+
+/*
+ * Reporting styles related to runs
+ */
+td.version_conflicts_with_next {
+	background-color:#D48472 !important;
+}
+td.version_conflicts_with_previous {
+	background-color:#D48472!important;
+}
+td.version_repeats_next {
+	background-color:#EDD209!important;
+}
+td.version_repeats_previous {
+	background-color:#EDD209!important;
+}
+
+td.version_repeats_previous.version_conflicts_with_next, td.version_conflicts_with_previous.version_repeats_next  {
+	background-color:#E8A507!important;
+}
+/*
+ * Styles for the report key
+ */
+table.version_conflict_report_key {
+	width: 350px;
+}

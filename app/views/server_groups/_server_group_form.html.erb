@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @server_group.new_record? %>
+  <h2 class='servers_h2'>Create Server Group</h2>
+<% else %>
+  <h2>
+    <%= "Edit Server Group \"#{h @server_group.name}\"" %>
+  </h2>
+<% end %>
+<%= form_for @server_group, :remote => true, :html => { :class => 'cssform ajax' } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, :environments => @environments, :servers => @servers, :server_levels => @server_levels } %>
+  <div class='field'>
+    <% if @server_group.new_record? %>
+      <%= f.submit I18n.t(:create),:class => "button" %>
+    <% else %>
+      <%= f.submit "Update", :class => "button" %>
+    <% end %>
+    or
+    <%= link_to 'cancel', server_groups_path(:page => params[:page], :key => params[:key]), :class => 'ajax' %>
+  </div>
+<% end %>
+

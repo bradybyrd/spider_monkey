@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='clear'></div>
+<div class='modify_app_component' id='versions_by_app_map'>
+  <table class='formatted_table' style='width:100% !important'>
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Name</th>
+        <th>Component</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @step_ids.each do |step_id| %>
+        <tr <%= tag_options({:class => "#{cycle('', 'alt' )}"}, false) %>>
+          <td><%= find_step_from_hash(step_id).number %></td>
+          <td><%= @step.name %></td>
+          <td class='comp_name'><%= @step.component_name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class='divider'></div>
+<div class='gray_text' id='versions_by_app_map'>New</div>
+<div class='clear'></div>
+<div class='field'>
+  <%= label_tag "component", "Component" %>
+  <%if @request%>
+    <%= select_tag 'step[component_id]', raw("<option value=''>Select</option>" + options_for_select(ics_of_selected_steps(@steps).collect{|c|  [c.name,  c.id]}, :selected =>  common_component_id_of(@steps))) %>
+  <%else%>
+    <%= select_tag 'step[component_id]', raw("<option value=''>Select</option>" + options_for_select(step_application_components_options(@step, common_component_id_of(@steps)))) %>  
+  <%end%>
+
+  <span class='comp_span'></span>
+  <%= hidden_field_tag "request_id", @request.id  if @request %>
+  <%= hidden_field_tag "original_step_component_id", @component_id_of_selected_steps %>
+</div>
+<%= javascript_tag("AddLabelForSelectLists('modify_app_component')") %>

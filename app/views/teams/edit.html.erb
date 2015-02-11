@@ -1,0 +1,28 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings :title => "#{I18n.t(:'activerecord.models.team')} - #{@team.name}" %>
+<% content_for :head do %>
+    <%= static_javascript_include_tag 'teams' %>
+<% end %>
+<% content_for :page_section do %>
+    <%= render :partial => 'users/tabs', :locals => {:selected => 'teams', :tab_view => true} %>
+<% end %>
+<% content_for :sidebar do %>
+    <span></span>
+<% end %>
+<%= form_for(@team, :url => team_path(@team), :remote => :true, :html => {:method => :put, :id => 'team_form'}) do |f| %>
+    <h2><%= "#{I18n.t(:'team.edit')} #{@team.name}" %></h2>
+    <h3><%= I18n.t(:'team.edit_details') %></h3>
+    <%= render partial: 'teams/form', locals: {f: f, button_label: 'Update Team'} %>
+    <%= render :partial => 'teams/forms/add_remove_team_groups', :locals => {:f => f} %>
+    <div class='clear' id='edit_roles_for_team'>
+      <%= render :partial => 'teams/forms/edit_roles_for_team' %>
+    </div>
+<% end %>
+

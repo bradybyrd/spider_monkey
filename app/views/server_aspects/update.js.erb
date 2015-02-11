@@ -1,0 +1,6 @@
+<% if @server_aspect.valid? %>
+  <%= server_aspect_after_save_actions(@server_level, @page, @key) %>
+<% else %>
+  <%= load_partial_into_server_window('form').html_safe %>
+<% end %>
+

@@ -1,0 +1,24 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<h2>Choose a category:</h2>
+<%= form_for @request, :url => @form_action, :html => { :class => 'add_request_category cssform' } do |f| %>
+  <div class="field">
+    <label>Category:</label>
+    <%= f.collection_select :category_id, @categories, :id, :name, :include_blank => true %>
+  </div>
+
+  <div class="field">
+    <label>Description:</label>
+    <%= text_area_tag 'note' %>
+  </div>
+  <div class="button_bar">
+    <%= submit_tag 'Update',:class =>'button' %>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless record.errors[:name].empty? %>
+  <div id="error_explanation" class="error">
+    <h2 class="error">Fix error below to save the Server.</h2>
+    <h2 class="error">There were problems with the following fields:</h2>
+		<ul>
+     	<% record.errors.full_messages.each do |msg| %>
+       	<li><%= msg %></li>
+     	<% end %>
+   	</ul>        
+  </div>    
+<%end%>
+<% if path_back_to != 'none' %>
+ 	<div class="back_link"><%=link_to("&lt;&lt;back".html_safe, path_back_to, :style => "back_link") %></div>
+ <% end %>
+<ul class="custom_heading_block">
+	<li style="display: inline;"><span class="grey_text"><%= record.class.name %>:</span>
+	  <div class="edit_in_place">
+	    <span class="show" <%= get_custom_head_style(record, :show_span)%>><%= h(record.name) %></span>
+	    <%= form_for record, :html => {:class => "editable inline #{get_custom_head_style(record, :form)}"} do |f| %>
+	      <%= f.text_field :name, :size => 15 %>
+	      <%= hidden_field_tag "name_update", "yes" %>
+		  <%= hidden_field_tag "index_page", params[:letter] %>
+    <%= hidden_field_tag "key", params[:key] %>
+    <%= hidden_field_tag "page", params[:page] %>    
+		<%= f.submit 'Save', :class=> "button" %> <span style="font-size:10px;color:999;">or <%= link_to "cancel", "#", :class => 'cancel' %></span>
+		<% end %>
+	    <%= link_to "edit", '#', :class => 'activate small', :style => get_custom_head_style(record, :link)  %>
+	  </div>
+    </li>
+	<% if defined?(add_view) %>
+	<li style="display: inline;">
+		<%= render :partial => add_view, :locals => { :record => record } %>
+	</li>
+	<% end %>
+</ul>
+
+<br class="clear" />

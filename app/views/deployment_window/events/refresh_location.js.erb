@@ -1,0 +1,22 @@
+var params = {};
+var current_page = $('#deployment_window_series_list .server_side_tablesorter_pagination .current').text();
+if(current_page && current_page.length) {
+  params['page'] = current_page;
+};
+
+var getData = function(params, selector) {
+  $.get(location, params, function(data) {
+    $(selector).html(data);
+  });
+};
+
+if ( $('.deployment_window_series').length) {
+  params['scope'] = 'unarchived';
+  getData(params, '#deployment_window_series_list');
+} else if ( $('.deployment_window_occurrences').length ) {
+  getData(params, '#occurrence-list');
+} else {
+  location.reload();
+}
+
+jQuery(document).trigger('close.facebox');

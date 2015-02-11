@@ -1,0 +1,58 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Promotions' %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'dashboard', 'promotions' %>
+  <%= stylesheet_link_tag 'dashboard' %>
+<% end %>
+<% content_for :page_section do %>
+  <% draw_tabs :selected => "request" do %>
+    <li>
+      <%= link_to whose_requests, @show_all ? requests_path : root_path %>
+    </li>
+    <%= sub_tab "Calendar", @show_all ? my_all_calendar_path : my_calendar_path %>
+    <li class='selected'>
+      <%= link_to "Promotions", promotion_requests_path %>
+    </li>
+  <% end %>
+<% end %>
+<% content_for :sidebar do %>
+  <% if can? :create, Request.new %>
+    <div class='section'>
+      <%= link_to image_tag("btn-create.png", :border => 0), new_request_path %>
+    </div>
+  <% end %>
+  <%= render :partial => 'shared/process_map' %>
+<% end %>
+<div class='cls'></div>
+<%= link_to_function image_tag('btn-create-promotion.png'), "showPromoteTable()", :id => "btn-create-promotion" %>
+<br>
+<br>
+<div class='cls'></div>
+<div id='create_promotion' style='display:none;'>
+  <%= render :partial => '/promotions/create_promotion' %>
+</div>
+<div id='filters-requests'>
+  <%= render 'filters' %>
+  <form id='dashboard_range'>
+    <div>
+      <label>From:</label>
+      <%= date_field_tag 'beginning_date', @beginning_of_calendar %>
+    </div>
+    <div>
+      <label>To:</label>
+      <%= date_field_tag 'end_date', @end_of_calendar %>
+    </div>
+    <div>
+      <%= submit_tag 'Set' %>
+    </div>
+  </form>
+  <br class='clear'/>
+  <%= render 'core_content', :requests => @requests, :start_date => @start_date,  :deleted_requests => @deleted_requests %>
+</div>

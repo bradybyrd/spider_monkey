@@ -1,0 +1,34 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='chk_sl'>
+  <table>
+    <% collection.try(:each) do |record| %>
+      <tr>
+        <td>
+          <label <%= tag_options({:title => record.send(label)}, false) %>>
+            <% if local_assigns[:object] %>
+              <%= check_box_tag "#{object}[#{method}][]", record.send(value), false, {:id => "#{object}_#{method}_#{record.id}", :disabled => local_assigns[:disabled] ? disabled : false } %>
+              <%= truncate(record.send(label), :length => 22) %>
+            <% else %>
+              <%= check_box_tag "#{method}[]", record.send(value), false, {:id => "#{method}_#{record.id}" } %>
+              <%= truncate(record.send(label), :length => 22) %>
+            <% end %>
+          </label>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% if local_assigns[:form_object] %>
+  <% if local_assigns[:object] %>
+    <%= javascript_tag("selectCheckboxes(#{form_object.send(method).to_json}, '##{object}_#{method}_')") %>
+  <% else %>
+    <%= javascript_tag("selectCheckboxes(#{form_object.send(method).to_json}, '##{method}_')")  unless form_object.new_record? %>
+  <% end %>
+<% end %>

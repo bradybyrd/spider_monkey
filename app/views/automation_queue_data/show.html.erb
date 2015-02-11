@@ -1,0 +1,41 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Background Job: #{h(@automation_queue_data.id.to_s)}) #{@automation_queue_data.run_at.try(:default_format_date_time)}" %>
+<% content_for :head do %>
+  <nbsp></nbsp>
+<% end %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/tabs', :locals => { :selected => 'automation monitor' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<div id='automation_monitor'>
+  <%= link_to '<< cancel', automation_monitor_path(:page => params[:page]) %>
+  <table>
+    <tr>
+      <th>ID:</th>
+      <td><%= h(@automation_queue_data.id.to_s) %></td>
+    </tr>
+    <tr>
+      <th>Attempts:</th>
+      <td><%= h(@automation_queue_data.attempts.to_s) %></td>
+    </tr>
+    <tr>
+      <th>Run At:</th>
+      <td><%= h(@automation_queue_data.run_at.try(:default_format_date_time)) %></td>
+    </tr>
+    <tr>
+      <th>Last Error:</th>
+      <td>
+        <%= simple_format(h(word_wrap(@automation_queue_data.last_error))) unless @automation_queue_data.last_error.nil? %>
+      </td>
+    </tr>
+  </table>
+</div>

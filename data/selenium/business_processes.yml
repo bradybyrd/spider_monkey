@@ -1,0 +1,26 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+business_processes_001: 
+  name: Deploy
+  updated_at: <%= 2188535.752533.seconds.ago %>
+  id: 1
+  active: true
+  created_at: <%= 6569801.752582.seconds.ago %>
+business_processes_002: 
+  name: Build
+  updated_at: <%= 6569801.752614.seconds.ago %>
+  id: 2
+  active: true
+  created_at: <%= 6569801.752646.seconds.ago %>
+business_processes_003: 
+  name: P2V Migration
+  updated_at: <%= 1573704.752675.seconds.ago %>
+  id: 3
+  active: true
+  created_at: <%= 1573704.752708.seconds.ago %>

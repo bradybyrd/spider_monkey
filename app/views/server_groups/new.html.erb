@@ -1,0 +1,19 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Create Server Group' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => {:selected => "servers"} %>
+<% end %>
+<% content_for :sidebar do %>
+  <p></p>
+<% end %>
+<div class='pageSection'>
+  <%= render :partial => 'servers/tabs', :locals => { :selected => 'server_groups' } %>
+</div>
+<div id='server_container'><%= render :partial => 'server_groups/server_group_form' %></div>

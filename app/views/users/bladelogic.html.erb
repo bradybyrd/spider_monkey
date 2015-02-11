@@ -1,0 +1,66 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'BMC BladeLogic Users' %>
+
+<% content_for :sidebar do %>
+  <% if GlobalSettings.bladelogic_ready? %>
+    <%= link_to "BMC BladeLogic RBAC Import", rbac_import_users_path %>
+  <% else %>
+    BMC BladeLogic is not fully configured
+  <% end %> 
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render :partial => 'tabs', :locals => {:selected => 'bmc blade_logic users'} %>
+<% end %>
+
+<div>
+  <strong>Last RBAC Import</strong>:
+  <%= @last_import_date ? @last_import_date.to_s(:datepicker) : 'never' %><br />
+  <strong>Users Imported</strong>: <%= @last_import_users.size %>
+</div>
+
+<br />
+
+<table class="tablesorter one_column_sorter formatted_table">
+  <thead>
+    <tr>
+      <th>BMC Bladelogic Username</th>
+      <th>Roles</th>
+      <th>Streamdeploy Username</th>
+      <th>Load Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <% @bladelogic_users.each do |bl_user| %>
+    <tr class="<%= cycle '', 'alt' %>">
+      <td><%= bl_user.username %></td>
+      <td>
+        <%= form_tag update_bladelogic_user_users_path, :method => :put, :class => "update_bl_user" do %>
+          <%= hidden_field_tag :bladelogic_user_id, bl_user.id %>
+          <%= select_tag "bladelogic_user[default_role]", options_for_select(bl_user.roles.all(:order => 'name').map { |r| r.name }.unshift(''), bl_user.default_role) %>
+        <% end %>
+      </td>
+      <td>
+        <%= form_tag update_bladelogic_user_users_path, :method => :put, :class => "update_bl_user" do %>
+          <%= hidden_field_tag :bladelogic_user_id, bl_user.id %>
+          <%= select_tag "bladelogic_user[streamdeploy_user_id]", options_from_collection_for_select(@users_for_select, :id, :name, bl_user.streamdeploy_user_id.to_i) %>
+        <% end %>
+      </td>
+      <td><%= bl_user.created_at.to_s(:datepicker) %></td>
+      <td>
+        <%= link_to "Edit", "#" %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

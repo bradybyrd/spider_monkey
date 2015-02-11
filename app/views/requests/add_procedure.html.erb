@@ -1,0 +1,47 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<table class='add_proc_table formatted_table'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Steps</th>
+      <th>State</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @procedures.each do |procedure| %>
+      <% next if @steps_count[procedure.id] == 0 %>
+      <tr>
+        <td><%= truncate(h(procedure.name), length: 25) %></td>
+        <td><%= h procedure.description %></td>
+        <td><%= @steps_count[procedure.id] %></td>
+        <td><%= procedure.aasm_state %></td>
+        <td>
+          <%= form_for procedure, url: add_to_request_procedure_path(procedure), html: { method: :post, style: "margin-left:16px;" } do %>
+            <%= hidden_field_tag 'request_id', @request.number %>
+            <%= hidden_field_tag 'from_request', true %>
+            <%= hidden_field_tag 'step[owner_id]', @request.user_id %>
+            <%= hidden_field_tag 'step[owner_type]', 'User' %>
+            <%= hidden_field_tag 'step[name]', procedure.name %>
+            <%= hidden_field_tag 'step[description]', procedure.description %>
+            <%= submit_tag 'Add', class: 'in_place add_button_in_procedure' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+
+<p class='link_proc'>
+  <%= link_to 'Add new procedure', add_new_procedure_request_path(@request), class: 'ajax' %>
+</p>

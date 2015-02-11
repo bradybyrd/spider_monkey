@@ -1,0 +1,48 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= hidden_field_tag :datepicker_format, DEFAULT_DATE_FORMATS_FOR_DATEPICKER[GlobalSettings[:default_date_format]] %>
+<div class='wrap_stage_tbl'>
+  <table class='edit_stage_dates formatted_table'>
+    <thead>
+      <tr>
+        <th <%= tag_options({}, false) %>>STAGE</th>
+        <th <%= tag_options({}, false) %>>START</th>
+        <th <%= tag_options({}, false) %>>END</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @plan.stages.each do |plan_stage| %>
+        <% if @plan_stage_dates[plan_stage.id] %>
+          <% start_date = @plan_stage_dates[plan_stage.id].first.start_date %>
+          <% end_date = @plan_stage_dates[plan_stage.id].first.end_date %>
+        <% else %>
+          <% start_date = nil %>
+          <% end_date = nil %>
+        <% end %>
+        <tr <%= tag_options({:class => "#{cycle('', 'alt' )}"}, false) %>>
+          <td><%= "#{plan_stage.name}".truncate((local_assigns[:facebox_edit].present? ? 15 : 30)) %></td>
+          <td <%= tag_options({:id => "stage_#{plan_stage.id}_start"}, false) %>>
+            <% if defined?(use_date_field) %>
+              <%= date_field_tag "plan[stage_date][#{plan_stage.id}][start_date]", start_date, {}, 'float:left; padding-left:4px; width:16px; height:16px;' %>
+            <% else %>
+              <%= default_format_date(start_date) %>
+            <% end %>
+          </td>
+          <td <%= tag_options({:id => "stage_#{plan_stage.id}_end"}, false) %>>
+            <% if defined?(use_date_field) %>
+              <%= date_field_tag "plan[stage_date][#{plan_stage.id}][end_date]", end_date, {}, 'float:left; padding-left:4px; width:16px; height:16px;' %>
+            <% else %>
+              <%= default_format_date(end_date) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

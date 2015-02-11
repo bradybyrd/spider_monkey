@@ -1,0 +1,93 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if request.created? || request.cancelled? %>
+	<% if can? :plan, request %>
+  	<div class="request_plan_button">
+	    <p>
+          <% if request.has_notices? %>
+              <%= link_to image_tag('btn-plan-request.png'), update_state_request_path(request, 'plan'), method: :put, confirm: "#{request.notices.join('. ')}. Do you want to continue?" %>
+          <% else %>
+              <%= link_to image_tag("btn-plan-request.png"), update_state_request_path(request, 'plan'), :method => :put %>
+          <% end %>
+	    </p>
+  	</div>
+	<div class="note">
+	    <p>Note: Request must be in "planned" status in order to be started.</p>
+	</div>
+	<% end %>
+<% elsif (request.planned? || request.hold?) && can?(:start, request) %>
+	<div class="request_start_button">
+		<p>
+		<% if request.notify_on_request_start? %>
+			<% if request.has_checked_steps? %>
+				<%= link_to image_tag("btn-start-request.png"), add_message_request_path(request, 'start'), :rel => 'facebox', :focusOn => '#message_subject', :class => 'anyStepsCheckedtrue' %>
+				<%= link_to_function image_tag("btn-start-request.png"), :onclick => "if (confirm('!Warning - you are about to start a request with no steps checked. No work will be done and the request will be marked complete if you proceed.')) jQuery.facebox({ ajax: '#{add_message_request_path(request, 'start')}' })", :class => 'anyStepsCheckedfalse', :style => "display:none;" %>
+			<% else %>
+				<%= link_to_function image_tag("btn-start-request.png"), :onclick => "if (confirm('Warning - you are about to start a request with no steps checked. No work will be done and the request will be marked complete if you proceed.')) jQuery.facebox({ ajax: '#{add_message_request_path(request, 'start')}' })", :class => "anyStepsCheckedfalse" %>
+				<%= link_to image_tag("btn-start-request.png"), add_message_request_path(request, 'start'), :rel => 'facebox', :focusOn => '#message_subject', :class => 'anyStepsCheckedtrue', :style => "display:none;" %>
+			<% end %>
+		<% else %>
+			<% if request.has_checked_steps? %>
+				<%= link_to image_tag("btn-start-request.png"), update_state_request_path(request, 'start'), :method => :put, :class => 'anyStepsCheckedtrue' %>
+				<%= link_to image_tag("btn-start-request.png"), update_state_request_path(request, 'start'), :method => :put, :confirm => "Warning - you are about to start a request with no steps checked. No work will be done and the request will be marked complete if you proceed.", :style => "display:none;", :class => 'anyStepsCheckedfalse' %>
+			<% else %>
+				<%= link_to image_tag("btn-start-request.png"), update_state_request_path(request, 'start'), :method => :put, :confirm => "Warning - you are about to start a request with no steps checked. No work will be done and the request will be marked complete if you proceed.", :class => 'anyStepsCheckedfalse' %>
+				<%= link_to image_tag("btn-start-request.png"), update_state_request_path(request, 'start'), :method => :put, :style => "display:none;", :class => 'anyStepsCheckedtrue' %>
+			<% end %>
+		<% end %>
+		</p>
+	</div>
+<% elsif request.started? %>
+  <%= render :partial => "requests/button_sidebar/hold", :locals => {:request => request} if can? :hold, request %>
+  <% if can?(:put_in_problem, request) %>
+	  <div class="request_problem_button">
+	    <p>
+	      <% if request_category_available_for?('problem') %>
+	        <%= link_to image_tag("btn-problem.png"), add_category_request_path(request, 'problem'), :rel => 'facebox' %>
+	      <% else %>
+	        <%= link_to image_tag("btn-problem.png"), update_state_request_path(request, 'problem'), :method => :put %>
+	      <% end %>
+	    </p>
+	  </div>
+  <% end %>
+<% elsif request.problem? %>
+  <%= render :partial => "requests/button_sidebar/hold", :locals => {:request => request} if can? :hold, request %>
+  <% if can?(:resolve, request) %>
+	  <div class="request_resolve_button">
+	    <p>
+	      <% if request_category_available_for?('resolve') %>
+	        <%= link_to image_tag("btn-resolve.png"), add_category_request_path(request, 'resolve'), :rel => 'facebox' %>
+	      <% else %>
+	        <%= link_to image_tag("btn-resolve.png"), update_state_request_path(request, 'resolve'), :method => :put %>
+	      <% end %>
+	    </p>
+	  </div>
+  <% end %>
+<% elsif request.complete? && can?(:reopen, request) %>
+  <div class="request_reopen_button">
+    <p>
+      <%= link_to image_tag("btn-reopen-request.png"), update_state_request_path(request, 'reopen'),
+                  :method => :put, :confirm => "Are you sure you want to reopen the request?" %>
+    </p>
+  </div>
+<% end %>
+
+<% unless request.complete? || request.cancelled? %>
+	<% if can? :cancel, request %>
+  	<div class="request_cancel_button">
+	    <p>
+	      <% if request_category_available_for?('cancel') %>
+	        <%= link_to image_tag("btn-cancel-request.png"), add_category_request_path(request, 'cancel'), :rel => 'facebox' %>
+	      <% else %>
+	        <%= link_to image_tag("btn-cancel-request.png"), update_state_request_path(request, 'cancel'), :method => :put %>
+	      <% end %>
+	    </p>
+	  </div>
+	<% end %>
+<% end %>

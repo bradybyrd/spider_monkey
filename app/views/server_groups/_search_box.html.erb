@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2014
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_tag('/environment/server_groups/', method: :get) do %>
+  <%= text_field_tag :key, params[:key], size: '15' %>
+  <%= submit_tag 'Search', class: 'button' %>
+  <%= link_to 'clear', '/environment/server_groups' %>
+  <%= hidden_field_tag :redirect_apth, '/environment/server_groups' %>
+  <%= hidden_field_tag :per_page, @per_page %>
+<% end %>
+

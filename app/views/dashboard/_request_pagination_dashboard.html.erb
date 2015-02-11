@@ -1,0 +1,27 @@
+<%
+   # #############################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   # #############################################################################
+%>
+
+<% if @request_dashboard[:can_view_requests_list] %>
+  <div class="request_pagination">
+    <span>
+      <%= "#{@request_dashboard[:requests_total_count].to_s} Requests: " %>
+    </span>
+
+    <% if @request_dashboard[:requests_total_count] >= RequestDashboardView::REQUEST_PER_PAGE_OPTIONS.first.to_i %>
+      <span>displaying</span>
+      <%= select_tag 'per_page',
+                     options_for_select(RequestDashboardView::REQUEST_PER_PAGE_OPTIONS, @request_dashboard[:per_page]),
+                     include_blank: false,
+                     id: 'per_page'
+      %>
+      <span>per page</span>
+      <%= will_paginate @request_dashboard[:requests] %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,42 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%link_class = 'pagination' unless defined?('link_class')%>
+<div class='alpha_pagination'>
+  <%
+     if !defined? unarchived
+       total_records =  @total_records
+       pages =          @pages
+       previous_page =  @previous_page
+       next_page =      @next_page
+       page_name =      :page
+     else
+       total_records =  @total_inactive_records
+       pages =          @pages_inactive
+       previous_page =  @previous_page_inactive
+       next_page =      @next_page_inactive
+       page_name =      :page_inactive
+     end
+  %>
+  <%= total_records.to_s + ' Items' if total_records %>
+  <% unless pages.blank? %>
+    <% if  pages.size > 1 %>
+      <%path = path.include?('?') ? "#{path}&" : "#{path}/?"%>
+      <%= ': ' %>
+      <%= link_to '« Previous', "#{path}#{page_name.to_s}=#{previous_page.present? ? previous_page : 0}&key=#{@keyword}", {:id => previous_page.eql?(params[page_name].to_i) ? 'current_page' : nil, :class_name => local_assigns[:class_name] ? class_name : nil, :class => "#{link_class}"} %>
+      <% last_page = pages.sort.last %>
+      <% pages.sort.each do |page| %>
+        <% if page[0] && page[0] <= total_records %>
+          <%= link_to(page[1], "#{path}#{page_name.to_s}=#{page[0]}&key=#{@keyword}", {:id => page[0].eql?(params[page_name].to_i) ? 'current_page' : nil, :class_name => local_assigns[:class_name] ? class_name : nil, :class => "#{link_class}"}) %>
+          <%= ' | ' unless page == last_page %>
+        <% end %>
+      <% end %>
+      <%= link_to 'Next »',"#{path}#{page_name.to_s}=#{next_page}&key=#{@keyword}", "data-role" => "next-page-link", id: next_page.eql?(params[page_name].to_i) ? 'current_page' : nil, class_name: local_assigns[:class_name] ? class_name : nil, class: "#{link_class}" %>
+    <% end %>
+  <% end %>
+</div>

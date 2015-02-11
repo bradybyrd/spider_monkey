@@ -1,0 +1,403 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+component_properties_055: 
+  id: 55
+  property_id: 172
+  component_id: 88
+  position: 8
+component_properties_076: 
+  id: 76
+  property_id: 147
+  component_id: 61
+  position: 4
+component_properties_013: 
+  id: 13
+  property_id: 154
+  component_id: 63
+  position: 2
+component_properties_034: 
+  id: 34
+  property_id: 159
+  component_id: 76
+  position: 1
+component_properties_077: 
+  id: 77
+  property_id: 191
+  component_id: 65
+  position: 3
+component_properties_014: 
+  id: 14
+  property_id: 179
+  component_id: 87
+  position: 1
+component_properties_035: 
+  id: 35
+  property_id: 141
+  component_id: 65
+  position: 2
+component_properties_056: 
+  id: 56
+  property_id: 148
+  component_id: 87
+  position: 2
+component_properties_015: 
+  id: 15
+  property_id: 174
+  component_id: 88
+  position: 2
+component_properties_036: 
+  id: 36
+  property_id: 148
+  component_id: 80
+  position: 1
+component_properties_057: 
+  id: 57
+  property_id: 152
+  component_id: 62
+  position: 3
+component_properties_078: 
+  id: 78
+  property_id: 173
+  component_id: 88
+  position: 11
+component_properties_016: 
+  id: 16
+  property_id: 181
+  component_id: 91
+  position: 1
+component_properties_037: 
+  id: 37
+  property_id: 187
+  component_id: 92
+  position: 4
+component_properties_058: 
+  id: 58
+  property_id: 147
+  component_id: 62
+  position: 4
+component_properties_079: 
+  id: 79
+  property_id: 156
+  component_id: 65
+  position: 4
+component_properties_017: 
+  id: 17
+  property_id: 148
+  component_id: 77
+  position: 1
+component_properties_038: 
+  id: 38
+  property_id: 148
+  component_id: 79
+  position: 1
+component_properties_060: 
+  id: 60
+  property_id: 162
+  component_id: 78
+  position: 2
+component_properties_059: 
+  id: 59
+  property_id: 147
+  component_id: 64
+  position: 1
+component_properties_018: 
+  id: 18
+  property_id: 153
+  component_id: 63
+  position: 3
+component_properties_040: 
+  id: 40
+  property_id: 168
+  component_id: 82
+  position: 5
+component_properties_039: 
+  id: 39
+  property_id: 148
+  component_id: 82
+  position: 4
+component_properties_061: 
+  id: 61
+  property_id: 177
+  component_id: 88
+  position: 9
+component_properties_020: 
+  id: 20
+  property_id: 146
+  component_id: 72
+  position: 2
+component_properties_019: 
+  id: 19
+  property_id: 182
+  component_id: 90
+  position: 2
+component_properties_041: 
+  id: 41
+  property_id: 181
+  component_id: 90
+  position: 3
+component_properties_062: 
+  id: 62
+  property_id: 157
+  component_id: 61
+  position: 3
+component_properties_021: 
+  id: 21
+  property_id: 147
+  component_id: 66
+  position: 1
+component_properties_042: 
+  id: 42
+  property_id: 170
+  component_id: 86
+  position: 2
+component_properties_063: 
+  id: 63
+  property_id: 161
+  component_id: 78
+  position: 3
+component_properties_022: 
+  id: 22
+  property_id: 150
+  component_id: 62
+  position: 2
+component_properties_043: 
+  id: 43
+  property_id: 148
+  component_id: 73
+  position: 1
+component_properties_064: 
+  id: 64
+  property_id: 148
+  component_id: 93
+  position: 1
+component_properties_001: 
+  id: 1
+  property_id: 147
+  component_id: 72
+  position: 1
+component_properties_044: 
+  id: 44
+  property_id: 181
+  component_id: 61
+  position: 1
+component_properties_065: 
+  id: 65
+  property_id: 149
+  component_id: 62
+  position: 5
+component_properties_002: 
+  id: 2
+  property_id: 148
+  component_id: 90
+  position: 1
+component_properties_023: 
+  id: 23
+  property_id: 148
+  component_id: 86
+  position: 1
+component_properties_066: 
+  id: 66
+  property_id: 186
+  component_id: 92
+  position: 6
+component_properties_003: 
+  id: 3
+  property_id: 148
+  component_id: 75
+  position: 1
+component_properties_024: 
+  id: 24
+  property_id: 148
+  component_id: 84
+  position: 1
+component_properties_045: 
+  id: 45
+  property_id: 166
+  component_id: 82
+  position: 6
+component_properties_004: 
+  id: 4
+  property_id: 151
+  component_id: 62
+  position: 1
+component_properties_025: 
+  id: 25
+  property_id: 171
+  component_id: 88
+  position: 3
+component_properties_046: 
+  id: 46
+  property_id: 176
+  component_id: 88
+  position: 6
+component_properties_067: 
+  id: 67
+  property_id: 143
+  component_id: 62
+  position: 6
+component_properties_005: 
+  id: 5
+  property_id: 167
+  component_id: 82
+  position: 1
+component_properties_026: 
+  id: 26
+  property_id: 183
+  component_id: 91
+  position: 2
+component_properties_070: 
+  id: 70
+  property_id: 190
+  component_id: 62
+  position: 7
+component_properties_047: 
+  id: 47
+  property_id: 147
+  component_id: 63
+  position: 4
+component_properties_068: 
+  id: 68
+  property_id: 148
+  component_id: 85
+  position: 2
+component_properties_006: 
+  id: 6
+  property_id: 155
+  component_id: 63
+  position: 1
+component_properties_027: 
+  id: 27
+  property_id: 170
+  component_id: 85
+  position: 1
+component_properties_048: 
+  id: 48
+  property_id: 148
+  component_id: 76
+  position: 2
+component_properties_069: 
+  id: 69
+  property_id: 182
+  component_id: 91
+  position: 4
+component_properties_007: 
+  id: 7
+  property_id: 184
+  component_id: 92
+  position: 1
+component_properties_028: 
+  id: 28
+  property_id: 165
+  component_id: 82
+  position: 2
+component_properties_050: 
+  id: 50
+  property_id: 148
+  component_id: 91
+  position: 3
+component_properties_071: 
+  id: 71
+  property_id: 148
+  component_id: 83
+  position: 1
+component_properties_049: 
+  id: 49
+  property_id: 148
+  component_id: 89
+  position: 2
+component_properties_008: 
+  id: 8
+  property_id: 179
+  component_id: 89
+  position: 1
+component_properties_030: 
+  id: 30
+  property_id: 169
+  component_id: 88
+  position: 4
+component_properties_029: 
+  id: 29
+  property_id: 164
+  component_id: 82
+  position: 3
+component_properties_051: 
+  id: 51
+  property_id: 178
+  component_id: 88
+  position: 7
+component_properties_072: 
+  id: 72
+  property_id: 183
+  component_id: 90
+  position: 4
+component_properties_052: 
+  id: 52
+  property_id: 158
+  component_id: 61
+  position: 2
+component_properties_031: 
+  id: 31
+  property_id: 180
+  component_id: 88
+  position: 5
+component_properties_009: 
+  id: 9
+  property_id: 188
+  component_id: 92
+  position: 2
+component_properties_010: 
+  id: 10
+  property_id: 142
+  component_id: 65
+  position: 1
+component_properties_073: 
+  id: 73
+  property_id: 148
+  component_id: 81
+  position: 1
+component_properties_053: 
+  id: 53
+  property_id: 148
+  component_id: 92
+  position: 5
+component_properties_032: 
+  id: 32
+  property_id: 185
+  component_id: 92
+  position: 3
+component_properties_011: 
+  id: 11
+  property_id: 164
+  component_id: 88
+  position: 1
+component_properties_074: 
+  id: 74
+  property_id: 189
+  component_id: 93
+  position: 2
+component_properties_012: 
+  id: 12
+  property_id: 148
+  component_id: 78
+  position: 1
+component_properties_054: 
+  id: 54
+  property_id: 160
+  component_id: 67
+  position: 1
+component_properties_033: 
+  id: 33
+  property_id: 148
+  component_id: 74
+  position: 1
+component_properties_075: 
+  id: 75
+  property_id: 175
+  component_id: 88
+  position: 10

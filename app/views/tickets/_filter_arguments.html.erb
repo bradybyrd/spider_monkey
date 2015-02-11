@@ -1,0 +1,30 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<span id="filter_prompt">
+	<p>
+		Filter arguments will appear here when you have selected a server and a filter above.
+	</p> </span>
+<% unless script.blank? %>
+<%= form_tag execute_mapped_resource_automation_script_path(script), :method => :put, :remote => true do %>
+<%= hidden_field_tag :plan_id, plan.id, :id => 'arguments_plan_id' %>
+<span class="step_auto_only" style="display:none">
+	<div id='script_arguments'>
+	</div>
+	<p>
+		<%= hidden_field_tag :script_id, script.try(:id) %>
+		<%= hidden_field_tag :project_server_id, project_server.try(:id) %>
+		<%= submit_tag 'Run Filter Query', :name => nil, 'data-disable-with' => 'Running Filter Query...', :class =>'button', :id => "ticket_query_submit"  %>
+	</p> </span>
+<% end -%>
+<%= form_tag initialize_arguments_scripts_path, :method => :post, :id => "update_arguments_form", :class => "update_arguments_trigger" do %>
+<div id="script_hidden_fields">
+	<%= hidden_field_tag :argument_values, argument_values.to_json %>
+</div>
+<% end -%>
+<% end -%>

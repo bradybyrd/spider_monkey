@@ -1,0 +1,15 @@
+  <tbody>
+<% deployment_window_series.each do |deployment_window_series| %>
+  <tr>
+    <td><%= deployment_window_series.name %></td>
+    <td><%= deployment_window_series.start_at %></td>
+    <td><%= deployment_window_series.finish_at %></td>
+    <td><%= display_owning_group(deployment_window_series) %></td>
+    <td><%= display_object_state(deployment_window_series) %></td>
+    <td><%= deployment_window_series.recurrent? %></td>
+    <td><%= link_to I18n.t(:edit), edit_deployment_window_series_path(deployment_window_series) rescue 0%></td>
+    <td><%= link_to_if deployment_window_series.can_be_destroyed?, 'Destroy', deployment_window_series, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= display_change_object_state_controls(deployment_window_series)  rescue 0 %></td>
+  </tr>
+<% end %>
+  </tbody>

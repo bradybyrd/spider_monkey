@@ -1,0 +1,38 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if table_header=='Active' %>
+  <h3><%= 'Active' %></h3>
+<% else %>
+  <h3><%= 'Inactive' %></h3>
+<% end %>
+<table class='formatted_table index_table'>
+  <thead>
+    <tr>
+      <th width='25%'>Name</th>
+      <th width='45%'>Components</th>
+      <th width='20%'>Version</th>
+      <th width='10%'>Active</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% templates.each do |template| %>
+      <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+        <td><%= link_to_remote index_title(template.name), :url => edit_app_package_template_path(@app, template.id), :method => :get %></td>
+        <td><%= template.component_name %></td>
+        <td><%= template.version %></td>
+        <td>
+          <%= form_for template, :url => app_package_template_path(@app, template, :only_edit => true), :remote => true, :html => { :method => :put, :id => "tf_active_checkbox_#{template.id}" } do |tf| %>
+            <%= tf.check_box :active, :onchange => "$('#tf_active_checkbox_#{template.id}').trigger('onsubmit');" %>
+          <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

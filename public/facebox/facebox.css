@@ -1,0 +1,395 @@
+/*
+ * |BMC TPS Info    |Facebook    |TPSDR0033624     |DR4U1.1.2.00     |http://defunkt.io/facebox/    |Registered  |
+ * Facebox (for jQuery)
+ * version: 1.2 (05/05/2008) 
+ *          with mutiple class patch (11/04/2009 http://github.com/jondistad/facebox.git)
+ * 
+ * @requires jQuery v1.2 or later
+ *
+ * Examples at http://famspam.com/facebox/
+ *
+ * Licensed under the MIT:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Copyright 2007, 2008 Chris Wanstrath [ chris@ozmm.org ]
+ */
+/*
+ #facebox .borderL {
+  background:url(b.png);
+  border-left: 1px solid #aebac1;
+  background-color: #FFF;
+}
+
+#facebox .borderR {
+  border-right: 1px solid #aebac1;
+  background-color: #FFF;
+
+
+}
+
+#facebox .borderT {
+    border-top: 1px solid #aebac1;
+    background-color: #0263A2;
+
+}
+
+#facebox .borderB {
+    border-bottom: 1px solid #aebac1;
+    background-color: #dee0e0;
+}
+
+#facebox .tl {
+  background:url(fbx-border-sprite.png) 0 0;
+  width: 10px; 
+  height: 20px;
+}
+
+#facebox .tr {
+  background:url(fbx-border-sprite.png) -10px 0;
+  width: 10px; 
+  height: 20px;
+}
+
+#facebox .bl {
+  background:url(fbx-border-sprite.png) -20px 0;
+  width: 10px; 
+  height: 10px;
+}
+
+#facebox .br {
+  background:url(fbx-border-sprite.png) -30px 0;
+  width: 10px; 
+  height: 10px;
+}
+
+*/
+
+#facebox .close_facebox_button{
+ background: url(../facebox/dialogClose-whiteX.png) no-repeat right center;
+ padding-left:0px;
+ padding-right:10px;
+ padding-bottom:10px;
+ padding-top:3px;
+ text-decoration:none;
+}
+
+#facebox .fb-header{
+    background: url(fb-header-sprite.png) no-repeat;
+}
+
+#facebox .header-middle-bg-fb{
+    background: url(fb-header-tile.png);
+    margin-left: 8px;
+    padding-bottom: 8px;
+    margin-right: 2px;
+    text-align:right;
+}
+
+#facebox .right-corner-span{
+    background: url(fb-header-sprite.png) no-repeat;
+    background-position: top right;
+    margin-right: -2px;
+    padding-bottom: 8px;
+}
+
+#facebox .fb-header .lt-corner {
+    background: url(fb-header-sprite.png) no-repeat;
+    height: 20px;
+}
+
+#facebox .fb-header .lt-corner .rt-corner {
+    background: url(fb-header-sprite.png) no-repeat;
+    background-position: top right;
+    right: 0;
+    height: 20px;
+}
+
+.close { float: right; 
+         margin: 5px 10px 0 0;
+         width: 9px;
+         height: 9px;
+         display:block;
+         background: url(dialogClose-whiteX-ro.png) no-repeat;
+
+}
+
+a.close:hover img {
+    display: none;
+
+}
+
+.close { float: right;
+         margin: 5px 10px 0 0;
+         width: 9px;
+         height: 9px;
+         display:block;
+         background: url(dialogClose-whiteX-ro.png) no-repeat;
+
+}
+
+#facebox .fb-header .lt-corner .rt-corner .header-tile{
+   background: url(fb-header-tile.png);
+   margin: 0 8px;
+   height: 20px;
+}
+
+#facebox .bottom-bar {
+
+    height:7px;
+    background-color: #dee0e0;
+
+}
+
+#facebox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  text-align: left;
+  -moz-box-shadow: 5px 5px 5px rgba(0,0,0,.4);
+  -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,.4);
+  box-shadow: 5px 5px 5px rgba(0,0,0,.4);
+
+  
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  
+  -webkit-border-bottom-right-radius: 6px;
+  -moz-border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow: hidden;
+
+}
+
+#facebox .popup {
+  position: relative;
+}
+
+#facebox table {
+  border-collapse: collapse;
+  margin:0;
+}
+
+#facebox td {
+  border-bottom: 0;
+  padding: 0;
+}
+
+#facebox .body {
+  padding: 0;
+  background: #fff;
+  min-width: 370px;
+  border: 1px solid #AEBAC1;
+  border:0 1px ;
+
+}
+
+#facebox .loading {
+  text-align: center;
+}
+
+#facebox .image {
+  text-align: center;
+}
+
+#facebox img {
+  border: 0;
+  margin: 0;
+}
+
+#facebox h2 {
+  font-size:11px;
+  font-weight: bold;
+  position: absolute;
+  top: -5px;
+  left: 15px;
+  color: #FFF;
+
+}
+
+#facebox .cssform {margin-left:0px;}
+
+#facebox .cssform .field{
+
+    margin:3px 10px 3px 0px;
+
+}
+
+#facebox .cssform .field select{
+/*    height: 21px;*/
+    padding-left: 2px;
+    font-size: 11px;
+    max-width:300px;
+   
+}
+
+.divider{line-height: 1px; border-bottom: 1px solid #aebac1; margin:15px 0;}
+
+#facebox .cssform .field input[type=text],#facebox .cssform .field input[type=password],#facebox .cssform .field  select{
+    padding-left: 2px;
+    font-size: 11px;
+    max-width: 300px;
+}
+
+/*#facebox .cssform nobr input {
+    
+    margin: 0 4px 0 0;
+    
+}*/
+
+
+#facebox .button_bar{
+    background-color: #dee0e0!important;
+    margin-left: -10px !important;
+    margin-right: -10px !important;
+/*    margin: 0 -20px -17px -20px!important;*/
+    padding: 7px 10px!important;
+    /*
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-bottom-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    */
+}
+
+/*
+.button_bar input[type=submit] {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 11px/normal tahoma;
+        font-weight: normal;
+	padding: 4px 10px;
+
+        
+        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        
+        -webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        
+}*/
+.button:hover {
+	text-decoration: none;
+}
+.button:active {
+	position: relative;
+	top: 1px;
+}
+
+#facebox .button_bar td{
+    padding-top:7px;
+
+}
+
+#facebox .footer {
+  background-color: #dee0e0;
+ }
+
+#facebox .footer img {
+  vertical-align: middle;
+}
+
+#facebox .tl, #facebox .tr, #facebox .bl, #facebox .br {
+  width: 10px;
+  overflow: hidden;
+  padding: 0;
+}
+
+#facebox_overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+}
+
+.facebox_hide {
+  z-index:-100;
+}
+
+.facebox_overlayBG {
+  background-color: #000;
+  opacity:0.20!important;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)"!important; /*IE8*/
+  z-index: 99;
+	opacity:0.2!important;
+}
+
+* html #facebox_overlay { /* ie6 hack */
+  position: absolute;
+  height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
+}
+.facebox_scroll{ overflow:auto;}
+ 
+#facebox td.body { position: relative; }
+#facebox div.multiple_submits input[type=submit] { right: auto; }
+#facebox div.multiple_submits input[type=submit],
+#facebox input[type=submit].in_place { position: relative; bottom: auto; }
+#facebox .footer { text-align: left; float:left; width:100%;} /* IT IS FOR IE7 AND IE8 DUE TO CANCLE BUTTON SHOW IN TOP RIGHT POSITION float:left; width:100%;*/
+#facebox .content{
+    background-color:#FFFFFF;
+    border:none;
+    clear:left;
+    overflow-y:auto;
+    overflow-x:hidden;
+    margin:0!important;
+    padding: 0 !important;
+/*    padding:0 20px!important;*/
+}
+#facebox .content form.cssform,#facebox .content form.smallform {
+  padding: 0 10px !important;
+  margin-bottom: -12px;
+}
+ /*dirty fix for overriding the facebox way of styling td on formatted tables*/
+#facebox .formatted_table tbody td{
+    vertical-align: middle!important;
+    padding: 3px 5px!important;
+    font-weight: normal!important;
+    border-left: 1px solid #dcdedf!important;
+    /*most probably this border bottom is not required;but that means being spot on with the banding/striping*/
+    border-bottom: 1px solid #dee0e0!important;
+    text-transform: none!important;
+}
+#facebox h3{margin-left: 5px;}
+#facebox .marginlr15 h3{margin-left: 0px;}
+#facebox form h3{margin: 15px 0;}
+
+#facebox select[multiple="multiple"], select[multiple="true"]{
+    height: auto !important;
+}
+#facebox .content div#component_version{
+    width:auto !important;
+}
+
+#facebox .content .add_proc_table,#facebox .content .link_proc{
+    margin: 15px;
+}
+
+#facebox .content table{
+    width:auto;
+}
+
+#facebox .content div#versions_by_app_map{
+    width:400px;
+}
+
+#facebox .content div#recent_activities{
+    margin:10px;
+}
+
+#facebox .server_level_edit_property_text{
+    float:none !important;
+}
+
+#facebox #errorExplanation h2{
+    position: relative !important;
+    left:0 !important;
+    top:0 !important;
+}

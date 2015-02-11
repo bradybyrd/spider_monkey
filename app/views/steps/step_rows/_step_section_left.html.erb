@@ -1,0 +1,39 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div style="float:left; width:49%;">   
+  <dl>
+    
+    <dt>Task</dt>
+    <dd><%= step_attribute_value(step.work_task_name) %></dd>
+
+    <dt>Phase</dt>
+    <% if step.accessible_by?(current_user) %>
+      <dd>
+        <%= step_attribute_value(step.phase_name) %>
+        <%- if step.request.present? %> 
+        <% unless step.phase_id.nil? %>
+          <%= form_for step, :url => update_runtime_phase_request_step_url(step.request, step), :html => { :method => :put, :class => 'inline no_submit' } do |f| %>
+            <%= f.collection_select :runtime_phase_id, step.phase.runtime_phases, :id, :name, :include_blank => true unless step.runtime_phase_id.nil? %>
+          <% end %>
+        <% end %>
+      <% end %>
+      </dd>
+    <% else %>
+      <dd><%= step_attribute_value(step.full_phase_name) %></dd>
+    <% end %>
+    
+    <dt>Assigned To</dt>
+    <% if step.user_owner?  && (!step.owner_contact_number.nil?) %> 
+      <dd><%= name_of(step.owner)+" ("+step.owner_contact_number+")" %></dd> 
+     <%else%>
+      <dd><%= name_of(step.owner) %></dd>
+     <%end%>  </dl>
+
+</div>
+

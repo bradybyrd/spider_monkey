@@ -1,0 +1,59 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='available_environments'>
+  <div>
+    <h2 class="table_heading">Manually Assign Route Gate Constraints</h2>
+  </div>
+  <br class='clear'/>
+  <table id="route_gates_list" class='tablesorter formatted_table'>
+    <thead>
+    <tr>
+      <th>Environment Name</th>
+      <th>Environment Type</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% unless route_gates.blank? -%>
+        <% route_gates.each do |route_gate| %>
+            <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+              <td title="<%= route_gate.environment.name %>">
+                <%= index_title(h(truncate(route_gate.environment.name))) %>
+              </td>
+              <td title="<%= route_gate.environment_type.try(:name) %>"><%= colorized_label(route_gate.environment_type.try(:label_color), truncate(route_gate.environment_type.try(:name))) %></td>
+              <td class='action_links'>
+                <% if !@plan.archived? && can?(:configure, Constraint.new) %>
+                  <% eligible_plan_stage_instances = route_gate.eligible_plan_stage_instances_for_plan_id(plan_route.plan_id) %>
+                  <% if eligible_plan_stage_instances.present? %>
+                      <%= form_for(Constraint.new, url: constraints_path(plan_route_id: plan_route.id)) do |f| -%>
+                          <%= f.collection_select(:governable_id, eligible_plan_stage_instances, :id, :plan_stage_name, :class => 'plan_stage_instance_menu') %>
+                          <%= f.hidden_field :governable_type, value: 'PlanStageInstance' %>
+                          <%= f.hidden_field :constrainable_id, value: route_gate.id %>
+                          <%= f.hidden_field :constrainable_type, value: 'RouteGate' %>
+                          <%= f.submit 'Assign to Stage', name: nil %>
+                      <% end -%>
+                  <% else -%>
+                      Route gate cannot constrain additional plan stages.
+                  <% end -%>
+                <% end -%>
+              </td>
+            </tr>
+        <% end %>
+
+    <% else -%>
+
+        <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+          <td colspan="6">No route gates available.</td>
+        </tr>
+
+    <% end -%>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,90 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<table cellpadding="0" cellspacing="0" class="formatted_table">
+
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Property</th>
+      <% selected_application_environments.each do |app_env| %>
+        <th><%= app_env.name_label %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% comp_name = '' %>
+    <% selected_components.each do |component| %>
+      <% component.properties.each do |property| %>
+
+        <tr>
+          <% unless comp_name == component.name %>
+            <td style="border-bottom: 1px solid #999;" rowspan="<%= component.properties.size %>"><%= component.name %></td>
+            <% comp_name = component.name %>
+          <% end %>
+
+          <td style="border-right:1px solid #999; border-bottom: 1px solid #999;">
+            <%= property.name %>
+          </td>
+
+          <% selected_application_environments.each do |app_env| %>
+		  	<% prop_value = ensure_space property_value(app_env, component, property) %>
+			<% prop_value = prop_value.include?('<em>') ? truncate(prop_value, :length => 34) : truncate(prop_value, :length => 30) %>
+            <td style="border-right:1px solid #999; border-bottom: 1px solid #999;" id="properties_map_<%= app_env.id %>_<%= property.id %>" title="<%= ensure_space property_value_title(app_env, component, property) %>"><%= prop_value %></td>
+          <% end %>
+        </tr>
+
+      <% end %>
+    <% end %>
+
+    <tr>
+      <td colspan="2" style="border-right:1px solid #999;"><h2>History</h2></td>
+      <% selected_application_environments.each do |app_env| %>
+
+        <td>
+          <%= form_tag property_value_history_maps_path do %>
+
+            <table>
+
+                <tr>
+                  <td style="border:none;">
+                    <div style="min-width:65px">
+                    <%= radio_button_tag "custom_value_change_date", "current", true, :id => "custom_value_change_date_#{app_env.id}_current" %>
+                    <label for="custom_value_change_date_<%= app_env.id %>_current">Current</label>
+                    </div>
+                  </td>
+                </tr>
+
+                <% property_value_change_dates(app_env, selected_components).each do |date| %>
+
+                <tr>
+                  <td>
+                    <%= radio_button_tag "custom_value_change_date", date, false, :id => "custom_value_change_date_#{app_env.id}_#{date_dom_id(date)}" %>
+                    <label for="custom_value_change_date_<%= app_env.id %>_<%= date_dom_id(date) %>"><%= date.strftime("%m/%d/%Y %H:%M") %></label>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            </table>
+            
+            <%= hidden_field_tag :application_environment_id, app_env.id %>
+            <% selected_components.each do |c| %>
+              <%= hidden_field_tag 'component_ids[]', c.id, :id => "component_id_#{c.id}" %>
+            <% end %>
+          <% end %>
+        </td>
+          
+      <% end %>
+    </tr>
+
+  </tbody>
+  
+</table>

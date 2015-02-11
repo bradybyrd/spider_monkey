@@ -1,0 +1,76 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Environments Map' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'reports/tabs', :locals => { :selected => 'maps' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <%= render :partial => 'links' %>
+  <%= form_tag environments_maps_path, :class => 'cssform' do %>
+    <div class='field'>
+      <label for='app_ids'>Applications</label>
+      <%= select_tag :app_ids, options_from_collection_for_select(@apps_for_select, :id, :name, @selected_app_ids), :multiple => true %>
+      <%= select_clear_links('app_ids') %>
+    </div>
+    <div class='field'>
+      <label for='environment_ids'>Environments</label>
+      <%= select_tag :environment_ids, options_from_collection_for_select(@environments_for_select, :id, :name), :multiple => true %>
+      <%= select_clear_links('environment_ids') %>
+    </div>
+    <div class='field'>
+      <label for='server_level_ids'>Server Levels</label>
+      <%= select_tag :server_level_ids, options_from_collection_for_select(@server_levels_for_select.in_order, :id, :name, @selected_server_level_ids), :multiple => true %>
+      <%= select_clear_links('server_level_ids') %>
+    </div>
+    <div class='field'>
+      <label for='include_remote_components'>Include remote components?</label>
+      <%= check_box_tag :include_remote_components %>
+    </div>
+    <div class='field'>
+      <%= submit_tag "Map",:class =>'button' %>
+    </div>
+  <% end %>
+
+<% end %>
+<% if @map.blank? %>
+  Please select environments and server levels to the right.
+<% else %>
+  <div class='vscroll_960' style='width:920px;'>
+    <table cellspacing='0' id='map'>
+      <thead>
+        <tr>
+          <th>
+            &nbsp;
+          </th>
+          <% @environments.each do |env| %>
+            <th <%= tag_options({:class => "#{class_for_environment_color env} leftBorder", :colspan => "2"}, false) %>>
+              <%= h env.name %>
+            </th>
+          <% end %>
+        </tr>
+        <tr>
+          <th>
+            Logical Server Type
+          </th>
+          <% @environments.each do |env| %>
+            <th <%= tag_options({:class => "#{class_for_environment_color env} leftBorder"}, false) %>>
+              Physical Server
+            </th>
+            <th <%= tag_options({:class => "#{class_for_environment_color env} leftBorder"}, false) %>>
+              Server Config
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= @map.map do |row|  "<tr class=\"#{cycle('', 'odd')}\">#{row.map do |cell|  "<td #{"class=\"leftBorder\"" unless cell == row.first}>#{h cell}</td>" end}</tr>" end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

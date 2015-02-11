@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if @team_allocations.size > 0 %>
+  <% if allocations_include_group(group.id, @team_allocations) %>
+    <h4 class='resources' style='margin-top:15px;'><%= "Team Allocations" %></h4>
+    <table cellspacing='0'>
+      <% last_user_id = 0; project_title = activity_or_project? %>
+      <% streams = Group.workstreams_in_group(group) %>
+      <% streams.each_with_index do |stream, cnt| %>
+        <% if cnt == 0 %>
+          <thead class='resource_head'>
+            <tr>
+              <th>Resource</th>
+              <th>Portfolio Level</th>
+              <th><%= project_title %></th>
+              <% ResourceAllocation.month_range_names(5, 6).each do |name| %>
+                <th class='percentage'><%= h name %></th>
+              <% end %>
+            </tr>
+          </thead>
+        <% end %>
+        <tbody>
+          <% if last_user_id != stream.resource_id && cnt > 0 %>
+            <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+              <td class='total_line'>&nbsp;</td>
+              <td class='percentagetotal'>&nbsp;</td>
+              <td class='percentagetotal'>Total:</td>
+              <% fetch_allocation_totals(last_user_id.to_s, @team_allocations).each do |alloc| %>
+                <td class='percentagetotal' <%= tag_options({:class => total_value_class(alloc)}, false) %>><%= alloc.to_s %></td>
+              <% end %>
+            </tr>
+          <% end %>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td><%= last_user_id != stream.resource_id ? "<strong>#{h(stream.resource)}</strong>" : "&nbsp;" %></td>
+            <td><%= project_title %></td>
+            <td><%= truncate(h(stream.activity), :length => 32) %></td>
+            <% fetch_allocations(stream.activity_id, stream.resource_id, @team_allocations).each do |alloc| %>
+              <td class='percentage'><%= alloc.to_s %></td>
+            <% end %>
+          </tr>
+        </tbody>
+        <% last_user_id = stream.resource_id %>
+      <% end %>
+      <%# Get last total row %>
+      <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+        <td class='percentagetotal'>&nbsp;</td>
+        <td class='percentagetotal'>&nbsp;</td>
+        <td class='percentagetotal'>Total:</td>
+        <% fetch_allocation_totals(last_user_id.to_s, @team_allocations).each do |alloc| %>
+          <td class='percentagetotal' <%= tag_options({:class => total_value_class(alloc)}, false) %>><%= alloc.to_s %></td>
+        <% end %>
+      </tr>
+    </table>
+  <% end %>
+<% end %>

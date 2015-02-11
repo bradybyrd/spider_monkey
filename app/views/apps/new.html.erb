@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+<% page_settings :title => 'Create Application', :heading => link_to('Applications', apps_path) %>
+
+<%= form_for(@app, :url => apps_path, :html => {:class => 'cssform'}) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  
+<% end %>
+

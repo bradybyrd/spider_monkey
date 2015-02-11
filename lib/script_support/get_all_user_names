@@ -1,0 +1,19 @@
+import sys
+from bladelogic.cli import CLI 
+from com.bladelogic.cli import ConnectionException
+
+jli = CLI.CLI() 
+#jli.setAppServerHost("$$BLADELOGIC_SERVER_IP")
+#jli.setUserName("$$BLADELOGIC_USERNAME")
+#jli.setPassword("$$BLADELOGIC_PASSWORD")
+jli.setRoleName("$$BLADELOGIC_ROLENAME")
+jli.setServiceProfileName($$BLADELOGIC_PROFILE)
+jli.connect() 
+
+cmd = ['RBACUser', 'getAllUserNames'] 
+returnObject = jli.run(cmd) 
+
+if(returnObject.success()): 
+ print returnObject.returnValue 
+else: 
+ print >> sys.stderr, returnObject.getError()

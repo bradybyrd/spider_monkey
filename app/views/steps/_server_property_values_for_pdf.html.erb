@@ -1,0 +1,61 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<p>
+<% if local_assigns[:request_server] %>
+  <table cellspacing="0">
+    <thead>
+      <tr>
+        <th><%= ensure_space %></th>
+        <th colspan="2"><%= h request_server.server_level.name %></th>
+      </tr>
+    </thead>
+
+    <%= render :partial => 'steps/server_property_values_body_for_pdf.html', :locals => { :server => request_server, :step => step } %>
+
+  </table>
+<% elsif installed_component and not installed_component.server_associations.empty? %>
+  <table cellspacing="0">
+    <thead>
+      <tr>
+        <th>Target?</th>
+        <th><%= h installed_component.server_level.try(:name) %></th>
+		<th>Properties</th>
+      </tr>
+    </thead>
+
+    <tr style="background-color: #eee;">
+      <td colspan='3'>
+        <%= installed_component.get_server_group_name %>
+      </td>
+    </tr>
+
+    <%= render :partial => 'steps/server_property_values_body_for_pdf.html',
+               :collection => installed_component.server_associations,
+               :as => :server,
+               :locals => { :step => step,
+                            :installed_component => installed_component,
+                            :server_association_ids => installed_component.server_association_ids } %>
+
+    <tr style="background-color: #eee;">
+      <td colspan='3'>
+        Alternate Servers
+      </td>
+    </tr>
+    <%= render :partial =>      'steps/server_property_values_body_for_pdf.html',
+               :collection =>    step.targeted_servers.reject{|server| installed_component.server_associations.include? server},
+               :as =>           :server,
+               :locals => { :step => step,
+                            :installed_component => installed_component,
+                            :server_association_ids => installed_component.server_association_ids
+               }
+    %>
+
+  </table>
+<% end %>
+</p>

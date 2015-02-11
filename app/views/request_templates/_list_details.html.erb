@@ -1,0 +1,46 @@
+<tbody>
+<% @request_templates.each do |template| %>
+    <tr <%= tag_options({class: cycle('', 'alt')}, false) %>>
+      <td <%= tag_options({title: h(template.name)}, false) %>><%= index_title(h(truncate(template.name, length: 35))) %></td>
+      <% if template.request.present? %>
+        <td <%= tag_options({title: template.request.app_name.join(', ')}, false) %>><%= h(truncate(template.request.app_name.join(', '), length: 25))%></td>
+        <td <%= tag_options({title: template.aasm_state}, false) %>><%= h(truncate(template.aasm_state.humanize, length: 25)) %></td>
+        <td><%= template.created_at.try(:default_format_date_time) %></td>
+        <td><%= template.request.business_process_name%></td>
+        <td <%= tag_options({title: template.request.steps.count.to_s}, false) %>><%= template.request.steps.count.to_s %></td>
+      <% else %>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      <% end %>
+      <td>
+        <% if can? :create, template.request %>
+          <%= form_tag create_from_template_requests_path, class: 'create_request_from_template', id: "rt_#{template.id}", remote: true do %>
+              <%= hidden_field_tag :request_template_id, template.id %>
+              <% @request.merge({request_template_id: template.id}).keys.delete_if{|k| %w{package_content_ids plan_member_attributes uploads_attributes notes_attributes}.include?(k)}.each do |k| %>
+                  <%= hidden_field_tag "request[#{k}]", @request[k], id: "request_template_#{k}" %>
+              <% end %>
+              <% unless @request['package_content_ids'].blank? %>
+                  <% params[:request][:package_content_ids].each do |package_content_id| %>
+                      <%= hidden_field_tag 'package_content_ids[]', package_content_id %>
+                  <% end %>
+              <% end %>
+              <% unless @request['plan_member_attributes'].blank? %>
+                  <% @request['plan_member_attributes'].each do |plan_member_attribute, _| %>
+                      <%= hidden_field_tag "request[plan_member_attributes][#{plan_member_attribute}]", @request['plan_member_attributes'][plan_member_attribute] %>
+                  <% end %>
+              <% end %>
+              <%if @request_id.blank?%>
+                  <%= submit_tag I18n.t(:create_request), class: 'choose_template', id: "choose_template_#{template.id}", data_remote: true, rel: 'facebox' %>
+              <%else%>
+                  <%= submit_tag I18n.t(:update_request), class: 'templ_button' %>
+              <%end%>
+              <%= render 'preserve_checkbox', template: template %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+</tbody>

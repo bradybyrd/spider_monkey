@@ -1,0 +1,28 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='field'></div>
+<% activity_category.creation_attributes.each do |attr| %>
+  <% logger.info "FIELDS TO FIND VIEWS FOR: " + attr.activity_attribute.inspect %>
+  <div <%= tag_options({:class => "field #{attr.input_type}"}, false) %>>
+    <%= render :partial => 'activities/field', :locals => { :attr => attr.activity_attribute, :activity => @activity, :disabled => attr.disabled?, :activity_category => activity_category, :f => f } %>
+  </div>
+<% end %>
+<%
+  #
+  # RJ: 07/17/2012
+  # DO NOT REMOVE CODE BELOW FOR HIDDEN FIELDS
+  # Oracle enhanced adapter goofs up for CLOB fields that need to be serialized
+  # If these are not present as a part of the form, they will be inserted as NIL in the first go
+  # Then, for the serialize call, it will fail with a NILclass error.
+  # Thus, we pass blank values from the form
+  #
+%>
+<% [:blockers, :theme, :phase_start_dates].each do |item| %>
+  <%= hidden_field_tag "activity[#{item}]", "" %>
+<% end %>

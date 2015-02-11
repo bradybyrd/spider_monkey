@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+
+
+<% str_xml = render(:file => '/reports/time_of_problem.builder', :locals => {:time_of_problem => @time_of_problem, :selected_options => @selected_options})  %>
+<%render_chart "#{context_root}/assets/PowerCharts/Charts/BoxAndWhisker2D.swf", "", str_xml, "myFirst", (@width.blank? ? 900 : @width), 400, false, false do-%> 
+<%end%>
+<br/>
+

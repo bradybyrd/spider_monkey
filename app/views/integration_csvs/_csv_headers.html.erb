@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='field'>
+  <%= label_tag :help, "Select primary column of CSV" %>
+</div>
+<% @integration_csv.column_names.each do |c| %>
+  <div class='field'>
+    <%= label_tag c.strip %>
+    <%= radio_button_tag "integration_csv[primary_column]", c.strip, false, :class => "w_14" %>
+  </div>
+<% end %>

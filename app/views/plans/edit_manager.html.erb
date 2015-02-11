@@ -1,0 +1,56 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_for @plan, :url => plan_path(@plan), :remote => true,:html => { :method => :put, :class => 'cssform' } do |f| %>
+  <h2><%= @plan.name %></h2>
+  <div id='error_messages'></div>
+  <p>
+    <label>
+      Application
+    </label>
+    <%= @plan.app_name %>
+  </p>
+  <p>
+    <label>
+      Release
+    </label>
+    <%= f.select :release_id, Release.unarchived.name_order.collect { |r| [r.name, r.id] }, { :include_blank => "Select" }, {} %>
+  </p>
+  <p>
+    <label>
+      Release Manager
+    </label>
+    <%= f.select :release_manager_id, User.active.not_placeholder.collect { |u| [u.name_for_index, u.id] }, { :include_blank => "Select" }, {} %>
+  </p>
+  <p>
+    <label>
+      Teams
+    </label>
+    <%= @plan.app_object.try(:team_names) %>
+  </p>
+  <p>
+    <label>
+      Project
+    </label>
+    <% if @plan.activity_object %>
+      <%= @plan.activity_name %>
+    <% else %>
+      <%= "-" %>
+    <% end %>
+  </p>
+  <p style='float: left;'>
+    <label style='float: left; margin-right: 126px;'>
+      Release Date
+    </label>
+    <span style='float:left;'>
+      <%= date_field_tag 'release_date', default_format_date(date_for_release(@plan)), {}, 'float:right; padding-left:4px; width:16px; height:16px;' %>
+    </span>
+  </p>
+  <%= submit_tag "Update",:class =>'button' %>
+<% end %>
+

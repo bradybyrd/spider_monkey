@@ -1,0 +1,33 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='request_and_calendar'>
+  <div id='toggleFilterLink'>
+    <% if params[:filter_block_collapse_state_flag] == '1' %>
+      <%= link_to t('close_filters'), '#', id: "close_request_filters", class: "filterSection" %>
+    <% else %>
+      <%= link_to t('open_filters'), '#', id: "close_request_filters", class: "filterSection" %>
+    <% end %>
+  </div>
+  <div id='filterSection'>
+    <%= render 'requests/filters' %>
+  </div>
+  <p>&nbsp;</p>
+
+  <% if @request_dashboard[:can_view_requests_list] && @request_dashboard[:requests_total_count] > 0 %>
+    <%= link_to "Delete selected Requests", "#", :id => "delete_requests", :style => "display: none;" %>
+  <% end %>
+
+  <% if @request_dashboard[:requests_total_count] == 0 %>
+    <p>There are no requests scheduled for this time.</p>
+  <% else %>
+    <%= render 'requests/list', requests: @request_dashboard[:requests] %>
+  <% end %>
+
+  <%= render partial: 'dashboard/request_pagination_dashboard' %>
+</div>

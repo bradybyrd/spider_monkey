@@ -1,0 +1,11 @@
+<%= select_current_tab tab_for_server_level(@server_level) %>
+<%= set_server_level_actions(@server_level).html_safe %>
+<%= set_document_title @server_level.name %>
+
+<% if @server_level.has_server_aspects? %>
+  <%= load_partial_into_server_window('server_levels/show') %>
+  $("#server_level_groups").addClass('selected');
+<% else %>
+  <%= load_partial_into_server_window('server_aspects/form') %>
+<% end %>
+

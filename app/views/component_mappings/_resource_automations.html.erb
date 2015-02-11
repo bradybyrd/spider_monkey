@@ -1,0 +1,15 @@
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<%= select_tag :script_id, options_from_collection_for_select(resource_automations || [], "id", "name", :selected => (selected_automation_id || "")),
+                'data-path' => filter_arguments_app_application_component_path(@app, @application_component, :edit_mode => edit_mode),
+                :prompt => 'Select Resource Automation' %>
+
+<% if selected_automation_id %>
+  <%= javascript_tag("$('div.component_mappings #component_resource_automation_selector #script_id').trigger('change', [true]);") %>
+<% end %>

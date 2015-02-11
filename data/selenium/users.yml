@@ -1,0 +1,344 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+users_004: 
+  salt: a981220357001a75aea1b3dfc74e59727aae8186
+  updated_at: <%= 2699397.48047.seconds.ago %>
+  crypted_password: af03a87c49a3555d1fd654578d2878b7bfccbddc
+  admin: true
+  remember_token_expires_at: 
+  role: dc
+  group_id: 2
+  id: 4
+  remember_token: 
+  first_name: Clyde
+  last_name: Logue
+  login: clyde
+  active: true
+  created_at: <%= 6555457.48057.seconds.ago %>
+  email: clyde3@gmail.com
+users_015: 
+  salt: 4c457a3bf2962a501f85547168fb71f5d06259eb
+  updated_at: <%= 444701.480606.seconds.ago %>
+  crypted_password: 5b6aef6c01d00125d893952de6ca9b37cf809d94
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 19
+  remember_token: 
+  first_name: Storage
+  last_name: Team
+  login: Storage
+  active: true
+  created_at: <%= 444701.480661.seconds.ago %>
+  email: stor@stor.net
+users_005: 
+  salt: ba7eb82665156c7f22b95d92df725a0161643258
+  updated_at: <%= 6555457.480702.seconds.ago %>
+  crypted_password: cd42e36b374d679074ebe2c32d88d990ea4e151a
+  admin: false
+  remember_token_expires_at: 
+  role: dc
+  group_id: 2
+  id: 5
+  remember_token: 
+  first_name: Sam
+  last_name: Coordinator
+  login: sam
+  active: true
+  created_at: <%= 6555457.480765.seconds.ago %>
+  email: sam@example.com
+users_016: 
+  salt: 42f916645d5f7757f5d19d3402d3ff237c2a8545
+  updated_at: <%= 444640.480808.seconds.ago %>
+  crypted_password: a92dc7c14606bc42402e659a885840ec415cad1b
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 20
+  remember_token: 
+  first_name: Application_A
+  last_name: Team
+  login: application_a
+  active: true
+  created_at: <%= 444640.480863.seconds.ago %>
+  email: app@app.net
+users_006: 
+  salt: 5cb3aa9bd04e3c3801a80abbb1646b622b367167
+  updated_at: <%= 6555457.480895.seconds.ago %>
+  crypted_password: 91414d4f88ffd728b311db93b2b15b389472999b
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 4
+  id: 6
+  remember_token: 
+  first_name: Joe
+  last_name: Monitor
+  login: joe
+  active: true
+  created_at: <%= 6555457.480952.seconds.ago %>
+  email: joe@example.com
+users_017: 
+  salt: 424d74b8111b487c5784c81beeb37df6d354c115
+  updated_at: <%= 444601.480985.seconds.ago %>
+  crypted_password: 18a6d4d6583dccf094c9a0241aef82e6aea9c901
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 21
+  remember_token: 
+  first_name: OS
+  last_name: Team
+  login: osteam
+  active: true
+  created_at: <%= 444601.481048.seconds.ago %>
+  email: os@os.com
+users_007: 
+  salt: 035121e64fafc036e412e8f9335a1eca72bd1317
+  updated_at: <%= -88591.518918.seconds.ago %>
+  crypted_password: 805514c8c96e840a06b1c72514f8c03fffb7cd8d
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 3
+  id: 7
+  remember_token: 
+  first_name: Karl
+  last_name: Infrastructure
+  login: karl
+  active: true
+  created_at: <%= 6555457.481139.seconds.ago %>
+  email: karl@example.com
+users_018: 
+  salt: 453c76126868c26e79bb8e478296290f374a2479
+  updated_at: <%= 444539.481181.seconds.ago %>
+  crypted_password: 271d44784e354d6835f0fc9621020fa66c93db0a
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 22
+  remember_token: 
+  first_name: Business
+  last_name: Team
+  login: biz
+  active: true
+  created_at: <%= 444539.481236.seconds.ago %>
+  email: biz@biz.com
+users_008: 
+  salt: 496e5524db7fba231e657cd77e96f3a814d6ca72
+  updated_at: <%= 4763000.481268.seconds.ago %>
+  crypted_password: a46221bf89af3ac98c93e7b828f96e3513d9419a
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 8
+  id: 8
+  remember_token: 
+  first_name: Sally
+  last_name: Sales
+  login: sally
+  active: true
+  created_at: <%= 6555457.481335.seconds.ago %>
+  email: sally@example.com
+users_019: 
+  salt: 0dd242bb4672d93652a5a4d06c9f65ac14942a5c
+  updated_at: <%= 443839.481369.seconds.ago %>
+  crypted_password: f8a538e81b3c50052cc434a7bf73afe65d52bc26
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 23
+  remember_token: 
+  first_name: Tech
+  last_name: Support
+  login: tech
+  active: true
+  created_at: <%= 443839.481423.seconds.ago %>
+  email: tech@tech.com
+users_020: 
+  salt: f4ac221fd237b86e5e73c3fcda148a5a15608cca
+  updated_at: <%= 443773.481456.seconds.ago %>
+  crypted_password: a4c25fd05bc0336c06bef377537f4eaa7ba17a0c
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 24
+  remember_token: 
+  first_name: Change Mgmt
+  last_name: Team
+  login: change
+  active: true
+  created_at: <%= 443773.481509.seconds.ago %>
+  email: change@ch.com
+users_009: 
+  salt: 31272db008d190232ffd75afbc31c81fe6b2f754
+  updated_at: <%= 6555457.481541.seconds.ago %>
+  crypted_password: 7b1d6367207eedb65f580dd5ab72fc79c89c193f
+  admin: false
+  remember_token_expires_at: 
+  role: dc
+  group_id: 7
+  id: 9
+  remember_token: 
+  first_name: Jeremi
+  last_name: Rowland
+  login: Jeremi
+  active: true
+  created_at: <%= 6555457.481612.seconds.ago %>
+  email: Jeremi@test.com
+users_010: 
+  salt: e21cc5c2b57481eacafc45ba76a188ee76ea81e4
+  updated_at: <%= 4685987.481646.seconds.ago %>
+  crypted_password: b5f5c6b762ab577f6836343e3bd679d17ae76a06
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 1054583401
+  id: 12
+  remember_token: 
+  first_name: Bladelogic
+  last_name: " Automation"
+  login: bladelogic
+  active: true
+  created_at: <%= 6304018.481702.seconds.ago %>
+  email: bl@auto.com
+users_021: 
+  salt: bb26c9cccb3c0db32c2f293b7dff6a2dd373a49a
+  updated_at: <%= -779396.518265.seconds.ago %>
+  crypted_password: 9ae9e7fb27486272996a5aa102e73daed1da80b5
+  admin: true
+  remember_token_expires_at: 
+  role: dc
+  group_id: 
+  id: 25
+  remember_token: 
+  first_name: Nord
+  last_name: Samuelson
+  login: nord
+  active: true
+  created_at: <%= -779396.518203.seconds.ago %>
+  email: nord.samuelson@gmail.com
+users_011: 
+  salt: 32ba2007491bcecdb6fb916e50adcf23dece0bf6
+  updated_at: <%= -67620.518161.seconds.ago %>
+  crypted_password: e97890fab2350c4aef4cec223c61c2ea338c0eb7
+  admin: true
+  remember_token_expires_at: 
+  role: dc
+  group_id: 1
+  id: 13
+  remember_token: 
+  first_name: Duane
+  last_name: Tharp
+  login: duane
+  active: true
+  created_at: <%= 5953934.481904.seconds.ago %>
+  email: Duane@streamstep.com
+users_001: 
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  updated_at: <%= 345623.481937.seconds.ago %>
+  crypted_password: 29c7ab0bfc11d4ec48955d65fa1f57ebf9aac4d0
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 5
+  id: 1
+  remember_token: 
+  first_name: Quentin
+  last_name: Tester
+  login: quentin
+  active: true
+  created_at: <%= 6555457.481994.seconds.ago %>
+  email: quentin@example.com
+users_012: 
+  salt: eda13e161bb5c1a2bb4762679681a89ba33e0d63
+  updated_at: <%= -88647.517974.seconds.ago %>
+  crypted_password: 95e85d3f499f72e6f3c27b42fb12662abbc335b0
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 2
+  id: 14
+  remember_token: 
+  first_name: Carl
+  last_name: Deployer
+  login: Carl
+  active: true
+  created_at: <%= 5886283.482093.seconds.ago %>
+  email: clydelogue@yahoo.com
+users_002: 
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  updated_at: <%= -88566.517873.seconds.ago %>
+  crypted_password: 29c7ab0bfc11d4ec48955d65fa1f57ebf9aac4d0
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 2
+  id: 2
+  remember_token: 
+  first_name: Aaron
+  last_name: Deployer
+  login: aaron
+  active: true
+  created_at: <%= 6555457.482184.seconds.ago %>
+  email: aaron@example.com
+users_013: 
+  salt: 989ebda429b0ee0600201c52176a42ae975843dc
+  updated_at: <%= 3456923.482216.seconds.ago %>
+  crypted_password: 30f0945dbe89a51a5b460045d53a938bef43c3d9
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 5
+  id: 15
+  remember_token: 
+  first_name: Tim
+  last_name: Tester
+  login: tim
+  active: true
+  created_at: <%= 5886206.482273.seconds.ago %>
+  email: clyde.logue@yahoo.com
+users_003: 
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  updated_at: <%= -13235.517694.seconds.ago %>
+  crypted_password: 29c7ab0bfc11d4ec48955d65fa1f57ebf9aac4d0
+  admin: true
+  remember_token_expires_at: <%= -1222835.517654.seconds.ago %>
+  role: dc
+  group_id: 2
+  id: 3
+  remember_token: d159e117ee4af2562289e661193b901478ab8ef3
+  first_name: John
+  last_name: Administrator
+  login: admin
+  active: true
+  created_at: <%= 6555457.482405.seconds.ago %>
+  email: admin@example.com
+users_014: 
+  salt: 1bea2675bdb3f44d8a9bee7a0941ed4e0db8dfc6
+  updated_at: <%= 444753.482437.seconds.ago %>
+  crypted_password: 56233a5cc00221ab29939639280c924404bf9fd8
+  admin: false
+  remember_token_expires_at: 
+  role: 
+  group_id: 
+  id: 18
+  remember_token: 
+  first_name: Network
+  last_name: Team
+  login: network
+  active: true
+  created_at: <%= 444753.482491.seconds.ago %>
+  email: net@net.net

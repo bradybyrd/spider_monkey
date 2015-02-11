@@ -1,0 +1,38 @@
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+
+--- 
+request_templates_003: 
+  name: P2V Migration BigFinServCo - Ghost
+  updated_at: <%= 465315.124827.seconds.ago %>
+  request_id: 210
+  id: 10
+  created_at: <%= 465315.124877.seconds.ago %>
+request_templates_004: 
+  name: P2V Migration BigFinServCo - Converter
+  updated_at: <%= 465167.124906.seconds.ago %>
+  request_id: 211
+  id: 11
+  created_at: <%= 465167.124935.seconds.ago %>
+request_templates_005: 
+  name: Deploy Sales and Service to Perf - Base 10
+  updated_at: <%= -69733.875038.seconds.ago %>
+  request_id: 233
+  id: 18
+  created_at: <%= -69733.875009.seconds.ago %>
+request_templates_001: 
+  name: Deploy Sales and Service to QA (#125)
+  updated_at: <%= 3481649.125018.seconds.ago %>
+  request_id: 125
+  id: 2
+  created_at: <%= 3481649.125047.seconds.ago %>
+request_templates_002: 
+  name: Deploy Trading Workstation to QA (#132)
+  updated_at: <%= 2801516.125074.seconds.ago %>
+  request_id: 132
+  id: 4
+  created_at: <%= 2801516.125112.seconds.ago %>

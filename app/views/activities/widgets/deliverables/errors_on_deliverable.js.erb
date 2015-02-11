@@ -1,0 +1,2 @@
+var html = <%= render(:partial => "activities/widgets/deliverables/deliverable_errors", :locals => { :deliverable => @deliverable }, :layout => false).to_json -%>;
+jQuery.facebox(html)

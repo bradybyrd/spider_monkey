@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% unless @available_members.blank? %>
+	<%= select_tag :member_id, options_for_select(@available_members.collect { |l| [l.name, l.id ]}) %>
+<% else %>
+	<%= select_tag :member_id, options_for_select([["Select", nil]]) %>
+<% end %>

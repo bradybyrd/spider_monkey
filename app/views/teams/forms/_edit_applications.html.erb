@@ -1,0 +1,49 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='appList'>
+  <div class='scr_div'>
+    <h3><%= I18n.t(:'table.applications') %></h3>
+    <table align='left' class='tablesorter one_column_sorter formatted_table' id='development_teams'>
+      <thead>
+      <tr>
+        <th><%= I18n.t(:'table.application') %></th>
+        <th><%= I18n.t(:'table.visible') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% App.active.includes(:groups, :teams).name_order.each do |app| %>
+          <tr <%= tag_options({:class => cycle('alt', '')}, false) %>>
+            <td><%= app.name %></td>
+            <td class="team_apps_checkbox">
+              <%= check_box_tag 'team[app_ids][]', app.id,
+                                @team.app_ids.include?(app.id),
+                                id: "development_team_#{app.id}",
+                                class: 'team_app_ids',
+                                disabled: @team.team_policy.app_disabled?(app),
+                                title: @team.decorate.app_checkbox_hint(app),
+                                'data-app-id' => app.id,
+                                'data-default' => @team.team_policy.data_default?(app)
+              %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% if @team.active %>
+    <div>
+      <%= link_to I18n.t(:select_all), '', id: 'select_all_team_apps' %>
+      |
+      <%= link_to I18n.t(:clear_all), '', id: 'clear_all_team_apps' %>
+    </div>
+  <% end %>
+</div>
+<%= javascript_tag("selectCheckboxes(#{@team.app_ids.to_json}, '#development_team_')") %>
+<%= hidden_field_tag 'add_apps_team_url', add_apps_team_path if @team.persisted? %>
+<%= hidden_field_tag 'remove_apps_team_url', remove_apps_team_path if @team.persisted? %>

@@ -1,0 +1,34 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= flash_div :error %>
+<h3>Notification Message</h3>
+<%= form_for [@request, @message], :html => { :id => "request_message_form" } do |f| %>
+  <%= hidden_field_tag :kstart_request, true %>
+  <p>
+    <%= f.label :subject, "Subject:" %>
+    <%= f.text_field :subject, :value => "Request #{@request.number} has been started.", :length => 45 %>
+  </p>
+  <p>
+    Message
+    <br>
+      <%= f.text_area :body %>
+    </br>
+  </p>
+  <%= f.submit "Send message" %>
+<% end %>
+
+<script charset='utf-8' type='text/javascript'>
+  $('#request_message_form').appjax(function(res, status) {
+  if (status == 'success') {
+  window.location = res;
+  } else {
+  $.errorBox(res);
+  }
+  });
+</script>

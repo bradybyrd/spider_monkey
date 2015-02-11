@@ -1,0 +1,43 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% reset_cycle %>
+<% activities.each do |activity| %>
+  <% if current_user.present? %>
+    <% editable = current_user.can_edit_activity?(activity) ? "editable_activity show_model" : "" %>
+  <% end %>
+  <tr <%= tag_options({:id => dom_id(activity), :class => "#{editable} #{cycle('alt', '')}", 'data-show-path' => activity_path(activity)}, false) %>>
+    <!-- %td &nbsp; -->
+    <td><%= activity.id %></td>
+    <% columns.each do |col| %>
+      <td>
+        <% if col.activity_attribute_column == 'name' %>
+          <% if current_user.present? %>
+            <strong><%= is_web(activity_column_value(activity, col)) %></strong>
+          <% else %>
+            <strong><%= link_to activity_column_value(activity, col), show_read_only_activity_path(activity) %></strong>
+          <% end %>
+        <% else %>
+          <%= activity_column_value(activity, col) %>
+        <% end %>
+      </td>
+    <% end %>
+    <td><%= currency_column_contents activity.projected_cost %></td>
+    <td>
+      <% if current_user.present? && current_user.can_edit_activity?(activity) %>
+        <%= link_to "edit", edit_activity_path(activity) %>
+      <% else %>
+        <%= link_to "detail", show_read_only_activity_path(activity) %>
+      <% end %>
+      <% if current_user.present? && current_user.admin? %>
+        |
+        <%= link_to image_tag("bin_empty.png", :alt => "delete"), activity_path(activity), :method => :delete, :confirm => "Are you sure?" %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

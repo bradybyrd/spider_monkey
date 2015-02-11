@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<%
+ ################################################################################
+  # BMC Software, Inc.
+  # Confidential and Proprietary
+  # Copyright (c) BMC Software, Inc. 2001-2012
+  # All Rights Reserved.
+  ################################################################################
+%>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<%= csrf_meta_tags %>
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<title><%= @page_title.nil? ? "BMC|Release Process Management" : "#{@page_title}" %></title>
+		<script type="text/javascript" >var url_prefix = "<%= ENV['RAILS_RELATIVE_URL_ROOT'] %>";</script>
+
+		<!-- Rails3.0 has helper method favicon_link_tag 'favicon.ico'-->
+		<%= tag "link",{:href=>image_path("favicon.ico") ,:rel => 'shortcut icon',:type => "vnd.microsoft.icon" }%>
+		<%= load_swfobject_js %>
+		<%= javascript_include_tag 'external', 'application' %>
+		<%= include_additional_javascripts %>
+
+		<%= stylesheet_link_tag 'application', 'external', :media => 'screen' %>
+		<%= stylesheet_link_tag 'print', :media => 'print' %>
+
+		<!--[if gt IE 8]>
+		<%= stylesheet_link_tag 'ie9.css', :media => 'screen' %>
+		<![endif]-->
+		<!--[if lt IE 7]>
+		<%= stylesheet_link_tag 'ie6.css', :media => 'screen' %>
+		<![endif]-->
+		<!--[if lt IE 8]>
+		<%= stylesheet_link_tag 'ie7.css', :media => 'screen' %>
+		<%= static_javascript_include_tag 'ie/jquery.bgiframe.min.js', 'ie/misc_fixes.js' %>
+		<![endif]-->
+		<!--[if IE 8]>
+		<%= stylesheet_link_tag 'ie8.css', :media => 'screen' %>
+		<%= static_javascript_include_tag 'ie/jquery.bgiframe.min.js', 'ie/misc_fixes.js' %>
+		<![endif]-->
+		<!--[if IE 7]>      <%= stylesheet_link_tag 'ie7.css', :media => 'screen' %>    <![endif]-->
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="<%= feeds_url(:format => 'rss', :time_zone => Time.zone.name )%>" />
+		<!--[if IE 7]>
+		<%= static_javascript_include_tag 'ie/ie7_misc_fixes.js' %>
+		<![endif]-->
+		<%= yield :head %>
+	</head>
+	<body class="<%= params[:controller].gsub('/', '_') %> <%= 'fullScreen' if @full_screen %>">
+		<%= hidden_field_tag :datepicker_format, DEFAULT_DATE_FORMATS_FOR_DATEPICKER[GlobalSettings[:default_date_format]] %>
+		<%= render :partial => 'shared/header', :locals => { :user_name => @user_name } %>
+
+		<%if user_signed_in? && current_user.active?%>
+		<div id="Wrapper">
+			<% if @custom_heading %>
+			<div id="custom_heading">
+				<%= yield :custom_heading %>
+			</div>
+			<% end %>
+			<div class="Left">
+
+				<div class="pageSection">
+					<%= yield :page_section %>
+					<%= content_tag(:h1, @page_heading) if @page_heading %>
+				</div>
+				<div class="content <%= @page_content_class%>">
+					<%= yield :layout %>
+				</div>
+			</div>
+
+			<div class="Right">
+				<%= yield :right_column %>
+				<div id="sidebar">
+					<%= yield :sidebar %>
+					<div class="crumbs">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<%= facebox_tag %>
+		<%= javascript_tag("breadcrumbs()") if @store_url %>
+
+		<%else%>
+
+		<div id="loginCredentials">
+			<%= yield :layout%>
+		</div>
+		<% submit_tag%>
+		<%end%>
+		<%= render 'shared/footer' %>
+	</body>
+</html>
+

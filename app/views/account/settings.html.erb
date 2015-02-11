@@ -1,0 +1,175 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2012
+   # All Rights Reserved.
+   ################################################################################
+%>
+<% page_settings :title => 'Settings' %>
+<% content_for :head do %>
+  <%= static_javascript_include_tag 'system_settings' %>
+<% end %>
+<% content_for :page_section do %>
+  <%= render 'users/tabs', selected: 'settings', tab_view: true %>
+<% end %>
+<div>
+  <div class='pageSection'>
+    <%= render 'account/tabs', selected: 'general' %>
+  </div>
+  <div class='content'>
+
+    <% if can?(:view, GlobalSettings.new) %>
+      <%= form_tag url_for(settings_update_path), remote: true, method: :put, multipart: true, id: 'settings_id', class: 'settingsform' do %>
+        <div id='error_messages'></div>
+
+        <h3>Instance Information</h3>
+
+        <div class='field'>
+          <label for='GlobalSettings[company_name]'>Instance Name</label>
+          <%= text_field_tag 'GlobalSettings[company_name]', GlobalSettings[:company_name], :rel => 'company_name' %>
+        </div>
+        <div class='field'>
+          <label for='GlobalSettings[company_name]'>Instance Base URL</label>
+          <%= text_field_tag 'GlobalSettings[base_url]', GlobalSettings[:base_url], :rel => 'base_url' %>
+        </div>
+        <div class='field'>
+          <label>Session Timeout</label>
+          <%= select("GlobalSettings", "session_timeout", GlobalSettings::SESSION_TIMEOUT_VALUES, {:selected => (GlobalSettings[:session_timeout] || Devise.timeout_in)}) %>
+        </div>
+        <hr>
+
+        <h3>Date and Time Settings</h3>
+
+        <div class='field'>
+          <label>Default Date Format</label>
+          <%= select("GlobalSettings", "default_date_format", DEFAULT_DATE_FORMATS_FOR_SELECT, {:selected => GlobalSettings[:default_date_format]}) %>
+        </div>
+        <div class='field'>
+          <label>Default Time Zone</label>
+          <%= time_zone_select "GlobalSettings", "timezone", ActiveSupport::TimeZone.us_zones, {:default => GlobalSettings[:timezone].nil_or_empty? ? "Eastern Time (US & Canada)" : GlobalSettings[:timezone]} %>
+        </div>
+        <hr>
+
+        <h3>Module - Requests</h3>
+
+        <div class='field'>
+          <label>One-Click Step Completion</label>
+          <%= system_setting_toggle('one_click_completion', :reload_window_on_update => true) %>
+        </div>
+        <div class='field'>
+          <label title='Commit version on completion of step'>Commit on completion</label>
+          <%= system_setting_toggle('commit_on_completion', :reload_window_on_update => true) %>
+        </div>
+        <div class='field'>
+          <label title='Limit available versions for components to [Metadata|Versions]'>Limit Versions to
+            Metadata</label>
+          <%= system_setting_toggle('limit_versions', :reload_window_on_update => true) %>
+        </div>
+        <hr>
+
+        <h3>Module - Automation</h3>
+
+        <div class='field'>
+          <label>Enable Automation</label>
+          <%= system_setting_toggle 'automation_enabled' %>
+        </div>
+        <div class='field'>
+          <label>Enable Bladelogic Automation</label>
+          <%= system_setting_toggle 'bladelogic_enabled' %>
+        </div>
+        <hr>
+
+        <h3>Authentication</h3>
+
+        <div class='field'>
+          <label><b>Default Authentication (username/password)</b></label>
+          <%= radio_button_tag 'GlobalSettings[authentication_mode]', 0, (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] == 0) %>
+        </div>
+        <div class='field'>
+          <label>Enable Forgot Password</label>
+          <%= system_setting_toggle 'forgot_password', false, (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 0) %>
+        </div>
+        <div class='field'>
+          <hr width="50%">
+          <label><b>LDAP Authentication</b></label>
+          <%= radio_button_tag 'GlobalSettings[authentication_mode]', 1, (GlobalSettings[:authentication_mode] && GlobalSettings[:authentication_mode] == 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Host</label>
+          <%= text_field_tag 'GlobalSettings[ldap_host]', GlobalSettings[:ldap_host], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Port</label>
+          <%= text_field_tag 'GlobalSettings[ldap_port]', GlobalSettings[:ldap_port], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Auth Type</label>
+          <% GlobalSettings::LDAP_AUTH_TYPES.each_with_index do |title, value| %>
+            <%= radio_button_tag 'GlobalSettings[ldap_auth_type]', value, (GlobalSettings[:ldap_auth_type].nil? ? value == GlobalSettings::LDAP_AUTH_DEFAULT_TYPE : value.to_i == GlobalSettings[:ldap_auth_type].to_i),
+                                 :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+            <%= title %>
+          <% end # each_with_index  %>
+        </div>
+        <div class='field'>
+          <label>LDAP Search String</label>
+          <%= text_field_tag 'GlobalSettings[ldap_component]', GlobalSettings[:ldap_component], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Bind Base</label>
+          <%= text_field_tag 'GlobalSettings[ldap_bind_base]', GlobalSettings[:ldap_bind_base], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1 || (GlobalSettings[:authentication_mode] == 1 && GlobalSettings[:ldap_auth_type].to_i == GlobalSettings::LDAP_AUTH_DEFAULT_TYPE)) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Bind User</label>
+          <%= text_field_tag 'GlobalSettings[ldap_bind_user]', GlobalSettings[:ldap_bind_user], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Bind Password</label>
+          <%= password_field_tag 'GlobalSettings[ldap_bind_password]', GlobalSettings[:ldap_bind_password], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Account Attribute</label>
+          <%= text_field_tag 'GlobalSettings[ldap_account_attribute]', GlobalSettings[:ldap_account_attribute], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP First Name Attribute</label>
+          <%= text_field_tag 'GlobalSettings[ldap_first_name_attribute]', GlobalSettings[:ldap_first_name_attribute], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Last Name Attribute</label>
+          <%= text_field_tag 'GlobalSettings[ldap_last_name_attribute]', GlobalSettings[:ldap_last_name_attribute], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <label>LDAP Mail Attribute</label>
+          <%= text_field_tag 'GlobalSettings[ldap_mail_attribute]', GlobalSettings[:ldap_mail_attribute], :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 1) %>
+        </div>
+        <div class='field'>
+          <hr width="50%">
+          <label><b>CAS Authentication</b></label>
+          <%= radio_button_tag 'GlobalSettings[authentication_mode]', 2, (GlobalSettings[:authentication_mode] && GlobalSettings[:authentication_mode] == 2) %>
+        </div>
+        <div class='field'>
+          <label>CAS Server</label>
+          <%= text_field_tag 'GlobalSettings[cas_server]', GlobalSettings[:cas_server], :id => "cas_server_p_id", :disabled => (!GlobalSettings[:authentication_mode] || GlobalSettings[:authentication_mode] != 2) %>
+        </div>
+        <hr>
+        <h3><%= t('settings.messages') %></h3>
+        <div class='field'>
+          <label><%= t('settings.create_for_integrations') %></label>
+          <%= system_setting_toggle 'messaging_enabled' %>
+        </div>
+        <br/>
+        <div class='field'>
+          <label>&nbsp;</label>
+          <% if can?(:edit, GlobalSettings.new) %>
+            <%= submit_tag I18n.t(:save), :class => 'button' %>
+            or
+          <% end %>
+
+          <%= link_to I18n.t(:cancel), settings_path, :class => "cancel-pending" %>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+</div>

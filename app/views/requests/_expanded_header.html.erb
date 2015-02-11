@@ -1,0 +1,189 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if request.template? %>
+  <% if @only_preview %>
+    <h2>
+      <%= request_edit_page_title_for(request) %>
+    </h2>
+  <% else %>
+    <p>
+      <span <%= tag_options({:style => "font-weight:bold;background-color:#FC0"}, false) %>>Warning:</span>
+      This is a template request, any changes will effect new requests generated from this template.
+    </p>
+  <% end %>
+<% end %>
+<p id='collapse_request_link' style='display:block;margin-top: 0px; margin-bottom: 0px;'>
+  <%= link_to t(:collapse), '#', id: 'collapse_request_header', rel: @request.number, class: 'expanded' unless @only_preview %>
+</p>
+<%= form_for(request, :remote => true, :url => update_notes_request_path(request), :method => :post, :html => { :id => "update_notes_request_#{request.number}", :class => 'cssform show_request' }) do |f| %>
+  <%= f.error_messages %>
+  <div class='contentCol1'>
+    <div class='field'>
+      <%= f.label :aasm_state, 'Status' %>
+      <span <%= tag_options({:class => "#{request.aasm.current_state}RequestStep state", :id => "request_status"}, false) %>>
+        <%= h request.aasm.current_state.to_s.humanize %>
+      </span>
+    </div>
+    <% if request.request_template_origin %>
+      <div class='field'>
+        <%= label_tag :created_from_template, 'Created from ' %>
+        <%= link_to request.request_template_origin.name, request_templates_path %>
+      </div>
+    <% end %>
+    <% if request.activity %>
+      <div class='field'>
+        <%= f.label :activity_id, activity_or_project? %>
+        <%= link_to request.activity.name, activity_path(request.activity) %>
+      </div>
+    <% end %>
+    <div class='field'>
+      <%= label_tag :plan, 'Plan' %>
+      <% plan = request.plan_member.plan rescue nil %>
+      <%= link_to h(plan_label(request)), plan unless plan_label(request).blank? %>
+    </div>
+    <% if request.parent_request_origin.present? %>
+      <div class='field'>
+        <%= label_tag :cloned_from, 'Cloned from' %>
+        <%= link_to request.parent_request_origin.name, request_path(request.parent_request_origin) %>
+      </div>
+    <% end %>
+    <div class='field'>
+      <%= f.label :business_process_id, 'Process' %>
+      <%= (ensure_space request.business_process && h(request.business_process.name)).html_safe %>
+    </div>
+    <% if request.server_association %>
+      <div class='field'>
+        <%= f.label :server %>
+        <%= (ensure_space h(request.server_association.path_string)).html_safe %>
+      </div>
+    <% end %>
+    <div class='field'>
+      <%= label_tag :app_ids, 'Applications' %>
+      <%= ensure_space(app_name_links(request, true)).html_safe %>
+    </div>
+    <div class='field'>
+      <%= f.label :environment_id, 'Environment' %>
+      <%= (ensure_space request.environment && h(request.environment.name)).html_safe %>
+    </div>
+    <div class='field'>
+      <%= f.label :package_content_tags %>
+      <%= (ensure_space request.package_contents.map(&:name).join(', ')).html_safe %>
+    </div>
+  </div>
+  <div class='contentCol2'>
+    <div class='field'>
+      <label>Requestor</label>
+      <% if !request.requestor_contact_number.nil? %>
+        <strong><%= h("#{request.requestor_name_for_index}") + " ("+h("#{request.requestor_contact_number}")+")" %></strong>
+      <% else %>
+        <strong><%= h("#{request.requestor_name_for_index}") %></strong>
+      <% end %>
+    </div>
+    <div class='field'>
+      <label>Owner</label>
+      <% if !request.owner_contact_number.nil? %>
+        <strong><%= h("#{request.owner_name_for_index}")+ " ("+h("#{request.owner_contact_number}")+")" %></strong>
+      <% else %>
+        <strong><%= h("#{request.owner_name_for_index}") %></strong>
+      <% end %>
+    </div>
+    <div class='field'>
+      <%= f.label :release_tag, 'Release Tag' %>
+      <%= ensure_space(request.release && h(request.release.name)).html_safe %>
+    </div>
+
+    <div class='field'>
+      <%= f.label :deployment_window, 'Deployment Window' %>
+      <%= ensure_space(h(deployment_window_event_option_text(request.deployment_window_event, true))) %>
+    </div>
+
+    <div class='field'>
+      <%= f.label :estimate, 'Estimate' %>
+      <%= (ensure_space h(request_duration(request))).html_safe %>
+    </div>
+    <div class='field'>
+      <%= f.label :rescheduled %>
+      <%= request.rescheduled? ? "Yes" : "No" %>
+    </div>
+    <div class='field'>
+      <%= f.label :scheduled_at, 'Planned Start' %>
+      <%= ensure_space(request.scheduled_at.try(:default_format_date_time)).html_safe %>
+      <% if request.auto_start%>
+        <strong><%= ' Automatically start is turned on' %></strong>
+        <% if request.scheduled_jobs.scheduled.present? %>
+          <strong><%= ' - Request scheduled' %></strong>
+        <% end %>
+      <% end %>
+    </div>
+    <% if request.started_at %>
+      <div class='field'>
+        <label>Actual Start</label>
+        <%= (ensure_space request.started_at.default_format_date_time).html_safe %>
+      </div>
+    <% end %>
+    <div class='field'>
+      <%= f.label :target_completion_at, 'Due by' %>
+      <%= ensure_space(request.target_completion_at.try(:default_format_date_time)).html_safe %>
+    </div>
+    <% if request.completed_at %>
+      <div class='field'>
+        <label>Actual Completion</label>
+        <%= (ensure_space request.completed_at.default_format_date_time).html_safe %>
+      </div>
+    <% end %>
+  </div>
+  <div class='notes'>
+    <div class='field'>
+      <%= f.label :description %>
+      <%= auto_link ensure_space(request.description.nil? ? "" : request.description.gsub("\n","<br>")), :all, :target => '_blank' %>
+    </div>
+    <div class='field'>
+      <%= f.label :wiki_url, "Wiki" %>
+      <%= auto_link ensure_space(request.wiki_url), :all, :target => '_blank' %>
+    </div>
+    <div class='field'>
+      <label>Uploads</label>
+      <%= sanitize link_to_upload_list(request) %>
+    </div>
+      <br/>
+      <% if can? :update_notes, request %>
+        <div class='field'>
+          <%= f.label :notes, 'Notes' %>
+          <%= render :partial => "requests/request_note", :locals => {:request => request} %>
+          <%= text_area_tag "request[notes]", "", :class => "expnd_textarea expand", :rows => 0, :style => "position:relative;left:94px;width:240px!important" %>
+          <%= hidden_field_tag :update_notes_only, true %>
+          <br>
+          <% unless @only_preview %>
+            <label>&nbsp;</label>
+            [
+            <a href="javascript:toggleTextarea('request_notes')" id='noteToggle'>expand</a>
+            ]
+            <%= submit_tag "Update notes",:class =>'button' %>
+          <% end %>
+        </div>
+      <% end %>
+  </div>
+<% end %>
+
+<% unless @only_preview %>
+  <% if request.editable_by?(current_user) %>
+    <% if can? :edit, request %>
+      <%= link_to t('request.modify_details'), modify_details_request_path(request), rel: 'facebox[.request_details]' %>
+      |
+    <% end %>
+    <% if can? :change_notification_options, request %>
+      <%= link_to "Change Notification Options", notification_options_request_path(request), :rel => 'facebox' %>
+      |
+    <% end %>
+    <% if can? :edit_component_versions, request %>
+      <%= link_to "Edit Component Versions", component_versions_request_path(request), :rel => 'facebox' unless @request.environment_id.blank? %>
+    <% end %>
+    <%= link_to "Edit Component Versions", component_versions_request_path(request) if @request.environment_id.blank? %>
+  <% end %>
+<% end %>

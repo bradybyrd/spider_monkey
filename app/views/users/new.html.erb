@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => "Add a new user" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'tabs', :locals => {:selected => 'users',:tab_view => true} %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<h3>Create New User</h3>
+<%= render :partial => 'users/form', :locals => { :user => @user, :groups => @groups } %>

@@ -1,0 +1,17 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<tr class='runtime_phase_row' <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+  <td>
+    <span class='runtime_phase' <%= tag_options({:id => dom_id(runtime_phase)}, false) %>>
+      <%= image_tag 'drag.gif' %>
+    </span>
+  </td>
+  <td><%= h(runtime_phase.name) %></td>
+  <td><%= link_to I18n.t(:delete), destroy_runtime_phase_phase_path(runtime_phase.phase.id, :runtime_phase_id => runtime_phase.id), :class => "delete_runtime_phase" if runtime_phase.destroyable? %></td>
+</tr>

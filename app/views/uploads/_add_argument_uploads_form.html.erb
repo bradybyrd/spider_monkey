@@ -1,0 +1,16 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div class='argument_upload_form'>
+  <%= f.fields_for :uploads, :include_id => false do |builder| %>
+    <%= render :partial => 'uploads/upload_argument_fields', :locals => { :builder => builder, :argument_id => argument_id} %>
+  <% end %>
+
+  <%= link_to_add_argument_fields "Add", f, :uploads, 'uploads', argument_id %>
+</div>
+<%= javascript_tag 'argument_upload_form_hide_add_link()' %>

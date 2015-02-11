@@ -1,0 +1,52 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= javascript_tag("ajaxifyMyDataPagination()") %>
+<table <%= tag_options({:style => "font-weight:bold;", :id => "recent_activities_#{@page_no || 1}"}, false) %>>
+  <% if @recent_activities.present? %>
+    <% @recent_activities.each do |recent_activity| %>
+      <tr>
+        <td style='vertical-align: top'>
+          <%= image_tag('self_services/sales_icon.gif', :border => "0") %>
+        </td>
+        <td>
+          <%= recent_activity.context %>
+          <br>
+          <%= recent_activity.object_type %>
+          <% if recent_activity.object_type.eql?('Request') %>
+            <% if recent_activity.object %>
+              <%= recent_activity.object.number %>
+            <% end %>
+          <% else %>
+            <%= recent_activity.object_id %>
+          <% end %>
+          <span class='gray_text'>
+            <%= recent_activity.actor.name %>
+            <br>
+            <i>
+              <%= my_datetime(recent_activity.timestamp) %>
+            </i>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <span class='gray_text'>No Current Activity</span>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td <%= tag_options({:colspan => 2}, false) %>><%= will_paginate(@recent_activities, :class => "my_data_pagination", :rel => "recent_activities") %></td>
+  </tr>
+</table>

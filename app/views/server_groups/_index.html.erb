@@ -1,0 +1,106 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<div id='server_groups'>
+  <div class='server_search'>
+    <%= search_box("/environment/server_groups") %>
+  </div>
+  <h3>Active Server Groups</h3>
+  <table class='tablesorter four_column_sorter tbl_fix formatted_table active' style='clear:left'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Servers</th>
+        <th>Environments</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <% unless @active_server_groups.blank? %>
+      <tbody>
+        <% @active_server_groups.each do |server_group| %>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td><%= link_to_if can?(:edit, server_group), index_title(h(server_group.name)), edit_server_group_path(server_group, :page => params[:page], :key => params[:key]), :class => 'ajax' %></td>
+            <td><%= h(server_group.description) %></td>
+            <td <%= tag_options({:title => name_list_sentence(server_group.servers)}, false) %>>
+              <%= name_list_sentence server_group.servers, 25 %>
+              <td <%= tag_options({:title => name_list_sentence(server_group.environments)}, false) %>>
+                <%= name_list_sentence server_group.environments, 25 %>
+                <td class='action_links'>
+                  <% if can? :edit, server_group %>
+                    <%= link_to t(:edit), edit_server_group_path(server_group, :page => params[:page], :key => params[:key]), :class => 'ajax' %>
+                  <% end %>
+
+                  <% if can? :make_active_inactive, server_group %>
+                    |
+                    <%= link_to t(:make_inactive), deactivate_server_group_path(server_group, :page => params[:page], :key => params[:key]),
+                                                  :remote => true,
+                                                  :method => :put
+                    %>
+                 <% end %>
+                </td>
+              </td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% else %>
+      <tr>
+        <td colspan='5'>
+          No Servers Found
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <div class='line_h_20px'>
+    <%= render :partial => "shared/pagination_links", :locals => {:model_title => "Server Groups", :model_list => @active_server_groups } %>
+  </div>
+  <% unless @inactive_server_groups.blank? %>
+    <h3>Inactive Server Groups</h3>
+    <table class='tablesorter four_column_sorter tbl_fix formatted_table inactive'>
+      <thead>
+        <tr>
+          <th width='150'>Name</th>
+          <th width='150'>Description</th>
+          <th width='150'>Servers</th>
+          <th width='150'>Environments</th>
+          <th width='100'>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inactive_server_groups.each do |server_group| %>
+          <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+            <td><%= link_to_if can?(:edit, server_group), index_title(h(server_group.name)), edit_server_group_path(server_group, :page => params[:page], :key => params[:key]), :class => 'ajax' %></td>
+            <td><%= h server_group.description %></td>
+            <td <%= tag_options({:title => name_list_sentence(server_group.servers)}, false) %>>
+              <%= name_list_sentence server_group.servers, 25 %>
+              <td <%= tag_options({:title => name_list_sentence(server_group.environments)}, false) %>>
+                <%= name_list_sentence server_group.environments, 25 %>
+                <td class='action_links'>
+                  <% if can? :edit, server_group %>
+                    <%= link_to t(:edit), edit_server_group_path(server_group, :page => params[:page], :key => params[:key]), :class => 'ajax' %>
+                  <% end %>
+
+                  <% if can? :make_active_inactive, server_group %>
+                    |
+                    <%= link_to t(:make_active), activate_server_group_path(server_group, :page => params[:page], :key => params[:key]),:remote => true, :method => :put %>
+                  <% end %>
+
+                  <% if server_group.destroyable? && can?(:delete, server_group) %>
+                    |
+                    <%= link_to t(:destroy), server_group_path(server_group, :page => params[:page]), :method => :delete, :confirm => "Are you sure?" %>
+                  <% end %>
+                </td>
+              </td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

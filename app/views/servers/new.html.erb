@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% page_settings :title => 'Create Server' %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'servers' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<div class='pageSection'>
+  <%= render :partial => 'servers/tabs', :locals => { :selected => 'servers' } %>
+</div>
+<div id='server_container'>
+  <h2 class='servers_h2'>
+    Create Server
+  </h2>
+  <%= form_for(@server, :url => servers_path, :html => { :class => 'cssform' }) do |f| %>
+    <%= render 'form', :f => f, :new => true %>
+    <div class='field'>
+      <%= f.submit I18n.t(:create), :class => "button" %>
+      or
+      <%= link_to 'cancel', servers_path %>
+    </div>
+  <% end %>
+
+</div>

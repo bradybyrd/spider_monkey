@@ -1,0 +1,116 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'properties' %>
+  <%= static_javascript_include_tag 'package_edit' %>
+  <%= static_javascript_include_tag 'drag_and_drop/draggable_object', 'drag_and_drop/table_drop_zone' %>
+  <%= static_javascript_include_tag 'drag_and_drop/jquery.ui.core', 'drag_and_drop/jquery.ui.widget', 'drag_and_drop/jquery.ui.mouse', 'drag_and_drop/jquery.ui.draggable' %>
+<% end %>
+<% page_settings title: "Package: #{h(@package.name_was)}" %>
+<% content_for :page_section do %>
+  <%= render :partial => 'account/environment_tabs', :locals => { :selected => 'packages' } %>
+<% end %>
+<% content_for :sidebar do %>
+  <span></span>
+<% end %>
+<h3>
+<table>
+  <tr>
+    <td>
+      Edit Package:
+    </td>
+    <td width="90%" valign="left" title="<%= @package.name_was %>">
+      <div class="truncated">
+        <%= @package.name_was %>
+      </div>
+    </td>
+  </tr>
+</table>
+  </h3>
+<%= form_for @package, :html => { :class => 'cssform' } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <br>
+  <h3>Properties</h3>
+<% if @package.active %>
+    <%= link_to "Map / Unmap Properties", new_property_path(:object => @package.class.to_s.underscore, :object_id => @package.id), :rel => 'facebox', :id => 'map_unmap_link_id' %>
+    <span style="display:inline">
+    <%= link_to_multiple_picker(:property, object: @package, item_display_field: 'name', auto_submit: true ) %>
+    </span>
+    <div class='spaced'>|</div>
+    <% if can? :create, Property.new %>
+      <%= link_to "Add Property", new_property_path(:object => @package.class.to_s.underscore, :object_id => @package.id), :rel => 'facebox' %>
+    <% end %>
+<% end %>
+  <table class='formatted_table'>
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Default Value
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @package.properties.each do |property | %>
+     <tr class="property_row" <%= tag_options({:class => cycle('', 'alt')}, false) %> >
+      <td><%= h property.name %></td>
+      <td><%= h property.decorate.value %></td>
+     </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+
+  <br>
+  <h3>References</h3>
+<% if @package.active && can?(:create, Reference.new) %>
+    <%= link_to "Add Reference", new_package_reference_path(package_id: @package) %>
+<% end %>
+  <table class='formatted_table references'>
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Method
+        </th>
+        <th>
+          Server
+        </th>
+        <th>
+          URI
+        </th>
+        <th><%= I18n.t(:'table.properties') %></th>
+        <th>
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @package.references, package: @package %>
+    </tbody>
+  </table>
+  <div>&nbsp;</div>
+
+<% if @package.active %>
+  <div class='field'>
+    <%= f.submit "Update", :class => "button" %>
+    or
+    <%= link_to 'cancel', packages_path(:page => params[:page], :key => params[:key]) %>
+  </div>
+<% else %>
+    <%= link_to 'back', packages_path(:page => params[:page], :key => params[:key]) %>
+<% end %>
+
+<% end %>
+
+

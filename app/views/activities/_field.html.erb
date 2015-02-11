@@ -1,0 +1,13 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= label_tag activity_attribute_field_name(attr), h(attr.name) unless attr.widget? %>
+<% if local_assigns[:disabled] %>
+  <%= hidden_field_tag activity_attribute_field_name(attr), custom_value_id(attr.default_value_for(activity_category)) %>
+<% end %>
+<%= display_activity_attribute_field activity, attr, activity_category, local_assigns[:disabled].to_bool, f %>

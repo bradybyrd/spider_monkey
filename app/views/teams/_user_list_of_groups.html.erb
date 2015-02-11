@@ -1,0 +1,65 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id="team_groups">
+  <p>
+    <%= I18n.t(:'team.select_group') %><br/>
+    <%= I18n.t(:'team.groups_automatic_assignment') %>
+  </p>
+  <% if @team.active %>
+    <span>
+      <%= link_to I18n.t(:select_all), '', id: 'select_all_team_groups' %>
+      |
+      <%= link_to I18n.t(:clear_all), '', id: 'clear_all_team_groups' %>
+      </span>
+  <% end %>
+
+  <% unless @groups.blank? %>
+    <table class='formatted_table' id="team_groups_assignments">
+      <thead>
+      <tr>
+        <th></th>
+        <th><%= I18n.t(:'table.name') %></th>
+        <th><%= I18n.t(:'table.teams') %></th>
+        <th><%= I18n.t(:'table.root') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @groups.each do |group| %>
+        <tr>
+          <td width="1"><%= check_box_tag 'group_ids[]', group.id, @team.group_ids.include?(group.id),
+                                          id: "group_ids_#{group.id}",
+                                          disabled: @team.team_policy.group_disabled?(group),
+                                          title: @team.decorate.group_checkbox_hint(group),
+                                          'data-group-id' => group.id,
+                                          'data-default' => @team.team_policy.data_default?(group)
+          %>
+          </td>
+          <td><%= group.name %></td>
+          <td><%= group.view_object.team_names %></td>
+          <td><%= group.view_object.root %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <div <%= tag_options({:id => "paginateLinks_#{@current_page.blank? ? 0 : @current_page}",
+                        class: 'groups_alphabetic_pagination'}, false) %>>
+    <% if @pages.present? && @pages.size > 1 %>
+      <%= link_to '<<', '', data: {page_number: @previous_page} %>
+      <% @pages.sort.each do |page_number, page_title| %>
+        <%= link_to page_title, '', data: {page_number: page_number} %>
+      <% end %>
+      <%= link_to '>>', '', data: {page_number: @next_page} %>
+    <% end %>
+  </div>
+
+  <%= hidden_field_tag 'alphabetic_pagination_url', team_groups_teams_path(id: @team.id) %>
+  <%= hidden_field_tag 'add_groups_team_url', add_groups_team_path(@team, page: params[:page]) if @team.persisted? %>
+  <%= hidden_field_tag 'remove_groups_team_url', remove_groups_team_path(@team, page: params[:page]) if @team.persisted? %>
+</div>

@@ -1,0 +1,36 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<%= form_for @placeholder, :html => { :class => 'cssform' } do |f| %>
+  <div class='field'>
+    <label>First Name</label>
+    <%= f.text_field :first_name, :disabled => true, :value => f.object.first_name %>
+  </div>
+  <div class='field'>
+    <label>Last Name</label>
+    <%= f.text_field :last_name, :disabled => true, :value => f.object.last_name %>
+  </div>
+  <div class='field'>
+    <%= f.label :max_allocation %>
+    <%= "#{f.select :max_allocation, (0..100).step(5)} %" %>
+  </div>
+  <div class='field'>
+    <%= f.label :location %>
+    <%= f.select :location, User.locations.map { |l| [l.upcase, l] } %>
+  </div>
+  <div class='field'>
+    <%= f.label :group_ids, "Groups" %>
+    <%= f.collection_select :group_ids, Group.name_order, :id, :name, {}, :multiple => true, :class => "area" %>
+  </div>
+  <div class='field'>
+    <%= f.label :roles, 'Roles' %>
+    <%= f.select :roles, resource_role_options, {}, :multiple => true, :class => "roles" %>
+  </div>
+  <%= submit_tag 'Save',:class =>'button' %>
+<% end %>
+

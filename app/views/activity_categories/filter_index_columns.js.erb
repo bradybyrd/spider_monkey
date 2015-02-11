@@ -1,0 +1,33 @@
+var visible_activity_ids = <%= @visible_activity_ids.to_json %>;
+var group_ids = <%= @group_ids.to_json %>;
+$('tr[id^=activity]').hide().removeClass('alt');
+$(visible_activity_ids).each(function(idx, el) {
+  $('tr#activity_' + el).show();
+});
+$('tbody.activities_container').each(function() {
+  $(this).find('tr:visible').each(function(idx) { 
+	$(this).addClass(rowClass(idx)) });
+});
+
+function rowClass(idx) {
+  return ['alt', ''][idx % 2];
+}
+
+$.each(group_ids, function(idx,group_id){
+  var count = 0;
+  $.each($('#group_'+group_id+'_activities tr'), function(idx,act_tr){
+    act_id = act_tr.id;
+    ele_tr = $('#'+act_id).attr('style');
+    if (ele_tr == "display: table-row;" || 
+        ele_tr == "DISPLAY: table-row" || 
+        ele_tr == "DISPLAY: block"){
+        count = count + 1
+    }
+  });
+  $('#span_'+group_id).html('('+ count + ')');
+});
+
+var activity_dom_id = <%= dom_id(@activity_category).to_json %>;
+var form = $('form.activity_filters.' + activity_dom_id);
+form.find('input[type=hidden], img').remove();
+form.find('input[type=submit]').show();

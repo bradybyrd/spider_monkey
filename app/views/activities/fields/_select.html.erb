@@ -1,0 +1,15 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+<% if current_user.present? %>
+  <% t_options = activity_options_for_select(activity, activity_category, attr) %>
+  <% t_options = '<option>[none]</option>' + t_options if !attr.required? %>
+  <%= select_tag field_name, t_options.html_safe, {:disabled => disabled} %>
+<% else %>
+  <%= Array(attr.value_for(activity)).map { |v| v.is_a?(ActiveRecord::Base) ? v.name : v } %>
+<% end %>

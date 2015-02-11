@@ -1,0 +1,32 @@
+<%
+################################################################################
+# BMC Software, Inc.
+# Confidential and Proprietary
+# Copyright (c) BMC Software, Inc. 2001-2012
+# All Rights Reserved.
+################################################################################
+%>
+Order by: step | 
+<%= link_to "user", notes_by_user_request_path(request), :class => "note_ordering" %> | 
+<%= link_to "time", notes_by_time_request_path(request), :class => "note_ordering" %>
+
+<ul style="padding-top:5px;">
+  <% note_groups.each do |note_group| %>
+    <% unless note_group.blank? %>
+    <li>
+      <p><strong>Step <%= note_group.first.step.number %>:</strong></p>
+      <ul>
+        <% note_group.each do |note| %>
+          <li>
+            <%= note.content %>
+            <span>
+              <%= note.user.name %> - <%= note.updated_at.default_format %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+    <% end %>
+  <% end %>
+</ul>
+

@@ -1,0 +1,118 @@
+<%
+   ################################################################################
+   # BMC Software, Inc.
+   # Confidential and Proprietary
+   # Copyright (c) BMC Software, Inc. 2001-2014
+   # All Rights Reserved.
+   ################################################################################
+%>
+<div id='components'>
+  <% if can?(:list, Component.new) %>
+      <h3>
+        <%= I18n.t(:active) %>
+      </h3>
+
+      <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => components_path, :class_name => "components"} %></div>
+      <% unless @active_components.blank? %>
+          <table class='tablesorter two_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th width='40%'><%= I18n.t(:'table.name') %></th>
+              <th width='40%'><%= I18n.t(:'table.properties') %></th>
+              <th width='20%'><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @active_components.each do |component| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <nobr>
+                      <% if can?(:edit, component) %>
+                          <%= link_to(index_title(h(component.name)), edit_component_path(component, :page => params[:page], :key => params[:key])) %>
+                      <% else %>
+                          <%= index_title(h(component.name)) %>
+                      <% end %>
+                      <%= content_tag(:strong, "**#{I18n.t(:not_used)}**") if component.application_components.empty? %>
+                    </nobr>
+                  </td>
+                  <td><%= component.active_properties.map { |p| h p.name }.to_sentence %></td>
+                  <td class='action_links'>
+                    <nobr>
+                      <% if can?(:edit, component) %>
+                          <%= link_to I18n.t(:edit), edit_component_path(component, :page => params[:page], :key => params[:key]) %>
+                      <% end %>
+
+                      <% if can?(:make_active_inactive, component) && component.application_components.empty? %>
+                          <%= h('|') if can?(:edit, component) %>
+                          <%= link_to I18n.t(:make_inactive), deactivate_component_path(component, :page => params[:page], :key => params[:key]), :method => :put %>
+                      <% end %>
+                    </nobr>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+      <div class='line_h_20px'><%= render :partial => "shared/alphabetical_pagination", :locals => {:path => components_path, :class_name => "components"} %></div>
+      <% unless @inactive_components.blank? %>
+          <h3>
+            <%= I18n.t(:inactive) %>
+          </h3>
+          <table class='tablesorter two_column_sorter formatted_table'>
+            <thead>
+            <tr>
+              <th width='40%'><%= I18n.t(:'table.name') %></th>
+              <th width='40%'><%= I18n.t(:'table.properties') %></th>
+              <th width='20%'><%= I18n.t(:'table.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @inactive_components.each do |component| %>
+                <tr <%= tag_options({:class => cycle('', 'alt')}, false) %>>
+                  <td>
+                    <nobr>
+                      <% if can?(:edit, component) %>
+                          <%= link_to(h(component.name), edit_component_path(component)) %>
+                      <% else %>
+                          <%= index_title(h(component.name)) %>
+                      <% end %>
+                      <%= content_tag(:strong, "**#{I18n.t(:not_used)}**") if component.application_components.empty? %>
+                    </nobr>
+                  </td>
+                  <td>
+                    <%= component.properties.map { |p| h p.name }.to_sentence %>
+                  </td>
+                  <td class='action_links'>
+                    <nobr>
+                      <% if can?(:edit, component) %>
+                          <%= link_to I18n.t(:edit),
+                                      edit_component_path(component, :page => params[:page], :key => params[:key])
+                          %>
+                      <% end %>
+
+                      <% if can?(:make_active, component) && component.application_components.empty? %>
+                          <%= h('|') if can?(:edit, component) %>
+                          <%= link_to I18n.t(:make_active),
+                                      activate_component_path(component, :page => params[:page], :key => params[:key]),
+                                      :method => :put
+                          %>
+                      <% end %>
+
+                      <% if can?(:delete, component) && component.destroyable? %>
+                          <%= h('|') if (can?(:make_active_inactive, component) || can?(:edit, component)) %>
+                          <%= link_to I18n.t(:delete),
+                                      component_path(component, :page => params[:page], :key => params[:key]),
+                                      :method => :delete,
+                                      :confirm => I18n.t(:confirm_deletion, item: 'Component')
+                          %>
+                      <% end %>
+                    </nobr>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+  <% end %>
+
+</div>

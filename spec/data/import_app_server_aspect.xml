@@ -1,0 +1,117 @@
+<app_import team="[default]">
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <a-sorting-comps type="boolean">false</a-sorting-comps>
+  <a-sorting-envs type="boolean">false</a-sorting-envs>
+  <active type="boolean">true</active>
+  <app-version></app-version>
+  <name>import_app_server_aspect</name>
+  <strict-plan-control type="boolean">false</strict-plan-control>
+  <components type="array">
+    <component>
+      <active type="boolean">true</active>
+      <name>Comp_01</name>
+      <properties type="array"/>
+    </component>
+  </components>
+  <environments type="array">
+    <environment>
+      <active type="boolean">true</active>
+      <deployment-policy>opened</deployment-policy>
+      <name>env_01</name>
+      <active-server-groups type="array">
+        <active-server-group>
+          <active type="boolean">true</active>
+          <description></description>
+          <name>Server_Group_02</name>
+        </active-server-group>
+      </active-server-groups>
+    </environment>
+  </environments>
+  <active-packages type="array"/>
+  <installed-components type="array">
+    <installed-component>
+      <location nil="true"/>
+      <version></version>
+      <find-properties type="array"/>
+      <server-aspects type="array"/>
+      <server-aspect-groups type="array">
+        <server-aspect-group>
+          <name>Server_level_group_01</name>
+          <server-level>
+            <description></description>
+            <name>Server_level_01</name>
+            <properties type="array"/>
+          </server-level>
+          <server-aspects type="array">
+            <server-aspect>
+              <description></description>
+              <name>instance_1</name>
+              <parent-type>ServerGroup</parent-type>
+              <parent type="ServerGroup">
+                <active type="boolean">true</active>
+                <description></description>
+                <name>Server_Group_02</name>
+              </parent>
+              <current-property-values type="array"/>
+            </server-aspect>
+          </server-aspects>
+        </server-aspect-group>
+        <server-aspect-group>
+          <name>Server_level_group_01</name>
+          <server-level>
+            <description></description>
+            <name>Server_level_02</name>
+            <properties type="array"/>
+          </server-level>
+          <server-aspects type="array">
+            <server-aspect>
+              <description></description>
+              <name>instance_1</name>
+              <parent-type>ServerGroup</parent-type>
+              <parent type="ServerGroup">
+                <active type="boolean">true</active>
+                <description></description>
+                <name>Server_Group_02</name>
+              </parent>
+              <current-property-values type="array"/>
+            </server-aspect>
+          </server-aspects>
+        </server-aspect-group>
+      </server-aspect-groups>
+      <application-component>
+        <different-level-from-previous type="boolean">true</different-level-from-previous>
+        <position type="integer">1</position>
+        <component>
+          <active type="boolean">true</active>
+          <name>Comp_01</name>
+        </component>
+      </application-component>
+      <application-environment>
+        <name>env_01</name>
+      </application-environment>
+    </installed-component>
+  </installed-components>
+  <active-routes type="array">
+    <active-route>
+      <description>The default route for an application includes all environments and cannot be modified directly.</description>
+      <name>[default]</name>
+      <route-type>open</route-type>
+      <route-gates type="array">
+        <route-gate>
+          <description nil="true"/>
+          <different-level-from-previous type="boolean">true</different-level-from-previous>
+          <position type="integer">1</position>
+          <environment>
+            <name>env_01</name>
+          </environment>
+        </route-gate>
+      </route-gates>
+    </active-route>
+  </active-routes>
+  <active-business-processes type="array"/>
+  <version-tags type="array"/>
+  <application-packages type="array"/>
+  <brpm_version>4.6.00</brpm_version>
+</app>
+</app_import>
