@@ -216,8 +216,8 @@ class Step < ActiveRecord::Base
   end
 
   def has_invalid_package?
-    if request.present?
-      app_package_ids = request.apps.joins(:packages).pluck('packages.id')
+    if parent_object.present?
+      app_package_ids = parent_object.apps.joins(:packages).pluck('packages.id')
       package.present? && !app_package_ids.include?(package.id)
     else
       false
@@ -835,7 +835,7 @@ class Step < ActiveRecord::Base
         value = [value].flatten
       else
         argument = ScriptArgument.find(arg_id) rescue nil
-        if argument && value.present? && ![value].flatten.first.empty?
+        if argument && value.present? && [value].flatten.first.present?
           if argument.argument_type == 'in-datetime'
             argument_datetime = [value].flatten.first
             argument_date = argument_datetime.split(' ')[0]
@@ -1238,6 +1238,10 @@ class Step < ActiveRecord::Base
                                                    owner_object_id: (reference_id),
                                                    owner_object_type: owner_object_type)
     end
+  end
+
+  def get_reference_ids
+    step_references.map(&:reference_id)
   end
 
   def update_references!
@@ -1873,8 +1877,13 @@ class Step < ActiveRecord::Base
     end
   end
 
+  def parent_object
+    return floating_procedure if floating_procedure.present?
+    return request
+  end
+
   def editable?
-    REQUEST_STATES_TO_EDIT_STEP.include?(request.aasm.current_state) && locked?
+    REQUEST_STATES_TO_EDIT_STEP.include?(parent_object.aasm.current_state) && locked?
   end
 
   def view_object

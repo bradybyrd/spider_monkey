@@ -57,6 +57,14 @@ class Procedure < ActiveRecord::Base
               cumulative_by: {app_id: :with_app_id},
               boolean_flags: {default: :unarchived, opposite: :archived}
 
+  def available_package_ids
+    apps.joins(:packages).pluck('packages.id')
+  end
+
+  def has_no_available_package_templates?
+    return true
+  end
+
   private
 
   # for now this is used by REST, but controller should rely on the model, not method
@@ -89,17 +97,18 @@ class Procedure < ActiveRecord::Base
   def add_new_steps
     if @new_steps
       @new_steps.each do |step|
-      #
-      # RAJESH: 17 December 2011
-      # Postgres does not have a concept of autoincrement Id
-      # Now, due to this, after a clone step is attempted to be inserted,
-      # it attempts to set the id field to null which causes it to throw a null-voilation
-      # So, as a workaround, we mimic the same logic as by create a brand new object
-      # and then initializing it with attribute values that we are interested in.
-      #
+        #
+        # RAJESH: 17 December 2011
+        # Postgres does not have a concept of autoincrement Id
+        # Now, due to this, after a clone step is attempted to be inserted,
+        # it attempts to set the id field to null which causes it to throw a null-voilation
+        # So, as a workaround, we mimic the same logic as by create a brand new object
+        # and then initializing it with attribute values that we are interested in.
+        #
+        items_to_include = List.get_list_items("IncludeInSteps")
         if PostgreSQLAdapter || MsSQLAdapter
           attribs = {}
-          includes_in_steps = List.get_list_items("IncludeInSteps")
+          includes_in_steps = items_to_include
 
           step.attributes.each_pair do |key, value|
             if includes_in_steps.include?(key)
@@ -108,8 +117,9 @@ class Procedure < ActiveRecord::Base
           end
           new_step = Step.new(attribs)
         else
-          new_step = step.dup(:except => (Step.column_names - List.get_list_items("IncludeInSteps")))
+          new_step = step.dup(:except => (Step.column_names - items_to_include))
         end
+        new_step.reference_ids = step.get_reference_ids
 
         self.steps << new_step
         new_step.save!

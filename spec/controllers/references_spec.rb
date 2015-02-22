@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe ReferencesController do
   describe 'authorization', custom_roles: true do
     context 'fails' do
@@ -49,20 +48,16 @@ describe ReferencesController do
     end
   end
 
-  context "#delete" do
-    it "delete a reference from the package" do
-
-      User.current_user = User.find_by_login("admin")
+  context '#delete' do
+    it 'delete a reference from the package' do
+      User.current_user = User.find_by_login('admin')
       default_server = create(:server)
       package = create(:package)
-      package_instance = create(:package_instance, package: package, active: true, name: 'test')
+      create(:package_instance, package: package, active: true, name: 'test')
       reference = create(:reference, package: package, name: 'test', server: default_server )
 
-      expect{delete :destroy, {:id => reference.id }
-      }.to change(Reference, :count).by(-1)
-
+      expect{ delete :destroy, {:id => reference.id }
+            }.to change(Reference, :count).by(-1)
     end
   end
-
-
 end

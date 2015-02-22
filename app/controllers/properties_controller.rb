@@ -10,7 +10,7 @@ class PropertiesController < ApplicationController
   include ControllerSearch
   include AlphabeticalPaginator
 
-  skip_before_filter :authenticate_user!, :only => [:rest]
+  skip_before_filter :authenticate_user!, only: [:rest]
 
   # GET /properties
   # GET /properties.json
@@ -26,7 +26,7 @@ class PropertiesController < ApplicationController
       @inactive_properties = @inactive_properties.sorted.search_by_ci('name', @keyword )
     end
     @total_records = @active_properties.length
-    if !@active_properties.blank?
+    if @active_properties.present?
       @active_properties =  alphabetical_paginator @per_page, @active_properties
     end
     if @active_properties.blank? and @inactive_properties.blank?
@@ -34,7 +34,7 @@ class PropertiesController < ApplicationController
     end
     respond_to do |format|
       if request.xhr?
-        format.html{render :partial => 'index' ,:layout => false }
+        format.html{render partial: 'index', layout: false }
       else
         format.html # index.html.erb
       end
@@ -66,7 +66,7 @@ class PropertiesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :layout => !params[:object].present? }
+      format.html { render layout: !params[:object].present? }
       #format.json { render json: @property }
       #format.js { render :layout => !params[:object].present? }
     end
@@ -90,26 +90,26 @@ class PropertiesController < ApplicationController
     execution_task_ids = params[:execution_task_ids] || []
     creation_task_ids = params[:creation_task_ids] || []
 
-    @property = Property.new(params[:property].merge(:component_ids => component_ids,
-                                                     :execution_task_ids => execution_task_ids,
-                                                     :creation_task_ids => creation_task_ids))
+    @property = Property.new(params[:property].merge( component_ids: component_ids,
+                                                      execution_task_ids: execution_task_ids,
+                                                      creation_task_ids: creation_task_ids ))
 
     authorize! :create, @property
 
     respond_to do |format|
       if @property.save
-        format.html { redirect_to @property, notice: t('activerecord.notices.created', :model => Property.model_name.human) }
+        format.html { redirect_to @property, notice: t('activerecord.notices.created', model: Property.model_name.human) }
         format.json { render json: @property, status: :created, location: @property }
         format.js {
-          flash[:notice] = t('activerecord.notices.created', :model => Property.model_name.human)
-          ajax_redirect(params[:redirect_to] || properties_path(:page => params[:page], :key => params[:key]))
+          flash[:notice] = t('activerecord.notices.created', model: Property.model_name.human)
+          ajax_redirect(params[:redirect_to] || properties_path(page: params[:page], key: params[:key]))
         }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @property.errors, status: :unprocessable_entity }
         format.js {
             @property.valid?
-            show_validation_errors(:property, {:div => "property_error_messages"})
+            show_validation_errors(:property, { div: 'property_error_messages'})
         }
       end
     end
@@ -121,7 +121,7 @@ class PropertiesController < ApplicationController
     @property = Property.find(params[:id])
     authorize! :edit, @property
 
-    if params["name_update"].nil? ### If complete form is getting submitted, package all stuff
+    if params['name_update'].nil? ### If complete form is getting submitted, package all stuff
       @property.old_app_ids = @property.apps.map(&:id)
       component_ids = params[:property].delete(:component_ids) || []
       package_ids = params[:property].delete(:package_ids) || []
@@ -132,34 +132,32 @@ class PropertiesController < ApplicationController
       app_ids = params[:property][:app_ids] || []
       old_server_ids  = @property.server_ids
 
-      params[:property].merge!(:component_ids => component_ids,
-                               :package_ids => package_ids,
-                              :execution_task_ids => execution_task_ids,
-                              :creation_task_ids => creation_task_ids,
-                              :server_ids => server_ids,
-                              :server_level_ids => server_level_ids,
-                              :app_ids => app_ids
-                             )
+      params[:property].merge!( component_ids: component_ids,
+                                package_ids: package_ids,
+                                execution_task_ids: execution_task_ids,
+                                creation_task_ids: creation_task_ids,
+                                server_ids: server_ids,
+                                server_level_ids: server_level_ids,
+                                app_ids: app_ids )
     end
 
     respond_to do |format|
       if @property.update_attributes(params[:property])
-        if params["name_update"].nil? ### If complete form is submitted, make sure old server ids no more used are removed.
-          @property.archive_server_property_values!(old_server_ids - @property.server_ids)
-        end
+        ### If complete form is submitted, make sure old server ids no more used are removed.
+        @property.archive_server_property_values!(old_server_ids - @property.server_ids) if params['name_update'].nil?
 
-        format.html { redirect_to @property, notice: t('activerecord.notices.updated', :model => Property.model_name.human) }
+        format.html { redirect_to @property, notice: t('activerecord.notices.updated', model: Property.model_name.human) }
         format.json { head :no_content }
         format.js {
-          flash[:notice] = t('activerecord.notices.updated', :model => Property.model_name.human)
-          ajax_redirect(params[:redirect_to] || properties_path(:page => params[:page], :key => params[:key]))
+          flash[:notice] = t('activerecord.notices.updated', model: Property.model_name.human)
+          ajax_redirect(params[:redirect_to] || properties_path(page: params[:page], key: params[:key]))
         }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @property.errors, status: :unprocessable_entity }
         format.js {
             @property.valid?
-            show_validation_errors(:property, {:div => "property_error_messages"})
+            show_validation_errors(:property, { div: 'property_error_messages' })
         }
       end
     end
@@ -191,11 +189,11 @@ class PropertiesController < ApplicationController
     component_property = ComponentProperty.find_by_component_id_and_property_id(params[:component_id], params[:id])
     component_property.update_attributes(params[:property])
 
-    render :partial => 'properties/property_list', :locals => { :properties => component.properties.active, :component_id => params[:component_id] }
+    render partial: 'properties/property_list', locals: { properties: component.properties.active, component_id: params[:component_id] }
   end
 
   def rest
-    render :template => 'properties/rest.builder', :layout => false, :locals => { :message => status_msg }
+    render template: 'properties/rest.builder', layout: false, locals: {message: status_msg}
   end
 
   protected

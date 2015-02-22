@@ -25,7 +25,6 @@ describe PackageInstancesController do
       get :index, {package_id: package.id, page: ''}
       expect(response.code).to eq '200'
     end
-
   end
 
   def index
@@ -36,97 +35,95 @@ describe PackageInstancesController do
     have_css('.name', text: instance.name)
   end
 
-  context "#create" do
+  context '#create' do
     before(:each) do
       @test_package = create(:package)
-      @test_package.name = "TestPackage2"
+      @test_package.name = 'TestPackage2'
       @test_package.next_instance_number = 200
       @test_package.instance_name_format = 'updated format'
       @test_package.save
-      request.env["HTTP_REFERER"] = "/package_instance"
+      request.env['HTTP_REFERER'] = '/package_instance'
 
-      User.current_user = User.find_by_login("admin")
+      User.current_user = User.find_by_login('admin')
 
       @test_package_instance = create(:package_instance, package: @test_package, active: true, name: 'test')
       @test_package_instance.save
-
     end
 
-    it "errors_on_name_too_long" do
-      post :create, { package_id: @test_package.id, package_instance: { :name => "n" * 256 }}
-      expect(flash[:error]).to include("Error creating package instance")
+    it 'errors_on_name_too_long' do
+      post :create, { package_id: @test_package.id, package_instance: { name: 'n' * 256 }}
+      expect(flash[:error]).to include('Error creating package instance')
     end
 
-    it "errors_on_name_supplied by empty" do
-      post :create, { package_id: @test_package.id, package_instance: { :name => "" }}
-      expect(flash[:error]).to include("Error creating package instance")
+    it 'errors_on_name_supplied by empty' do
+      post :create, { package_id: @test_package.id, package_instance: { name: '' }}
+      expect(flash[:error]).to include('Error creating package instance')
     end
 
-    it "success" do
-      post :create,  { :package_id => @test_package.id,  :package_instance => {  :name => 'myname' }}
-      flash[:notice].should include("successfully")
+    it 'success' do
+      post :create, { package_id: @test_package.id, package_instance: { name: 'myname' }}
+      expect(flash[:notice]).to include('successfully')
     end
-
   end
 
-  context "#update" do
+  context '#update' do
     before(:each) do
       @test_package = create(:package)
-      @test_package.name = "TestPackage2"
+      @test_package.name = 'TestPackage2'
       @test_package.next_instance_number = 200
       @test_package.instance_name_format = 'updated format'
       @test_package.save
-      request.env["HTTP_REFERER"] = "/package_instance"
+      request.env['HTTP_REFERER'] = '/package_instance'
 
-      User.current_user = User.find_by_login("admin")
+      User.current_user = User.find_by_login('admin')
 
       @test_package_instance = create(:package_instance, package: @test_package, active: true, name: 'test2')
       @test_package_instance.save
 
     end
 
-    it "updates instance name" do
-      put :update, { :id => @test_package_instance.id, :package_instance => {  :name => 'newName' }}
+    it 'updates instance name' do
+      put :update, { id: @test_package_instance.id, package_instance: { name: 'newName' }}
+
       @test_package_instance.reload
       @test_package_instance.name.should eql('newName')
-      flash[:notice].should eq I18n.t('package_instance.updated')
+      expect(flash[:notice]).to eq I18n.t('package_instance.updated')
     end
-
   end
 
-  describe "delete inactive and activate" do
+  describe 'delete inactive and activate' do
     before(:each) do
       @test_package = create(:package)
-      @test_package.name = "TestPackage2"
+      @test_package.name = 'TestPackage2'
       @test_package.next_instance_number = 200
       @test_package.instance_name_format = 'updated format'
       @test_package.save
 
-      User.current_user = User.find_by_login("admin")
+      User.current_user = User.find_by_login('admin')
 
       @test_package_instance = create(:package_instance, package: @test_package, active: true, name: 'test2')
       @test_package_instance.save
-
     end
 
-    it "delete a package instance" do
-      expect{delete :destroy, {:id => @test_package_instance.id }
-      }.to change(PackageInstance, :count).by(-1)
+    it 'delete a package instance' do
+      expect{ delete :destroy, { id: @test_package_instance.id }
+            }.to change(PackageInstance, :count).by(-1)
     end
 
-    it "inactivate a package instance" do
-      post :deactivate, {:id => @test_package_instance}
+    it 'inactivate a package instance' do
+      post :deactivate, { id: @test_package_instance }
+
       @test_package_instance.reload
       expect( @test_package_instance ).not_to be_active
     end
 
-    it "activate a package instance" do
+    it 'activate a package instance' do
       @test_package_instance.active = false
-      post :activate, {:id => @test_package_instance}
+
+      post :activate, { id: @test_package_instance }
+
       @test_package_instance.reload
       expect( @test_package_instance ).to be_active
     end
-
   end
-
 end

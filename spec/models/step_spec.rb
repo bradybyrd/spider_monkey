@@ -191,6 +191,18 @@ describe Step do
     end
   end
 
+  describe '#has_invalid_package? procedures' do
+    it 'returns false if it is associated with a package' do
+      step = create_procedure_step_with_valid_package
+      expect(step).not_to have_invalid_package
+    end
+
+    it 'returns true if the package is no longer associated' do
+      step = create_procedure_step_with_invalid_package
+      expect(step).to have_invalid_package
+    end
+  end
+
   describe '#enabled_editing?' do
     context 'when step does not belong to a request' do
       it 'returns true if user has the edit_step permission' do
@@ -1443,6 +1455,43 @@ describe Step do
 
       it { expect(step.step_references.size).to eq 2 }
 
+    end
+
+    context 'returns reference ids' do
+      let(:package) { create :package }
+      let(:package_ref1) { create :reference, package: package }
+      let(:package_ref2) { create :reference, package: package }
+
+      let(:app) { create :app, packages: [package] }
+
+      let(:step) {
+        create :step,
+               related_object_type: 'package',
+               package: package,
+               create_new_package_instance: true,
+               latest_package_instance: false,
+               reference_ids: [package_ref1.id, package_ref2.id]
+      }
+
+      before (:each) {
+        step.request.apps = [app]
+        step.save!
+        step.reload
+      }
+
+      it { expect(step.get_reference_ids.size).to eq 2 }
+    end
+
+    context 'returns parent object for request' do
+      let (:request) { create :request }
+      let (:step) { create :step, request: request }
+      it { expect(step.parent_object).to eq request }
+    end
+
+    context 'returns parent object for procedure' do
+      let (:procedure) { create :procedure }
+      let (:step) { create :step, floating_procedure: procedure, request: nil }
+      it { expect(step.parent_object).to eq procedure }
     end
 
   end

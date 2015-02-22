@@ -100,7 +100,6 @@ class SessionsController < ApplicationController
   protected
 
   def sign_in_and_redirect_user(resource, resource_name)
-    resource.update_column :terminate_session, false
     if resource.active? && (resource.first_time_login? or resource.is_reset_password?)
       scope = Devise::Mapping.find_scope!(resource_name)
       sign_in(scope, resource.reload)

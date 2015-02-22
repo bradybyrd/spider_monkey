@@ -2,5 +2,5 @@
 ### The last line with the $VERSION$ is read and the value is put as the version no. of the product on login screen.Please update accordingly.
 ########
 
-$VERSION=4.6.00.01
+$VERSION=4.6.00.02
 

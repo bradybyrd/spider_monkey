@@ -50,21 +50,21 @@ describe DeploymentWindow::EventsController do
     @request_plan_data = RequestPlanData.new(request, request_params, @user)
   end
 
-  describe "GET 'popup'"  do
-    it "assigns right data to variables and renders suspend template" do
+  describe 'GET \'popup\'' do
+    it 'assigns right data to variables and renders suspend template' do
       xhr :get, :popup, { id: event.to_param, popup_type: 'suspend', format: 'js' }
       expect(assigns(:deployment_window_event)).to eq event
       expect(assigns(:deployment_window_event).reason).to be_nil
       expect(response).to render_template('suspend')
     end
 
-    it "assigns right data to variables and renders move template" do
+    it 'assigns right data to variables and renders move template' do
       xhr :get, :popup, { id: event.to_param, popup_type: 'move', format: 'js' }
       expect(assigns(:deployment_window_event)).to eq event
       expect(response).to render_template('move')
     end
 
-    it "assigns right data to variables and renders request template" do
+    it 'assigns right data to variables and renders request template' do
       xhr :get, :popup, { id: event.to_param, popup_type: 'request' }
 
       expect(assigns(:request)).to be_a_new(Request)
@@ -75,19 +75,19 @@ describe DeploymentWindow::EventsController do
       expect(response).to render_template('request')
     end
 
-    it "includes warning for Events in PENDING state" do
+    it 'includes warning for Events in PENDING state' do
       series.update_attributes(aasm_state: 'pending')
       xhr :get, :popup, id: event.to_param, popup_type: 'request'
-      expect(flash[:warning]).to include("PENDING state")
+      expect(flash[:warning]).to include('PENDING state')
     end
 
-    it "includes warning for Events in RETIRED state" do
+    it 'includes warning for Events in RETIRED state' do
       series.update_attributes(aasm_state: 'retired')
       xhr :get, :popup, id: event.to_param, popup_type: 'request'
-      expect(flash[:warning]).to include("RETIRED state")
+      expect(flash[:warning]).to include('RETIRED state')
     end
 
-    it "includes no warning for Events in RELEASED state" do
+    it 'includes no warning for Events in RELEASED state' do
       xhr :get, :popup, id: event.to_param, popup_type: 'request'
       expect(flash[:warning]).to be_nil
     end
@@ -100,11 +100,11 @@ describe DeploymentWindow::EventsController do
                                     end
   end
 
-  describe "GET 'edit_series'" do
+  describe 'GET \'edit_series\'' do
     it 'returns json with sesies path' do
       get :edit_series, {  id: event.to_param, format: 'json'}
       parsed_body = JSON.parse(response.body)
-      parsed_body.should ==  {"url"=>"/environment/metadata/deployment_window/series/#{series.id}/edit"}
+      expect(parsed_body).to eq({ 'url' => "/environment/metadata/deployment_window/series/#{series.id}/edit" })
     end
   end
 

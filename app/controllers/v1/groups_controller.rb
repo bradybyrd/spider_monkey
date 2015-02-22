@@ -177,7 +177,7 @@ class V1::GroupsController < V1::AbstractRestController
         end
 
         if success
-          @group.users.update_all(terminate_session: true)
+          #PermissionMap.instance.bulk_clean(@group.users)
           format.xml  { render :xml => group_presenter, :status => :accepted }
           format.json  { render :json => group_presenter, :status => :accepted }
         elsif @exception

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe ApplicationEnvironmentsController, :type => :controller do
+describe ApplicationEnvironmentsController, type: :controller do
   before (:each) do
     @app = create(:app)
     @env = create(:environment)
-    @app_environment = create(:application_environment, :app => @app, :environment => @env)
+    @app_environment = create(:application_environment, app: @app, environment: @env)
   end
 
   context 'authorization' do
@@ -35,7 +35,7 @@ describe ApplicationEnvironmentsController, :type => :controller do
             expect {
               put :update_all, { app_id: @app.id,
                                  environment_ids: [@env.id],
-                                 new_environments: [{ name: "Env_new1" }] }
+                                 new_environments: [{ name: 'Env_new1'}] }
             }.to change(@app.application_environments, :count).by(0)
           end
         end
@@ -43,40 +43,40 @@ describe ApplicationEnvironmentsController, :type => :controller do
     end
   end
 
-  it "#index" do
-    get :index, :app_id => @app.id
-    response.should render_template("apps/_default_environment")
+  it '#index' do
+    get :index, app_id: @app.id
+    expect(response).to render_template('apps/_default_environment')
   end
 
-  it "#add_remove" do
-    get :add_remove, :app_id => @app.id
-    response.should render_template(:partial => 'application_environments/_add_remove')
+  it '#add_remove' do
+    get :add_remove, app_id: @app.id
+    expect(response).to render_template(partial: 'application_environments/_add_remove')
   end
 
-  it "#update" do
-    put :update, {:app_id => @app.id,
-                  :id => @app_environment.id,
-                  :environment => {:position => 2}}
+  it '#update' do
+    put :update, { app_id: @app.id,
+                   id: @app_environment.id,
+                   environment: {position: 2} }
     @app_environment.reload
-    @app_environment.position.should eql(2)
-    response.should render_template(:partial => '_for_reorder')
+    expect(@app_environment.position).to eq 2
+    expect(response).to render_template(partial: '_for_reorder')
   end
 
-  context "#update_all" do
-    it "create new environment" do
-      expect{put :update_all, {:app_id => @app.id,
-                               :id => @app_environment.id,
-                               :environment_ids => [@env.id],
-                               :new_environments => [{:name => "Env_new1"}]}
+  context '#update_all' do
+    it 'create new environment' do
+      expect{put :update_all, { app_id: @app.id,
+                                id: @app_environment.id,
+                                environment_ids: [@env.id],
+                                new_environments: [{ name: 'Env_new1' }] }
             }.to change(@app.application_environments, :count).by(1)
-      response.should render_template(:partial => "apps/_default_environment")
+      expect(response).to render_template(partial: 'apps/_default_environment')
     end
 
-    it "change environment ids" do
-      put :update_all, {:app_id => @app.id,
-                        :id => @app_environment.id,
-                        :environment_ids => [@env.id]}
-      response.should render_template(:partial => "apps/_default_environment")
+    it 'change environment ids' do
+      put :update_all, { app_id: @app.id,
+                         id: @app_environment.id,
+                         environment_ids: [@env.id]}
+      expect(response).to render_template(partial: 'apps/_default_environment')
     end
 
     it 'clears permissions cache', custom_roles: true do
@@ -85,15 +85,15 @@ describe ApplicationEnvironmentsController, :type => :controller do
     end
   end
 
-  it "#edit" do
-    get :edit, {:app_id => @app.id,
-                :id => @app_environment.id}
-    response.should render_template(:partial => 'apps/_application_environment_edit_row')
+  it '#edit' do
+    get :edit, { app_id: @app.id,
+                 id: @app_environment.id }
+    expect(response).to render_template(partial: 'apps/_application_environment_edit_row')
   end
 
-  it "#show" do
-    get :show, {:app_id => @app.id,
-                :id => @app_environment.id}
-    response.should render_template(:partial => 'apps/_application_environment_show_row')
+  it '#show' do
+    get :show, { app_id: @app.id,
+                 id: @app_environment.id }
+    expect(response).to render_template(partial: 'apps/_application_environment_show_row')
   end
 end

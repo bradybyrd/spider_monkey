@@ -98,7 +98,7 @@ class UsersController < ApplicationController
     authorize! :edit, @user
 
     if @user.update_attributes params[:user].merge(system_user: true)
-      @user.update_column :terminate_session, true
+      #PermissionMap.instance.clean(@user)
       flash[:notice] = I18n.t(:'user.updated', user_name: @user.name_for_index)
       ajax_redirect(users_path(page: params[:page], key: params[:key]))
     else

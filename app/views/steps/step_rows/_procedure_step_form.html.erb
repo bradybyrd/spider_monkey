@@ -14,41 +14,58 @@
     <%= hidden_field_tag "server_aspect_ids", step.server_aspect_ids.join(',').to_s %>
     <%= hidden_field_tag "server_ids", step.server_ids.join(',').to_s %>
     <%= hidden_field_tag "step[procedure_id]", step.procedure_id %>
+    <%= hidden_field_tag "Step_id", step.try(:id) %>
+
     <div class="facebox_stepform_container" >
       <% if step.parent %>
         <%= f.hidden_field :parent_id %>
       <% end %>
-      <fieldset class="top_fields_area" >
+
+      <fieldset class="top_fields_area">
         <div class="form_column left left_column">
           <div class="field">
-            <label >Name</label>
-            <%= f.text_field :name, :disabled => false%>
+            <label><%= t('procedure.name') %></label>
+            <%= f.text_field :name %>
           </div>
 
-          <div class="field" style="overflow:auto;">
-            <label>Component</label>
-            <%= application_component_select_list(step, !can?(:select_step_component, Request.new)) %>
+          <div id="related_object_type_selection" class="field" style="overflow:auto;">
+            <label><%= t('procedure.type') %></label>
+            <%= related_object_type_select_tag(step) %>
+          </div>
+
+          <div id="package_instance_selection" class="field">
+            <% if step_has_valid_package?(step) %>
+                <%= render "steps/step_rows/package_instances", step: step, package: step.package %>
+            <% end %>
           </div>
         </div>
         <div class="form_column" style="padding-top:10px;">
           <div class="field">
-            <label>Owner</label>
+            <label><%= t('procedure.owner') %></label>
             <%= f.select :owner_id,
-                         options_for_users_groups_from_collection_for_select(@users,@groups,step),
-                         {include_blank: 'Select'},
-                         disabled: !can?(:edit_step_owner, Request.new) %>
-            <%= hidden_field_tag 'step[owner_type]', user_owner_chosen_for(step) ? "User" : "Group"  %>
+                         options_for_users_groups_from_collection_for_select(@users, @groups, step),
+                         { include_blank: 'Select' },
+                         disabled: cannot?(:edit_step_owner, Request.new) %>
+            <%= hidden_field_tag 'step[owner_type]', user_owner_chosen_for(step) ? 'User' : 'Group' %>
           </div>
-
+          <div id="component_or_package_selection" class="field">
+            <% if "component".eql?(step.related_object_type) %>
+                <label><%= t('procedure.component') %></label>
+                <%= application_component_select_list(step, !can?(:select_step_component, Request.new)) %>
+            <% elsif "package".eql?(step.related_object_type) %>
+                <label><%= t('procedure.package') %></label>
+                <%= package_select_tag(step, cannot?(:select_step_package, step.request)) %>
+            <% end %>
+          </div>
           <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:380px;">
-
             <% if step.installed_component %>
-              <%= render :partial => 'steps/property_installed_components',
-              :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
+                  <%= render :partial => 'steps/property_installed_components',
+                             :locals => { :request => request, :step => step, :installed_component => step.installed_component, :work_task => step.work_task } %>
             <% end %>
           </div>
         </div>
       </fieldset>
+
       <%= render 'steps/step_tabs', procedure: procedure,
                                     step: step,
                                     f: f,

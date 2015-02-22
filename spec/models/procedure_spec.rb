@@ -44,13 +44,19 @@ describe Procedure do
       @app = create(:app)
       @env = create(:environment)
       AssignedEnvironment.create!(:environment_id => @env.id, :assigned_app_id => @app.assigned_apps.first.id, :role => User.current_user.roles.first)
+      @app2 = create(:app)
+      @package1 = create_package()
+      @app2.package_ids = [@package1.id]
+      @app2.save
+
       @proc1 = create_procedure(:apps => [@app])
       @proc2 = create_procedure(:name => 'Test procedure 1')
       @proc3 = create_procedure(:apps => [@app], :name => 'Test procedure 2')
       @proc4 = create_procedure(:apps => [@app], :name => 'Test procedure 3')
       @proc4.archive
       @proc4.reload
-      @active = [@proc1, @proc2, @proc3]
+      @proc5 = create_procedure(:apps => [@app2], :name => 'Test procedure 5')
+      @active = [@proc1, @proc2, @proc3,@proc5]
       @inactive = [@proc4]
     end
 
@@ -76,6 +82,23 @@ describe Procedure do
         result.should match_array([@proc4])
       end
     end
+
+    describe "support packages" do
+      it 'has available_package_ids with not packages' do
+        @proc1.available_package_ids.should match_array([])
+      end
+
+      it 'has available_package_ids with packages' do
+        @proc5.available_package_ids.should match_array([@package1.id])
+      end
+
+      it 'has_no_available_package_templates' do
+        @proc5.has_no_available_package_templates?.should be_truthy
+      end
+
+    end
+
+
   end
 
   protected
@@ -83,4 +106,9 @@ describe Procedure do
   def create_procedure(options = nil)
     create(:procedure, options)
   end
+
+  def create_package(options = nil)
+    create(:package, options)
+  end
+
 end

@@ -261,7 +261,7 @@ feature 'Procedures page permissions', custom_roles: true do
         wait_for_ajax
 
         within step_popup do
-          expect(step_owner_select).not_to be_disabled
+          expect(step_owner_select).to_not be_disabled
         end
       end
 

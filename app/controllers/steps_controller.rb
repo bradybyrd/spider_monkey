@@ -253,10 +253,11 @@ class StepsController < ApplicationController
     @users = User.having_access_to_apps(app_ids).order('users.last_name, users.first_name')
     @groups = Group.where(:id => @users.collect{|u| u.group_ids}.flatten.uniq).active
     @grouped_users = @groups.map{|grp| [grp,grp.resources] }
-    step = procedure.steps.new(:owner => current_user)
+    step = procedure.steps.build(owner: current_user)
     step.uploads.build
     step.different_level_from_previous = false if params[:parallel].present?
-    render partial: 'steps/step_rows/new_step_for_procedure_form', locals: { step: step, procedure: procedure }
+    available_package_ids = procedure.available_package_ids
+    render partial: 'steps/step_rows/new_step_for_procedure_form', locals: { step: step, procedure: procedure, available_package_ids: available_package_ids }
   end
 
   def create
@@ -383,6 +384,7 @@ class StepsController < ApplicationController
     authorize! :add_step, Request.new
     step_params = reformat_dates_for_save(params[:step])
     step_params = update_automation_params(step_params)
+    step_params = update_step_references(step_params)
     if step_params[:owner_id].blank?
       step_params[:owner_id] = current_user.id
       step_params[:owner_type] = "User"
@@ -568,7 +570,7 @@ class StepsController < ApplicationController
     procedure = @step.floating_procedure
     step_params = reformat_dates_for_save(params[:step])
     step_params = update_automation_params(step_params, true)
-    if step_params[:component_id].blank?
+    if step_params[:component_id].blank? && step_params[:package_id].blank?
       step_params.update(:script_id => nil)
       step_params[:script_type] = nil
       step_params[:manual] = "1"
@@ -578,6 +580,7 @@ class StepsController < ApplicationController
       step_params[:owner_type] = "User"
     end
 
+    update_step_references(step_params)
     if @step.update_attributes(step_params)
       if request.xhr? || (request.put? && params[:internet_explorer_fix].present?)
         respond_to do |format|

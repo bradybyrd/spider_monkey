@@ -68,7 +68,7 @@ class TeamsController < ApplicationController
 
   def destroy
     if @team.destroyable? && @team.destroy
-      @team.users.update_all(terminate_session: true)
+      #PermissionMap.instance.bulk_clean(@team.users)
       flash[:success] = I18n.t('activerecord.notices.deleted', model: I18n.t('activerecord.models.team'))
     else
       flash[:error] = I18n.t('activerecord.notices.not_deleted', model: I18n.t('activerecord.models.team'))
@@ -79,7 +79,7 @@ class TeamsController < ApplicationController
   def deactivate
     @team = find_team
     authorize! :make_active_inactive, @team
-    @team.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@team.users)
 
     flash[:error] = t('team.deactivate_error') unless @team.deactivate!
     redirect_to teams_path(page: params[:page], key: params[:key])
@@ -111,7 +111,7 @@ class TeamsController < ApplicationController
   # POST/id
   def add_apps
     @team.manage_apps_and_users(:add, params) { |team, app_ids| team.app_ids += app_ids }
-    @team.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@team.users)
 
     respond_to do |format|
       format.js { render partial: 'teams/forms/edit_applications' }
@@ -121,7 +121,7 @@ class TeamsController < ApplicationController
   # POST/id
   def remove_apps
     @team.manage_apps_and_users(:remove, params) { |team, app_ids| team.app_ids -= app_ids }
-    @team.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@team.users)
 
     respond_to do |format|
       format.js { render partial: 'teams/forms/edit_applications' }
@@ -132,7 +132,7 @@ class TeamsController < ApplicationController
   def add_groups
     @team.manage_apps_and_users(:add, params) { |team| team.group_ids += Array(params[:group_ids]).map(&:to_i) }
     @groups = paginated_groups
-    @team.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@team.users)
 
     respond_to do |format|
       format.js { render partial: 'teams/forms/edit_groups' }
@@ -143,7 +143,7 @@ class TeamsController < ApplicationController
   def remove_groups
     @team.manage_apps_and_users(:remove, params) { |team| team.group_ids -= Array(params[:group_ids]).map(&:to_i) }
     @groups = paginated_groups
-    @team.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@team.users)
 
     respond_to do |format|
       format.js { render partial: 'teams/forms/edit_groups' }

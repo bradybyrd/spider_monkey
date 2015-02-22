@@ -515,7 +515,7 @@ module RequestsHelper
   end
 
   def step_packages_options(request, step)
-    request.apps.each do |app|
+    step.parent_object.apps.each do |app|
       packages    = app.packages
 
       next if packages.none?
@@ -538,19 +538,24 @@ module RequestsHelper
   end
 
   def package_instance_options(step, package)
-    @app_packages_instances_options = "<optgroup label='#{package.name}' title='#{package.name}'>"
-    step_package_id       = step.new_record? ? nil : step.package_instance.try(:id)
+    # procedures dont select the package instances
+    if step.request.present?
+      @app_packages_instances_options = "<optgroup label='#{package.name}' title='#{package.name}'>"
+      step_package_id       = step.new_record? ? nil : step.package_instance.try(:id)
 
-    package.package_instances.each do |package_instance|
-      selected                = step_package_id == package_instance.id
+      package.package_instances.each do |package_instance|
+        selected                = step_package_id == package_instance.id
 
-      @app_packages_instances_options += "<option #{"selected='selected'" if selected} value='#{package_instance.id.to_s}'"
-      @app_packages_instances_options += "title='#{package_instance.name}' package_id='#{package.id}'"
-      @app_packages_instances_options += "package_instance_id='#{package_instance.id}' >#{package_instance.name}</option>"
+        @app_packages_instances_options += "<option #{"selected='selected'" if selected} value='#{package_instance.id.to_s}'"
+        @app_packages_instances_options += "title='#{package_instance.name}' package_id='#{package.id}'"
+        @app_packages_instances_options += "package_instance_id='#{package_instance.id}' >#{package_instance.name}</option>"
+      end
+      @app_packages_instances_options += '</optgroup>'
+      @app_packages_instances_options || ''
+    else
+      ""
     end
 
-    @app_packages_instances_options += '</optgroup>'
-    @app_packages_instances_options || ''
   end
 
   def check_installed_components(app, request, comp)

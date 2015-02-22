@@ -8,7 +8,6 @@ describe RequestTemplatesController, type: :controller do
     @app = create(:app)
     @env = create(:environment)
     @request1 = create(:request)
-    @request_id = @request1.id + GlobalSettings[:base_request_number]
     @request1.apps << @app
     @request1.environment = @env
     @request_template = create(:request_template, request: @request1)
@@ -25,39 +24,49 @@ describe RequestTemplatesController, type: :controller do
 
     it "returns flash error 'No request template'" do
       RequestTemplate.delete_all
+
       get :index
-      flash[:error].should include('No request template')
-      response.should render_template('index')
+
+      expect(flash[:error]).to include('No request template')
+      expect(response).to render_template('index')
     end
 
     it 'returns records with keyword and numeric pagination' do
-      @request_template1 = create(:request_template, name: 'without key1', request: @request1)
-      @request_template1.save
+      request_template1 = create(:request_template, name: 'without key1', request: @request1)
+      request_template1.save
+
       get :index, {key: 'Template',
                    request: {id: @request1.id},
                    numeric_pagination: true}
-      @request_templates[0..14].each{|el| assigns(:request_templates).should include(el)}
+
+      active_requests = assigns(:request_templates)
+      @request_templates[0..14].each{|el| expect(active_requests).to include(el)}
       @archived_request_templates.each{|el| assigns(:inactive_request_templates).should include(el)}
-      assigns(:request_templates).should_not include(@request_template1)
-      assigns(:request_templates).should_not include(@request_templates[15])
+      expect(active_requests).to_not include(request_template1)
+      expect(active_requests).to_not include(@request_templates[15])
     end
 
     it 'returns request templates which are not in draft state' do
-      @request_template1 = create(:request_template, name: 'without key1', aasm_state: 'draft', request: @request1)
+      request_template1 = create(:request_template, name: 'without key1', aasm_state: 'draft', request: @request1)
+
       xhr :get, :index, {numeric_pagination: 'true', visible_only: 'true'}
-      @request_templates[0..14].each{|el| expect(assigns(:request_templates)).to include(el)}
-      expect(assigns(:request_templates)).not_to include(@request_template1)
-      expect(assigns(:request_templates)).not_to include(@request_templates[15])
+
+      active_requests = assigns(:request_templates)
+      @request_templates[0..14].each{ |el| expect(active_requests).to include(el) }
+      expect(active_requests).to_not include(request_template1)
+      expect(active_requests).to_not include(@request_templates[15])
     end
 
     it 'renders partial ajax_pagination_index' do
       xhr :get, :index
-      response.should render_template(partial: 'request_templates/_ajax_pagination_index')
+
+      expect(response).to render_template(partial: 'request_templates/_ajax_pagination_index')
     end
 
     it 'renders partial list' do
       xhr :get, :index, {numeric_pagination: true}
-      response.should render_template(partial: 'request_templates/_list')
+
+      expect(response).to render_template(partial: 'request_templates/_list')
     end
   end
 
@@ -73,34 +82,40 @@ describe RequestTemplatesController, type: :controller do
       req.name = 'without key1'
       req.save
       @request_templates.sort_by!{|el| el.name}
+
       get :details, {key: 'Template',
                      per_page: 15,
-                     request: {id: @request1.id},
+                     request: { id: @request1.id },
                      position: 'unarchived',
                      numeric_pagination: true}
-      @request_templates[0..14].each{|el| assigns(:request_templates).should include(el)}
-      assigns(:request_templates).should_not include(req)
-      assigns(:request_templates).should_not include(@request_templates[16])
+
+      active_requests = assigns(:request_templates)
+      @request_templates[0..14].each{|el| expect(active_requests).to include(el)}
+      expect(active_requests).to_not include(req)
+      expect(active_requests).to_not include(@request_templates[16])
     end
 
     it 'returns ordered records with alphabetical pagination' do
-      @request_templates = 16.times.collect{create(:request_template, request: @request1)}
-      @request_templates.each {|el| el.archive}
-      @request_templates.sort_by!{|el| el.name}
-      get :details, {per_page: 15,
-                     order: {'0' => [:name, 'ASC']}}
-      @request_templates[0..14].each{|el| assigns(:request_templates).should include(el)}
-      assigns(:request_templates).should_not include(@request_templates[15])
-      response.should render_template(partial: 'request_templates/_details')
+      request_templates = 16.times.collect{create(:request_template, request: @request1)}
+      request_templates.each {|el| el.archive}
+      request_templates.sort_by!{|el| el.name}
+
+      get :details, {per_page: 15, order: {'0' => [:name, 'ASC'] }}
+
+      active_requests = assigns(:request_templates)
+      request_templates[0..14].each{|el| expect(active_requests).to include(el)}
+      expect(active_requests).to_not include(request_templates[15])
+      expect(response).to render_template(partial: 'request_templates/_details')
     end
   end
 
   context '#create' do
     it 'success' do
-      xhr :post, :create, {request_id: @request_id,
-                           request_template: {name: 'ReqTemplate1'}}
-      flash[:success].should include('successfully')
-      response.should render_template('misc/redirect')
+      xhr :post, :create, { request_id: @request1.number,
+                            request_template: { name: 'ReqTemplate1' }}
+
+      expect(flash[:success]).to include('successfully')
+      expect(response).to render_template('misc/redirect')
     end
 
     context 'fails' do
@@ -111,16 +126,18 @@ describe RequestTemplatesController, type: :controller do
       end
 
       it 'renders template create' do
-        xhr :post, :create, {request_id: @request_id,
+        xhr :post, :create, {request_id: @request1.number,
                              request_template: {name: 'ReqTemplate1'}}
-        response.should render_template('request_templates/create')
+
+        expect(response).to render_template('request_templates/create')
       end
 
       it 'redirects to edit request path and returns flash error' do
-        post :create, {request_id: @request_id,
+        post :create, {request_id: @request1.number,
                        request_template: {name: 'ReqTemplate1'}}
-        flash[:error].should include('problem creating')
-        response.should redirect_to(edit_request_path(@request1))
+
+        expect(flash[:error]).to include('problem creating')
+        expect(response).to redirect_to(edit_request_path(@request1))
       end
     end
 
@@ -129,56 +146,63 @@ describe RequestTemplatesController, type: :controller do
                                     subject: Request,
                                     http_method: :post,
                                     controller_action: :create do
-      let(:params) { { request_id: @request_id,
+      let(:params) { { request_id: @request1.number,
                        request_template: { name: 'ReqTemplate1' } } }
     end
   end
 
   it '#destroy' do
     @request_template.archive
-    expect{delete :destroy, {id: @request_template.id}
+
+    expect{ delete :destroy, {id: @request_template.id}
           }.to change(RequestTemplate, :count).by(-1)
-    response.should redirect_to(request_templates_path)
+    expect(response).to redirect_to(request_templates_path)
   end
 
   it '#create_variant' do
-    get :create_variant, request_id: @request_id
-    response.should render_template('create_variant')
+    get :create_variant, request_id: @request1.number
+
+    expect(response).to render_template('create_variant')
   end
 
   it '#save_variant' do
     @team = create(:team)
-    post :save_variant, {request_id: @request_id,
-                         request_template_id: @request_template.id,
-                         team_name: 'Team_name',
-                         teams: [@team.id]}
-    response.should redirect_to(edit_request_path(@request1))
+
+    post :save_variant, { request_id: @request1.number,
+                          request_template_id: @request_template.id,
+                          team_name: 'Team_name',
+                          teams: [@team.id] }
+    expect(response).to redirect_to(edit_request_path(@request1))
   end
 
   context '#update' do
     it 'success' do
       RequestTemplate.any_instance.stub(:request).and_return(@request1)
-      put :update, {id: @request_template.id,
-                    request_template: {name: 'Changed'}}
-      flash[:notice].should include('successfully')
+
+      put :update, { id: @request_template.id,
+                     request_template: { name: 'Changed' }}
+
+      expect(flash[:notice]).to include('successfully')
       @request_template.reload
-      @request_template.name.should eql('Changed')
-      response.should redirect_to(@request_template.request)
+      expect(@request_template.name).to eq 'Changed'
+      expect(response).to redirect_to(@request_template.request)
     end
 
     it 'fails' do
       RequestTemplate.stub(:find).and_return(@request_template)
       @request_template.stub(:update_attributes).and_return(false)
-      put :update, {id: @request_template.id,
-                    request_template: {name: 'Changed'}}
-      flash[:notice].should be_nil
-      response.should redirect_to(@request_template.request)
+
+      put :update, { id: @request_template.id,
+                     request_template: { name: 'Changed' }}
+
+      expect(flash[:notice]).to be_nil
+      expect(response).to redirect_to(@request_template.request)
     end
   end
 
   it '#show' do
-    get :show, {request_id: @request1.id}
-    response.should render_template('show')
+    get :show, request_id: @request1.id
+    expect(response).to render_template('show')
   end
 
   context '#request_template_warning' do
@@ -214,5 +238,4 @@ describe RequestTemplatesController, type: :controller do
       expect(assigns(:warning)).to be_falsey
     end
   end
-
 end
