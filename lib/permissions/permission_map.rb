@@ -66,6 +66,10 @@ class PermissionMap
     Rails.cache.delete([:user_permissions_by_subject, user.id])
   end
 
+  def bulk_clean(users)
+    users.each{ |user| clean(user) }
+  end
+
   def global_permissions_hash(user)
     hash = {}
     UserPermissionsQuery.new(user).user_permissions.each do |permission|

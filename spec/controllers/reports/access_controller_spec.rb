@@ -45,7 +45,7 @@ describe Reports::AccessController do
       expect(response).to render_template('roles_map')
     end
 
-    it "assigns @teams_for_select" do
+    it 'assigns @teams_for_select' do
       team = create(:team)
       get :roles_map
       expect(assigns(:teams_for_select)).to eq([team])

@@ -50,7 +50,7 @@ class RolesController < ApplicationController
 
     authorize!(:edit, @role)
     if @role.update_attributes(params[:role])
-      @role.users.update_all(terminate_session: true)
+      #PermissionMap.instance.bulk_clean(@role.users)
       redirect_to roles_path, notice: t('role.was_updated')
     else
       render action: "edit"

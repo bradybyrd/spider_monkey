@@ -7,7 +7,7 @@ describe ApplicationPackagesController do
         include_context 'mocked abilities', :cannot, :add_remove_package, App
         specify do
           put :update_all, app_id: create(:app)
-          should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
 
@@ -15,7 +15,7 @@ describe ApplicationPackagesController do
         include_context 'mocked abilities', :cannot, :edit_properties, ApplicationPackage
         specify do
           get :edit_property_values, id: create(:application_package)
-          should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
 
@@ -23,7 +23,7 @@ describe ApplicationPackagesController do
         include_context 'mocked abilities', :cannot, :edit_properties, ApplicationPackage
         specify do
           put :update_property_values, id: create(:application_package)
-          should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
     end

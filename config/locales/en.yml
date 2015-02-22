@@ -509,6 +509,14 @@ en:
     errors:
       property_value_names_dont_exist: "contained references to properties could not be found. Did you confirm the property exists and the name is correct?"
 
+  procedure:
+    component_package: "Component / Package"
+    name: "Name"
+    type: "Type"
+    owner: "Owner"
+    component: "Component"
+    package: "Package"
+
   request:
     inbound_count: "%{count} Inbound Requests"
     inbound_title: 'Requests where you are requestor or owned by You'

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-
-describe CategoriesController, :type => :controller do
+describe CategoriesController, type: :controller do
   #### common values
   model = Category
   factory_model = :category
@@ -11,47 +10,47 @@ describe CategoriesController, :type => :controller do
   model_index_path = 'index'
   be_sort = true
   per_page = 20
-  index_flash = "No Category"
+  index_flash = 'No Category'
   #### values for edit
   model_edit_path = '/environment/metadata/categories'
-  edit_flash = "does not exist"
+  edit_flash = 'does not exist'
   http_refer = nil
   #### values for create
   model_create_path = '/environment/metadata/categories'
-  create_params =  {:category => {:name => "Category1",
-                                  :associated_events => ["problem"],
-                                  :categorized_type => "request"}}
+  create_params =  { category: { name: 'Category1',
+                                 associated_events: ['problem'],
+                                 categorized_type: 'request'}}
   #### values for update
-  update_params = {:name => 'name_ch'}
+  update_params = { name: 'name_ch' }
   #### values for destroy
   model_delete_path = '/environment/metadata/categories'
 
-  it_should_behave_like("CRUD GET index", model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
-  it_should_behave_like("CRUD GET new")
-  it_should_behave_like("CRUD GET edit", factory_model, model_edit_path, edit_flash, http_refer)
-  it_should_behave_like("CRUD POST create", model, factory_model, model_create_path, create_params)
-  it_should_behave_like("CRUD PUT update", model, factory_model, update_params)
-  it_should_behave_like("CRUD DELETE destroy", model, factory_model, model_delete_path, can_archive)
+  it_should_behave_like('CRUD GET index', model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
+  it_should_behave_like('CRUD GET new')
+  it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
+  it_should_behave_like('CRUD POST create', model, factory_model, model_create_path, create_params)
+  it_should_behave_like('CRUD PUT update', model, factory_model, update_params)
+  it_should_behave_like('CRUD DELETE destroy', model, factory_model, model_delete_path, can_archive)
 
-  context "#associated_event_options with categorized type" do
-    before (:each) { @category = create(:category) }
+  context '#associated_event_options with categorized type' do
+    before(:each) { @category = create(:category) }
 
-    specify "step" do
-      get :associated_event_options, {:id => @category.id,
-                                      :category => {:categorized_type => "step"}}
-      response.body.should include('Empty list')
+    specify 'step' do
+      get :associated_event_options, { id: @category.id,
+                                       category: {categorized_type: 'step'}}
+      expect(response.body).to include('Empty list')
     end
 
-    specify "request" do
-      get :associated_event_options, {:id => @category.id,
-                                      :category => {:categorized_type =>  "request"}}
-      response.body.should include('Problem')
+    specify 'request' do
+      get :associated_event_options, { id: @category.id,
+                                       category: {categorized_type: 'request'}}
+      expect(response.body).to include('Problem')
     end
 
-    specify "nil" do
-      get :associated_event_options, {:id => @category.id,
-                                      :category => {:categorized_type =>  ""}}
-      response.body.should eql("")
+    specify 'nil' do
+      get :associated_event_options, { id: @category.id,
+                                       category: { categorized_type: '' }}
+      expect(response.body).to eq ''
     end
   end
 

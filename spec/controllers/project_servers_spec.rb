@@ -10,18 +10,18 @@ describe ProjectServersController, type: :controller do
   http_refer = nil
   #### values for create
   model_create_path = nil
-  create_params =  {project_server: {name: 'name_changed',
-                                     server_name_id: '5',
-                                     server_url: 'http://137.72.224.176:8080',
-                                     username:  'ss',
-                                     password: ''}}
+  create_params =  { project_server: { name: 'name_changed',
+                                       server_name_id: '5',
+                                       server_url: 'http://137.72.224.176:8080',
+                                       username:  'ss',
+                                       password: '' }}
   #### values for update
-  update_params = {name: 'name_ch'}
+  update_params = { name: 'name_ch' }
 
-  it_should_behave_like("CRUD GET new")
-  it_should_behave_like("CRUD GET edit", factory_model, model_edit_path, edit_flash, http_refer)
-  it_should_behave_like("CRUD PUT update", model, factory_model, update_params)
-  it_should_behave_like("CRUD POST create", model, factory_model, model_create_path, create_params)
+  it_should_behave_like('CRUD GET new')
+  it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
+  it_should_behave_like('CRUD PUT update', model, factory_model, update_params)
+  it_should_behave_like('CRUD POST create', model, factory_model, model_create_path, create_params)
 
   before(:each) { @project_server = create(:project_server) }
 
@@ -38,24 +38,25 @@ describe ProjectServersController, type: :controller do
     end
   end
 
-  context "#index" do
-    it "renders partial with xhr request" do
+  context '#index' do
+    it 'renders partial with xhr request' do
       xhr :get, :index
-      response.should render_template(partial: '_index')
+
+      expect(response).to render_template(partial: '_index')
     end
 
-    it "returns flash no elements" do
+    it 'returns flash no elements' do
       ProjectServer.delete_all
       get :index
-      flash[:error].should include("No Project Server")
+      expect(flash[:error]).to include('No Project Server')
     end
 
-    context "returns valid data" do
+    context 'returns valid data' do
       before(:each) do
         ProjectServer.delete_all
       end
 
-      it "with pagination and renders template" do
+      it 'with pagination and renders template' do
         shown_models = create_list :project_server, 30
         hidden_models = create_pair :project_server
 
@@ -66,11 +67,11 @@ describe ProjectServersController, type: :controller do
         expect(response).to render_template('index')
       end
 
-      it "with keyword" do
-        active_dev_model = create(:project_server, name: "dev_active", is_active: true)
-        inactive_dev_model = create(:project_server, name: "dev_inactive", is_active: false)
-        active_other_model = create(:project_server, name: "other_active", is_active: true)
-        inactive_other_model = create(:project_server, name: "other_inactive", is_active: false)
+      it 'with keyword' do
+        active_dev_model = create(:project_server, name: 'dev_active', is_active: true)
+        inactive_dev_model = create(:project_server, name: 'dev_inactive', is_active: false)
+        active_other_model = create(:project_server, name: 'other_active', is_active: true)
+        inactive_other_model = create(:project_server, name: 'other_inactive', is_active: false)
 
         get :index, key: 'dev'
 
@@ -84,25 +85,30 @@ describe ProjectServersController, type: :controller do
     end
   end
 
-  it "#activate" do
+  it '#activate' do
     @project_server.deactivate!
-    put :activate, {id: @project_server.id}
-    response.should redirect_to(project_servers_url)
+
+    put :activate, id: @project_server.id
+
+    expect(response).to redirect_to(project_servers_url)
     @project_server.reload
-    @project_server.is_active.should be_truthy
+    expect(@project_server.is_active).to be_truthy
   end
 
-  it "#deactivate" do
+  it '#deactivate' do
     @project_server.activate!
-    put :deactivate, {id: @project_server.id}
-    response.should redirect_to(project_servers_url)
+
+    put :deactivate, id: @project_server.id
+
+    expect(response).to redirect_to(project_servers_url)
     @project_server.reload
-    @project_server.is_active.should_not be_truthy
+    expect(@project_server.is_active).to_not be_truthy
   end
 
-  it "#build_parameters" do
-    post :build_parameters, {id: @project_server.id,
-                             script_content: "new script content"}
-    response.should render_template(text: "new script content", layout: false)
+  it '#build_parameters' do
+    post :build_parameters, { id: @project_server.id,
+                              script_content: 'new script content'}
+
+    expect(response).to render_template(text: 'new script content', layout: false)
   end
 end

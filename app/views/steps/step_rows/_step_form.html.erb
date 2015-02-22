@@ -12,7 +12,7 @@
                                           :class => "#{local_assigns[:procedure] ? 'procedure_form' : ''}"} do |f|
   %>
     <div id='error_messages_for_step'></div>
-    <%= render :partial => 'steps/step_rows/form', :locals => { :request => request, :step => step, :f => f } %>
+    <%= render :partial => 'steps/step_rows/form', :locals => { :request => request, :step => step, related_object_type: step.related_object_type, :f => f } %>
 		<%= hidden_field_tag 'new_procedure_path_url', new_procedure_step_request_step_path(@request, @step) if local_assigns[:procedure] %>
     <input type="hidden" id="step_properties_load_path" value="<%= properties_for_request_path(request) %>" />
     <input type="hidden" id="step_server_properties_load_path" value="<%= server_properties_for_step_request_path request %>" />

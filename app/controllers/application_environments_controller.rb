@@ -49,7 +49,7 @@ class ApplicationEnvironmentsController < ApplicationController
 
     @app.reload
     @app.alpha_sort_envs if @app.a_sorting_envs
-    @app.users.update_all(terminate_session: true)
+    #PermissionMap.instance.bulk_clean(@app.users)
     PermissionMap.instance.clean(current_user)
 
     render :partial => "apps/default_environment"

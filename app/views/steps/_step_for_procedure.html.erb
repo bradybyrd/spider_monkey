@@ -31,7 +31,7 @@ data-section-url="<%= get_procedure_step_section_procedure_path(step, preview: '
             <%step_pref = sp.step_preference_label%>
             <%if step_pref == "components"%>
                 <td>
-                    <%= h (step.component && step.component.name) %>
+                  <%= step.decorate.component_name_formatted %>
                 </td>
             <%elsif step_pref == "task"%>
                 <td>
@@ -56,7 +56,7 @@ data-section-url="<%= get_procedure_step_section_procedure_path(step, preview: '
         <%end%>
     <%else%>
         <td>
-            <%= h (step.component && step.component.name) %>
+          <%= step.decorate.component_name_formatted %>
         </td>
         <td>
           <% if step.manual? %>

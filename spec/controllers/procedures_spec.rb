@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe ProceduresController, :type => :controller do
+describe ProceduresController, type: :controller do
   render_views
 
-  before (:each) { @procedure = create(:procedure) }
+  before(:each) { @procedure = create(:procedure) }
 
   #### common values
   model = Procedure
@@ -24,18 +24,20 @@ describe ProceduresController, :type => :controller do
 
   context '#load_tab_data' do
     it 'return step' do
-      @step = create(:step, :procedure => @procedure)
-      get :load_tab_data, {:id => @procedure.id,
-                           :step_id => @step.id,
-                           :format => 'js'}
-      assigns(:step).should eql(@step)
+      step = create(:step, procedure: @procedure)
+
+      get :load_tab_data, { id: @procedure.id,
+                            step_id: step.id,
+                            format: 'js' }
+      expect(assigns(:step)).to eq step
     end
 
     it 'builds step' do
-      get :load_tab_data, {:id => @procedure.id,
-                           :format => 'js'}
-      assigns(:step).should_not be_nil
-      assigns(:procedure).should eql(@procedure)
+      get :load_tab_data, { id: @procedure.id,
+                            format: 'js' }
+
+      expect(assigns(:step)).to_not be_nil
+      expect(assigns(:procedure)).to eq @procedure
     end
   end
 
@@ -58,38 +60,41 @@ describe ProceduresController, :type => :controller do
     before(:each) do
       @app = create(:app)
       @req = create(:request)
-      @params = {:request_id => @req.id,
-                 :app_ids => [@app.id],
-                 :procedure => {:name => 'proc1'},
-                 :format => 'js'}
+      @params = { request_id: @req.id,
+                  app_ids: [@app.id],
+                  procedure: { name: 'proc1' },
+                  format: 'js' }
     end
 
     it 'fails without steps' do
       post :create, @params
-      flash[:error].should include('At least one enabled')
+      expect(flash[:error]).to include('At least one enabled')
     end
 
     it 'fails with all request steps' do
-      @new_procedure = Procedure.new
-      @step = create(:step, :request => @req)
-      Procedure.stub(:new).and_return(@new_procedure)
-      @new_procedure.stub(:save).and_return(false)
+      new_procedure = Procedure.new
+      create(:step, request: @req)
+      Procedure.stub(:new).and_return(new_procedure)
+      new_procedure.stub(:save).and_return(false)
+
       post :create, @params
-      response.should render_template('misc/error_messages_for')
+
+      expect(response).to render_template('misc/error_messages_for')
     end
 
     it 'success with checked steps of request' do
-      ##TODO remove stub and create a list for add new steps to procedure
-      @step1 = create(:step, :request => @req)
+      step = create(:step, request: @req)
       Procedure.stub(:new).and_return(@procedure)
       @procedure.stub(:save).and_return(true)
-      post :create, {:request_id => @req.id,
-                     :app_ids => [@app.id],
-                     :procedure => {:name => 'proc_new',
-                                    :step_ids => ["#{@step1.id}"]},
-                     :format => 'js'}
-      flash[:success].should include('successfully')
-      response.should render_template('misc/redirect')
+
+      post :create, { request_id: @req.id,
+                      app_ids: [@app.id],
+                      format: 'js',
+                      procedure: { name: 'proc_new',
+                                   step_ids: [step.id.to_s] }}
+
+      expect(flash[:success]).to include('successfully')
+      expect(response).to render_template('misc/redirect')
     end
 
     it 'assigns creator' do
@@ -109,93 +114,96 @@ describe ProceduresController, :type => :controller do
     before(:each) { @app = create(:app) }
 
     it 'success' do
-      post :new_procedure_template, {:app_ids => [@app.id],
-                                     :procedure => {:name => 'proc1'}}
-      flash[:success].should include('successfully')
-      response.code.should eql('302')
+      post :new_procedure_template, { app_ids: [@app.id],
+                                      procedure: { name: 'proc1' }}
+
+      expect(flash[:success]).to include('successfully')
+      expect(response.code).to eq '302'
     end
 
     it 'fails' do
-      @new_procedure = Procedure.new
-      Procedure.stub(:new).and_return(@new_procedure)
-      @new_procedure.stub(:save).and_return(false)
-      post :new_procedure_template, {:app_ids => [@app.id],
-                                     :procedure => {:name => 'proc1'}}
-      response.should render_template('new')
+      new_procedure = Procedure.new
+      Procedure.stub(:new).and_return(new_procedure)
+      new_procedure.stub(:save).and_return(false)
+
+      post :new_procedure_template, { app_ids: [@app.id],
+                                      procedure: { name: 'proc1' }}
+
+      expect(response).to render_template('new')
     end
   end
 
   context '#update' do
     it 'success' do
-      put :update, {:id => @procedure.id,
-                    :procedure => {:name => 'Procedure_changed'}}
+      put :update, { id: @procedure.id,
+                     procedure: { name: 'Procedure_changed' }}
+
       @procedure.reload
-      @procedure.name.should eql('Procedure_changed')
-      flash[:success].should include('successfully')
-      response.should redirect_to(procedures_path)
+      expect(@procedure.name).to eq 'Procedure_changed'
+      expect(flash[:success]).to include('successfully')
+      expect(response).to redirect_to(procedures_path)
     end
 
     it 'fails' do
       Procedure.stub(:find).and_return(@procedure)
       @procedure.stub(:update_attributes).and_return(false)
-      put :update, {:id => @procedure.id,
-                    :procedure => {:name => 'Procedure_changed'}}
-      flash[:error].should include('problem')
-      response.should render_template('edit')
+
+      put :update, { id: @procedure.id,
+                     procedure: { name: 'Procedure_changed' }}
+
+      expect(flash[:error]).to include('problem')
+      expect(response).to render_template('edit')
     end
   end
 
   it '#update_step_position' do
     #TODO remove stub and add code for creating list and adding step to procedure
-    @step = create(:step, :insertion_point => 1)
+    step = create(:step, insertion_point: 1)
     Procedure.stub(:find).and_return(@procedure)
-    @procedure.steps.stub(:find).and_return(@step)
-    put :update_step_position, {:id => @step.id,
-                                :procedure_id => @procedure.id,
-                                :step => {:insertion_point => 2}}
-    @step.reload
-    @step.insertion_point.should eql(2)
-    response.should render_template(:partial => 'procedures/_step_for_reorder')
+    @procedure.steps.stub(:find).and_return(step)
+
+    put :update_step_position, { id: step.id,
+                                 procedure_id: @procedure.id,
+                                 step: { insertion_point: 2 }}
+    step.reload
+    expect(step.insertion_point).to eq 2
+    expect(response).to render_template(partial: 'procedures/_step_for_reorder')
   end
 
   it '#show' do
-    get :show, {:id => @procedure.id}
-    response.should redirect_to(edit_procedure_path(@procedure.id))
+    get :show, id: @procedure.id
+
+    expect(response).to redirect_to(edit_procedure_path(@procedure.id))
   end
 
   it '#reorder_steps' do
-    get :reorder_steps, {:id => @procedure.id}
-    assigns(:procedure).should eql(@procedure)
-    response.should render_template('_reorder_steps')
+    get :reorder_steps, id: @procedure.id
+
+    expect(assigns(:procedure)).to eq @procedure
+    expect(response).to render_template('_reorder_steps')
   end
 
   context '#add_to_request' do
-    before (:each) do
-      # TODO remove stub request
-      @req = create(:request)
-      @step = create(:step)
-      Request.stub(:find_by_number).and_return(@req)
-    end
-
     it 'from request' do
-      post :add_to_request, {:id => @procedure.id,
-                             :request_id => @req.id,
-                             :from_request => true}
-      response.should redirect_to(edit_request_path(@req))
+      request = create(:request)
+      post :add_to_request, { id: @procedure.id,
+                              request_id: request.number,
+                              from_request: true }
+      expect(response).to redirect_to(edit_request_path(request))
     end
 
     it 'not from request' do
-      post :add_to_request, {:id => @procedure.id,
-                             :request_id => @req.id,
-                             :from_request => false}
-      response.should render_template(:partial => 'steps/_procedure_for_reorder')
+      request = create(:request)
+      post :add_to_request, { id: @procedure.id,
+                              request_id: request.number,
+                              from_request: false }
+      expect(response).to render_template(partial: 'steps/_procedure_for_reorder')
     end
   end
 
   it '#get_procedure_step_section' do
-    @step = create(:step)
-    get :get_procedure_step_section, {:id => @step.id,
-                                      :preview => true}
-    response.should render_template(:partial => 'steps/_procedure_step_section')
+    get :get_procedure_step_section, { id: create(:step).id, preview: true }
+
+    expect(response).to render_template(partial: 'steps/_procedure_step_section')
   end
 end

@@ -76,7 +76,7 @@ class AppsController < ApplicationController
     authorize! :update, @app
 
     if @app.update_attributes(params[:app])
-      @app.users.update_all(terminate_session: true)
+      #PermissionMap.instance.bulk_clean(@app.users)
       alpha_reorder if params[:alpha_sorting_update] == 'yes'
       flash[:notice] = 'Application was successfully updated.'
       redirect_to edit_app_path(@app, page: params[:page], key: params[:key])

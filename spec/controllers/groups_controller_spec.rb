@@ -25,9 +25,6 @@ describe GroupsController do
     model_create_path =  nil
     create_params =  {group: {name: 'name_changed', role_ids: ''}}
 
-    #### values for destroy
-    model_delete_path =  '/groups'
-
     it_should_behave_like('CRUD GET index', model_name, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
     it_should_behave_like('CRUD GET new')
     it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
@@ -40,9 +37,10 @@ describe GroupsController do
                     group: {name: 'Group_changed',
                             resource_ids: [@user.id],
                             role_ids: ''}}
-      Group.find(group.id).name.should eql('Group_changed')
-      flash[:success].should include('successfully')
-      response.should redirect_to(groups_path)
+
+      expect(Group.find(group.id).name).to eq 'Group_changed'
+      expect(flash[:success]).to include('successfully')
+      expect(response).to redirect_to groups_path
     end
 
     it 'unsuccess' do
@@ -50,17 +48,18 @@ describe GroupsController do
                      group: { name: '',
                               resource_ids: [@user.id],
                               role_ids: '' }}
-      assigns(:unmanaged_users).should include(@user)
-      response.should render_template('edit')
+      expect(assigns(:unmanaged_users)).to include(@user)
+      expect(response).to render_template('edit')
     end
   end
 
   it '#set_default' do
     put :set_default, {id: group.id}
+
     group.reload
-    group.position.should eql(1)
-    flash[:success].should include('successfully')
-    response.should redirect_to(groups_path)
+    expect(group.position).to eq 1
+    expect(flash[:success]).to include('successfully')
+    expect(response).to redirect_to(groups_path)
   end
 
   context '#deactivate' do
@@ -75,13 +74,14 @@ describe GroupsController do
 
   context '#default_group', custom_roles: true do
     it 'set default group for user' do
-      @group = create(:group)
-      @user = create(:user, groups: [@group])
-      @role = create(:role)
-      @default_group = create(:group, position: 1, name: '[default]')
+      group = create(:group)
+      create(:user, groups: [group])
+      role = create(:role)
+      default_group = create(:group, position: 1, name: '[default]')
+
       expect{
-        put :update, {id: @group.id, group: { resource_ids: [], role_ids: @role.id }}
-      }.to change{@default_group.user_ids.count}.from(0).to(1)
+        put :update, {id: group.id, group: { resource_ids: [], role_ids: role.id }}
+      }.to change{default_group.user_ids.count}.from(0).to(1)
     end
   end
 end

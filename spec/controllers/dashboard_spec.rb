@@ -19,20 +19,22 @@ describe DashboardController, type: :controller do
 
   context '#recent_requests' do
     it 'returns paginated records and renders template' do
-      @requests = 21.times.collect { create(:request) }
-      @requests.reverse!
-      @request_ids = []
-      @requests.each { |el| @request_ids << el.id + GlobalSettings[:base_request_number] }
-      get :recent_requests, {request_ids: @request_ids}
-      @requests[0..19].each { |el| assigns(:requests).should include(el) }
-      assigns(:requests).should_not include(@requests[20])
-      response.should render_template('dashboard/index')
+      requests = 21.times.collect { create(:request) }
+      requests.reverse!
+      request_ids = []
+      requests.each { |el| request_ids << el.number }
+
+      get :recent_requests, { request_ids: request_ids }
+
+      requests[0..19].each { |el| expect(assigns(:requests)).to include(el) }
+      expect(assigns(:requests)).to_not include(requests[20])
+      expect(response).to render_template('dashboard/index')
     end
 
     it 'renders partial requests' do
-      @request1 = create(:request)
-      xhr :get, :recent_requests, {request_ids: [@request1.id + GlobalSettings[:base_request_number]]}
-      response.should render_template(partial: 'dashboard/self_services/_requests')
+      xhr :get, :recent_requests, {request_ids: [create(:request).number]}
+
+      expect(response).to render_template(partial: 'dashboard/self_services/_requests')
     end
   end
 
@@ -155,21 +157,26 @@ describe DashboardController, type: :controller do
 
   context '#promotions' do
     it 'renders partial promotions and returns requests' do
-      @requests = 21.times.collect{create(:request, promotion: true, requestor: @user)}
-      @requests.reverse!
-      xhr :get, :promotions, {show_all: '1'}
-      @requests[0..19].each { |el| assigns(:requests).should include(el) }
-      assigns(:requests).should_not include(@requests[20])
-      response.should render_template(partial: 'dashboard/self_services/_promotions')
+      requests = 21.times.collect{create(:request, promotion: true, requestor: @user)}
+
+      xhr :get, :promotions, { filters: {ignore_month: '', sort_scope: 'id', sort_direction: 'asc'} }
+
+      paginated_requests = assigns(:request_dashboard)[:requests]
+      requests[0..19].each { |el| expect(paginated_requests).to include(el) }
+      expect(paginated_requests).to_not include(requests[20])
+      expect(response).to render_template(partial: 'dashboard/self_services/_promotions')
     end
 
     it 'renders template self_services and returns apps' do
-      @apps = 7.times.collect { create(:app) }
-      @apps.sort_by! { |el| el.name }
+      apps = 7.times.collect { create(:app) }
+      apps.sort_by! { |el| el.name }
+
       get :promotions
-      @apps[0..5].each { |el| assigns(:my_applications).should include(el) }
-      assigns(:my_applications).should_not include(@apps[6])
-      response.should render_template('dashboard/self_services')
+
+      my_apps = assigns(:my_applications)
+      apps[0..5].each { |el| expect(my_apps).to include(el) }
+      expect(my_apps).to_not include(apps[6])
+      expect(response).to render_template('dashboard/self_services')
     end
   end
 
@@ -181,18 +188,18 @@ describe DashboardController, type: :controller do
     end
 
     it 'returns request preferences' do
-      @preference = @user.request_list_preferences.create!(text: 'text',
+      preference = @user.request_list_preferences.create!(text: 'text',
                                                            position: 1,
                                                            active: true)
       get :steps_for_request_ajax, {request_id: @request1.id,
                                     session_filter_var: 'dashboard_self_services'}
-      assigns(:request_active_list_preferences).should include(@preference)
+      expect(assigns(:request_active_list_preferences)).to include(preference)
     end
 
     it 'renders partial' do
       get :steps_for_request_ajax, {request_id: @request1.id,
                                     session_filter_var: 'dashboard_self_services'}
-      response.should render_template(partial: 'steps/_dashboard_list')
+      expect(response).to render_template(partial: 'steps/_dashboard_list')
     end
 
     context 'with filter' do
@@ -225,29 +232,35 @@ describe DashboardController, type: :controller do
   end
 
   it '#my_applications' do
-    @apps = 7.times.collect { create(:app) }
-    @apps.sort_by! { |el| el.name }
+    apps = 7.times.collect { create(:app) }
+    apps.sort_by! { |el| el.name }
+
     xhr :get, :my_applications, {page: 1}
-    @apps[0..5].each { |el| assigns(:my_applications).should include(el) }
-    assigns(:my_applications).should_not include(@apps[6])
-    response.should render_template(partial: 'dashboard/self_services/tables/_my_applications')
+
+    apps[0..5].each { |el| expect(assigns(:my_applications)).to include(el) }
+    expect(assigns(:my_applications)).to_not include(apps[6])
+    expect(response).to render_template(partial: 'dashboard/self_services/tables/_my_applications')
   end
 
   it '#my_environments' do
-    @envs = 7.times.collect { create(:environment) }
+    envs = 7.times.collect { create(:environment) }
+
     xhr :get, :my_environments, {page: 1}
-    @envs[0..5].each { |el| assigns(:my_environments).should include(el) }
-    assigns(:my_environments).should_not include(@envs[6])
-    response.should render_template(partial: 'dashboard/self_services/tables/_my_environments')
+
+    envs[0..5].each { |el| expect(assigns(:my_environments)).to include(el) }
+    expect(assigns(:my_environments)).to_not include(envs[6])
+    expect(response).to render_template(partial: 'dashboard/self_services/tables/_my_environments')
   end
 
   it '#my_servers' do
-    @servers = 7.times.collect { create(:server) }
-    @servers.sort_by! { |el| el.name }
+    servers = 7.times.collect { create(:server) }
+    servers.sort_by! { |el| el.name }
+
     xhr :get, :my_servers, {page: 1}
-    @servers[0..5].each { |el| assigns(:my_servers).should include(el) }
-    assigns(:my_servers).should_not include(@servers[6])
-    response.should render_template(partial: 'dashboard/self_services/tables/_my_servers')
+
+    servers[0..5].each { |el| expect(assigns(:my_servers)).to include(el) }
+    expect(assigns(:my_servers)).to_not include(servers[6])
+    expect(response).to render_template(partial: 'dashboard/self_services/tables/_my_servers')
   end
 
   context 'authorization' do

@@ -9,3 +9,6 @@
   :disable_fields => @disable_fields
 %>
 <% end %>
+<%if params[:li_id].eql?('st_content') %>
+    <%= render partial: 'steps/step_form_tabs/content',  locals: { request: @request, step: @step, related_object_type: @related_object_type } %>
+<% end %>

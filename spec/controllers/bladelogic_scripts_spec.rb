@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BladelogicScriptsController, :type => :controller do
+describe BladelogicScriptsController, type: :controller do
   context 'authorization' do
     context 'authorize fails' do
       before(:each) { @script = create(:bladelogic_script) }
@@ -38,15 +38,15 @@ describe BladelogicScriptsController, :type => :controller do
     end
   end
 
-  describe "#bladelogic?" do
-    it "returns true" do
-      controller.send(:bladelogic?).should be(true)
+  describe '#bladelogic?' do
+    it 'returns true' do
+      expect(controller.send(:bladelogic?)).to be_truthy
     end
   end
 
-  describe "#use_template" do
-    it "returns bladelogic" do
-      controller.send(:use_template).should eql('bladelogic')
+  describe '#use_template' do
+    it 'returns bladelogic' do
+      expect(controller.send(:use_template)).to eq 'bladelogic'
     end
   end
 end

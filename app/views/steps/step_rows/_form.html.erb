@@ -25,8 +25,7 @@
         <label>Type</label>
         <%= related_object_type_select_tag(step) %>
       </div>
-
-      <div id="package_instance_selection" class="field" style="...">
+      <div id="package_instance_selection" class="field">
         <% if step_has_valid_package?(step) %>
           <%= render "steps/step_rows/package_instances", step: step, package: step.package %>
         <% end %>
@@ -41,7 +40,7 @@
                      disabled: cannot?(:edit_step_owner, @request) %>
         <%= hidden_field_tag 'step[owner_type]', user_owner_chosen_for(step) ? 'User' : 'Group' %>
       </div>
-      <div id="component_or_package_selection" class="field" style="...">
+      <div id="component_or_package_selection" class="field">
         <%= render partial: 'steps/step_rows/type_content', locals: { related_object_type: step.related_object_type, step: step } %>
       </div>
       <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:380px;">

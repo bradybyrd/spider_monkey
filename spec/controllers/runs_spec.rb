@@ -1,80 +1,82 @@
 require 'spec_helper'
 
-describe RunsController, :type => :controller do
+describe RunsController, type: :controller do
   before(:each) do
     @plan = create(:plan)
     @plan_stage = create(:plan_stage)
-    @run = create(:run, :owner => @user,
-                        :requestor => @user,
-                        :plan => @plan)
+    @run = create(:run, owner: @user, requestor: @user, plan: @plan)
     @request1 = create(:request)
-    @plan_member = create(:plan_member, :plan => @plan, :stage => @plan_stage)
+    @plan_member = create(:plan_member, plan: @plan, stage: @plan_stage)
     @plan_member.request = @request1
   end
 
-  it "#index" do
-    get :index, {:plan_id => @plan.id,
-                 :plan_stage_id => @plan_stage.id}
-    assigns(:runs).should include(@run)
-    response.should render_template('index')
+  it '#index' do
+    get :index, { plan_id: @plan.id,
+                  plan_stage_id: @plan_stage.id }
+
+    expect(assigns(:runs)).to include(@run)
+    expect(response).to render_template('index')
   end
 
-  it "#show" do
-    get :show, {:plan_id => @plan.id,
-                :plan_stage_id => @plan_stage.id,
-                :id => @run.id}
-    response.should render_template('show')
+  it '#show' do
+    get :show, { plan_id: @plan.id,
+                 plan_stage_id: @plan_stage.id,
+                 id: @run.id }
+    expect(response).to render_template('show')
   end
 
-  context "#new" do
-    context "success" do
-      specify "request_ids" do
-        get :new, {:plan_id => @plan.id,
-                   :plan_stage_id => @plan_stage.id,
-                   :request_ids => [@request1.id]}
-        response.should render_template('new')
+  context '#new' do
+    context 'success' do
+      specify 're`quest_ids' do
+        get :new, { plan_id: @plan.id,
+                    plan_stage_id: @plan_stage.id,
+                    request_ids: [@request1.id] }
+        expect(response).to render_template('new')
       end
 
-      specify "with all requests of plan stage" do
-        xhr :get, :new, {:plan_id => @plan.id,
-                         :plan_stage_id => @plan_stage.id}
-        response.should render_template('new')
+      specify 'with all requests of plan stage' do
+        xhr :get, :new, { plan_id: @plan.id,
+                          plan_stage_id: @plan_stage.id }
+        expect(response).to render_template('new')
       end
 
-      specify "clone run" do
-        pending "TypeError: incompatible marshal file format (can't be read)"
-        @plan_stage2 = create(:plan_stage)
-        @request2 = create(:request)
-        RequestTemplate.any_instance.stub(:create_request_for).and_return(@request2)
-        @run2 = create(:run, :owner => @user,
-                       :requestor => @user,
-                       :plan => @plan, :request_ids => [@request2.id])
-        @run2.plan_it!
-        @run2.start!
-        get :new, {:plan_id => @plan.id,
-                   :plan_stage_id => @plan_stage.id,
-                   :next_required_stage_id => @plan_stage2,
-                   :run_to_clone_id => @run2}
+      specify 'clone run' do
+        plan_stage2 = create(:plan_stage)
+        request2 = create(:request)
+        RequestTemplate.any_instance.stub(:create_request_for).and_return(request2)
+        run2 = create(:run, owner: @user, requestor: @user,
+                      plan: @plan, request_ids: [request2.id])
+        run2.plan_it!
+        run2.start!
+
+        get :new, { plan_id: @plan.id,
+                    plan_stage_id: @plan_stage.id,
+                    next_required_stage_id: plan_stage2,
+                    run_to_clone_id: run2 }
+
+        expect(response).to render_template('new')
       end
     end
 
-    it "fails" do
+    it 'fails' do
       Run.stub(:new).and_return(false)
-      get :new, {:plan_id => @plan.id,
-                 :plan_stage_id => @plan_stage.id,
-                 :request_ids => [@request1.id]}
-      response.should redirect_to(plan_path(@plan))
+
+      get :new, { plan_id: @plan.id,
+                  plan_stage_id: @plan_stage.id,
+                  request_ids: [@request1.id] }
+
+      expect(response).to redirect_to(plan_path(@plan))
     end
   end
 
-  describe "#edit" do
+  describe '#edit' do
     let(:valid_params) { { plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
                            id: @run.id } }
 
     it do
       get :edit, valid_params
-      response.should render_template('edit')
+      expect(response).to render_template('edit')
     end
 
     it_behaves_like 'authorizable', controller_action: :edit,
@@ -84,44 +86,46 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  context "#create" do
+  context '#create' do
     before(:each) do
-      @run_params = {:name => "Run1",
-                     :owner_id => @user.id,
-                     :requestor_id => @user.id,
-                     :plan_id => @plan.id}
+      @run_params = { name: 'Run1',
+                      owner_id: @user.id,
+                      requestor_id: @user.id,
+                      plan_id: @plan.id }
     end
 
     let(:valid_params) { { plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
                            run: @run_params } }
 
-    context "success" do
-      it "redirects to plan path" do
+    context 'success' do
+      it 'redirects to plan path' do
         post :create, valid_params
-        response.code.should eql('302')
+
+        expect(response.code).to eq '302'
       end
 
-      it "ajax redirect" do
+      it 'ajax redirect' do
         xhr :post, :create, valid_params.merge({ request_planned_at_to_run_start_at: Time.now })
-        response.should render_template('misc/redirect')
+
+        expect(response).to render_template('misc/redirect')
       end
     end
 
-    context "fails" do
+    context 'fails' do
       before(:each) do
         Run.stub(:new).and_return(@run)
         @run.stub(:update_attributes).and_return(false)
       end
 
-      it "renders action new" do
+      it 'renders action new' do
         post :create, valid_params
-        response.should render_template('new')
+        expect(response).to render_template('new')
       end
 
-      it "shows validation errors" do
+      it 'shows validation errors' do
         xhr :post, :create, valid_params
-        response.should render_template('misc/error_messages_for')
+        expect(response).to render_template('misc/error_messages_for')
       end
     end
 
@@ -132,76 +136,75 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  context "#update" do
+  context '#update' do
     let(:valid_params) { { id: @run.id,
                            plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
                            request_planned_at_to_run_start_at: Time.now,
-                           run: { name: "Run_changed" } } }
+                           run: { name: 'Run_changed' } } }
 
-    context "success" do
-      it "ajax redirect" do
+    context 'success' do
+      it 'ajax redirect' do
         @run.plan_it!
         @run.start!
         @run.delete!
-        xhr :put, :update, {:id => @run.id,
-                            :plan_id => @plan.id,
-                            :plan_stage_id => @plan_stage.id,
-                            :run => {:name => "Run_changed"}}
+        xhr :put, :update, { id: @run.id,
+                             plan_id: @plan.id,
+                             plan_stage_id: @plan_stage.id,
+                             run: { name: 'Run_changed' }}
         @run.reload
-        @run.name.should eql("Run_changed")
-        response.should render_template('misc/redirect')
+        expect(@run.name).to eq 'Run_changed'
+        expect(response).to render_template('misc/redirect')
       end
 
-      it "redirects to plan path" do
+      it 'redirects to plan path' do
         @time = Time.now
-        put :update, {:id => @run.id,
-                      :plan_id => @plan.id,
-                      :plan_stage_id => @plan_stage.id,
-                      :run => {:name => "Run_changed",
-                               :start_at_date => @time.to_date,
-                               :start_at_hour => @time.hour,
-                               :start_at_minute => @time.min,
-                               :start_at_meridian => @time.sec,
-                               :end_at_date => @time.to_date,
-                               :end_at_hour => @time.hour,
-                               :end_at_minute => @time.min,
-                               :end_at_meridian => @time.sec}}
+        put :update, { id: @run.id,
+                       plan_id: @plan.id,
+                       plan_stage_id: @plan_stage.id,
+                       run: { name: 'Run_changed',
+                              start_at_date: @time.to_date,
+                              start_at_hour: @time.hour,
+                              start_at_minute: @time.min,
+                              start_at_meridian: @time.sec,
+                              end_at_date: @time.to_date,
+                              end_at_hour: @time.hour,
+                              end_at_minute: @time.min,
+                              end_at_meridian: @time.sec}}
         @run.reload
-        @run.name.should eql("Run_changed")
-        response.should redirect_to(plan_path( @plan, :run_id => @run.id ))
+        expect(@run.name).to eq 'Run_changed'
+        expect(response).to redirect_to(plan_path( @plan, run_id: @run.id))
       end
 
-      it "sets scheduled date" do
-        pending "undefined method `except' for nil:NilClass"
-        @plan_member = create(:plan_member, :request => create(:request))
-        @run.plan_members << @plan_member
+      it 'sets scheduled date' do
+        plan_member = create(:plan_member, request: create(:request))
+        @run.plan_members << plan_member
         @run.requests_planned_date = Time.now
+
         xhr :put, :update, valid_params
-        @run.reload
       end
     end
 
-    context "fails" do
+    context 'fails' do
       before(:each) do
         Run.stub(:find).and_return(@run)
         @run.stub(:update_attributes).and_return(false)
       end
 
-      it "renders action edit" do
-        put :update, {:id => @run.id,
-                      :plan_id => @plan.id,
-                      :plan_stage_id => @plan_stage.id,
-                      :run => {:name => "Run_changed"}}
-        response.should render_template('edit')
+      it 'renders action edit' do
+        put :update, { id: @run.id,
+                       plan_id: @plan.id,
+                       plan_stage_id: @plan_stage.id,
+                       run: { name: 'Run_changed'}}
+        expect(response).to render_template('edit')
       end
 
-      it "shows validation errors" do
-        xhr :put, :update, {:id => @run.id,
-                            :plan_id => @plan.id,
-                            :plan_stage_id => @plan_stage.id,
-                            :run => {:name => "Run_changed"}}
-        response.should render_template('misc/error_messages_for')
+      it 'shows validation errors' do
+        xhr :put, :update, { id: @run.id,
+                             plan_id: @plan.id,
+                             plan_stage_id: @plan_stage.id,
+                             run: { name: 'Run_changed' }}
+        expect(response).to render_template('misc/error_messages_for')
       end
     end
 
@@ -248,31 +251,32 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  it "#destroy" do
-    delete :destroy, {:plan_id => @plan.id,
-                             :plan_stage_id => @plan_stage.id,
-                             :id => @run.id}
-    response.should redirect_to(plan_url(@plan))
+  it '#destroy' do
+    delete :destroy, { plan_id: @plan.id,
+                       plan_stage_id: @plan_stage.id,
+                       id: @run.id }
+    expect(response).to redirect_to(plan_url(@plan))
   end
 
-  context "#select_run_for_ammendment" do
+  context '#select_run_for_ammendment' do
     let(:valid_params) { { plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
                            request_ids: [@request1.id] } }
 
-    it "success" do
+    it 'success' do
       post :select_run_for_ammendment, valid_params
-      response.should render_template('select_run_for_ammendment')
+      expect(response).to render_template('select_run_for_ammendment')
     end
 
-    it "fails" do
-      @runs = [@run]
-      Run.stub(:by_plan_and_stage).and_return(@runs)
-      @runs.stub(:mutable).and_return(@runs)
-      @runs.stub(:map).and_return(false)
-      post :select_run_for_ammendment, {:plan_id => @plan.id,
-                                        :plan_stage_id => @plan_stage.id}
-      response.should redirect_to(plan_path(@plan))
+    it 'fails' do
+      runs = [@run]
+      Run.stub(:by_plan_and_stage).and_return(runs)
+      runs.stub(:mutable).and_return(runs)
+      runs.stub(:map).and_return(false)
+
+      post :select_run_for_ammendment, { plan_id: @plan.id,
+                                         plan_stage_id: @plan_stage.id }
+      expect(response).to redirect_to(plan_path(@plan))
     end
 
     it_behaves_like 'authorizable', controller_action: :select_run_for_ammendment,
@@ -283,51 +287,55 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  context "#add_requests" do
-    context "success" do
+  context '#add_requests' do
+    context 'success' do
       before(:each) { RequestTemplate.any_instance.stub(:create_request_for).and_return(@request1) }
-      it "ajax redirect" do
-        xhr :post, :add_requests, {:run_id => @run.id,
-                                   :plan_id => @plan.id,
-                                   :plan_stage_id => @plan_stage.id}
-        response.should render_template('misc/redirect')
+
+      it 'ajax redirect' do
+        xhr :post, :add_requests, { run_id: @run.id,
+                                    plan_id: @plan.id,
+                                    plan_stage_id: @plan_stage.id }
+        expect(response).to render_template('misc/redirect')
       end
 
-      it "redirects to run path" do
-        expect{post :add_requests, {:run_id => @run.id,
-                                    :plan_id => @plan.id,
-                                    :plan_stage_id => @plan_stage.id,
-                                    :request_ids => [@request1.id]}
-              }.to change(@run.requests, :count).by(1)
-        response.should redirect_to(plan_path( @plan, :run_id => @run.id ))
+      it 'redirects to run path' do
+        expect{
+          post :add_requests, { run_id: @run.id,
+                                plan_id: @plan.id,
+                                plan_stage_id: @plan_stage.id,
+                                request_ids: [@request1.id] }
+        }.to change(@run.requests, :count).by(1)
+        expect(response).to redirect_to(plan_path( @plan, run_id: @run.id))
       end
     end
 
-    it "fails" do
+    it 'fails' do
       Run.stub(:find).and_return(@run)
       @run.stub(:update_attributes).and_return(false)
-      post :add_requests, {:run_id => @run.id,
-                           :plan_id => @plan.id,
-                           :plan_stage_id => @plan_stage.id}
-      response.should redirect_to(plan_path(@plan))
+
+      post :add_requests, { run_id: @run.id,
+                            plan_id: @plan.id,
+                            plan_stage_id: @plan_stage.id }
+      expect(response).to redirect_to(plan_path(@plan))
     end
   end
 
-  context "#drop" do
+  context '#drop' do
     let(:valid_params) { { run_id: @run.id,
                            plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
                            request_ids: [@request1.id] } }
 
-    it "success" do
+    it 'success' do
       post :drop, valid_params
-      response.should redirect_to(plan_path(@plan, :run_id => @run.id))
+
+      expect(response).to redirect_to(plan_path(@plan, run_id: @run.id))
     end
 
-    it "fails" do
-      post :drop, {:plan_id => @plan.id,
-                   :plan_stage_id => @plan_stage.id}
-      response.should redirect_to(plan_path(@plan))
+    it 'fails' do
+      post :drop, { plan_id: @plan.id,
+                    plan_stage_id: @plan_stage.id }
+      expect(response).to redirect_to(plan_path(@plan))
     end
 
     context 'without permission' do
@@ -360,21 +368,24 @@ describe RunsController, :type => :controller do
 
   end
 
-  context "#reorder_members" do
+  context '#reorder_members' do
     let(:valid_params) { { id: @run.id,
                            plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id } }
 
-    it "renders action" do
+    it 'renders action' do
       get :reorder_members, valid_params
-      response.should render_template("reorder_members")
+
+      expect(response).to render_template('reorder_members')
     end
 
-    it "redirects to plan path" do
+    it 'redirects to plan path' do
       Run.stub(:find).and_return(@run)
       @run.stub(:blank?).and_return(true)
+
       get :reorder_members, valid_params
-      response.should redirect_to(plan_path(@plan))
+
+      expect(response).to redirect_to(plan_path(@plan))
     end
 
     it_behaves_like 'authorizable', controller_action: :reorder_members,
@@ -384,7 +395,7 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  describe "#update_member_order" do
+  describe '#update_member_order' do
     let(:valid_params) { { id: @run.id,
                            plan_id: @plan.id,
                            plan_stage_id: @plan_stage.id,
@@ -393,9 +404,10 @@ describe RunsController, :type => :controller do
 
     it do
       put :update_member_order, valid_params
+
       @plan_member.reload
-      @plan_member.position.should eql(2)
-      response.should render_template(:partial => '_for_reorder')
+      expect(@plan_member.position).to eq 2
+      expect(response).to render_template(partial: '_for_reorder')
     end
 
     it_behaves_like 'authorizable', controller_action: :update_member_order,
@@ -406,11 +418,11 @@ describe RunsController, :type => :controller do
                                     end
   end
 
-  it "#version_conflict_report" do
-    get :version_conflict_report, {:id => @run.id,
-                                   :plan_id => @plan.id,
-                                   :plan_stage_id => @plan_stage.id}
-    response.should render_template("runs/version_conflict_report")
+  it '#version_conflict_report' do
+    get :version_conflict_report, { id: @run.id,
+                                    plan_id: @plan.id,
+                                    plan_stage_id: @plan_stage.id }
+    expect(response).to render_template('runs/version_conflict_report')
   end
 
   describe '#start' do

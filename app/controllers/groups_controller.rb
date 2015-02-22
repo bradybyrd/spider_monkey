@@ -59,7 +59,7 @@ class GroupsController < ApplicationController
     @before_update_group_user_ids = @group.user_ids
 
     if @group.update_attributes(group_params)
-      @group.users.update_all(terminate_session: true)
+      #PermissionMap.instance.bulk_clean(@group.users)
       flash[:success] = 'Resource Group was successfully updated.'
       redirect_to groups_path(:page => params[:page], :key => params[:key])
     else

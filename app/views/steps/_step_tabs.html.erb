@@ -31,6 +31,9 @@
         <%= step_tab_li(step, "design") if can? :view_step_design_tab, request %>
         <%= step_tab_li(step, "content") if can? :select_step_package, request %>
       <% end %>
+      <% if local_assigns[:procedure] && procedure.id.present? %>
+          <%= step_tab_li(step, "content") if can? :select_step_package, request %>
+      <% end %>
     </ul>
   </div>
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EnvironmentTypesController, :type => :controller do
+describe EnvironmentTypesController, type: :controller do
   #### common values
   model = EnvironmentType
   factory_model = :environment_type
@@ -10,26 +10,26 @@ describe EnvironmentTypesController, :type => :controller do
   model_index_path = 'index'
   be_sort = false
   per_page = 20
-  index_flash = "No Environment Type"
+  index_flash = 'No Environment Type'
   #### values for edit
   model_edit_path = '/index'
   edit_flash = 'not found'
   http_refer = true
   #### values for create
   model_create_path = nil
-  create_params = {:environment_type => {:name => 'EnvType1',
-                                         :label_color => '#00008B'}}
+  create_params = { environment_type: { name: 'EnvType1',
+                                        label_color: '#00008B' }}
   #### values for update
-  update_params = {:name => 'name_ch'}
+  update_params = { name: 'name_ch' }
   #### values for destroy
   model_delete_path = '/environment/metadata/environment_types'
 
-  it_should_behave_like("CRUD GET index", model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
-  it_should_behave_like("CRUD GET new")
-  it_should_behave_like("CRUD GET edit", factory_model, model_edit_path, edit_flash, http_refer)
-  it_should_behave_like("CRUD POST create", model, factory_model, model_create_path, create_params)
-  it_should_behave_like("CRUD PUT update", model, factory_model, update_params)
-  it_should_behave_like("CRUD DELETE destroy", model, factory_model, model_delete_path, can_archive)
+  it_should_behave_like('CRUD GET index', model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
+  it_should_behave_like('CRUD GET new')
+  it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
+  it_should_behave_like('CRUD POST create', model, factory_model, model_create_path, create_params)
+  it_should_behave_like('CRUD PUT update', model, factory_model, update_params)
+  it_should_behave_like('CRUD DELETE destroy', model, factory_model, model_delete_path, can_archive)
 
   describe '#reorder' do
     context 'with permissions' do

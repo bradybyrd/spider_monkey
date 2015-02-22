@@ -463,6 +463,9 @@ Brpm::Application.routes.draw do
           put :archive
           put :unarchive
           get :load_tab_data
+          get :get_type_inputs
+          get :get_package_instances
+          get :references_for_procedure
         end
         collection do
           post :new_procedure_template

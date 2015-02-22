@@ -356,8 +356,13 @@ module RlmUtilities
       xml_response = RestClient.post(url, request_doc_xml, content_type: :xml, accept: :xml)
       xml_to_hash_response = XmlSimple.xml_in(xml_response)
 
-      if xml_to_hash_response['result'][0]['rc'] != '0' || xml_to_hash_response['result'][0]['message'] != 'Ok'
-        raise "Error while posting to URL #{url}: #{xml_to_hash_response['result'][0]['message']}"
+      result = xml_to_hash_response['result'][0]
+
+      if result['rc'] != '0' || result['message'] != 'Ok'
+        msg = "Error while posting to URL #{url}: #{result['message']}"
+        response_value = parse_response_value(result)
+        msg += "\nResponse value: #{response_value}" if response_value.present?
+        raise msg
       end
 
       xml_to_hash_response
@@ -375,6 +380,11 @@ module RlmUtilities
       fh.close
 
       log_file_path
+    end
+
+    def parse_response_value(result)
+      return unless result['response']
+      result['response'][0]['value']
     end
   end
 end

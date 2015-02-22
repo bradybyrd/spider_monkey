@@ -157,7 +157,7 @@ describe ApplicationController, type: :controller do
     routes.draw { get 'test_add_temp_filters' => 'anonymous#test_add_temp_filters'}
     get :test_add_temp_filters, {selected_filters: {},
                                  temp_filters: {'automation_type' => 'Automation'}}
-    assigns(:filters).should eql({'automation_type' => ['Automation']})
+    expect(assigns(:filters)).to eql({'automation_type' => ['Automation']})
   end
 
   it '#remove_temp_filters' do
@@ -165,14 +165,14 @@ describe ApplicationController, type: :controller do
 
     get :test_remove_temp_filters, {selected_filters: {'outbound_requests' => 'Request'},
                                     all_filters: {'automation_type' => 'Automation'}}
-    assigns(:filters).should_not include({'automation_type' => 'Automation'})
+    expect(assigns(:filters)).to_not include({'automation_type' => 'Automation'})
   end
 
   it '#temp_filters' do
     routes.draw { get 'test_temp_filters' => 'anonymous#test_temp_filters'}
 
     get :test_temp_filters, {'for_dashboard' => true}
-    assigns(:filters).should include('for_dashboard' => true)
+    expect(assigns(:filters)).to include('for_dashboard' => true)
   end
 
   ######## protected
@@ -183,14 +183,14 @@ describe ApplicationController, type: :controller do
     it 'returns plan' do
       @plan = create(:plan)
       get :test_find_plan, {id: @plan.id}
-      assigns(:plan).should eql(@plan)
+      expect(assigns(:plan)).to eq @plan
     end
 
     it 'returns flash' do
       @plan = create(:plan)
       get :test_find_plan, {id: @plan.id+1}
       flash[:notice].should eql('Invalid plan id or plan not found.')
-      assigns(:plan).should be_nil
+      expect(assigns(:plan)).to be_nil
     end
   end
 
@@ -198,21 +198,21 @@ describe ApplicationController, type: :controller do
     routes.draw { get 'test_set_plan_tab_id' => 'anonymous#test_set_plan_tab_id' }
 
     get :test_set_plan_tab_id, {tab_id: 4}
-    assigns(:tab_id).should eql('4')
+    expect(assigns(:tab_id)).to eq '4'
   end
 
   it '#host_url' do
     routes.draw { get 'test_host_url' => 'anonymous#test_host_url' }
 
     get :test_host_url
-    assigns(:url).should include("http://#{request.host}")
+    expect(assigns(:url)).to include("http://#{request.host}")
   end
 
   it '#current_pagination_page' do
     routes.draw { get 'test_current_pagination_page' => 'anonymous#test_current_pagination_page' }
 
     get :test_current_pagination_page, {page: 4}
-    assigns(:page).should eql('4')
+    expect(assigns(:page)).to eq '4'
   end
 
   context '#requires_resource_manager' do
@@ -223,14 +223,14 @@ describe ApplicationController, type: :controller do
       User.any_instance.stub(:admin?).and_return(false)
 
       get :test_requires_resource_manager
-      response.should redirect_to(root_path)
+      expect(response).to redirect_to root_path
     end
 
     it 'returns true' do
       User.any_instance.stub(:resource_manager?).and_return(true)
 
       get :test_requires_resource_manager
-      assigns(:resource_manager).should be_truthy
+      expect(assigns(:resource_manager)).to be_truthy
     end
   end
 
@@ -244,7 +244,7 @@ describe ApplicationController, type: :controller do
 
     it 'returns nothing' do
       get :test_options_from_model_association
-      assigns(:options).should eql('')
+      expect(assigns(:options)).to eq ''
     end
 
     specify 'with apply method' do
@@ -254,21 +254,21 @@ describe ApplicationController, type: :controller do
                                                  association: ':application_environments',
                                                  options: {named_scope: ':in_order',
                                                            apply_method: 'application_environments'}}
-      assigns(:options).should include("#{@env.name}")
+      expect(assigns(:options)).to include @env.name.to_s
     end
 
     specify 'without apply method with hash options' do
       get :test_options_from_model_association, {id: @app.id,
                                                  association: :application_environments,
                                                  options: {named_scope: {in_order: 'DESC'}}}
-      assigns(:options).should include("#{@env.name}")
+      expect(assigns(:options)).to include @env.name.to_s
     end
 
     specify 'without apply method' do
       get :test_options_from_model_association, {id: @app.id,
                                                  association: :application_environments,
                                                  options: {named_scope: :in_order}}
-      assigns(:options).should include("#{@env.name}")
+      expect(assigns(:options)).to include @env.name.to_s
     end
   end
 
@@ -280,9 +280,9 @@ describe ApplicationController, type: :controller do
                                   optgroup: true,
                                   css_class: 'class_name',
                                   options: 'options'}
-    assigns(:options).should include("#{@app.name}")
-    assigns(:options).should include('options')
-    assigns(:options).should include('class_name')
+    expect(assigns(:options)).to include @app.name.to_s
+    expect(assigns(:options)).to include 'options'
+    expect(assigns(:options)).to include 'class_name'
   end
 
   it '#find_application' do
@@ -290,24 +290,24 @@ describe ApplicationController, type: :controller do
     @app = create(:app)
 
     get :test_find_application, {app_id: @app.id}
-    assigns(:app).should eql(@app)
+    expect(assigns(:app)).to eq @app
   end
 
   context '#dashboard_setup' do
     before(:each) do
       routes.draw { get 'test_dashboard_setup' => 'anonymous#test_dashboard_setup' }
-      @request1 = create(:request)
+      @test_request = create(:request)
     end
 
     it 'returns request of current user' do
       get :test_dashboard_setup, {show_all: true}
-      assigns(:requests).should include(@request1)
+      expect(assigns(:requests)).to include @test_request
     end
 
     it 'returns extant requests' do
       controller.stub(:user_signed_in?).and_return(false)
       get :test_dashboard_setup, {show_all: true}
-      assigns(:requests).should include(@request1)
+      expect(assigns(:requests)).to include @test_request
     end
   end
 
@@ -318,9 +318,9 @@ describe ApplicationController, type: :controller do
     @server = create(:server)
 
     get :test_my_data
-    assigns(:my_applications).should include(@app)
-    assigns(:my_environments).should include(@env)
-    assigns(:my_servers).should include(@server)
+    expect(assigns(:my_applications)).to include @app
+    expect(assigns(:my_environments)).to include @env
+    expect(assigns(:my_servers)).to include @server
   end
 
   it '#format_response_for_ajax_file_uploads' do
@@ -329,7 +329,7 @@ describe ApplicationController, type: :controller do
 
     get :test_format_response_for_ajax_file_uploads, {_ajax_flag: true}
 
-    response.body.should include('<table>')
+    expect(response.body).to include '<table>'
   end
 
   context '#redirect_back_or' do
@@ -337,55 +337,55 @@ describe ApplicationController, type: :controller do
 
     it 'redirects to back' do
       @request.env['HTTP_REFERER'] = '/index'
-      get :test_redirect_back_or, {path: '/'}
-      response.should redirect_to('/index')
+      get :test_redirect_back_or, { path: '/' }
+      expect(response).to redirect_to('/index')
     end
 
     it 'redirects to path' do
-      get :test_redirect_back_or, {path: '/'}
-      response.should redirect_to('/')
+      get :test_redirect_back_or, { path: '/' }
+      expect(response).to redirect_to('/')
     end
   end
 
   it '#paginate_records' do
-    @app_ids = []
-    @apps = 11.times.collect{ create(:app) }
-    @apps.each { |el| @app_ids << el.id}
+    app_ids = []
+    apps = 11.times.collect{ create(:app) }
+    apps.each { |el| app_ids << el.id}
     routes.draw { get 'test_paginate_records' => 'anonymous#test_paginate_records' }
 
-    get :test_paginate_records, {records: @app_ids,
+    get :test_paginate_records, {records: app_ids,
                                  per_page: 10,
                                  page: 2}
-    @apps[0..9].each { |el| assigns(:records).should_not include(el)}
-    assigns(:records).should include(@apps[10])
+    apps[0..9].each { |el| expect(assigns(:records)).to_not include(el) }
+    expect(assigns(:records)).to include apps[10]
   end
 
   it '#show_validation_errors' do
     routes.draw { get 'test_show_validation_errors' => 'anonymous#test_show_validation_errors' }
 
     get :test_show_validation_errors, {format: 'js'}
-    response.should render_template('misc/update_div')
+    expect(response).to render_template('misc/update_div')
   end
 
   it '#ajax_redirect' do
     routes.draw { get 'test_ajax_redirect' => 'anonymous#test_ajax_redirect' }
 
     get :test_ajax_redirect, {path: '/index', format: 'js'}
-    response.should render_template('misc/redirect')
+    expect(response).to render_template('misc/redirect')
   end
 
   it '#show_error_messages' do
     routes.draw { get 'test_show_error_messages' => 'anonymous#test_show_error_messages' }
 
     get :test_show_error_messages, {format: 'js'}
-    response.should render_template('misc/update_div')
+    expect(response).to render_template('misc/update_div')
   end
 
   it '#show_general_error_messages' do
     routes.draw { get 'test_show_general_error_messages' => 'anonymous#test_show_general_error_messages' }
 
     get :test_show_general_error_messages, {format: 'js'}
-    response.should render_template('misc/show_div_update_div')
+    expect(response).to render_template('misc/show_div_update_div')
   end
 
   context '#verify_user_login_status' do
@@ -394,21 +394,15 @@ describe ApplicationController, type: :controller do
     it 'redirects to new_security_question' do
       User.any_instance.stub(:first_time_login?).and_return(true)
       get :test_verify_user_login_status
-      response.should redirect_to(new_security_question_path)
+      expect(response).to redirect_to(new_security_question_path)
     end
 
     it 'redirects to change_password_users_path' do
       User.any_instance.stub(:is_reset_password?).and_return(true)
       get :test_verify_user_login_status
-      response.should redirect_to(change_password_users_path)
+      expect(response).to redirect_to(change_password_users_path)
     end
 
-    it "logout user when terminate session flag is set" do
-      User.any_instance.stub(:terminate_session).and_return(true)
-      User.any_instance.stub(:admin?).and_return(false)
-      get :test_verify_user_login_status
-      response.should redirect_to(logout_path)
-    end
   end
 
   it '#my_applications' do
@@ -439,12 +433,12 @@ describe ApplicationController, type: :controller do
     specify 'with filters' do
       get :test_plan_release_details, {plan_id: @plan.id,
                                        filters: {sort_direction: 'asc'}}
-      assigns(:grouped_members)[@plan_stage.id].should include(@member)
+      expect(assigns(:grouped_members)[@plan_stage.id]).to include(@member)
     end
 
     specify 'without filters' do
       get :test_plan_release_details, {plan_id: @plan.id}
-      assigns(:grouped_members)[@plan_stage.id].should include(@member)
+      expect(assigns(:grouped_members)[@plan_stage.id]).to include(@member)
     end
   end
 
@@ -453,18 +447,17 @@ describe ApplicationController, type: :controller do
     routes.draw { get 'test_access_denied' => 'anonymous#test_access_denied' }
 
     get :test_access_denied
-    response.should redirect_to(root_path)
+    expect(response).to redirect_to(root_path)
   end
 
   it '#can_perform_all_action_on_request' do
     routes.draw { post 'test_can_perform_all_action_on_request' => 'anonymous#test_can_perform_all_action_on_request' }
     controller.stub(:can?).and_return(false)
-    @request1 = create(:request)
-    @request_id = @request1.id + GlobalSettings[:base_request_number]
+    @test_request = create(:request)
 
-    post :test_can_perform_all_action_on_request, {id: @request_id}
-    flash[:notice].should include('Access Denied')
-    response.should redirect_to(@request1)
+    post :test_can_perform_all_action_on_request, {id: @test_request.number}
+    expect(flash[:notice]).to include('Access Denied')
+    expect(response).to redirect_to @test_request
   end
 
   it '#put_current_user_into_model' do
@@ -472,7 +465,7 @@ describe ApplicationController, type: :controller do
     session[:auth_method] = 'Login'
 
     get :test_put_current_user_into_model
-    assigns(:result).should be_truthy
+    expect(assigns(:result)).to be_truthy
   end
 
   it '#current_user_authenticated_via_rpm?' do
@@ -480,7 +473,7 @@ describe ApplicationController, type: :controller do
     session[:auth_method] = 'Login'
 
     get :test_current_user_authenticated_via_rpm
-    assigns(:result).should be_truthy
+    expect(assigns(:result)).to be_truthy
   end
 
   it '#request_sso_enabled?' do
@@ -488,14 +481,14 @@ describe ApplicationController, type: :controller do
     @request.env['REMOTE_USER'] = @user
 
     get :test_request_sso_enabled
-    session[:sso_enabled].should be_truthy
+    expect(session[:sso_enabled]).to be_truthy
   end
 
   it '#render_404' do
     routes.draw { post 'test_render_404' => 'anonymous#test_render_404' }
 
     get :test_render_404
-    response.should render_template(file: "#{Rails.root}/public/404.html")
+    expect(response).to render_template(file: "#{Rails.root}/public/404.html")
   end
 
   ######## private
@@ -505,7 +498,6 @@ describe ApplicationController, type: :controller do
     @request.env['REMOTE_USER'] = @user
 
     get :test_sign_out_and_redirect, {id: @user.id}
-    response.should render_template ('sessions/destroy')
+    expect(response).to render_template('sessions/destroy')
   end
-
 end

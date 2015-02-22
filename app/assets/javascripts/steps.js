@@ -74,8 +74,11 @@ $(document).ready(function () {
   var type_package = "package";
   var type_package_instance = "package_instance";
 
-  $('body').on('change', ".requests #related_object_type_selection", function () {
+  $('body').on('change', "#related_object_type_selection", function () {
     var common_url = url_prefix + '/requests/' + $("#request_number").val() + "/steps/"
+    if ( $("#procedure_id").val() ){
+        common_url = url_prefix + '/environment/metadata/procedures/' + $("#procedure_id").val() + "/"
+    }
     var step_related_object_type = $("#step_related_object_type").val();
     var type_param = "?related_object_type=" + step_related_object_type;
     var type_url = common_url + "get_type_inputs" + type_param;
@@ -109,11 +112,15 @@ $(document).ready(function () {
       }
   }
 
-  $('body').on('change', ".requests #step_package_id", function () {
+  $('body').on('change', "#step_package_id", function () {
     var package_id = $("#step_package_id").val();
     if (package_id && package_id !== "") {
       var step_id = $("#Step_id").val();
-      var instance_url = url_prefix + '/requests/' + $("#request_number").val() + "/steps/get_package_instances?package=" + package_id + "&step_id=" + step_id
+      var instance_url = url_prefix + '/requests/' + $("#request_number").val() + "/steps"
+      if ( $("#procedure_id").val() ){
+          instance_url = url_prefix + '/environment/metadata/procedures/'  +  $("#procedure_id").val()
+      }
+      instance_url = instance_url + "/get_package_instances?package=" + package_id + "&step_id=" + step_id
       $("#package_instance_selection").load(instance_url, function () {
         $(this).show();
       })
@@ -126,7 +133,7 @@ $(document).ready(function () {
     updateAutomationTab($("#step_package_id").closest('form'), "#step_package_id");
   });
 
-  $('body').on('change', ".requests #package_instance_id", function () {
+  $('body').on('change', "#package_instance_id", function () {
     var package_instance_id = $(this).val();
     var package_id = $("#step_package_id").val();
 
@@ -157,6 +164,9 @@ $(document).ready(function () {
   }
 
   function updatePropertiesTabForPackages(type, id) {
+      if ( $("#procedure_id").val() ){
+          return;
+      }
     var url_params;
     var step_id = $("#Step_id").val();
     var work_task_id = $("#step_work_task_id").val();
@@ -195,6 +205,7 @@ $(document).ready(function () {
         url_params = {
           step: { package_id: id },
           id: step_id,
+          step_id: step_id,
           package_or_instance: type_package
         }
         break;
@@ -207,7 +218,11 @@ $(document).ready(function () {
         break;
     }
 
-    $.get(url_prefix + '/requests/' + $("#request_number").val() + "/steps/references_for_request", url_params, function (data) {
+    var base_url = url_prefix + '/requests/' + $("#request_number").val()  + "/steps/references_for_request";
+    if ( $("#procedure_id").val() ){
+      base_url = url_prefix + '/environment/metadata/procedures/'  +  $("#procedure_id").val() + "/references_for_procedure";
+    }
+    $.get( base_url, url_params, function (data) {
       $("#st_content_step_tab_area").html(data);
     });
   }

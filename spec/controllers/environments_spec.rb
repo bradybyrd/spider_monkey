@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe EnvironmentsController, type: :controller do
-  before (:each) { @env = create(:environment, active: true) }
+  before(:each) { @env = create(:environment, active: true) }
 
   #### common values
   model = Environment
@@ -33,17 +33,18 @@ describe EnvironmentsController, type: :controller do
   it_should_behave_like('CRUD DELETE destroy', model, factory_model, model_delete_path, can_archive)
 
   it '#update_server_selects' do
-    @server = create(:server)
-    @server_group = create(:server_group)
-    @params  = {default_server_id: @server.id,
-                environment: {default_server_group_id: @server_group.id,
-                              server_group_ids: [@server_group.id],
-                              server_ids: [@server.id]},
-                format: 'js'}
-    get :update_server_selects, @params
-    expect(response.code).to eql('200')
-    assigns(:selected_default_server_id).should eql(@server.id)
-    assigns(:selected_default_server_group_id).should eql(@server_group.id)
+    server = create(:server)
+    server_group = create(:server_group)
+    params  = {default_server_id: server.id,
+                format: 'js',
+                environment: {default_server_group_id: server_group.id,
+                              server_group_ids: [server_group.id],
+                              server_ids: [server.id]}}
+    get :update_server_selects, params
+
+    expect(response.code).to eq '200'
+    expect(assigns(:selected_default_server_id)).to eq server.id
+    expect(assigns(:selected_default_server_group_id)).to eq server_group.id
   end
 
   it '#create_default' do
@@ -52,10 +53,10 @@ describe EnvironmentsController, type: :controller do
   end
 
   it '#environments_of_app' do
-    @app = create(:app)
-    get :environments_of_app, app_id: @app.id, format: 'js'
-    expect(response.code).to eql('200')
-    assigns(:app).should eql(@app)
+    app = create(:app)
+    get :environments_of_app, app_id: app.id, format: 'js'
+    expect(response.code).to eq '200'
+    expect(assigns(:app)).to eq app
   end
 
   context '#update server association' do

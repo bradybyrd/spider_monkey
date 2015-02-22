@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AppsController, :type => :controller do
+describe AppsController, type: :controller do
   render_views
 
   #### common values
@@ -12,25 +12,23 @@ describe AppsController, :type => :controller do
   model_index_path = '_index'
   be_sort = true
   per_page = 30
-  index_flash = "No App"
+  index_flash = 'No App'
   #### values for edit
   model_edit_path = '/environment/apps'
   edit_flash = nil
   http_refer = nil
   #### values for update
-  update_params = {:name => 'name_ch'}
+  update_params = { name: 'name_ch' }
   #### values for destroy
   model_delete_path = '/apps'
 
-  it_should_behave_like("CRUD GET index", model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
-  it_should_behave_like("CRUD GET new")
-  it_should_behave_like("CRUD GET edit", factory_model, model_edit_path, edit_flash, http_refer)
-  it_should_behave_like("CRUD PUT update", model, factory_model, update_params)
-  it_should_behave_like("CRUD DELETE destroy", model, factory_model, model_delete_path, can_archive)
+  it_should_behave_like('CRUD GET index', model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
+  it_should_behave_like('CRUD GET new')
+  it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
+  it_should_behave_like('CRUD PUT update', model, factory_model, update_params)
+  it_should_behave_like('CRUD DELETE destroy', model, factory_model, model_delete_path, can_archive)
 
-  before (:each) do
-    @app = create(:app, :active => true)
-  end
+  let(:app) { create(:app, active: true) }
 
   context '#index' do
     describe 'authorization' do
@@ -50,12 +48,12 @@ describe AppsController, :type => :controller do
 
       context '#show' do
         include_context 'mocked abilities', :cannot, :export, App
-        specify { get :show, id: @app.id }
+        specify { get :show, id: app.id }
       end
 
       context '#edit' do
         include_context 'mocked abilities', :cannot, :edit, App
-        specify { get :edit, id: @app.id }
+        specify { get :edit, id: app.id }
       end
 
       context '#create' do
@@ -65,42 +63,42 @@ describe AppsController, :type => :controller do
 
       context '#update' do
         include_context 'mocked abilities', :cannot, :update, App
-        specify { put :update, id: @app.id }
+        specify { put :update, id: app.id }
       end
 
       context '#destroy' do
         include_context 'mocked abilities', :cannot, :destroy, App
-        specify { delete :destroy, id: @app.id }
+        specify { delete :destroy, id: app.id }
       end
 
       context '#reorder_components' do
         include_context 'mocked abilities', :cannot, :reorder, ApplicationComponent
-        specify { get :reorder_components, id: @app.id }
+        specify { get :reorder_components, id: app.id }
       end
 
       context '#reorder_environments' do
         include_context 'mocked abilities', :cannot, :reorder, ApplicationEnvironment
-        specify { get :reorder_environments, id: @app.id }
+        specify { get :reorder_environments, id: app.id }
       end
 
       context '#activate' do
         include_context 'mocked abilities', :cannot, :make_active_inactive, App
-        specify { get :activate, id: @app.id }
+        specify { get :activate, id: app.id }
       end
 
       context '#deactivate' do
         include_context 'mocked abilities', :cannot, :make_active_inactive, App
-        specify { get :deactivate, id: @app.id }
+        specify { get :deactivate, id: app.id }
       end
 
       context '#add_remote_components' do
         include_context 'mocked abilities', :cannot, :add_remote_component, App
-        specify { get :add_remote_components, id: @app.id }
+        specify { get :add_remote_components, id: app.id }
       end
 
       context '#create_remote_components' do
         include_context 'mocked abilities', :cannot, :add_remote_component, App
-        specify { put :create_remote_components, id: @app.id }
+        specify { put :create_remote_components, id: app.id }
       end
 
       context '#import' do
@@ -110,7 +108,7 @@ describe AppsController, :type => :controller do
     end
   end
 
-  describe "#create" do
+  describe '#create' do
     context 'warning messages' do
       let(:current_user_non_root) do
         non_root_group = create(:group, root: false)
@@ -119,8 +117,8 @@ describe AppsController, :type => :controller do
         user
       end
 
-      let(:edit_app_permission){ create(:permission, subject: "App", action: :update) }
-      let(:create_app_permission){ create(:permission, subject: "App", action: :create) }
+      let(:edit_app_permission){ create(:permission, subject: 'App', action: :update) }
+      let(:create_app_permission){ create(:permission, subject: 'App', action: :create) }
       let(:role_with_perm){ create(:role, permissions: [create_app_permission, edit_app_permission]) }
       let(:role_without_perm){ create(:role, permissions: [create_app_permission]) }
 
@@ -140,19 +138,19 @@ describe AppsController, :type => :controller do
 
       let(:team_with_group_perm){ create(:team_with_apps_and_groups, groups: [group_with_perm]) }
 
-      it "doesn't adds warning for team with edit app ability" do
+      it 'doesn\'t adds warning for team with edit app ability' do
         post :create, {app: {name: 'Test App1', team_ids: team_with_group_perm.id }}
 
-        flash[:notice].should include('Application was successfully created.')
-        flash[:warning].should be_blank
+        expect(flash[:notice]).to include('Application was successfully created.')
+        expect(flash[:warning]).to be_blank
       end
 
 
-      it "adds warning team without edit app ability" do
+      it 'adds warning team without edit app ability' do
         post :create, {app: {name: 'Test App2', team_ids: team_without_group_perm.id}}
 
-        flash[:notice].should include('Application was successfully created.')
-        flash[:warning].should include("You won't have permissions to edit created app through the selected team.")
+        expect(flash[:notice]).to include('Application was successfully created.')
+        expect(flash[:warning]).to eq I18n.t('team.without_app_edit')
       end
     end
 
@@ -188,88 +186,98 @@ describe AppsController, :type => :controller do
     end
   end
 
-  context "#show" do
-    it "returns html" do
-      get :show, {:id => @app.id}
-      assigns(:app).should eql(@app)
-      response.should render_template('apps/edit')
+  context '#show' do
+    it 'returns html' do
+      get :show, { id: app.id }
+      expect(assigns(:app)).to eq app
+      expect(response).to render_template('apps/edit')
     end
   end
 
-  it "#reorder_components" do
-    get :reorder_components, {:id => @app.id}
-    assigns(:app).should eql(@app)
-    response.should render_template(:partial => '_reorder_components')
+  it '#reorder_components' do
+    get :reorder_components, { id: app.id }
+    expect(assigns(:app)).to eq app
+    expect(response).to render_template(partial: '_reorder_components')
   end
 
-  it "#reorder_environments" do
-    get :reorder_environments, {:id => @app.id}
-    assigns(:app).should eql(@app)
-    response.should render_template(:partial => '_reorder_environments')
+  it '#reorder_environments' do
+    get :reorder_environments, { id: app.id }
+    expect(assigns(:app)).to eq app
+    expect(response).to render_template(partial: '_reorder_environments')
   end
 
-  it "#create_default" do
-    post :create_default, {:id => @app.id}
-    response.should redirect_to(apps_path)
+  it '#create_default' do
+    post :create_default, { id: app.id }
+    expect(response).to redirect_to(apps_path)
   end
 
-  it "#add_remote_components" do
-    get :add_remote_components, {:id => @app.id}
-    assigns(:app).should eql(@app)
-    assigns(:remote_apps).should include(@app)
-    response.should render_template(:layout => false)
+  it '#add_remote_components' do
+    get :add_remote_components, { id: app.id }
+    expect(assigns(:app)).to eq app
+    expect(assigns(:remote_apps)).to include(app)
+    expect(response).to render_template(layout: false)
   end
 
-  context "#create_remote_components" do
-    it "redirect without parameters" do
-      put :create_remote_components, {:id => @app.id}
-      response.should redirect_to(edit_app_path(@app))
+  context '#create_remote_components' do
+    it 'redirect without parameters' do
+      put :create_remote_components, { id: app.id }
+      expect(response).to redirect_to edit_app_path(app)
     end
 
-    it "returns errors" do
+    it 'returns errors' do
       create_installed_component
-      @attr = {:application_environment_ids_to_update => [@app_env.id],
-               :installed_component_ids => [@installed_component.id],
-               :id => @app.id}
+      @attr = { application_environment_ids_to_update: [@app_env.id],
+                installed_component_ids: [@installed_component.id],
+                id: app.id }
+
       put :create_remote_components, @attr
-      response.should render_template('edit')
+
+      expect(response).to render_template('edit')
     end
   end
 
-  it "#application_environment_options" do
-    @env = create(:environment)
-    @app_env = create(:application_environment, :app => @app, :environment => @env)
-    get :application_environment_options, {:app_id => @app.id}
-    response.body.should include(@app_env.name)
+  it '#application_environment_options' do
+    env = create(:environment)
+    app_env = create(:application_environment, app: app, environment: env)
+
+    get :application_environment_options, { app_id: app.id }
+
+    expect(response.body).to include(app_env.name)
   end
 
-  it "#installed_component_options" do
+  it '#installed_component_options' do
     create_installed_component
-    get :installed_component_options, {:application_environment_id => @app_env.id}
-    response.body.should include(@installed_component.name)
+    get :installed_component_options, {application_environment_id: @app_env.id}
+
+    expect(response.body).to include(@installed_component.name)
   end
 
-  it "#route_options" do
-    @route1 = create(:route, :app => @app)
-    @route2 = create(:route)
-    get :route_options, {:app_id => @app.id}
-    response.body.should include(@route1.name)
-    response.body.should_not include(@route2.name)
+  it '#route_options' do
+    route1 = create(:route, app: app)
+    route2 = create(:route)
+
+    get :route_options, { app_id: app.id }
+
+    expect(response.body).to include(route1.name)
+    expect(response.body).to_not include(route2.name)
   end
 
-  it "#upload_csv" do
-    @file = fixture_file_upload('/files/test_app.csv', 'csv')
-    post :upload_csv, {:app_id => @app.id,
-                       :csv => @file}
-    response.should redirect_to(apps_path)
+  it '#upload_csv' do
+    file = fixture_file_upload('/files/test_app.csv', 'csv')
+
+    post :upload_csv, { app_id: app.id, csv: file }
+
+    expect(response).to redirect_to(apps_path)
   end
 
-  it "#load_env_table" do
-    @env = create(:environment, :active => true)
-    @app_env = create(:application_environment, :app => @app, :environment => @env)
-    get :load_env_table, {:id => @app.id}
-    response.should render_template(:partial => "users/form/_edit_role_by_app_environment")
-    response.body.should include(@app_env.name)
+  it '#load_env_table' do
+    env = create(:environment, active: true)
+    app_env = create(:application_environment, app: app, environment: env)
+
+    get :load_env_table, { id: app.id }
+
+    expect(response).to render_template(partial: 'users/form/_edit_role_by_app_environment')
+    expect(response.body).to include(app_env.name)
   end
 
   describe '#import', import_export: true do
@@ -294,24 +302,23 @@ describe AppsController, :type => :controller do
     end
   end
 
-
-  it "#export", import_export: true do
+  it '#export', import_export: true do
     now = Time.now
     Time.stub(:now).and_return(now)
-    get :export, {:id => @app.id }
-    response.headers["Content-Type"].should == "text/xml"
-    response.headers["Content-Disposition"].should == "attachment; filename=\"#{@app.name}_#{now.to_i}.xml\""
-    response.should render_template(:file => "#{@app.name}_#{now.to_i}.xml")
+
+    get :export, { id: app.id }
+
+    expect(response.headers['Content-Type']).to eq 'text/xml'
+    expect(response.headers['Content-Disposition']).to  eq "attachment; filename=\"#{app.name}_#{now.to_i}.xml\""
+    expect(response).to render_template( file: "#{app.name}_#{now.to_i}.xml" )
   end
 
   def create_installed_component
-    @env = create(:environment)
-    @app_env = create(:application_environment, :app => @app,
-                                                :environment => @env)
-    @component = create(:component)
-    @app_component = create(:application_component, :app => @app,
-                                                    :component => @component)
-    @installed_component = create(:installed_component, :application_environment => @app_env,
-                                                        :application_component => @app_component)
+    @env                 = create(:environment)
+    @app_env             = create(:application_environment, app: app, environment: @env)
+    @component           = create(:component)
+    @app_component       = create(:application_component, app: app, component: @component)
+    @installed_component = create(:installed_component, application_environment: @app_env,
+                                                        application_component: @app_component)
   end
 end

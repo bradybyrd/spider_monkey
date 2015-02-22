@@ -9,5 +9,5 @@
 <div class="step_form" id="step_form_holder_tr_div">
 	<h2><%= raw(procedure_step_form_header(step, procedure)) %></h2>
 	<div id='error_messages_for_step'></div>
-	<%= render :partial => 'steps/step_rows/procedure_step_form', :locals => {:step => step, 	:procedure => procedure} %>
+	<%= render :partial => 'steps/step_rows/procedure_step_form', :locals => {step: step, procedure: procedure, available_package_ids: available_package_ids} %>
 </div>

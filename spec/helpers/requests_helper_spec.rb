@@ -475,6 +475,42 @@ describe RequestsHelper do
     end
   end
 
+  describe "#package_instance_options for request steps" do
+    before(:each) do
+      helper.stub(:current_user).and_return(create(:old_user))
+      User.stub(:current_user).and_return(create(:old_user))
+      @request = create(:request)
+      @request.apps << @app
+      @step = create(:step, :request => @request)
+      create_package
+      @app.package_ids = [@package.id]
+      @app.save
+      @request.environment_id = @env.id
+    end
+
+    it "returns package_instance_options" do
+      package_instance_options(@step, @package).should include("#{@package_instance.name}")
+    end
+  end
+
+  describe "#package_instance_options for procedure steps" do
+    before(:each) do
+      helper.stub(:current_user).and_return(create(:old_user))
+      User.stub(:current_user).and_return(create(:old_user))
+
+      @procedure = create(:procedure)
+      @procedure.apps << @app
+      @step = create(:step, floating_procedure: @procedure, request: nil)
+      create_package
+      @app.package_ids = [@package.id]
+      @app.save
+    end
+
+    it "return no package_instance_options" do
+      package_instance_options(@step, @package).should_not include("#{@package_instance.name}")
+    end
+  end
+
   it "#check_installed_components" do
     create_installed_component
     check_installed_components(@app,@request1,@component).should be_truthy
@@ -634,4 +670,13 @@ describe RequestsHelper do
                                   :application_environment => @app_env,
                                   :application_component => @app_component)
   end
+
+  def create_package
+    @package = create :package
+    @package_instance = create :package_instance,
+                                        package: @package,
+                                        active: true
+    @package
+  end
+
 end

@@ -18,7 +18,7 @@ class TeamGroupAppEnvRole < ActiveRecord::Base
   def self.set(attributes)
     great = self.exists(attributes).first
     self.create_or_update(great, attributes).tap do |instance|
-      instance.role && instance.role.users.update_all(terminate_session: true)
+      #instance.role && PermissionMap.instance.bulk_clean(instance.role.users)
     end
   end
 

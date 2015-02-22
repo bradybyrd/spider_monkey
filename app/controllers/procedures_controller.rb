@@ -21,6 +21,37 @@ class ProceduresController < ApplicationController
       @procedure ||= find_procedure
       @step = @procedure.steps.build(:owner => current_user)
     end
+    @related_object_type = params[:related_object_type]
+  end
+
+  def get_type_inputs
+    @procedure ||= find_procedure
+    @step = @procedure.steps.build(owner: current_user)
+    related_object_type = params[:related_object_type]
+    render partial: 'steps/step_rows/type_content', locals: { related_object_type: related_object_type, step: @step }
+  end
+
+  def get_package_instances
+    @procedure ||= find_procedure
+    package_id = params[:package]
+    package = Package.find_by_id(package_id)
+    @step = @procedure.steps.find_or_initialize_by_id(params[:step_id])
+    render partial: "steps/step_rows/package_instances", locals: { step: @step, package: package}
+  end
+
+  def references_for_procedure
+    @procedure ||= find_procedure
+    if params[:step_id].present?
+      @step = Step.find(params[:step_id])
+    else
+      @procedure ||= find_procedure
+      @step = @procedure.steps.build(owner: current_user)
+    end
+    @step.assign_attributes(params[:step])
+    package_or_instance = params[:package_or_instance]
+    render partial: "steps/step_rows/step_references", locals: { step: @step,
+                                                                 package_or_instance: package_or_instance,
+                                                                 references: get_references_for_step( @step ) }
   end
 
   def index
@@ -57,7 +88,6 @@ class ProceduresController < ApplicationController
       end
     end
     @procedure = build_procedure
-    authorize! :create, @procedure
     unless steps.blank?
       @procedure.add_steps(steps)
       if @procedure.save
@@ -145,7 +175,6 @@ class ProceduresController < ApplicationController
     end
     # Added in audit log for more user friendly description. Steps_audit_log in procedure is added from model audit log
     ActivityLog.log_event(@request, current_user, "Added new procedure: #{@procedure.name}")
-
     if params[:from_request]
       redirect_to edit_request_path(@request)
     else
@@ -160,6 +189,13 @@ class ProceduresController < ApplicationController
   end
 
   private
+
+
+  def get_references_for_step(step)
+    if step.package
+      step.package.references
+    end
+  end
 
   def find_procedure
     Procedure.find(params[:id])

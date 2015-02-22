@@ -1,9 +1,9 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe ServerLevelPropertiesController, :type => :controller do
-  before (:each) do
-    @server_level = create(:server_level, :name => 'SL1')
-    @property = @server_level.properties.create(:name => 'prop1')
+describe ServerLevelPropertiesController, type: :controller do
+  before(:each) do
+    @server_level = create(:server_level, name: 'SL1')
+    @property = @server_level.properties.create(name: 'prop1')
   end
 
   describe 'authorization', custom_roles: true do
@@ -37,25 +37,26 @@ describe ServerLevelPropertiesController, :type => :controller do
     end
   end
 
-  it "#new" do
-    get :new, {:server_level_id => @server_level.id,
-               :page => 1,
-               :key => ''}
-    response.should render_template(:partial => '_form')
+  it '#new' do
+    get :new, { server_level_id: @server_level.id,
+                page: 1,
+                key: '' }
+    expect(response).to render_template(partial: '_form')
   end
 
-  context "#create" do
-    it "success post" do
-      post :create,{:server_level_id => @server_level.id,
-                    :format => 'js'}
-      response.should render_template('server_level_properties/save')
+  context '#create' do
+    it 'success post' do
+      post :create,{ server_level_id: @server_level.id,
+                     format: 'js' }
+
+      expect(response).to render_template('server_level_properties/save')
     end
 
-    it "success xhr" do
-      xhr :post, :create,{:server_level_id => @server_level.id,
-                          :property => {:name => 'pr1'},
-                          :format => 'js'}
-      response.should render_template('server_level_properties/update')
+    it 'success xhr' do
+      xhr :post, :create,{ server_level_id: @server_level.id,
+                           property: { name: 'pr1' },
+                           format: 'js' }
+      expect(response).to render_template('server_level_properties/update')
     end
 
     it 'creates new property' do
@@ -72,43 +73,44 @@ describe ServerLevelPropertiesController, :type => :controller do
       }.to change(@server_level.properties, :count).by(1)
     end
 
-    it "fails" do
-      pending "No method present"
+    it 'fails' do
+      pending 'No method present'
     end
   end
 
-  it "#edit" do
-    get :edit, {:id => @property.id,
-                :server_level_id => @server_level.id}
-    response.should render_template(:partial => '_form')
+  it '#edit' do
+    get :edit, { id: @property.id,
+                 server_level_id: @server_level.id }
+    expect(response).to render_template(partial: '_form')
   end
 
-  context "#update" do
-    it "success" do
-      put :update, {:id => @property.id,
-                    :server_level_id => @server_level.id,
-                    :format => 'js',
-                    :property => {:default_value => 'changed_value'}}
+  context '#update' do
+    it 'success' do
+      put :update, { id: @property.id,
+                     server_level_id: @server_level.id,
+                     format: 'js',
+                     property: { default_value: 'changed_value' }}
       @property.reload
-      @property.default_value.should eql('changed_value')
-      response.should render_template('server_level_properties/save')
+      expect(@property.default_value).to eq 'changed_value'
+      expect(response).to render_template('server_level_properties/save')
     end
 
-    it "fails" do
-      pending "No method present"
+    it 'fails' do
+      pending 'No method present'
     end
   end
 
-  context "#destroy" do
-    it "success" do
-      expect{delete :destroy, {:id => @property.id,
-                               :server_level_id => @server_level.id,
-                               :format => 'js'}
-            }.to change(@server_level.properties, :count).by(-1)
+  context '#destroy' do
+    it 'success' do
+      expect{
+        delete :destroy, { id: @property.id,
+                           server_level_id: @server_level.id,
+                           format: 'js' }
+      }.to change(@server_level.properties, :count).by(-1)
     end
 
-    it "fails" do
-      pending "No method present"
+    it 'fails' do
+      pending 'No method present'
     end
   end
 end

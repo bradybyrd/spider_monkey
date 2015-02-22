@@ -32,3 +32,5 @@
   <%= f.label :app_ids, "Applications" %>
   <%= f.collection_select :app_ids, @apps, :id, :name, {}, { :multiple => true } %>
 </div>
+<%= hidden_field_tag 'procedure_id', @procedure.id %>
+

@@ -52,9 +52,6 @@ class ApplicationController < ActionController::Base
       elsif current_user.is_reset_password?
         current_user.update_column :is_reset_password, false
         redirect_to change_password_users_path
-      elsif !current_user.admin? && current_user.terminate_session
-        current_user.update_column :terminate_session, false
-        redirect_to logout_path
       end
     end
   end

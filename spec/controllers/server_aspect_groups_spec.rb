@@ -1,7 +1,7 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe ServerAspectGroupsController, :type => :controller do
-  before (:each) { @aspect_group = create(:server_aspect_group) }
+describe ServerAspectGroupsController, type: :controller do
+  before(:each) { @aspect_group = create(:server_aspect_group) }
 
   describe 'authorization', custom_roles: true do
     context 'with no permissions' do
@@ -24,43 +24,50 @@ describe ServerAspectGroupsController, :type => :controller do
     end
   end
 
-  context "#index" do
+  context '#index' do
     it "return flash 'No Aspect Groups'" do
       ServerAspectGroup.delete_all
+
       get :index
-      flash[:error].should include("No Server Level Groups")
+
+      expect(flash[:error]).to include('No Server Level Groups')
     end
 
-    context "find records" do
-      it "render partial" do
-        get :index, {:render_no_rjs => true}
-        response.should render_template(:partial => "_index")
+    context 'find records' do
+      it 'render partial' do
+        get :index, render_no_rjs: true
+
+        expect(response).to render_template(partial: '_index')
       end
 
-      specify "without keyword" do
+      specify 'without keyword' do
         get :index
-        assigns(:server_aspect_groups).should include(@aspect_group)
-        response.should render_template("index")
+
+        expect(assigns(:server_aspect_groups)).to include(@aspect_group)
+        expect(response).to render_template('index')
       end
 
-      specify "with keyword" do
-        @server_aspect_groups = 31.times.collect{|x| create(:server_aspect_group,
-                                                            :name => "Dev#{x}")}
-        @server_aspect_groups.sort_by!{|el| el.name}
-        get :index, {:key => 'Dev'}
-        @server_aspect_groups[0..29].each{|el| assigns(:server_aspect_groups).should include(el)}
-        assigns(:server_aspect_groups).should_not include(@server_aspect_groups[30])
-        assigns(:server_aspect_groups).should_not include(@aspect_group)
+      specify 'with keyword' do
+        server_aspect_groups =
+            31.times.collect{ |x| create(:server_aspect_group, name: "Dev#{x}") }
+        server_aspect_groups.sort_by!{|el| el.name}
+
+        get :index, key: 'Dev'
+
+        groups = assigns(:server_aspect_groups)
+        server_aspect_groups[0..29].each{|el| expect(groups).to include(el)}
+        expect(groups).to_not include(server_aspect_groups[30])
+        expect(groups).to_not include(@aspect_group)
       end
     end
   end
 
-  it "#new" do
+  it '#new' do
     xhr :get, :new
-    response.should render_template('server_aspect_groups/load_form')
+    expect(response).to render_template('server_aspect_groups/load_form')
   end
 
-  describe "#create" do
+  describe '#create' do
     it 'renders save' do
       xhr :post, :create, server_aspect_group: { name: 'new aspect group' }
       is_expected.to render_template(:save)
@@ -78,12 +85,12 @@ describe ServerAspectGroupsController, :type => :controller do
     end
   end
 
-  it "#edit" do
-    xhr :get, :edit, {:id => @aspect_group.id}
-    response.should render_template('server_aspect_groups/load_form')
+  it '#edit' do
+    xhr :get, :edit, id: @aspect_group.id
+    expect(response).to render_template('server_aspect_groups/load_form')
   end
 
-  describe "#update" do
+  describe '#update' do
     it 'renders save' do
       xhr :put, :update, id: @aspect_group, server_aspect_group: { name: 'updated aspect group' }
       is_expected.to render_template(:save)
@@ -100,9 +107,9 @@ describe ServerAspectGroupsController, :type => :controller do
     end
   end
 
-  it "#server_aspect_options" do
-    @server_level = create(:server_level)
-    get :server_aspect_options, {:server_aspect_group => {:server_level_id => @server_level.id}}
-    response.code.should eql('200')
+  it '#server_aspect_options' do
+    server_level = create(:server_level)
+    get :server_aspect_options, {:server_aspect_group => {:server_level_id => server_level.id}}
+    expect(response.code).to eq '200'
   end
 end

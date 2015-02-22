@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TeamsController, :type => :controller do
+describe TeamsController, type: :controller do
   render_views
 
   before(:each) do
@@ -17,32 +17,33 @@ describe TeamsController, :type => :controller do
   model_index_path = '_index'
   be_sort = true
   per_page = 30
-  index_flash = "No Team"
+  index_flash = 'No Team'
   #### values for edit
   model_edit_path = '/teams'
   edit_flash = nil
   http_refer = nil
 
-  it_should_behave_like("CRUD GET index", model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
-  it_should_behave_like("CRUD GET new")
-  it_should_behave_like("CRUD GET edit", factory_model, model_edit_path, edit_flash, http_refer)
+  it_should_behave_like('CRUD GET index', model, models_name, factory_model, model_index_path, can_archive, be_sort, per_page, index_flash)
+  it_should_behave_like('CRUD GET new')
+  it_should_behave_like('CRUD GET edit', factory_model, model_edit_path, edit_flash, http_refer)
 
   describe '#create' do
-    it "success" do
-      expect{post :create, {:team => {:name => "Team1",
-                                      :app_ids => [@app.id]
-                                      },
-                            :check_box_selection => "#{@user.id}",
-                            :format => 'js'}
+    it 'success' do
+      expect{
+        post :create, { team: { name: 'Team1',
+                                app_ids: [@app.id] },
+                        check_box_selection: @user.id.to_s,
+                        format: 'js' }
       }.to change(Team, :count).by(1)
-      response.should render_template('misc/redirect')
+      expect(response).to render_template('misc/redirect')
     end
 
-    it "fails" do
+    it 'fails' do
       Team.stub(:new).and_return(@team)
       @team.stub(:save).and_return(false)
-      expect{post :create, {:team => {:name => "Team1"},
-                     :check_box_selection =>  @user.id}
+      expect{
+        post :create, { team: { name: 'Team1' },
+                        check_box_selection: @user.id}
       }.to change(Team, :count).by(0)
     end
 
@@ -52,7 +53,7 @@ describe TeamsController, :type => :controller do
       app.users = []
       group = create :group
       group.resources << user
-      params = {team: {name: 'a wonderful name', app_ids: [app.id], group_ids: [group.id]} }
+      params = { team: {name: 'a wonderful name', app_ids: [app.id], group_ids: [group.id]} }
 
       expect(app.reload.users).to be_empty
       post(:create, params)
@@ -64,87 +65,92 @@ describe TeamsController, :type => :controller do
     it 'allow edit of team if it is inactive' do
       team = create(:team)
       team.deactivate!
+
       get :edit, id: team
-      response.should render_template('teams/edit')
+
+      expect(response).to render_template('teams/edit')
     end
   end
 
-  context "#update" do
-    it "success" do
-      put :update, {:id => @team.id,
-                    :team => {:name => 'Team_changed',},
-                    :check_box_selection => "#{@user.id}",
-                    :format => 'js'}
-      Team.find(@team.id).name.should eql('Team_changed')
-      response.should render_template('misc/redirect')
+  context '#update' do
+    it 'success' do
+      put :update, { id: @team.id,
+                     team: { name: 'Team_changed' },
+                     check_box_selection: @user.id.to_s,
+                     format: 'js'}
+
+      expect(Team.find(@team.id).name).to eq 'Team_changed'
+      expect(response).to render_template('misc/redirect')
     end
 
-    it "fails" do
+    it 'fails' do
       Team.stub(:find).and_return(@team)
       @team.stub(:update_attributes).and_return(false)
       new_team = create(:team)
       new_team.deactivate!
       @controller.should_receive(:render_or_redirect?).with(false)
-      lambda{put :update, {:id => new_team.id,
-                    :team => {:name => 'Team_changed',},
-                    :check_box_selection =>  new_team.id}
-            }.should raise_error ActionView::MissingTemplate
-
+      lambda{
+        put :update, {id: new_team.id,
+                      team: {name: 'Team_changed', },
+                      check_box_selection: new_team.id}
+      }.should raise_error ActionView::MissingTemplate
     end
   end
 
-  context "#destroy" do
-    it "success for inactive team" do
+  context '#destroy' do
+    it 'success for inactive team' do
       new_team = create(:team)
       new_team.deactivate!
-      expect{delete :destroy, {:id => new_team.id, :format => 'js'}
+      expect{delete :destroy, { id: new_team.id, format: 'js' }
             }.to change(Team, :count).by(-1)
-      response.should render_template('misc/redirect')
+      expect(response).to render_template('misc/redirect')
     end
 
-    it "fail for active team" do
+    it 'fail for active team' do
       new_team = create(:team)
-      expect{delete :destroy, {:id => new_team.id, :format => 'js'}
+      expect{delete :destroy, { id: new_team.id, format: 'js' }
             }.to change(Team, :count).by(0)
-      response.should render_template('misc/redirect')
+      expect(response).to render_template('misc/redirect')
     end
   end
 
-  it "#app_user_list" do
-    get :app_user_list, {:id => @team.id,
-                         :render_omly_app_name => '1',
-                         :app_id => @app.id}
-    assigns(:app).should eql(@app)
-    response.should render_template(:partial => "teams/forms/_user_role_list_by_app")
+  it '#app_user_list' do
+    get :app_user_list, { id: @team.id,
+                          render_omly_app_name: '1',
+                          app_id: @app.id }
+    expect(assigns(:app)).to eq @app
+    expect(response).to render_template(partial: 'teams/forms/_user_role_list_by_app')
   end
 
-  context "#get_user_list_of_groups" do
+  context '#get_user_list_of_groups' do
     before(:each) {
-      @users = 6.times.collect{create(:user, :active => true)}
+      @users = 6.times.collect{create(:user, active: true)}
       @users.sort_by!{|el| el.name}
-      @user_ids = "#{@users[0].id}"
+      @user_ids = @users[0].id.to_s
       @users[1..5].each{|el| @user_ids = @user_ids + ",#{el.id}"}
     }
 
-    it "return paginated Users" do
-      post :get_user_list_of_groups, {:id => @team.id,
-                                     :selection_type => 'Users',
-                                     :user_ids => @user_ids,
-                                     :format => "js"}
-      @users[0..4].each{|el| assigns(:active_users).should include(el)}
-      assigns(:active_users).should_not include(@users[5])
-      response.should render_template('teams/update_user_list')
+    it 'return paginated Users' do
+      post :get_user_list_of_groups, { id: @team.id,
+                                       selection_type: 'Users',
+                                       user_ids: @user_ids,
+                                       format: 'js' }
+      active_users = assigns(:active_users)
+      @users[0..4].each{|el| expect(active_users).to include(el)}
+      expect(active_users).to_not include(@users[5])
+      expect(response).to render_template('teams/update_user_list')
     end
 
-    it "return Users of Groups" do
-      @group = create(:group)
-      @group.resources = @users
-      @group_ids = "#{@group.id}"
+    it 'return Users of Groups' do
+      group = create(:group)
+      group.resources = @users
+      group_ids = group.id.to_s
       post :get_user_list_of_groups, {:id => @team.id,
                                       :selection_type => 'Groups',
-                                      :group_ids => @group_ids}
-      @users[0..4].each{|el| assigns(:active_users).should include(el)}
-      assigns(:active_users).should_not include(@users[5])
+                                      :group_ids => group_ids}
+      active_users = assigns(:active_users)
+      @users[0..4].each{|el| expect(active_users).to include(el)}
+      expect(active_users).to_not include(@users[5])
     end
   end
 
