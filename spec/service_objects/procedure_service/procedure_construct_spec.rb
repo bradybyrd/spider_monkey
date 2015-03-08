@@ -36,7 +36,14 @@ describe ProcedureService::ProcedureConstruct do
   end
 
   describe '#attributes_for_new_step' do
-    let(:expected_attributes) { attrs = step.attributes; attrs.delete('id'); attrs['request_id'] = request_id; attrs }
+    let(:expected_attributes) {
+      attrs = step.attributes
+      attrs.delete('id')
+      attrs[:request_id] = request_id
+      attrs[:procedure_id] = nil
+      attrs[:reference_ids] = []
+      attrs
+    }
     let(:request_id) { 3 }
 
     def attributes

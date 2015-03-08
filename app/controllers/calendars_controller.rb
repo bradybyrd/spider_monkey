@@ -7,11 +7,11 @@
 
 class CalendarsController < ApplicationController
   skip_before_filter :authenticate_user!
-  skip_before_filter :verify_authenticity_token, :only => [:upcoming_requests, :month, :rolling, :day, :week]
+  skip_before_filter :verify_authenticity_token, only: [:upcoming_requests, :month, :rolling, :day, :week]
   before_filter :preserve_filters
   before_filter :format_date
   before_filter :switch_mode
-  before_filter :get_recent_activities, :get_current_users, :only => [:month, :day, :week, :rolling]
+  before_filter :get_recent_activities, :get_current_users, only: [:month, :day, :week, :rolling]
 
   def month
     authorize_calendar!
@@ -43,19 +43,19 @@ class CalendarsController < ApplicationController
 
   def upcoming_requests # Printed report of up-coming requests - Current Week + Next Two Weeks
     authorize! :view_calendar, Request.new
-    params.merge!({:beginning_of_calendar => Date.today}) if (not user_signed_in? or not params[:beginning_of_calendar].present?)
+    params.merge!({beginning_of_calendar: Date.today}) if (not user_signed_in? or not params[:beginning_of_calendar].present?)
     date_of_month if params[:beginning_of_calendar].present?
     @calendar = Calendar::Week.new(params[:beginning_of_calendar])
     @one_week_ahead = Calendar::Week.new(next_week_start(7))
     @two_week_ahead = Calendar::Week.new(next_week_start(14))
     @beginning_of_calendar = params[:beginning_of_calendar]
     @list_view = true
-    @page_path = "/calendars/upcoming-requests" if params[:page_path].present?
+    @page_path = '/calendars/upcoming-requests' if params[:page_path].present?
     draw_calendar
   end
 
   def reset_filters_hash!
-    (streamstep_filters + ['outbound_requests', 'inbound_requests']).each {
+    (streamstep_filters + %w(outbound_requests inbound_requests)).each {
       |s| session['calendar_session'].delete_if {|key, _| key.to_s == s.to_s }
     }
   end
@@ -65,16 +65,16 @@ class CalendarsController < ApplicationController
   def switch_mode
     if params[:display_format].present? && params[:display_format] != params[:action]
       redirect_to(params.except(:display_format, :filters).
-                         merge(:action => params[:display_format],
-                               :for_dashboard => params[:for_dashboard]))
+                         merge(action: params[:display_format],
+                               for_dashboard: params[:for_dashboard]))
       return
     end
   end
 
   def draw_calendar
-    @split_date_by = "/"
+    @split_date_by = '/'
     Time.zone = params[:time_zone] unless params[:time_zone].blank?
-    @filters.update(:participated_in_by => params[:for_dashboard] ? current_user.id : nil) if user_signed_in?
+    @filters.update(participated_in_by: params[:for_dashboard] ? current_user.id : nil) if user_signed_in?
     @calendar.filters = @filters
     @calendar.plan = Plan.find(params[:plan_id]) unless params[:plan_id].blank?
     if defined?(@one_week_ahead) && defined?(@two_week_ahead)
@@ -87,30 +87,30 @@ class CalendarsController < ApplicationController
     @for_dashboard = params[:for_dashboard] if params[:for_dashboard]
     @params = params
     if request.xhr?
-      render :partial => "dashboard/self_services/calendar.html.erb"
+      render partial: 'dashboard/self_services/calendar.html.erb'
     else
       respond_to do |format|
         format.html do
           if @calendar.plan
             @plan = @calendar.plan
             plan_release_details
-            render :template => "plans/calendar", :layout => cal_layout
+            render template: 'plans/calendar', layout: cal_layout
           elsif params[:for_dashboard] && user_signed_in?
             dashboard_setup
-            @page_path = @list_view.blank? ? nil : "/calendars/upcoming-requests"
+            @page_path = @list_view.blank? ? nil : '/calendars/upcoming-requests'
             get_data(!user_signed_in?)
             my_applications
-            render :template => "dashboard/self_services"
+            render template: 'dashboard/self_services'
           else
-            render :template => 'calendars/calendar', :layout => cal_layout
+            render template: 'calendars/calendar', layout: cal_layout
           end
         end
         format.pdf do
-          render :pdf => "#{params[:pdf_type]}_#{Time.now.strftime('%m-%d-%Y_%H_%M_%S')}", :template => "calendars/pdf", :handlers => [:erb], :formats => [:html],
-                 :layout => "calendar", :show_as_html => params[:export] ? true : false
+          render pdf: "#{params[:pdf_type]}_#{Time.now.strftime('%m-%d-%Y_%H_%M_%S')}", template: 'calendars/pdf', handlers: [:erb], formats: [:html],
+                 layout: 'calendar', show_as_html: params[:export] ? true : false
         end
         format.csv do
-          send_data Request.generate_csv_report(@calendar.first_day, @two_week_ahead.last_day, @calendar), :type => 'text/csv', :filename => "#{@calendar.first_day}-#{@two_week_ahead.last_day}.csv"
+          send_data Request.generate_csv_report(@calendar.first_day, @two_week_ahead.last_day, @calendar), type: 'text/csv', filename: "#{@calendar.first_day}-#{@two_week_ahead.last_day}.csv"
         end
       end
     end
@@ -132,8 +132,8 @@ class CalendarsController < ApplicationController
     end
     reset_filters_hash! if params[:clear_filter]
     session[:calendar] ||= HashWithIndifferentAccess.new
-    session[:calendar].update(:display_format => params[:action],
-          :beginning_of_calendar => params[:beginning_of_calendar]) unless params[:action] == 'upcoming_requests'
+    session[:calendar].update(display_format: params[:action],
+                              beginning_of_calendar: params[:beginning_of_calendar]) unless params[:action] == 'upcoming_requests'
 
     @filters = session['calendar_session']
   end
@@ -175,10 +175,10 @@ class CalendarsController < ApplicationController
   end
 
   def format_date
-    if params[:beginning_of_calendar].present? && GlobalSettings[:default_date_format].include?("-")
+    if params[:beginning_of_calendar].present? && GlobalSettings[:default_date_format].include?('-')
       params[:beginning_of_calendar] = params[:beginning_of_calendar].to_date.strftime(GlobalSettings[:default_date_format])
-    elsif params[:beginning_of_calendar].present? && params[:beginning_of_calendar].include?("-")
-      params[:beginning_of_calendar] = params[:beginning_of_calendar].gsub("-", "/")
+    elsif params[:beginning_of_calendar].present? && params[:beginning_of_calendar].include?('-')
+      params[:beginning_of_calendar] = params[:beginning_of_calendar].gsub('-', '/')
     end
   end
 

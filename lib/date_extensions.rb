@@ -1,7 +1,7 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 
@@ -90,10 +90,10 @@ module DateExtensions
       default_date_format = if system_settings_date.present?
         system_settings_date
       else
-        "%m/%d/%Y"
-      end.gsub("%I:%M %p", "")
+        '%m/%d/%Y'
+      end.gsub('%I:%M %p', '')
 
-      split_by = default_date_format.include?("-") ?  "-" : "/"
+      split_by = default_date_format.include?('-') ? '-' : '/'
 
       split_date_format = default_date_format.split(split_by).collect {
         |e| e.gsub(/[^A-Za-z]/, '')}.select{|p| p.length > 0}
@@ -119,7 +119,7 @@ module DateExtensions
         end
       end
 
-      month = if split_by == "-"
+      month = if split_by == '-'
         Date::ABBR_MONTHNAMES.index(split_given_date[b])
       else
         split_given_date[m]

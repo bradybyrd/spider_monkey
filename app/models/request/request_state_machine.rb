@@ -27,7 +27,7 @@ class Request < ActiveRecord::Base
       transitions :to => :created, :from => [:created]
     end
 
-    event :start, :success => [:push_msg, :update_steps_status, :send_mail_started] do
+    event :start, :success => [:push_msg, :send_mail_started] do
       transitions :to => :started, :from => [:planned, :hold], :guard => :without_compliance_issues?
     end
 

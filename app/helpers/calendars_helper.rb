@@ -43,9 +43,12 @@ module CalendarsHelper
     (Time.now - (Date.today.wday).days).to_date.to_s
   end
 
-  def duration_of_week(week) # Returns April 4th 2010 - April 10th 2010
-    duration = "#{week.days.first.strftime('%B')} #{ordinalize(week.days.first.strftime('%d').to_i)} #{week.days.first.strftime('%Y')} - "
-    duration += "#{week.days.last.strftime('%B')} #{ordinalize(week.days.last.strftime('%d').to_i)} #{week.days.last.strftime('%Y')}"
+  def duration_of_week(week) # Returns 'April 4th 2010 - April 10th 2010'
+    "#{day_to_date_string(week.days.first)} - #{day_to_date_string(week.days.last)}"
+  end
+
+  def day_to_date_string(day) # Returns 'April 4th 2010'
+    "#{day.strftime('%B')} #{ordinalize(day.strftime('%d').to_i)} #{day.strftime('%Y')}"
   end
 
   def my_calendar_path

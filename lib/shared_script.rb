@@ -104,19 +104,6 @@ module SharedScript
     end
 
     AutomationCommon.init_run_files(params, content)
-    run_params = {
-        "job_type" => "automation",
-        "step_id" => step.id,
-        "script_id" => id,
-        "user_id" => params["step_user_id"],
-        "run_key" => params["SS_run_key"],
-        "results_path" => params["SS_output_file"]
-    }
-    if execute_in_background
-      job_run = JobRun.log_job(run_params)
-      run_id = job_run.id
-      params["SS_job_run_id"] = run_id
-    end
     params["SS_context_root"] = ContextRoot::context_root
 
     if execute_in_background
@@ -142,8 +129,18 @@ module SharedScript
   def background_run(params) # This step is run in a background process
     # Run the script
     User.current_user = User.find_by_login(params["request_login"])
-    @step  = Step.find(params["step_id"])
-    return 'Attempt to run script on a completed step - Denied' if @step.complete?
+    @step = Step.find(params["step_id"])
+
+    run_params = {
+        "job_type" => "automation",
+        "step_id" => @step.id,
+        "script_id" => id,
+        "user_id" => params["step_user_id"],
+        "run_key" => params["SS_run_key"],
+        "results_path" => params["SS_output_file"]
+    }
+
+    jr = JobRun.log_job(run_params)
 
     @request = @step.request
     @log = AutomationLog.new
@@ -152,7 +149,6 @@ module SharedScript
     @log.append "\tRunning: #{@step.script.get_script_type} - #{@step.script.name}"
     script_result = choose_run_script(params)
     finish_time = Time.now.localtime
-    jr = JobRun.find(params["SS_job_run_id"])
     jr.process_id = params["SS_process_pid"]
     jr.finished_at = finish_time
     jr.updated_at = finish_time
@@ -173,7 +169,6 @@ module SharedScript
 
     if AutomationCommon.error_in?(script_result)
       @log.append "Script encountered a problem - setting step status"
-      @step.reload # step status may be changed so reload it to prevent incorrect aasm_state transition
       @step.problem!
       @step.update_script_arguments_for_pack_response(script_result) unless @step.script.class.to_s == "BladelogicScript"
       jr.status = "Problem"
@@ -186,8 +181,6 @@ module SharedScript
         # Adding method for updating the pack response
         @step.update_script_arguments_for_pack_response(script_result) unless @step.script.class.to_s == "BladelogicScript"
 
-        # Reload model as it isn't uptodate (possibly have aasm_state still locked) according to the web thread transaction wasn't commited before
-        @step.reload
         @step.all_done!
 
         logger.error("Error: failed to switch automation Step##{@step.id} to `completed` state
@@ -213,9 +206,7 @@ module SharedScript
       message = "#{pre_info} Automation for staying in-process waiting for remote signal - job run id: #{jr.id}"
     end
     RequestActivity::ActivityMessage.new(@step, params["step_user_id"].to_i).log_activity(message)
-    elapsed = (Time.now.localtime - tstamp).seconds
     @log.close
-    sleep((step_automation_delay-elapsed).to_i) if elapsed < step_automation_delay  # give screen time to update
 
     script_result.slice(0..500)
   end

@@ -488,6 +488,7 @@ module RequestsHelper
   def step_components_options(request, step)
     apps                    = request.apps
     environment_id          = request.environment_id
+    @app_components_options = ''
 
     apps.each do |app|
       # TODO: `installed_components` should be fetched in the controller and sent as an argument
@@ -511,7 +512,7 @@ module RequestsHelper
     end
 
     check_package_templates
-    @app_components_options || ''
+    @app_components_options
   end
 
   def step_packages_options(request, step)
@@ -690,7 +691,7 @@ module RequestsHelper
 
   def disable_object_type_options_for(step)
     types_array = Step::RELATED_OBJECT_TYPES.select do |type|
-      type.to_s if cannot?(:"select_step_#{type}", step.request)
+      type.to_s if cannot?(:"select_step_#{type}", association_or_new_instance(step, :request))
     end
     types_array << '' if types_array.size == Step::RELATED_OBJECT_TYPES.size
     types_array

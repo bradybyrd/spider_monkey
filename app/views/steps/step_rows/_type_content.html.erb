@@ -10,5 +10,5 @@
     <% end %>
 <% elsif "package".eql?(related_object_type) %>
     <label><%= t('step.package') %></label>
-    <%= package_select_tag(step, cannot?(:select_step_package, step.parent_object)) %>
+    <%= package_select_tag(step, cannot?(:select_step_package, association_or_new_instance(step, :request))) %>
 <% end %>

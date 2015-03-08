@@ -1,21 +1,21 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 
 class Reports::CalendarsController < ApplicationController
   
-  before_filter :find_calendar_report, :only => [ :edit, :update, :destroy ]
+  before_filter :find_calendar_report, only: [:edit, :update, :destroy]
   
   def index
-    @calendar_reports = CalendarReport.all(:order => 'team_name ASC')
+    @calendar_reports = CalendarReport.all(order: 'team_name ASC')
   end
   
   def new
     @calendar_report = CalendarReport.new
-    render :layout => false
+    render layout: false
   end
   
   def create
@@ -29,7 +29,7 @@ class Reports::CalendarsController < ApplicationController
   end
   
   def edit
-    render :layout => false
+    render layout: false
   end
   
   def update

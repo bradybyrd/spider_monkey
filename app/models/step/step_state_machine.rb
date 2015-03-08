@@ -19,11 +19,11 @@ class Step < ActiveRecord::Base
     state :complete
     # state :waiting
 
-    event :ready_for_work, :success => [:auto_start, :push_msg, :send_mail_ready] do
+    event :ready_for_work, :success => [:push_msg, :send_mail_ready] do
       transitions :to => :ready, :from => [:locked]
     end
 
-    event :start, :success => [:run_script, :push_msg, :send_mail_start] do
+    event :start, :success => [:push_msg, :send_mail_start] do
       transitions :to => :in_process, :from => [:ready, :locked, :complete], :guard => :startable_with_blade_password?
     end
 

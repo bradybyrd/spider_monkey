@@ -15,37 +15,44 @@ module BaaUtilities
 
   class << self
 
+    # change to true for use with BSA 8.5 SP1 Patch 2 (or Patch 3)
+    # also provide correct path to certificate at CERTIFICATE_PATH
+    SECURITY_MODE = false
+
+    CERTIFICATE_PATH = '/opt/bmc/RLM/cert/blappserver.pem'
+    CIPHERS = 'kEDH+AESGCM'
+
     def rest_version
       '8.2'
     end
 
     def get_type_url(execute_against)
       case execute_against
-      when "servers"
-        return "/type/PropertySetClasses/SystemObject/Server"
-      when "components"
-        return "/type/PropertySetClasses/SystemObject/Component"
-      when "staticServerGroups", "staticComponentGroups"
-        return "/type/PropertySetClasses/SystemObject/Static Group"
-      when "smartServerGroups", "smartComponentGroups"
-        return "/type/PropertySetClasses/SystemObject/Smart Group"
+      when 'servers'
+        return '/type/PropertySetClasses/SystemObject/Server'
+      when 'components'
+        return '/type/PropertySetClasses/SystemObject/Component'
+      when 'staticServerGroups', 'staticComponentGroups'
+        return '/type/PropertySetClasses/SystemObject/Static Group'
+      when 'smartServerGroups', 'smartComponentGroups'
+        return '/type/PropertySetClasses/SystemObject/Smart Group'
       end
     end
 
     def get_execute_against_operation(execute_against)
       case execute_against
-      when "servers"
-        return "executeAgainstServers"
-      when "components"
-        return "executeAgainstComponents"
-      when "staticServerGroups"
-        return "executeAgainstStaticServerGroups"
-      when "staticComponentGroups"
-        return "executeAgainstStaticComponentGroups"
-      when "smartServerGroups"
-        return "executeAgainstSmartServerGroups"
-      when "smartComponentGroups"
-        return "executeAgainstSmartComponentGroups"
+      when 'servers'
+        return 'executeAgainstServers'
+      when 'components'
+        return 'executeAgainstComponents'
+      when 'staticServerGroups'
+        return 'executeAgainstStaticServerGroups'
+      when 'staticComponentGroups'
+        return 'executeAgainstStaticComponentGroups'
+      when 'smartServerGroups'
+        return 'executeAgainstSmartServerGroups'
+      when 'smartComponentGroups'
+        return 'executeAgainstSmartComponentGroups'
       end
     end
 
@@ -53,7 +60,7 @@ module BaaUtilities
       action_sub_url = "#{job_url}/Operations/#{operation}"
       url = compose_rest_url(baa_base_url, baa_username, baa_password, baa_role, action_sub_url)
 
-      response = RestClient.post URI.escape(url), arguments_hash.to_json, :content_type => :json, :accept => :json
+      response = build_rest_resource(url).post(arguments_hash.to_json, content_type: :json, accept: :json)
       response = parse_rest_response(response, 'posting', url)
 
       if response && response['OperationResultResponse'] &&
@@ -205,86 +212,86 @@ module BaaUtilities
 
     def get_model_type_to_psc_name(model_type)
       case model_type
-      when "JOB_GROUP"
-        return "SystemObject/Static Group/Job Group"
-      when "DEPOT_GROUP"
-        return "SystemObject/Static Group/Abstract Depot Group/Depot Group"
-      when "STATIC_SERVER_GROUP"
-        return "SystemObject/Static Group/Static Server Group"
-      when "STATIC_COMPONENT_GROUP"
-        return "SystemObject/Static Group/Static Component Group"
-      when "TEMPLATE_GROUP"
-        return "SystemObject/Static Group/Template Group"
-      when "SMART_JOB_GROUP", "SMART_SERVER_GROUP", "SMART_DEVICE_GROUP", "SMART_COMPONENT_GROUP", "SMART_DEPOT_GROUP", "SMART_TEMPLATE_GROUP"
-        return "SystemObject/Smart Group"
-      when "SERVER"
-        return "SystemObject/Server"
-      when "COMPONENT"
-        return "SystemObject/Component"
-      when "BLPACKAGE"
-        return "SystemObject/Depot Object/BLPackage"
-      when "AIX_PATCH_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/AIX Patch"
-      when "AIX_PACKAGE_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/AIX Package"
-      when "HP_PRODUCT_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/HP-UX Product"
-      when "HP_BUNDLE_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/HP-UX Bundle"
-      when "HP_PATCH_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/HP-UX Patch"
-      when "RPM_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/RPM"
-      when "SOLARIS_PATCH_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Solaris Patch"
-      when "SOLARIS_PACKAGE_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Solaris Package"
-      when "HOTFIX_WINDOWS_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Win Depot Software/Hotfix"
-      when "SERVICEPACK_WINDOWS_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Win Depot Software/OS Service Pack"
-      when "MSI_WINDOWS_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Win Depot Software/MSI Package"
-      when "INSTALLSHIELD_WINDOWS_INSTALLABLE"
-        return "SystemObject/Depot Object/Software/Win Depot Software/InstallShield Package"
-      when "FILE_DEPLOY_JOB"
-        return "SystemObject/Job/File Deploy Job"
-      when "DEPLOY_JOB"
-        return "SystemObject/Job/Deploy Job"
-      when "NSH_SCRIPT_JOB"
-        return "SystemObject/Job/NSH Script Job"
-      when "SNAPSHOT_JOB"
-        return "SystemObject/Job/Snapshot Job"
-      when "COMPLIANCE_JOB"
-        return "SystemObject/Job/Compliance Job"
-      when "AUDIT_JOB"
-        return "SystemObject/Job/Audit Job"
-      when "TEMPLATE"
-        return "SystemObject/Component Template"
+      when 'JOB_GROUP'
+        return 'SystemObject/Static Group/Job Group'
+      when 'DEPOT_GROUP'
+        return 'SystemObject/Static Group/Abstract Depot Group/Depot Group'
+      when 'STATIC_SERVER_GROUP'
+        return 'SystemObject/Static Group/Static Server Group'
+      when 'STATIC_COMPONENT_GROUP'
+        return 'SystemObject/Static Group/Static Component Group'
+      when 'TEMPLATE_GROUP'
+        return 'SystemObject/Static Group/Template Group'
+      when 'SMART_JOB_GROUP', 'SMART_SERVER_GROUP', 'SMART_DEVICE_GROUP', 'SMART_COMPONENT_GROUP', 'SMART_DEPOT_GROUP', 'SMART_TEMPLATE_GROUP'
+        return 'SystemObject/Smart Group'
+      when 'SERVER'
+        return 'SystemObject/Server'
+      when 'COMPONENT'
+        return 'SystemObject/Component'
+      when 'BLPACKAGE'
+        return 'SystemObject/Depot Object/BLPackage'
+      when 'AIX_PATCH_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/AIX Patch'
+      when 'AIX_PACKAGE_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/AIX Package'
+      when 'HP_PRODUCT_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/HP-UX Product'
+      when 'HP_BUNDLE_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/HP-UX Bundle'
+      when 'HP_PATCH_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/HP-UX Patch'
+      when 'RPM_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/RPM'
+      when 'SOLARIS_PATCH_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Solaris Patch'
+      when 'SOLARIS_PACKAGE_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Solaris Package'
+      when 'HOTFIX_WINDOWS_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Win Depot Software/Hotfix'
+      when 'SERVICEPACK_WINDOWS_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Win Depot Software/OS Service Pack'
+      when 'MSI_WINDOWS_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Win Depot Software/MSI Package'
+      when 'INSTALLSHIELD_WINDOWS_INSTALLABLE'
+        return 'SystemObject/Depot Object/Software/Win Depot Software/InstallShield Package'
+      when 'FILE_DEPLOY_JOB'
+        return 'SystemObject/Job/File Deploy Job'
+      when 'DEPLOY_JOB'
+        return 'SystemObject/Job/Deploy Job'
+      when 'NSH_SCRIPT_JOB'
+        return 'SystemObject/Job/NSH Script Job'
+      when 'SNAPSHOT_JOB'
+        return 'SystemObject/Job/Snapshot Job'
+      when 'COMPLIANCE_JOB'
+        return 'SystemObject/Job/Compliance Job'
+      when 'AUDIT_JOB'
+        return 'SystemObject/Job/Audit Job'
+      when 'TEMPLATE'
+        return 'SystemObject/Component Template'
       end
     end
 
     def get_model_type_to_model_type_id(model_type)
       case model_type
-      when "JOB_GROUP"
+      when 'JOB_GROUP'
         return 5005
-      when "SMART_JOB_GROUP"
+      when 'SMART_JOB_GROUP'
         return 5006
-      when "STATIC_SERVER_GROUP"
+      when 'STATIC_SERVER_GROUP'
         return 5003
-      when "SMART_SERVER_GROUP"
+      when 'SMART_SERVER_GROUP'
         return 5007
-      when "DEPOT_GROUP"
+      when 'DEPOT_GROUP'
         return 5001
-      when "SMART_DEPOT_GROUP"
+      when 'SMART_DEPOT_GROUP'
         return 5012
-      when "TEMPLATE_GROUP"
+      when 'TEMPLATE_GROUP'
         return 5008
-      when "SMART_TEMPLATE_GROUP"
+      when 'SMART_TEMPLATE_GROUP'
         return 5016
-      when "STATIC_COMPONENT_GROUP"
+      when 'STATIC_COMPONENT_GROUP'
         return 5014
-      when "SMART_COMPONENT_GROUP"
+      when 'SMART_COMPONENT_GROUP'
         return 5015
       end
     end
@@ -312,16 +319,16 @@ module BaaUtilities
 
     def get_root_group_name(object_type)
       case object_type
-      when "JOB_GROUP"
-        return "Jobs"
-      when "DEPOT_GROUP"
-        return "Depot"
-      when "STATIC_SERVER_GROUP"
-        return "Servers"
-      when "STATIC_COMPONENT_GROUP"
-        return "Components"
-      when "TEMPLATE_GROUP"
-        return "Component Templates"
+      when 'JOB_GROUP'
+        return 'Jobs'
+      when 'DEPOT_GROUP'
+        return 'Depot'
+      when 'STATIC_SERVER_GROUP'
+        return 'Servers'
+      when 'STATIC_COMPONENT_GROUP'
+        return 'Components'
+      when 'TEMPLATE_GROUP'
+        return 'Component Templates'
       end
     end
 
@@ -669,59 +676,60 @@ module BaaUtilities
 
 #==================== FOR IUR 4.6 ====================
     def baa_clear_target_servers_from_job(baa_base_url, session_id, job_db_key)
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "Job", "clearTargetServers",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'Job', 'clearTargetServers',
                                                           [
                                                               job_db_key,         #jobKey
                                                           ])
 
-      job_db_key = result[:return_value]
+      result[:return_value] # job_db_key
     end
 
     def baa_add_target_servers_to_job(baa_base_url, session_id, job_db_key, targets)
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "Job", "addTargetServers",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'Job', 'addTargetServers',
                                                           [
                                                               job_db_key,         #jobKey
                                                               targets,            #serverNames
                                                           ])
 
-      job_db_key = result[:return_value]
+      result[:return_value] # job_db_key
     end
 
     def baa_find_deploy_job(baa_base_url, session_id, group_name, job_name)
       begin
-        result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "DeployJob", "getDBKeyByGroupAndName",
+        result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'DeployJob', 'getDBKeyByGroupAndName',
                                                             [
                                                                 group_name,         #groupName
                                                                 job_name,           #jobName
                                                             ])
 
-        job_db_key = result[:return_value]
-      rescue Exception => e1
-        job_db_key = ""
+        result[:return_value]
+      rescue Exception
+        ''
       end
+      # return job_db_key or ''
     end
 
     def baa_get_depot_object_key(baa_base_url, session_id, group_name, name, type)
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "DepotObject", "getDBKeyByTypeStringGroupAndName",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'DepotObject', 'getDBKeyByTypeStringGroupAndName',
                                                           [
                                                               type,                 #depotObjectTypeString
                                                               group_name,           #groupName
                                                               name,                 #depotObjectName
                                                           ])
 
-      depot_object_key = result[:return_value]
+      result[:return_value] # depot_object_key
     end
 
     def baa_get_depot_file_key(baa_base_url, session_id, group_name, file_name)
-      baa_get_depot_object_key(baa_base_url, session_id, group_name, file_name, "DEPOT_FILE_OBJECT")
+      baa_get_depot_object_key(baa_base_url, session_id, group_name, file_name, 'DEPOT_FILE_OBJECT')
     end
 
     def baa_get_bl_package_key(baa_base_url, session_id, group_name, name)
-      baa_get_depot_object_key(baa_base_url, session_id, group_name, name, "BLPACKAGE")
+      baa_get_depot_object_key(baa_base_url, session_id, group_name, name, 'BLPACKAGE')
     end
 
     def baa_add_file_to_depot(baa_base_url, session_id, group_name, file_location, name)
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "DepotFile", "addFileToDepot",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'DepotFile', 'addFileToDepot',
                                                           [
                                                               group_name,        #groupName
                                                               file_location,     #fileLocation
@@ -729,16 +737,16 @@ module BaaUtilities
                                                               name,              #description
                                                           ])
 
-      depot_object_key = result[:return_value]
+      result[:return_value] # depot_object_key
     end
 
     def baa_group_name_to_id(baa_base_url, session_id, group_name)
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "DepotGroup", "groupNameToId",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'DepotGroup', 'groupNameToId',
                                                           [
                                                               group_name,        #groupName
                                                           ])
 
-      depot_group_id = result[:return_value]
+      result[:return_value] # depot_group_id
     end
 
     def baa_create_bl_package_from_depot_files(baa_base_url, session_id, depot_file_keys, package_name, group_id, file_name_and_target_nsh_path_hash)
@@ -755,7 +763,7 @@ module BaaUtilities
       sum_str = String.new
       reboot_str = String.new
       depot_file_keys.each do |depot_file_key|
-        depot_file_keys_str << depot_file_key + ","
+        depot_file_keys_str << depot_file_key + ','
         sum_str << '"RebootAs,NotRequired",'
         reboot_str << '"AtJobEnd,NotRequired",'
       end
@@ -763,7 +771,7 @@ module BaaUtilities
       sum_str.chop!
       reboot_str.chop!
 
-      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "BlPackage", "createPackageFromDepotObjectsEx",
+      result = baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'BlPackage', 'createPackageFromDepotObjectsEx',
                                                           [
                                                               depot_file_keys_str,              #depotObjectDBKeys
                                                               false,                        #isSoftLinked
@@ -776,17 +784,17 @@ module BaaUtilities
                                                               reboot_str,                   #reboot
                                                           ])
 
-      depot_object_key = result[:return_value]
+      result[:return_value] # depot_object_key
     end
 
     def baa_add_string_property_to_blpackage(baa_base_url, session_id, package_name, group_path, property_name, default_value)
-      baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "BlPackage", "addLocalParameter",
+      baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'BlPackage', 'addLocalParameter',
                                                           [
                                                               package_name,             #blPackageName
                                                               group_path,               #groupName
                                                               property_name,            #propertyName
                                                               package_name,             #propertyDescription
-                                                              "Primitive:/String",      #propertyType
+                                                              'Primitive:/String',      #propertyType
                                                               true,                     #editable
                                                               false,                    #required
                                                               default_value,            #defaultValueString
@@ -794,7 +802,7 @@ module BaaUtilities
     end
 
     def baa_update_string_property_value_in_blpackage(baa_base_url, session_id, package_name, group_path, property_name, default_value)
-      baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, "BlPackage", "setLocalParameterDefaultValue",
+      baa_soap_execute_cli_command_by_param_list(baa_base_url, session_id, 'BlPackage', 'setLocalParameterDefaultValue',
                                                  [
                                                      package_name,             #blPackageName
                                                      group_path,               #groupName
@@ -815,8 +823,12 @@ module BaaUtilities
     end
 
     def get_rest_response(url)
-      response = RestClient.get URI.escape(url), :accept => :json
+      response = build_rest_resource(url).get(accept: :json)
       parse_rest_response(response, 'querying', url)
+    end
+
+    def build_rest_resource(url)
+      RestClient::Resource.new(URI.escape(url), get_rest_security_options) # resource
     end
 
     def parse_rest_response(response, action, url)
@@ -854,7 +866,7 @@ module BaaUtilities
 
     def get_soap_client(baa_base_url, service_name, timeout = nil)
       Savon.client("#{baa_base_url}/services/BSA#{service_name}.wsdl") do |_, http|
-        http.auth.ssl.verify_mode = :none
+        get_savon_security_injector.call(http.auth.ssl)
         http.read_timeout = timeout unless timeout.nil?
       end # return client
     end
@@ -923,6 +935,32 @@ module BaaUtilities
 
     def get_export_format(export_format)
       "/tmp/test.#{(export_format == 'HTML') ? 'html' : 'csv'}"
+    end
+
+    def get_rest_security_options
+      @rest_security_options ||= if SECURITY_MODE
+                                   {
+                                       ssl_ca_file: CERTIFICATE_PATH,
+                                       ssl_ciphers: CIPHERS,
+                                       verify_ssl:  OpenSSL::SSL::VERIFY_PEER
+                                   }
+                                 else
+                                   {   verify_ssl:  OpenSSL::SSL::VERIFY_NONE }
+                                 end
+    end
+
+    def get_savon_security_injector
+      @soap_security_options_injector ||= if SECURITY_MODE
+                                            Proc.new do |ssl|
+                                              ssl.ca_cert_file = CERTIFICATE_PATH
+                                              ssl.ciphers = CIPHERS
+                                              ssl.verify_mode = :peer
+                                            end
+                                          else
+                                            Proc.new do |ssl|
+                                              ssl.verify_mode = :none
+                                            end
+                                          end
     end
 
   end

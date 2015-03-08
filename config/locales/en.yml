@@ -724,7 +724,7 @@ en:
   settings:
     updated: 'Settings updated successfully'
     messages: 'Messages'
-    create_for_integrations: 'Create messages for integrations?'
+    create_for_integrations: 'Create queue messages for integrations?'
 
   stage:
     confirmations:

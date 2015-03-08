@@ -454,7 +454,7 @@ class RequestsController < ApplicationController
     when 'start'
       authorize! :start, @request
       @request.start_request!
-      @request.steps.anytime_steps.where(should_execute: true).each(&:ready_for_work!)
+      @request.update_steps_status
     when 'hold'
       authorize! :hold, @request
       @request.put_on_hold!

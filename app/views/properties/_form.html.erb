@@ -6,7 +6,9 @@
 # All Rights Reserved.
 ################################################################################
 %>
-<%= form_for(@property, remote: true, html: { class: 'smallform property_form' }) do |f| %>
+<% facebox = local_assigns[:facebox].present? %>
+<%= form_for(@property, remote: facebox, html: { class: 'smallform property_form' }) do |f| %>
+  <%= f.error_messages %>
   <div id="property_error_messages" class="property_error_messages"></div>
 
   <table id="property_entry">
@@ -40,7 +42,7 @@
       <th>
           <% ############### Component Fields #################### %>
           <div id="toggleLink">
-            <% if local_assigns[:facebox].present? %>
+            <% if facebox %>
               <%= link_to_function t(:l10n_lnk_show), 'toggleSection($(this))', rel: '(hide)', class: 'component_section' %>
             <% else %>
               <%= link_to_function t(:l10n_lnk_hide), 'toggleSection($(this))', rel: '(show)', class: 'component_section' %>
@@ -50,7 +52,7 @@
     </tr>
     <tr>
       <td>
-        <div id="component_section" style="<%= local_assigns[:facebox].present? ? 'display: none' : 'display: block' %>">
+        <div id="component_section" style="<%= facebox ? 'display: none' : 'display: block' %>">
           <table>
             <tr>
               <td class="spacer" rowspan="2" style="width: 200px"></td>
@@ -76,7 +78,7 @@
       <th>
         <% ############### Package Fields #################### %>
         <div id="toggleLink">
-          <% if local_assigns[:facebox].present? && @object == 'package' %>
+          <% if facebox && @object == 'package' %>
               <%= link_to_function t(:l10n_lnk_hide), 'toggleSection($(this))', rel: '(show)', class: 'package_section' %>
           <% else %>
               <%= link_to_function t(:l10n_lnk_show), 'toggleSection($(this))', rel: '(hide)', class: 'package_section' %>
@@ -86,7 +88,7 @@
     </tr>
     <tr>
       <td>
-        <div id="package_section" style="<%= ( local_assigns[:facebox].present? && @object == 'package' ) ? 'display: block' : 'display: none' %>">
+        <div id="package_section" style="<%= ( facebox && @object == 'package' ) ? 'display: block' : 'display: none' %>">
           <table>
             <tr>
               <td class="spacer" rowspan="2" style="width: 200px"></td>
@@ -112,7 +114,7 @@
       <th>
         <% ############### Server Fields #################### %>
         <div id="toggleLink">
-          <% if local_assigns[:facebox].present? && @object == 'server' %>
+          <% if facebox && @object == 'server' %>
             <%= link_to_function t(:l10n_lnk_hide), 'toggleSection($(this))', rel: '(show)', class: 'server_section' %>
           <% else %>
             <%= link_to_function t(:l10n_lnk_show), 'toggleSection($(this))', rel: '(hide)', class: 'server_section' %>
@@ -122,7 +124,7 @@
     </tr>
     <tr>
       <td>
-        <div id="server_section" style="<%= ( local_assigns[:facebox].present? && @object == 'server' ) ? 'display:block' : 'display:none' %>">
+        <div id="server_section" style="<%= ( facebox && @object == 'server' ) ? 'display:block' : 'display:none' %>">
           <table>
             <tr>
               <td class="spacer" rowspan="2" style="width: 50px"></td>
@@ -213,13 +215,19 @@
 
   <% if @object %>
     <div class="button_bar">
-      <%= f.submit t(:l10n_frm_create), class: 'button margin_L_4' if is_create %>
-      <%= f.submit t(:l10n_frm_update), class: 'button margin_L_4' unless is_create %>
+      <% if is_create %>
+        <%= f.submit t(:l10n_frm_create), class: 'button margin_L_4' %>
+      <% else %>
+        <%= f.submit t(:l10n_frm_update), class: 'button margin_L_4' %>
+      <% end %>
     </div>
   <% else %>
     <div class="field">
-      <%= f.submit t(:l10n_frm_create), :class => 'button margin_L_4' if is_create %>
-      <%= f.submit t(:l10n_frm_update), :class => 'button margin_L_4' unless is_create %>
+      <% if is_create %>
+        <%= f.submit t(:l10n_frm_create), :class => 'button margin_L_4' %>
+      <% else %>
+        <%= f.submit t(:l10n_frm_update), :class => 'button margin_L_4' %>
+      <% end %>
       or 
       <%= link_to t(:l10n_frm_cancel), backlink %>
     </div>

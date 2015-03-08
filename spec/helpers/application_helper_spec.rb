@@ -391,7 +391,7 @@ describe ApplicationHelper do
   end
 
   it '#get_version_from_file' do
-    helper.get_version_from_file.should eql('4.6.00.01')
+    helper.get_version_from_file.should eql('4.6.00.02')
   end
 
   it '#get_version_and_build_from_file' do

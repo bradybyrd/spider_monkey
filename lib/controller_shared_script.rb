@@ -10,7 +10,7 @@ module ControllerSharedScript
   def index
     template = use_template
     template = 'automation_scripts' if use_template.nil? && params[:controller] == 'scripts'
-    redirect_to :controller => 'account', :action => template
+    redirect_to controller: 'account', action: template
   end
 
   def new
@@ -27,7 +27,7 @@ module ControllerSharedScript
       request.xhr? ? ajax_redirect(index_path) : redirect_to(index_path)
     else
       @scripts = paginate_records(associated_model.all, params, 10)
-      request.xhr? ? show_validation_errors(:script, {:div => "#{@script.class.to_s.underscore}_error_messages"}) : render_new
+      request.xhr? ? show_validation_errors(:script, {div: "#{@script.class.to_s.underscore}_error_messages"}) : render_new
     end
   end
 
@@ -82,11 +82,11 @@ module ControllerSharedScript
   end
 
   def import_select_script
-    render :template => 'shared_scripts/import', :layout => false
+    render template: 'shared_scripts/import', layout: false
   end
 
   def import
-    render :template => 'shared_scripts/import', :layout => false
+    render template: 'shared_scripts/import', layout: false
   end
 
   #import from the library directory
@@ -98,7 +98,8 @@ module ControllerSharedScript
     @integration_server = params[:integration_server]
     @folder = params[:folder]
     @sub_folder = params[:sub_folder]
-    unless @folder.nil? || !['bladelogic', 'automation', 'resource_automation'].include?(@folder)
+    script_files = []
+    if @folder.present? && %w(bladelogic automation resource_automation).include?(@folder)
       if @sub_folder
         basedir = File.join(basedir, @folder, @sub_folder)
       else
@@ -106,36 +107,20 @@ module ControllerSharedScript
       end
 
       # grab the file names split from subdirectories relative to that basedir for tree populating
-      script_files = Dir.chdir(basedir) { Dir.glob(File.join("**", "*.*")).map { |f| File.split(f) } }
-      if script_files.nil? || script_files.empty?
-        script_files = []
-      else
-        script_files.sort!{ |a,b| a[1] <=> b[1] }
+      if File.directory?(basedir)
+        script_files = Dir.chdir(basedir) { Dir.glob(File.join('**', '*.*')).map { |f| File.split(f) } }
+        script_files = only_not_imported_scripts(script_files) if script_files.present?
       end
-
-      script_class = case @folder
-      when "bladelogic"
-        BladelogicScript
-      else
-        Script
-      end
-      script_class = script_class
-      script_files_not_imported = [];
-      script_files.each do |script_file|
-       name = script_file[1].split(".")[0].humanize
-        script_files_not_imported <<  script_file unless script_class.exists?(['name LIKE ?', "#{name}"])
-      end
-      script_files = script_files_not_imported
     else
-      flash[:notice] = "Missing or invalid script type."
+      flash[:notice] = 'Missing or invalid script type.'
     end
     # send back an html snippet
-    render :template => 'shared_scripts/import_local_scripts_list', :locals => { :script_files => script_files.try(:sort), :basedir => basedir }, :layout => false
+    render template: 'shared_scripts/import_local_scripts_list', locals: { script_files: script_files.try(:sort), basedir: basedir }, layout: false
   end
 
   def import_automation_scripts
     authorize! :import, :automation
-    render :template => 'shared_scripts/import_automation_scripts', :layout => false
+    render template: 'shared_scripts/import_automation_scripts', layout: false
   end
 
   def render_automation_types
@@ -202,7 +187,7 @@ module ControllerSharedScript
     else
     @content = "Script not found at #{@path}"
     end
-    render :template => 'shared_scripts/import_local_scripts_preview', :locals => { :content => @content }, :layout => false
+    render template: 'shared_scripts/import_local_scripts_preview', locals: {content: @content}, layout: false
   end
 
   def import_scripts_list
@@ -211,7 +196,7 @@ module ControllerSharedScript
     integration = ProjectServer.find(int_id)
     return "No Integration with id #{int_id.to_s}" if integration.nil?
     script_list = Script.import_script_list(int_id)
-    render :template => 'shared_scripts/import_script_list', :locals => { :scripts => script_list }, :layout => false
+    render template: 'shared_scripts/import_script_list', locals: {scripts: script_list}, layout: false
   end
 
   def test_run
@@ -220,15 +205,15 @@ module ControllerSharedScript
     if @script.arguments.blank? || params[:argument]
       @result = @script.test_run!(params) #[:argument] || {})
       if @script.class.to_s == "BladelogicScript"
-        render :template => 'shared_scripts/bladelogic/test_run', :layout => false
+        render template: 'shared_scripts/bladelogic/test_run', layout: false
       else
-        render :template => 'shared_scripts/test_run', :layout => false
+        render template: 'shared_scripts/test_run', layout: false
       end
     else
       if @script.class.to_s == "BladelogicScript"
-        render :template => 'shared_scripts/bladelogic/add_arguments', :locals => { :argument_values => test_argument_values(@script) }, :layout => false
+        render template: 'shared_scripts/bladelogic/add_arguments', locals: {argument_values: test_argument_values(@script)}, layout: false
       else
-        render :template => 'shared_scripts/add_arguments', :locals => { :argument_values => test_argument_values(@script) }, :layout => false
+        render template: 'shared_scripts/add_arguments', locals: {argument_values: test_argument_values(@script)}, layout: false
       end
     end
   end
@@ -251,9 +236,9 @@ module ControllerSharedScript
     @selected_server_aspect_ids = @argument.infrastructure_mapping_server_aspect_ids
     @server_level_id = ServerAspect.find_by_id(@selected_server_aspect_ids).server_level_id if @selected_server_aspect_ids.present?
     if @script.class.to_s == "BladelogicScript"
-      render :template => 'shared_scripts/bladelogic/map_properties_to_argument', :layout => false
+      render template: 'shared_scripts/bladelogic/map_properties_to_argument', layout: false
     else
-      render :template => 'shared_scripts/map_properties_to_argument', :layout => false
+      render template: 'shared_scripts/map_properties_to_argument', layout: false
     end
 
   end
@@ -276,7 +261,7 @@ module ControllerSharedScript
     installed_components = InstalledComponent.find_all_by_application_environment_id_and_application_component_id(application_environment_ids, application_component_ids)
     properties = Property.find_all_by_id(params[:property_ids])
     @argument.update_script_argument_to_property_maps(properties, installed_components)
-    render :partial => 'shared_scripts/parsed_parameters', :locals => { :script => @script }, :layout => false
+    render partial: 'shared_scripts/parsed_parameters', locals: {script: @script}, layout: false
   end
 
   def update_argument_server_properties
@@ -288,7 +273,7 @@ module ControllerSharedScript
 
     @argument.update_script_argument_to_property_maps(properties, servers)
 
-    render :partial => 'shared_scripts/parsed_parameters', :locals => { :script => @script }, :layout => false
+    render partial: 'shared_scripts/parsed_parameters', locals: {script: @script}, layout: false
   end
 
   def multiple_application_environment_options
@@ -302,9 +287,9 @@ module ControllerSharedScript
         options += options_from_model_association(app, :application_environments, :apply_method => apply_method)
         options += "</optgroup>"
       end
-    render :text => options
+    render text: options
     else
-    render :nothing => true
+    render nothing: true
     end
   end
 
@@ -323,51 +308,50 @@ module ControllerSharedScript
     application_component_ids = ApplicationComponent.find_all_by_app_id(params[:app_ids]).map { |app_comp| app_comp.id }
     installed_components = InstalledComponent.find_all_by_application_environment_id_and_application_component_id(application_environment_ids, application_component_ids)
     components = installed_components.map { |inst_comp| inst_comp.component }.uniq
-    render :text => ApplicationController.helpers.options_from_collection_for_select(components.sort_by(&:name), :id, :name)
+    render text: ApplicationController.helpers.options_from_collection_for_select(components.sort_by(&:name), :id, :name)
   end
 
   def property_options
     component_properties = ComponentProperty.find_all_by_component_id(params[:component_ids])
     properties = component_properties.map { |comp_prop| comp_prop.active_property }.compact.uniq.sort_by{ |it| it["name"] }
-    render :text => ApplicationController.helpers.options_from_collection_for_select(properties, :id, :name)
+    render text: ApplicationController.helpers.options_from_collection_for_select(properties, :id, :name)
   end
 
   def app_env_remote_options
     if params[:app_id].nil? || params[:app_id] == ''
-    render :text => ""
+    render text: ""
     else
     app = App.find_by_id(params[:app_id])
-    render :text => options_from_model_association(app, :application_environments, :named_scope => [:in_order, :with_installed_components])
+    render text: options_from_model_association(app, :application_environments, :named_scope => [:in_order, :with_installed_components])
     end
   end
 
   def package_remote_options
     if params[:app_env_id].nil?
-      render :text => ""
+      render text: ""
     else
       app_env = ApplicationEnvironment.find_by_id(params[:app_env_id])
-      render :text => options_from_model_association(app_env.app, :packages)
+      render text: options_from_model_association(app_env.app, :packages)
     end
   end
 
   def package_instance_remote_options
     if params[:package_id].nil?
-      render :text => ""
+      render text: ""
     else
       package = Package.find_by_id(params[:package_id])
-      render :text =>
-               ApplicationController.helpers.options_for_select([["Select", ""]]) +
-               options_from_model_association(package, :package_instances)
+      render text: ApplicationController.helpers.options_for_select([["Select", ""]]) +
+          options_from_model_association(package, :package_instances)
 
     end
   end
 
   def installed_component_remote_options
     if params[:app_env_id].nil?
-    render :text => ""
+    render text: ""
     else
     app_env = ApplicationEnvironment.find_by_id(params[:app_env_id])
-    render :text => options_from_model_association(app_env, :installed_components)
+    render text: options_from_model_association(app_env, :installed_components)
     end
   end
 
@@ -379,9 +363,9 @@ module ControllerSharedScript
     end
     script = find_script
     if script.class.to_s == "BladelogicScript"
-      render :partial => 'steps/bladelogic/step_script', :locals => { :script => script, :installed_component => installed_component, :step => nil, :argument_values => test_argument_values(script, installed_component) }
+      render partial: 'steps/bladelogic/step_script', locals: {script: script, installed_component: installed_component, step: nil, argument_values: test_argument_values(script, installed_component)}
     else
-      render :partial => 'steps/step_script', :locals => { :script => script, :installed_component => installed_component, :step => nil, :argument_values => test_argument_values(script, installed_component) }
+      render partial: 'steps/step_script', locals: {script: script, installed_component: installed_component, step: nil, argument_values: test_argument_values(script, installed_component)}
     end
   end
 
@@ -396,14 +380,14 @@ module ControllerSharedScript
     if script.class.to_s == "BladelogicScript"
       render :partial => 'steps/bladelogic/step_script', :locals => { :script => script, :installed_component => server, :step => nil, :argument_values => argument_values }
     else
-      render :partial => 'steps/step_script', :locals => { :script => script, :installed_component => server, :step => nil, :argument_values => argument_values }
+      render partial: 'steps/step_script', locals: {script: script, installed_component: server, step: nil, argument_values: argument_values}
     end
   end
 
   def server_property_options
     servers = find_servers
     properties = servers.map { |s| s.properties }.flatten.uniq.sort_by(&:name)
-    render :text => ApplicationController.helpers.options_from_collection_for_select(properties, :id, :name)
+    render text: ApplicationController.helpers.options_from_collection_for_select(properties, :id, :name)
   end
 
   def build_script_list # called from JS on automation type popup
@@ -412,7 +396,7 @@ module ControllerSharedScript
     else
       scripts = Script.unarchived.visible.where("scripts.automation_category = ? AND scripts.automation_type != ?", params["script_class"], 'ResourceAutomation').order('name asc')
     end
-    render :text => "<option value=''>Choose Script</option>" + ApplicationController.helpers.options_from_collection_for_select(scripts, :id, :name).html_safe
+    render text: "<option value=''>Choose Script</option>" + ApplicationController.helpers.options_from_collection_for_select(scripts, :id, :name).html_safe
   end
 
   def get_remote_script_list
@@ -437,9 +421,9 @@ module ControllerSharedScript
     @script = find_script
     @script.file_path = params[:file_path]
     if @script.test_file_path
-      render :text => File.open(@script.file_path).read
+      render text: File.open(@script.file_path).read
     else
-      render :text => "Can't find script in path."
+      render text: "Can't find script in path."
     end
   end
   
@@ -452,9 +436,9 @@ module ControllerSharedScript
       fil.write(@script.content)
       fil.flush
       fil.close
-      render :text => "Success"
+      render text: "Success"
     else
-      render :text => "Can't find script in path."
+      render text: "Can't find script in path."
     end
     
   end
@@ -611,7 +595,7 @@ module ControllerSharedScript
           end
         end
         success = false if (script.nil? || !script.errors.empty?)
-        if (!script.nil? && !script.errors.empty?)
+        if !script.nil? && !script.errors.empty?
           script.errors.full_messages.each do |msg|
             error_messages << ("#{path_and_filename[1]}: " + msg)
           end
@@ -636,100 +620,115 @@ module ControllerSharedScript
     #----------------- PRIVATE -----------------------#
   private
 
-    def render_new
-      if params.include?("stand_alone")
-        render :template => 'shared_scripts/new', :layout => false
-      else
-        if request.xhr?
-          if associated_model == BladelogicScript
-            render :template => 'shared_scripts/bladelogic/detail_new.html.erb', :layout => false
-          else
-            render :template => 'shared_scripts/detail_new', :layout => false
-          end
-        else
-          if associated_model == BladelogicScript
-            render :template => 'shared_scripts/bladelogic/detail_new.html.erb'
-          else
-            render :template => 'shared_scripts/detail_new'
-          end
-        end
-      end
-    end
-
-    def render_edit
+  def render_new
+    if params.include?("stand_alone")
+      render template: 'shared_scripts/new', layout: false
+    else
       if request.xhr?
         if associated_model == BladelogicScript
-          render :template => 'shared_scripts/bladelogic/edit', :layout => false
+          render template: 'shared_scripts/bladelogic/detail_new.html.erb', layout: false
         else
-          render :template => 'shared_scripts/edit', :layout => false
+          render template: 'shared_scripts/detail_new', layout: false
         end
       else
         if associated_model == BladelogicScript
-          render :template => 'shared_scripts/bladelogic/detail_edit'
+          render template: 'shared_scripts/bladelogic/detail_new.html.erb'
         else
-          render :template => 'shared_scripts/detail_edit'
+          render template: 'shared_scripts/detail_new'
         end
       end
     end
+  end
 
-    def rearrange_script_files(script_files,folder,sub_folder)
-      ignore_scripts = []
-      script_files.each do |script_file|
-        unless ignore_scripts.include?(script_file)
-          path_and_filename = File.split(script_file)
-          if sub_folder
-            path = File.join(AutomationCommon::DEFAULT_AUTOMATION_SCRIPT_LIBRARY_PATH, folder, sub_folder, path_and_filename)
-          else
-            path = File.join(AutomationCommon::DEFAULT_AUTOMATION_SCRIPT_LIBRARY_PATH, folder, path_and_filename)
-          end
-          content ||= File.open(path).read
-          pa = parsed_arguments(content)
-          if pa.present? && pa.is_a?(Hash)
-            pa.each do |argument_name, val|
-              if val.is_a?(Hash) && val.keys.include?("external_resource")
-                external_resource = "./#{val['external_resource']}.rb"
-                if script_files.include?(external_resource)
-                  if script_files.index(external_resource) > script_files.index(script_file)
-                    deleted_script_name = script_files.delete(external_resource)
-                    script_files.insert(script_files.index(script_file), deleted_script_name)
-                  end
-                  ignore_scripts.push(script_file)
+  def render_edit
+    if request.xhr?
+      if associated_model == BladelogicScript
+        render template: 'shared_scripts/bladelogic/edit', layout: false
+      else
+        render template: 'shared_scripts/edit', layout: false
+      end
+    else
+      if associated_model == BladelogicScript
+        render template: 'shared_scripts/bladelogic/detail_edit'
+      else
+        render template: 'shared_scripts/detail_edit'
+      end
+    end
+  end
+
+  def rearrange_script_files(script_files,folder,sub_folder)
+    ignore_scripts = []
+    script_files.each do |script_file|
+      unless ignore_scripts.include?(script_file)
+        path_and_filename = File.split(script_file)
+        if sub_folder
+          path = File.join(AutomationCommon::DEFAULT_AUTOMATION_SCRIPT_LIBRARY_PATH, folder, sub_folder, path_and_filename)
+        else
+          path = File.join(AutomationCommon::DEFAULT_AUTOMATION_SCRIPT_LIBRARY_PATH, folder, path_and_filename)
+        end
+        content ||= File.open(path).read
+        pa = parsed_arguments(content)
+        if pa.present? && pa.is_a?(Hash)
+          pa.each do |argument_name, val|
+            if val.is_a?(Hash) && val.keys.include?("external_resource")
+              external_resource = "./#{val['external_resource']}.rb"
+              if script_files.include?(external_resource)
+                if script_files.index(external_resource) > script_files.index(script_file)
+                  deleted_script_name = script_files.delete(external_resource)
+                  script_files.insert(script_files.index(script_file), deleted_script_name)
                 end
+                ignore_scripts.push(script_file)
               end
             end
           end
         end
       end
     end
+  end
 
-    def build_integration_parameters(content)
-      original_data = content
-      @project_server.nil? ? "\n# Integration server not found #" : @project_server.add_update_integration_values(original_data, true)
+  def build_integration_parameters(content)
+    original_data = content
+    @project_server.nil? ? "\n# Integration server not found #" : @project_server.add_update_integration_values(original_data, true)
+  end
+
+  def parse_arguments(content)
+    arg_string = content.match(/\s*^###\r?\n(.+?)(\r?\n)+?\s*^###\r?/m)
+    result = arg_string[1] if arg_string
+    result.gsub! "\t", "  " if result
+    result
+  end
+
+  def parsed_arguments(content)
+    parsed_args = parse_arguments(content)
+    if parsed_args.present? && parsed_args.include?('#')
+      parsed_args = parsed_args.gsub("#","")
     end
-
-    def parse_arguments(content)
-      arg_string = content.match(/\s*^###\r?\n(.+?)(\r?\n)+?\s*^###\r?/m)
-      result = arg_string[1] if arg_string
-      result.gsub! "\t", "  " if result
-      result
-    end
-
-    def parsed_arguments(content)
-      parsed_args = parse_arguments(content)
-      if parsed_args.present? && parsed_args.include?('#')
-        parsed_args = parsed_args.gsub("#","")
+    if parsed_args
+      yml = YAML.load(parsed_args)
+      if yml.is_a? Hash
+        return yml.stringify_keys
+      else
+        raise "The script header does not seem to be according to the format specified"
       end
-      if parsed_args
-        yml = YAML.load(parsed_args)
-        if yml.is_a? Hash
-          return yml.stringify_keys
-        else
-          raise "The script header does not seem to be according to the format specified"
-        end
-      end
-      {}
     end
+    {}
+  end
 
+  def only_not_imported_scripts(script_files)
+    script_files.sort!{ |a,b| a[1] <=> b[1] }
 
+    script_class = case @folder
+                     when 'bladelogic'
+                       BladelogicScript
+                     else
+                       Script
+                   end
+    script_class = script_class
+    script_files_not_imported = []
+    script_files.each do |script_file|
+      name = script_file[1].split(".")[0].humanize
+      script_files_not_imported <<  script_file unless script_class.exists?(['name LIKE ?', "#{name}"])
+    end
+    script_files_not_imported
+  end
 end
-

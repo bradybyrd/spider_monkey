@@ -26,14 +26,14 @@ module Calendar
     end
 
     def title
-      strftime("%B")
+      strftime('%B')
     end
 
     def week_days
-      [strftime("%a")]
+      [strftime('%a')]
     end
 
-    ['releases', 'requests'].each do |data_type|
+    %w(releases requests).each do |data_type|
       define_method data_type do
         if week
           week.send(data_type, date_object)

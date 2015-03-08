@@ -45,16 +45,16 @@
             <%= f.select :owner_id,
                          options_for_users_groups_from_collection_for_select(@users, @groups, step),
                          { include_blank: 'Select' },
-                         disabled: cannot?(:edit_step_owner, Request.new) %>
+                         disabled: cannot?(:edit_step_owner, association_or_new_instance(step, :request)) %>
             <%= hidden_field_tag 'step[owner_type]', user_owner_chosen_for(step) ? 'User' : 'Group' %>
           </div>
           <div id="component_or_package_selection" class="field">
             <% if "component".eql?(step.related_object_type) %>
                 <label><%= t('procedure.component') %></label>
-                <%= application_component_select_list(step, !can?(:select_step_component, Request.new)) %>
+                <%= application_component_select_list(step, cannot?(:select_step_component, association_or_new_instance(step, :request))) %>
             <% elsif "package".eql?(step.related_object_type) %>
                 <label><%= t('procedure.package') %></label>
-                <%= package_select_tag(step, cannot?(:select_step_package, step.request)) %>
+                <%= package_select_tag(step, cannot?(:select_step_package, association_or_new_instance(step, :request))) %>
             <% end %>
           </div>
           <div id="properties_container_new" class="height_38" style="padding:0 0 5px;width:380px;">

@@ -52,7 +52,7 @@ gem 'nokogiri', '1.6.1'  #|BMC TPS Info    |TPSDR0033648     |DR4T4.1.4.04 |http
 gem 'liquid'
 gem 'dynamic_form'
 gem 'savon', '1.1.0'
-gem 'rest-client'
+gem 'rest-client', '1.7.2' # US198809 - [SP] Integration : Cannot connect to BSA 8.5 SP1 P3
 gem 'carrierwave' # file attachment gem replacement for attachment_fu, https://github.com/jnicklas/carrierwave
 gem 'jruby-parser', '~> 0.3'
 gem 'torquebox', '3.1.0'
@@ -69,7 +69,7 @@ gem 'slim-rails', '2.1.4'
 gem 'underscore-rails' # handy JS helper methods (by Nazar Khmil)
 # gem 'goldiloader' # automatically eager load associations, git: 'https://github.com/salsify/goldiloader'
 gem 'draper', '1.3.1'  # for decorators
-gem 'gibberish'   #for encrypted passwords
+gem 'gibberish', '1.4.0' # for encrypted passwords
 
 group :test, :development do
   gem 'rspec-rails', '2.99.0' #https://github.com/rspec/rspec-rails
