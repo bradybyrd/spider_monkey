@@ -5,6 +5,8 @@ feature 'User on procedures page', custom_roles: true do
   given!(:procedure) { create(:procedure, apps: [app]) }
   given!(:app) { create(:app, :with_installed_component) }
   given(:component) { app.components.first }
+  given(:package) { create(:package) }
+  given(:app_packages) { app.packages = [package]; app.save}
 
   background do
     sign_in user
@@ -23,6 +25,23 @@ feature 'User on procedures page', custom_roles: true do
       wait_for_ajax
 
       expect(step_header(recent_step)).to have_content component.name
+    end
+
+    scenario 'can create step with selected package' do
+      app_packages
+      visit edit_procedure_path(procedure)
+      click_new_step
+
+      within step_popup do
+        select_object_type_package
+        wait_for_ajax
+        select_package(package)
+        save_step_and_close_popup
+      end
+
+      wait_for_ajax
+
+      expect(step_header(recent_step)).to have_content package.name
     end
 
     scenario 'can edit step with selected component' do
@@ -68,7 +87,15 @@ feature 'User on procedures page', custom_roles: true do
     select component.name, from: 'step_component_id'
   end
 
+  def select_package(package)
+    select package.name, from: 'step_package_id'
+  end
+
   def step_popup
     find '#facebox'
+  end
+
+  def select_object_type_package
+    select 'Package', from: 'step_related_object_type'
   end
 end

@@ -100,7 +100,7 @@ describe PropertiesController, type: :controller do
         @property.reload
         expect(@property.name).to eq 'Property_changed'
         expect(flash[:notice]).to include('successfully')
-        expect(response).to redirect_to(property_path(@property))
+        expect(response).to redirect_to properties_path
       end
 
       it 'returns flash notice' do

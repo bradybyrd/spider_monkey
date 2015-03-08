@@ -1130,7 +1130,7 @@ module StepsHelper
   end
 
   def disabled_step_per_permission_editing?(step, permission)
-    cannot?(permission, step.request) || !step.enabled_editing?(current_user)
+    cannot?(permission, association_or_new_instance(step, :request)) || !step.enabled_editing?(current_user)
   end
 
   def all_references_included_in_step?(reference_ids, step_reference_ids)

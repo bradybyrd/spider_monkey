@@ -51,7 +51,7 @@ class PackagesController < ApplicationController
     @package.not_from_rest =  true
     if @package.save
       flash[:notice] = 'Package was successfully created.'
-      redirect_to edit_package_path( :id => @package.id )
+      redirect_to packages_path(page: params[:page], key: params[:key])
     else
       render :action => "new"
     end

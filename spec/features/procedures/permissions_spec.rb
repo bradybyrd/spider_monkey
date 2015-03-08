@@ -6,6 +6,9 @@ feature 'Procedures page permissions', custom_roles: true do
   given!(:basic_permissions) { [ 'View My Applications', 'Environment', 'Access Metadata' ] }
 
   given(:permissions) { TestPermissionGranter.new(user.groups.first.roles.first.permissions) }
+  given(:app) { create(:app, :with_installed_component) }
+  given(:package) { create(:package) }
+  given(:app_packages) { app.packages = [package]; app.save}
 
   background do
     permissions << basic_permissions
@@ -368,6 +371,57 @@ feature 'Procedures page permissions', custom_roles: true do
         end
       end
     end
+
+    context 'modify package' do
+      scenario 'has access to select package' do
+        app_packages
+        permissions << 'Edit Procedures' << 'Add New Step' << 'Edit Steps'
+        permissions << 'Select Package' << 'Select Instance'
+        procedure.apps = [app]
+        visit edit_procedure_path(procedure)
+        click_new_step
+
+        within step_popup do
+          select_object_type_package
+          wait_for_ajax
+          expect(step_package_select).not_to be_disabled
+          select_package(package)
+          wait_for_ajax
+          expect(package_instance_select).not_to be_disabled
+        end
+      end
+
+      scenario 'no access to select package' do
+        app_packages
+        permissions << 'Edit Procedures' << 'Add New Step' << 'Edit Steps'
+        visit edit_procedure_path(procedure)
+        click_new_step
+
+        within step_popup do
+          select_object_type_package
+          wait_for_ajax
+          expect(step_package_select).to be_disabled
+        end
+      end
+
+      scenario 'no access to select package instance' do
+        app_packages
+        procedure.apps = [app]
+        permissions << 'Edit Procedures' << 'Add New Step' << 'Edit Steps'
+        permissions << 'Select Package'
+        visit edit_procedure_path(procedure)
+        click_new_step
+
+        within step_popup do
+          select_object_type_package
+          wait_for_ajax
+          expect(step_package_select).not_to be_disabled
+          select_package(package)
+          wait_for_ajax
+          expect(package_instance_select).to be_disabled
+        end
+      end
+    end
   end
 
   describe 'create procedure' do
@@ -607,6 +661,14 @@ feature 'Procedures page permissions', custom_roles: true do
     find_by_id 'step_action_links'
   end
 
+  def step_package_select
+    find_by_id 'step_package_id'
+  end
+
+  def package_instance_select
+    find_by_id 'package_instance_id'
+  end
+
   def have_edit_procedure_link(procedure)
     have_css("a[href='#{edit_procedure_path(procedure)}']")
   end
@@ -624,5 +686,17 @@ feature 'Procedures page permissions', custom_roles: true do
 
   def have_reorder_step_button
     have_css('a#reorder_steps')
+  end
+
+  def select_object_type_package
+    select 'Package', from: 'step_related_object_type'
+  end
+
+  def select_package(package)
+    select package.name, from: 'step_package_id'
+  end
+
+  def save_step_and_close_popup
+    click_button I18n.t('step.buttons.add_and_close')
   end
 end

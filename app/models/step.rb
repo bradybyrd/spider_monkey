@@ -1739,7 +1739,8 @@ class Step < ActiveRecord::Base
       return
     end
 
-    safe_ready_for_work!
+    ready_for_work!
+    auto_start
 
     if procedure? && !in_process?
       lets_start!
@@ -1767,6 +1768,7 @@ class Step < ActiveRecord::Base
   def lets_start!
     begin
       if start!
+        run_script
         update_attribute :work_started_at, Time.now
         true
       else
@@ -1989,7 +1991,7 @@ class Step < ActiveRecord::Base
       script.queue_run!(self)
       #logger.debug "SS__ Queue-finish: #{position}) #{id.to_s}-#{name}, time:#{Time.now - start_time}"
     rescue => e
-      notes.create(:content => "Error: #{e.message}", :user_id => request.last_activity_by)
+      notes.create(:content => "Error: #{e.message}\n#{e.backtrace}", :user_id => request.last_activity_by)
       Rails.logger.error(e.message)
       Rails.logger.error(e.message.inspect)
     end

@@ -1,7 +1,7 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 
@@ -27,13 +27,13 @@ module SmartReleaseCalendarHelper
 
     css_class = "app#{class_number}"
     div_content = request_calendar_content(req).html_safe
-    title_content = content_tag(:div, request_calendar_content(req, :for_title => true),
-                                      { :class => "#{css_class} request calendar unathenticatedCalendar", 
-                                        :style => "font-size:11px;" }, 
+    title_content = content_tag(:div, request_calendar_content(req, for_title: true),
+                                      {class: "#{css_class} request calendar unathenticatedCalendar",
+                                        style: 'font-size:11px;'},
                                       false)
     content_tag(:div, div_content, 
-                      { :title => title_content.gsub("\"", "'"), 
-                        :class => "#{css_class} request" }, 
+                      {title: title_content.gsub("\"", "'"),
+                       class: "#{css_class} request"},
                       false)
   end
 
@@ -53,8 +53,8 @@ module SmartReleaseCalendarHelper
     if cp.include?('business_process_name')
       unless req.business_process.nil?
         bg_color = req.business_process.label_color rescue ''
-        content << content_tag(:div, req.business_process.name, {:style => "background:#{bg_color};"}, false)
-        content << "<br/>".html_safe
+        content << content_tag(:div, req.business_process.name, {style: "background:#{bg_color};"}, false)
+        content << '<br/>'.html_safe
       end
     end
 
@@ -65,7 +65,7 @@ module SmartReleaseCalendarHelper
     end
 
     if cp.include?('app_name')
-      content << (ensure_space(req.app_name.to_sentence) +"<br />".html_safe)
+      content << (ensure_space(req.app_name.to_sentence) + '<br />'.html_safe)
     end
 
     if cp.include?('environment_name')
@@ -107,12 +107,12 @@ module SmartReleaseCalendarHelper
     end
 
     visible = (current_user && req.is_visible?(current_user)) ? true : false
-    content = link_to_if (visible && can?(:inspect, req)), content, request_path(req), :style => "border-bottom:none;"
-    request_id = content_tag(:span, req.number, {:class => "request_id", :style => " padding-bottom:0px;padding-top:0px;border-bottom:none;"}, false)
+    content = link_to_if (visible && can?(:inspect, req)), content, request_path(req), style: 'border-bottom:none;'
+    request_id = content_tag(:span, req.number, {class: 'request_id', style: ' padding-bottom:0px;padding-top:0px;border-bottom:none;'}, false)
     unscheduled = req.scheduled_at.present? ? '' : 'unscheduled'
 
     if cp.include?('aasm.current_state')
-      content << ("<div class=\"#{req.aasm.current_state}RequestStep #{unscheduled} request_step state\">" + request_id + h("#{req.aasm.current_state}") + "</div>").html_safe
+      content << ("<div class=\"#{req.aasm.current_state}RequestStep #{unscheduled} request_step state\">" + request_id + h("#{req.aasm.current_state}") + '</div>').html_safe
     else
       content << "<div>#{request_id}</div>".html_safe
     end
@@ -129,7 +129,7 @@ module SmartReleaseCalendarHelper
   end
 
   def conditional_truncate(val, should_truncate)
-    should_truncate ? truncate(val, :length => 20) : val
+    should_truncate ? truncate(val, length: 20) : val
   end
 
 end

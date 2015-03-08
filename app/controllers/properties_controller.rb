@@ -66,7 +66,7 @@ class PropertiesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render layout: !params[:object].present? }
+      format.html { render layout: params[:object].blank? }
       #format.json { render json: @property }
       #format.js { render :layout => !params[:object].present? }
     end
@@ -98,19 +98,18 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.save
-        format.html { redirect_to @property, notice: t('activerecord.notices.created', model: Property.model_name.human) }
+        format.html { redirect_to properties_path(page: params[:page], key: params[:key]),
+                                  notice: t('activerecord.notices.created', model: Property.model_name.human) }
         format.json { render json: @property, status: :created, location: @property }
         format.js {
           flash[:notice] = t('activerecord.notices.created', model: Property.model_name.human)
           ajax_redirect(params[:redirect_to] || properties_path(page: params[:page], key: params[:key]))
         }
       else
+        @property.valid?
         format.html { render action: 'new' }
         format.json { render json: @property.errors, status: :unprocessable_entity }
-        format.js {
-            @property.valid?
-            show_validation_errors(:property, { div: 'property_error_messages'})
-        }
+        format.js { show_validation_errors(:property, { div: 'property_error_messages'}) }
       end
     end
   end
@@ -146,19 +145,18 @@ class PropertiesController < ApplicationController
         ### If complete form is submitted, make sure old server ids no more used are removed.
         @property.archive_server_property_values!(old_server_ids - @property.server_ids) if params['name_update'].nil?
 
-        format.html { redirect_to @property, notice: t('activerecord.notices.updated', model: Property.model_name.human) }
+        format.html { redirect_to properties_path(page: params[:page], key: params[:key]),
+                                  notice: t('activerecord.notices.updated', model: Property.model_name.human) }
         format.json { head :no_content }
         format.js {
           flash[:notice] = t('activerecord.notices.updated', model: Property.model_name.human)
           ajax_redirect(params[:redirect_to] || properties_path(page: params[:page], key: params[:key]))
         }
       else
+        @property.valid?
         format.html { render action: 'edit' }
         format.json { render json: @property.errors, status: :unprocessable_entity }
-        format.js {
-            @property.valid?
-            show_validation_errors(:property, { div: 'property_error_messages' })
-        }
+        format.js { show_validation_errors(:property, { div: 'property_error_messages' }) }
       end
     end
   end

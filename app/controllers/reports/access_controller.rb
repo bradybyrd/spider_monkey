@@ -1,7 +1,7 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2014
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 
@@ -21,12 +21,12 @@ class Reports::AccessController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render partial: "reports/access/roles_map/roles_map_report",
+        render partial: 'reports/access/roles_map/roles_map_report',
                locals: { teams: selected_teams, groups: selected_groups, users: selected_users }
       end
       format.csv do
         csv_report = RolesMapCsv.new(selected_teams, selected_groups, selected_users)
-        send_data csv_report.generate, type: 'text/csv', filename: "roles_map.csv"
+        send_data csv_report.generate, type: 'text/csv', filename: 'roles_map.csv'
       end
     end
   end

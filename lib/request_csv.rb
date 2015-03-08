@@ -1,7 +1,7 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 require 'csv'
@@ -18,10 +18,10 @@ module RequestCSV
         request_ids.push(request.id)
       end
       activity_logs = ActivityLog.scoped.extending(QueryHelper::WhereIn)
-        .where_in("request_id", request_ids).order('created_at ASC, usec_created_at ASC').all
+        .where_in('request_id', request_ids).order('created_at ASC, usec_created_at ASC').all
         .group_by { |log| log.request_id }
     else
-      activity_logs = ActivityLog.all(:conditions => { :created_at => (start_date..end_date) }, :order => 'created_at ASC, usec_created_at ASC').group_by { |log| log.request_id }
+      activity_logs = ActivityLog.all(conditions: {created_at: (start_date..end_date)}, order: 'created_at ASC, usec_created_at ASC').group_by { |log| log.request_id }
     end
 
     CSV.generate do |csv|
@@ -86,19 +86,19 @@ module RequestCSV
                     csv_duration(request, :planned_at, :scheduled_at),
                     csv_duration(request, :started_at, :scheduled_at),
                     csv_duration(request, :started_at, :completed_at),
-                    csv_duration(ActivityLog.get_status_duration(logs, :request => { :status => :hold })),
+                    csv_duration(ActivityLog.get_status_duration(logs, request: {status: :hold})),
 
-                    ActivityLog.get_status_count(logs, :request => { :status => :hold }),
-                    csv_duration(ActivityLog.get_status_duration(logs, :request => { :status => :problem })),
-                    ActivityLog.get_status_count(logs, :request => { :status => :problem }),
+                    ActivityLog.get_status_count(logs, request: {status: :hold}),
+                    csv_duration(ActivityLog.get_status_duration(logs, request: {status: :problem})),
+                    ActivityLog.get_status_count(logs, request: {status: :problem}),
                     csv_duration(step, :created_at, :ready_at),
                     csv_duration(step, :ready_at, :work_started_at),
 
                     csv_duration(step, :work_started_at, :work_finished_at),
-                    csv_duration(ActivityLog.get_status_duration(logs, :step => { :status => :problem, :number => step_number })),
-                    ActivityLog.get_status_count(logs, :step => { :status => :problem, :number => step_number }),
-                    csv_duration(ActivityLog.get_status_duration(logs, :step => { :status => :blocked, :number => step_number })),
-                    ActivityLog.get_status_count(logs, :step => { :status => :blocked, :number => step_number }),
+                    csv_duration(ActivityLog.get_status_duration(logs, step: {status: :problem, number: step_number})),
+                    ActivityLog.get_status_count(logs, step: {status: :problem, number: step_number}),
+                    csv_duration(ActivityLog.get_status_duration(logs, step: {status: :blocked, number: step_number})),
+                    ActivityLog.get_status_count(logs, step: {status: :blocked, number: step_number}),
 
                     step.notes.count,
                     csv_month(request.started_at),
@@ -150,11 +150,11 @@ module RequestCSV
                     csv_duration(request, :planned_at, :scheduled_at),
                     csv_duration(request, :started_at, :scheduled_at),
                     csv_duration(request, :started_at, :completed_at),
-                    csv_duration(ActivityLog.get_status_duration(logs, :request => { :status => :hold })), 
+                    csv_duration(ActivityLog.get_status_duration(logs, request: {status: :hold})),
 
-                    ActivityLog.get_status_count(logs, :request => { :status => :hold }),
-                    csv_duration(ActivityLog.get_status_duration(logs, :request => { :status => :problem })),
-                    ActivityLog.get_status_count(logs, :request => { :status => :problem }),
+                    ActivityLog.get_status_count(logs, request: {status: :hold}),
+                    csv_duration(ActivityLog.get_status_duration(logs, request: {status: :problem})),
+                    ActivityLog.get_status_count(logs, request: {status: :problem}),
                     'N/A',
                     'N/A',
 
@@ -206,21 +206,21 @@ private
   end
 
   def csv_name(named_thing)
-    named_thing ? named_thing.name : "(None)"
+    named_thing ? named_thing.name : '(None)'
   end
 
   def csv_names_sentence(named_things)
-    return "(None)" if named_things.empty?
+    return '(None)' if named_things.empty?
 
     named_things.map { |the_named| the_named.name }.to_sentence
   end
 
   def csv_string(string)
-    string || "N/A"
+    string || 'N/A'
   end
 
   def csv_duration(*args)
-    return "N/A" if args.empty?
+    return 'N/A' if args.empty?
 
     case args.first
     when Request, Step
@@ -236,7 +236,7 @@ private
 
     abs_val_seconds = seconds < 0 ? -seconds : seconds
 
-    time_string = seconds < 0 ? "-" : ''
+    time_string = seconds < 0 ? '-' : ''
     time_string << "#{(abs_val_seconds / 3600)}:"
     time_string << "#{(abs_val_seconds % 3600 / 60).to_s.rjust(2, '0')}:"
     time_string << "#{abs_val_seconds % 60}".rjust(2, '0')

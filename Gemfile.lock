@@ -172,6 +172,7 @@ GEM
     net-ssh (2.3.0)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
+    netrc (0.10.2)
     newrelic_rpm (3.7.3.204)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
@@ -238,8 +239,9 @@ GEM
       rails (>= 3.1)
       sass-rails (>= 3.1)
     request_store (1.0.7)
-    rest-client (1.6.7)
-      mime-types (>= 1.16)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     rspec (2.99.0)
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
@@ -400,7 +402,7 @@ DEPENDENCIES
   dynamic_form
   factory_girl_rails (= 4.4.1)
   gene_pool
-  gibberish
+  gibberish (= 1.4.0)
   handsoap
   highline (= 1.6.11)
   hudson-remote-api
@@ -425,7 +427,7 @@ DEPENDENCIES
   rally_rest_api (= 1.0.3)
   random_data (= 1.6.0)
   recurring_select (= 1.2.0)
-  rest-client
+  rest-client (= 1.7.2)
   rspec-http (>= 0.9)
   rspec-rails (= 2.99.0)
   rubycas-client

@@ -8,6 +8,8 @@
 require 'sortable_model'
 
 class Request < ActiveRecord::Base
+  include TorqueBox::Messaging::Backgroundable
+  always_background :update_steps_status
   # all states:
   # created, planned, started, problem, hold, cancelled, complete, deleted
   ALLOWED_TO_REMOVE_SERVER = %W(created planned cancelled)
@@ -468,6 +470,17 @@ class Request < ActiveRecord::Base
 
   def self.exclude_clob_columns
     column_names.reject{|c| c.include?("frozen") || c.include?("description") || c.include?("notes") || c.include?("wiki")}.map{|c| "#{table_name}.#{c}"}.join(",")
+  end
+
+  # This callback method will be called on successfull start of a Request
+  def update_steps_status
+    update_started_at =  ['problem','hold'].include?(self.aasm_state)
+    self.update_attribute(:started_at, Time.now) unless update_started_at#unless started_at?
+    if steps.top_level.includes(:parent).all? { |step| step.complete_or_not_executable? }
+      finish!
+    else
+      prepare_steps_for_execution
+    end
   end
 
   def view_object
@@ -1156,7 +1169,11 @@ class Request < ActiveRecord::Base
   end
 
   def last_user
-    User.find(logs.first.user_id) || backup_owner
+    if logs.any?
+      User.find_by_id(logs.last.try(:user_id)) || backup_owner
+    else
+      backup_owner
+    end
   end
 
   def operation_tickets
@@ -1561,17 +1578,6 @@ class Request < ActiveRecord::Base
   def run_aasm_event
     # make sure the is a command waiting to run and there are no errors on it.
     self.executable_event.run_aasm_event if self.errors[:aasm_event].blank?
-  end
-
-  # This callback method will be called on successfull start of a Request
-  def update_steps_status
-    update_started_at =  ['problem','hold'].include?(self.aasm_state)
-    self.update_attribute(:started_at, Time.now) unless update_started_at#unless started_at?
-    if steps.top_level.includes(:parent).all? { |step| step.complete_or_not_executable? }
-      finish!
-    else
-      prepare_steps_for_execution
-    end
   end
 
   # Checks if there is a plan, plan_stage, psi, and finally asks the PSI if this is compliant environment

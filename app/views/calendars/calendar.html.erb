@@ -2,7 +2,7 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 %>
@@ -16,16 +16,16 @@
       div.request a { border-bottom:none; }
     /*]]>*/
   </style>
-  <% unless user_signed_in? %>
+  <% if user_signed_in? %>
     <style>
       /*<![CDATA[*/
-        td { word-break:break-all; word-wrap:break-word; white-space:inherit; }
+        div.calendar_nav
       /*]]>*/
     </style>
   <% else %>
     <style>
       /*<![CDATA[*/
-        div.calendar_nav
+        td { word-break:break-all; word-wrap:break-word; white-space:inherit; }
       /*]]>*/
     </style>
   <% end %>

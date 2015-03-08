@@ -1,12 +1,12 @@
 ################################################################################
 # BMC Software, Inc.
 # Confidential and Proprietary
-# Copyright (c) BMC Software, Inc. 2001-2012
+# Copyright (c) BMC Software, Inc. 2001-2015
 # All Rights Reserved.
 ################################################################################
 
 class ReportsController < ApplicationController
-  layout 'application', :except => [:environment_options]
+  layout 'application', except: [:environment_options]
 
   around_filter :render_index, only: [ :release_calendar,
                                        :deployment_windows_calendar,
@@ -21,8 +21,8 @@ class ReportsController < ApplicationController
   FusionChart::Types.each do |report|
     define_method report.underscore do
       if params[:report] == report.underscore
-        redirect_to(reports_url(:report_type => report.underscore,
-                                :filters => params[:filters]))
+        redirect_to(reports_url(report_type: report.underscore,
+                                filters: params[:filters]))
       end
     end
   end
@@ -43,8 +43,8 @@ class ReportsController < ApplicationController
     end
 
     if request.xhr?
-      render :partial => 'release_calendar',
-             :locals => { :width => @width }# if @release_calendar.present?
+      render partial: 'release_calendar',
+             locals: {width: @width} # if @release_calendar.present?
     else
       render action: :index
     end
@@ -65,9 +65,9 @@ class ReportsController < ApplicationController
     end
 
     if request.xhr?
-      render :partial => 'environment_calendar',
-             :locals => { :environment_calendar => @environment_calendar,
-                          :width => @width } if @environment_calendar
+      render partial: 'environment_calendar',
+             locals: {environment_calendar: @environment_calendar,
+                      width: @width} if @environment_calendar
     else
       render action: :index
     end
@@ -95,9 +95,9 @@ class ReportsController < ApplicationController
     end
 
     if request.xhr?
-      render :partial => 'deployment_windows_calendar',
-             :locals => { :environments => @environments,
-                          :width => @width }
+      render partial: 'deployment_windows_calendar',
+             locals: {environments: @environments,
+                      width: @width}
     else
       render action: :index
     end
@@ -129,26 +129,26 @@ class ReportsController < ApplicationController
         session[:scale_unit] = {}
       end
     else
-      if @report_type != "release_calendar" && @report_type != "environment_calendar" && @report_type != 'deployment_windows_calendar'
+      if @report_type != 'release_calendar' && @report_type != 'environment_calendar' && @report_type != 'deployment_windows_calendar'
 
-        unless params[:commit] == "Clear Filter"
-          if params[:filters]["beginning_of_calendar"].blank? and params[:filters]["end_of_calendar"].blank?
-             if session[@report_type.underscore.to_sym][:filters] && session[@report_type.underscore.to_sym][:filters]["beginning_of_calendar"].present?
-               params[:filters]["beginning_of_calendar"] = session[@report_type.underscore.to_sym][:filters]["beginning_of_calendar"]
+        unless params[:commit] == 'Clear Filter'
+          if params[:filters]['beginning_of_calendar'].blank? and params[:filters]['end_of_calendar'].blank?
+             if session[@report_type.underscore.to_sym][:filters] && session[@report_type.underscore.to_sym][:filters]['beginning_of_calendar'].present?
+               params[:filters]['beginning_of_calendar'] = session[@report_type.underscore.to_sym][:filters]['beginning_of_calendar']
              else
-               params[:filters].delete("beginning_of_calendar")
+               params[:filters].delete('beginning_of_calendar')
              end
 
-             if session[@report_type.underscore.to_sym][:filters] && session[@report_type.underscore.to_sym][:filters]["end_of_calendar"].present?
-               params[:filters]["end_of_calendar"] = session[@report_type.underscore.to_sym][:filters]["end_of_calendar"]
+             if session[@report_type.underscore.to_sym][:filters] && session[@report_type.underscore.to_sym][:filters]['end_of_calendar'].present?
+               params[:filters]['end_of_calendar'] = session[@report_type.underscore.to_sym][:filters]['end_of_calendar']
              else
-               params[:filters].delete("end_of_calendar")
+               params[:filters].delete('end_of_calendar')
              end
           end
         end
 
       end
-      session[@report_type.underscore.to_sym] = { :filters => params[:filters] ||{} }
+      session[@report_type.underscore.to_sym] = {filters: params[:filters] ||{}}
       session[:scale_unit] = params[:scale_unit]
     end
     # redirect_to(reports_url(:report_type => "#{params[:report_type].underscore}"))
@@ -157,12 +157,12 @@ class ReportsController < ApplicationController
 
   def environment_options
     @app = App.find_by_id(params[:app_id] || params[:criterion_id])
-    render :text => options_from_model_association(@app, :environments)
+    render text: options_from_model_association(@app, :environments)
   end
 
   def requests
     @requests = Request.id_equals(params[:request_ids])
-    render :partial => "requests_list"
+    render partial: 'requests_list'
   end
 
   def toggle_filter
@@ -171,21 +171,21 @@ class ReportsController < ApplicationController
     else
       session[:open_report_filter] = false
     end
-    render :nothing => true
+    render nothing: true
   end
 
   def generate_csv
     respond_to do |format|
       format.csv do
         request_ids = params[:request_ids].split
-        send_data FusionChart.generate_csv_report(request_ids), :type => 'text/csv', :filename => filename(request_ids)
+        send_data FusionChart.generate_csv_report(request_ids), type: 'text/csv', filename: filename(request_ids)
       end
     end
   end
 
   def set_resolution_session
     @width = params[:screen_width].to_i
-    render :text => @width
+    render text: @width
   end
 
 protected
@@ -195,10 +195,10 @@ protected
   end
   # This method is not required now, but will be used when we add filters in all the new reports
   def initialize_fusion_chart(report_type)
-    @fusionchart = FusionChart.new(:period => session[report_type][:period],
-                                   :filters => session[report_type][:filters],
-                                   :start_date => session[report_type][:start_date],
-                                   :end_date => session[report_type][:end_date])
+    @fusionchart = FusionChart.new(period: session[report_type][:period],
+                                   filters: session[report_type][:filters],
+                                   start_date: session[report_type][:start_date],
+                                   end_date: session[report_type][:end_date])
   end
 
   def set_calender_session(report_type)
@@ -328,26 +328,26 @@ private
       if params[:q].present?
         if @report_type == 'volume_report'
           authorize! :view, :volume_report
-          render :partial => 'fusioncharts/process_volume',
-                 :locals => { :volume_report => @volume_report,
-                              :width => @width } if @volume_report
-        elsif @report_type == "time_to_complete"
+          render partial: 'fusioncharts/process_volume',
+                 locals: {volume_report: @volume_report,
+                          width: @width} if @volume_report
+        elsif @report_type == 'time_to_complete'
           authorize! :view, :time_to_complete_report
-          render :partial => 'fusioncharts/time_to_complete',
-                 :locals => { :time_to_complete => @time_to_complete,
-                              :width => @width } if @time_to_complete
+          render partial: 'fusioncharts/time_to_complete',
+                 locals: {time_to_complete: @time_to_complete,
+                          width: @width} if @time_to_complete
         elsif @report_type == 'problem_trend_report'
           authorize! :view, :problem_trend_report
-          render :partial => 'fusioncharts/problem_trend',
-                 :locals => { :problem_trend_report => @problem_trend_report,
-                              :selected_options => @selected_options,
-                              :width => @width } if @problem_trend_report
+          render partial: 'fusioncharts/problem_trend',
+                 locals: {problem_trend_report: @problem_trend_report,
+                          selected_options: @selected_options,
+                          width: @width} if @problem_trend_report
         elsif @report_type == 'time_of_problem'
           authorize! :view, :time_to_problem_report
-          render :partial => 'fusioncharts/time_of_problem',
-                 :locals => { :time_of_problem=> @time_of_problem,
-                              :selected_options => @selected_options,
-                              :width => @width } if @time_of_problem
+          render partial: 'fusioncharts/time_of_problem',
+                 locals: {time_of_problem: @time_of_problem,
+                          selected_options: @selected_options,
+                          width: @width} if @time_of_problem
         end
       end
     end
