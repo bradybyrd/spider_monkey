@@ -267,13 +267,14 @@ class Request < ActiveRecord::Base
   end
 
   def clone_servers(new_step, source_step, request, new_environment_id = nil)
-    return new_step if source_step.targeted_servers.blank?
     if new_environment_id.nil? || request.has_same_env_as?(source_step.request)
-       server_ids_hash = { server_ids: source_step.server_ids, server_aspect_ids: source_step.server_aspect_ids }
+      return new_step if source_step.targeted_servers.blank?
+      server_ids_hash = { server_ids: source_step.server_ids, server_aspect_ids: source_step.server_aspect_ids }
     else
       if source_step.installed_component.present?
         ic = new_step.get_installed_component({'component_id' => source_step.component.id, 'environment_id' => new_environment_id})
         if ic.present? && ic.server_associations.present?
+          logger.info "SS__ StepServers: #{ic.server_association_ids.inspect}"
           server_type = "#{ic.server_associations.first.class.to_s.underscore}_ids"
           server_ids_hash = { server_type => ic.server_association_ids }
         end
