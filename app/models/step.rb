@@ -775,7 +775,8 @@ class Step < ActiveRecord::Base
   def respond_to_app_env_change(request_params)
     new_attrs = {}
     new_attrs[:app_id] = get_app_id(request_params)
-    new_attrs[:installed_component_id] = get_installed_component(request_params).try(:id)
+    new_ic = get_installed_component(request_params)
+    new_attrs[:installed_component_id] = new_ic.try(:id)
 
     if GlobalSettings.limit_versions?
       # Rajesh Jangam: BNP Changes 05/11/2012
@@ -803,6 +804,18 @@ class Step < ActiveRecord::Base
         new_attrs[:component_version] = nil
       end
     end
+    # BJB Reassign servers if necessary
+    if new_ic
+      self.servers.destroy_all
+      self.server_groups.destroy_all
+      self.server_aspects.destroy_all
+      if new_ic.server_associations.present?
+        #logger.info "SS__ StepServers: #{new_ic.server_association_ids.inspect}"
+        server_type = "#{new_ic.server_associations.first.class.to_s.underscore}_ids"
+        new_attrs[server_type.to_sym] = new_ic.server_association_ids
+      end
+    end  
+      
     #logger.info "SS__ RespondToAppChg: #{request_params.inspect}"
     self.update_attributes(new_attrs)
     update_script_arguments!(request_params)
