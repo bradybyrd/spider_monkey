@@ -43,11 +43,11 @@ class Step < ActiveRecord::Base
       transitions :to => :in_process, :from => [:complete]
     end
 
-    event :problem, :success => [:update_request_status, :push_msg, :send_mail_problem] do
+    event :problem, :success => [:push_msg, :send_mail_problem], after_commit: [:update_request_status] do
       transitions :to => :problem, :from => [:in_process]
     end
 
-    event :resolve, :success => [:resolve_run_script, :update_request_status, :push_msg] do
+    event :resolve, :success => [:push_msg], after_commit: [:update_request_status, :resolve_run_script] do
       transitions :to => :in_process, :from => [:problem]
     end
 
@@ -55,7 +55,7 @@ class Step < ActiveRecord::Base
       transitions :to => :in_process, :from => [:being_resolved, :problem]
     end
 
-    event :force_resolve, :success => [:run_script,:push_msg] do
+    event :force_resolve, :success => [:push_msg], after_commit: [:run_script] do
       transitions :to => :in_process, :from => [:problem]
     end
 

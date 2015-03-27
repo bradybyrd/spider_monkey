@@ -9,7 +9,7 @@ require 'sortable_model'
 
 class Request < ActiveRecord::Base
   include TorqueBox::Messaging::Backgroundable
-  always_background :update_steps_status
+
   # all states:
   # created, planned, started, problem, hold, cancelled, complete, deleted
   ALLOWED_TO_REMOVE_SERVER = %W(created planned cancelled)
@@ -103,6 +103,7 @@ class Request < ActiveRecord::Base
   after_save :unschedule_auto_start, if: :should_be_unscheduled
 
   before_save :check_dws
+  before_save :ensure_aasm_state_present
   after_create :created!, :increment_counter_in_events, :increment_counter_in_series
   after_create :add_blank_steps, if: Proc.new {|r| r.add_blank_steps_with_components }
 
@@ -1686,5 +1687,11 @@ class Request < ActiveRecord::Base
 
   def app_envs_memo_key
     "#{environment_id}|#{app_ids.first}"
+  end
+
+  def ensure_aasm_state_present
+    if aasm_state.nil?
+      self.aasm_state = :created
+    end
   end
 end

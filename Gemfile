@@ -26,7 +26,7 @@ gem 'jquery-rails', '2.0.2'
 
 gem 'wicked_pdf', '0.7.7' #'0.8.0' # turbo-sprockets-rails3 requires version >= 0.8
 gem 'attribute_normalizer'
-gem 'aasm', '3.2.0'
+gem 'aasm', '4.1.0'
 gem 'concerned_with'
 gem 'acts_as_list'
 gem 'acts_as_audited'

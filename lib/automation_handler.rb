@@ -6,16 +6,12 @@ class AutomationHandler < TorqueBox::Messaging::MessageProcessor
     if body.is_a? Hash
       body[:args] ||= []
       raise ArgumentError, 'Method not specified'    unless body.include? :method
-      # TODO: object has been marshalized. Rethink the concept for not to send @object to minimize message size
       raise ArgumentError, 'Object not specified'    unless body.include? :object
 
       @options  = body[:options] if body[:options]
       @object   = body[:object]
 
-      # Needed transaction so background start task (queue posts) waits till transaction completes
-      TorqueBox.transaction do
-        @object.send(body[:method], *body[:args])
-      end
+      @object.send(body[:method], *body[:args])
     end
   end
 

@@ -586,7 +586,7 @@ class ApplicationController < ActionController::Base
 
   def check_encryption
     return unless params.has_key? :encrypted
-    params[:encrypted].map { |k, _| GibberishHelper.decrypt_value(k, params) }
+    params[:encrypted].map { |k, v| GibberishHelper.decrypt_value(k, params) if v == 'true' }
   end
 
   def add_access_denied_flash_message

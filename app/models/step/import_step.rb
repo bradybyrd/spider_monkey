@@ -8,7 +8,15 @@ class Step < ActiveRecord::Base
     def build_steps(request, key, app, importing_user)
       if key["steps"].present?
         request.steps.top_level.destroy_all
+        child_steps = []
         key["steps"].each do |xml_hash|
+          if xml_hash.has_key? 'parent'
+            child_steps << xml_hash
+          else
+            build_step(request, xml_hash, app, importing_user)
+          end
+        end
+        child_steps.each do |xml_hash|
           build_step(request, xml_hash, app, importing_user)
         end
       end

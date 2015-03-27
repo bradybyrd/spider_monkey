@@ -454,7 +454,6 @@ class RequestsController < ApplicationController
     when 'start'
       authorize! :start, @request
       @request.start_request!
-      @request.update_steps_status
     when 'hold'
       authorize! :hold, @request
       @request.put_on_hold!

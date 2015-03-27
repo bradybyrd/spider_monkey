@@ -19,13 +19,24 @@ module AutomationBackgroundable
   class BackgroundProxy
     attr_accessor :base, :options
 
-    def initialize(base, options)
+    def initialize(base, options = {})
       @base     = base
-      @options  = (options || {}).update(priority: :low)
+      @options  = options
     end
 
     def method_missing(method, *args)
+      ensure_out_of_transaction!
       @base.queue.publish(object:@base, method: method, args: args, options: @options)
+    end
+
+    private
+
+    def ensure_out_of_transaction!
+      raise RuntimeError, 'Transactions are not support for backgrounding' if in_transaction?
+    end
+
+    def in_transaction?
+      ActiveRecord::Base.connection.open_transactions > 0
     end
   end
 

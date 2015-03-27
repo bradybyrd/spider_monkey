@@ -1077,7 +1077,7 @@ class Step < ActiveRecord::Base
     # called on step save
     return if request.nil?
     # return if (request.nil? || component.nil?)
-    check_id = get_installed_component.try(:id)
+    check_id = installed_component_only.try(:id)
     if check_id != installed_component_id
       self.installed_component_id = check_id
       self.app_id = get_app_id
@@ -1746,22 +1746,6 @@ class Step < ActiveRecord::Base
       lets_start!
 
       prepare_steps_for_execution
-    end
-  end
-
-  def safe_ready_for_work!
-    ActiveRecord::Base.connection_pool.with_connection do
-      # fetch current step aasm_state from DB
-      # reason: some weird ghost defect where 1 of ~1000 automation steps hangs instead of
-      # transitioning to `ready` state
-      self.reload
-      ready = self.locked? && ready_for_work! # avoid invalid transitions when "restarting" a request
-
-      logger.error "Error: Step##{self.id} cannot transition to `ready` from `#{self.aasm_state}`. Step => #{self.inspect}" unless ready
-
-      logger.error "Error: #{self.errors.full_messages}" if self.errors.any?
-
-      ready
     end
   end
 

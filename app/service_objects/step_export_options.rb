@@ -46,7 +46,7 @@ class StepExportOptions
                 :complete_by, :suppress_notification, :default_tab, :execute_anytime,
                 :different_level_from_previous, :start_by, :complete_by, :own_version,
                 :estimate, :protected_step, :should_execute, :procedure, :owner_type,
-                :script_type,:latest_package_instance,:create_new_package_instance],
+                :script_type,:latest_package_instance,:create_new_package_instance, :position],
         include: {
             component: { only: [:name] },
             package: { only: [:name] },

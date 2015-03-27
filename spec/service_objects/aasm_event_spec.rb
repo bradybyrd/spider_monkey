@@ -18,7 +18,7 @@ describe AasmEvent::ExecuteEvent do
       it 'returns error - not supported event' do
         object.aasm_state = 'created'
         object.aasm_event = 'some_event'
-        supported_events = object.class.aasm.events.keys.reject { |k| [:created].include?(k) }
+        supported_events = object.class.aasm.events.map(&:name).reject { |event_name| [:created].include?(event_name) }
         executable_event.validate_aasm_event
         result_error = ["was not included in supported events: #{supported_events.to_sentence}."]
         expect(object.errors[:aasm_event]).to eq(result_error)
@@ -50,7 +50,7 @@ describe AasmEvent::ExecuteEvent do
   end
 
   describe '#check_transition' do
-    let(:event) { object.class.aasm.events[object.aasm_event.to_sym] }
+    let(:event) { object.class.aasm.events.find{|event| event.name == object.aasm_event.to_sym} }
 
     context 'when can do transition' do
       it 'returns nil' do

@@ -1,17 +1,5 @@
 require 'activerecord-jdbc-adapter'
 
-class Exception
-  def blame_file!( file )
-    Rails.logger.error "CULPRIT >> '#{file.to_s}' # #{self.to_s}" unless ENV['RAILS_ENV'] == 'production'
-  end
-end
-
-class Java::JavaSql::SQLException
-  def blame_file!( file )
-    Rails.logger.error "CULPRIT >> '#{file.to_s}' # #{self.to_s}" unless ENV['RAILS_ENV'] == 'production'
-  end
-end
-
 ActiveRecord::ConnectionAdapters::JdbcTypeConverter::AR_TO_JDBC_TYPES[:timestamp] = \
 
   [ lambda {|r| ActiveRecord::ConnectionAdapters::Jdbc::Types::TIMESTAMP == r['data_type'].to_i},

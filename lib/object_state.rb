@@ -65,7 +65,7 @@ module ObjectState
         end
 
         event :retire, success: :in_use_warning do
-          transitions to: :retired, from: :archived_state, on_transition: :unarchive_item
+          transitions to: :retired, from: :archived_state, after: :unarchive_item
           transitions to: :retired, from: :released
         end
 
