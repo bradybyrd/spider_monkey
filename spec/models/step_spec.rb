@@ -1063,49 +1063,6 @@ describe Step do
     end
   end
 
-  describe '#safe_ready_for_work!' do
-    let(:step) { build :step }
-
-    it 'fetches the step from db' do
-      step.should_receive :reload
-      step.safe_ready_for_work!
-    end
-
-    context 'having locked step' do
-      let(:step) { build :step, aasm_state: 'locked' }
-      before { Step.any_instance.stub :reload }
-
-      it 'calls #ready_for_work!' do
-        step.should_receive :ready_for_work!
-        step.safe_ready_for_work!
-      end
-
-      it 'logs the error in case fail to make step ready' do
-        step.stub(:ready_for_work!).and_return false
-
-        Rails.logger.should_receive(:error)
-        step.safe_ready_for_work!
-      end
-    end
-
-    context 'having non-locked step' do
-      let(:step) { build :step, aasm_state: 'non-locked' }
-      before { Step.any_instance.stub :reload }
-
-      it 'calls not #ready_for_work!' do
-        step.should_not_receive :ready_for_work!
-        step.safe_ready_for_work!
-      end
-
-      it 'logs the error' do
-        step.stub(:ready_for_work!).and_return true
-
-        Rails.logger.should_receive(:error)
-        step.safe_ready_for_work!
-      end
-    end
-  end
-
   describe 'aasm event' do
     let(:step) { create(:step) }
 

@@ -19,15 +19,15 @@ class Request < ActiveRecord::Base
     state :complete
     state :deleted
 
-    event :plan_it, :success =>[:planning_work, :send_mail_planned, :schedule_from_state]do
+    event :plan_it, :success =>[:planning_work, :send_mail_planned, :schedule_from_state] do
       transitions :to => :planned, :from => [:created, :cancelled]
     end
 
     event :created, :success => :push_msg do
-      transitions :to => :created, :from => [:created]
+      transitions :to => :created, :from => [:created, :complete]
     end
 
-    event :start, :success => [:push_msg, :send_mail_started] do
+    event :start, :success => [:push_msg, :send_mail_started], after_commit: :update_steps_status do
       transitions :to => :started, :from => [:planned, :hold], :guard => :without_compliance_issues?
     end
 
@@ -35,7 +35,7 @@ class Request < ActiveRecord::Base
       transitions :to => :problem, :from => [:started]
     end
 
-    event :resolve, :success => [:resolving_work, :send_mail_resolved] do
+    event :resolve, :success => [:send_mail_resolved], after_commit: [:resolving_work] do
       transitions :to => :started, :from => [:problem]
     end
 
@@ -47,7 +47,7 @@ class Request < ActiveRecord::Base
       transitions :to => :cancelled, :from => [:created, :planned, :started, :problem, :hold]
     end
 
-    event :finish, :success => [:completing_work, :send_mail_completed] do
+    event :finish, :success => [:send_mail_completed], after_commit: [:completing_work] do
       transitions :to => :complete, :from => [:started]
     end
 

@@ -259,10 +259,11 @@ class RequestTemplate < ActiveRecord::Base
 
   def instantiate_request(form_params = {})
     new_request = nil
+    form_params[:request] = {} unless form_params[:request]
+    execute_now = form_params[:request][:execute_now]
 
     transaction do
       begin
-        form_params[:request] = {} unless form_params[:request]
         form_params[:request][:should_time_stitch] = true
         form_params[:request][:rescheduled] = false
 
@@ -274,7 +275,7 @@ class RequestTemplate < ActiveRecord::Base
           form_params[:request][:owner_id] = user.id
         else
           # FIXME: We do not handle a missing or malformed owner id -- this is a quick fix
-          user = User.find(form_params[:request][:owner_id]) rescue User.current_user
+          user = User.find_by_id(form_params[:request][:owner_id]) || User.current_user
           form_params[:request][:owner_id] = user.id if user.id != form_params[:request][:owner_id].to_i
         end
 
@@ -285,12 +286,11 @@ class RequestTemplate < ActiveRecord::Base
 
         new_request = create_request_for(user, form_params)
         return new_request unless new_request.valid?
-        execute_now = form_params[:request][:execute_now]
 
-          form_params[:request].delete_if { |k, v| v.blank? || k.eql?('app_ids') || k.include?('plan') || k.eql?('execute_now') }
-          unless form_params[:request][:package_content_ids]
-            new_request.attributes = form_params[:request].merge!({package_content_ids: form_params[:package_content_ids]})
-          end
+        form_params[:request].delete_if { |k, v| v.blank? || k.eql?('app_ids') || k.include?('plan') || k.eql?('execute_now') }
+        unless form_params[:request][:package_content_ids]
+          new_request.attributes = form_params[:request].merge!({package_content_ids: form_params[:package_content_ids]})
+        end
 
         self.request.email_recipients.each do |recipient|
           new_request.email_recipients << recipient.dup
@@ -305,16 +305,15 @@ class RequestTemplate < ActiveRecord::Base
           save_request_data(new_request, data)
         end
 
-        # FIXME: This should be an after hook in the request model
-        # after the request creation/save is complete
-        if execute_now && execute_now.to_bool == true
-          new_request.plan_it!
-          new_request.start_request!
-        end
       rescue => ex
         Rails.logger.error "Error when creating request from request template. #{ex.backtrace}"
         raise ActiveRecord::Rollback
       end
+    end
+
+    if new_request && new_request.valid? && execute_now && execute_now.to_bool == true
+      new_request.plan_it!
+      new_request.start_request!
     end
 
     new_request

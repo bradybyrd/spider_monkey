@@ -25,7 +25,7 @@ module StepContainer
   end
 
   def lock_steps
-    [steps.problem + steps.ready_or_in_process].flatten.each { |step| 
+    [steps.problem + steps.ready_or_in_process].flatten.each { |step|
       step.state_changer = state_changer if state_changer
       step.lock! if step.only_procedures_from_in_process?
     }
@@ -36,6 +36,7 @@ module StepContainer
       next if steps.all? { |step| step.complete_or_not_executable? }
       break if last_completed_step && steps.include?(last_completed_step)
       steps.each { |step|
+        next unless step.may_ready_for_work?
         meets_execution_condition = (self.respond_to?(:procedure) && self.procedure) ? meets_execution_condition? : true
         if step.should_execute? && meets_execution_condition
           step.state_changer = self.state_changer if self.state_changer
@@ -49,9 +50,9 @@ module StepContainer
 
   def add_assorted_steps(new_steps)
     @new_steps = new_steps
-    
+
     step_position = 1
-    @new_steps.each{ |step|
+    @new_steps.each { |step|
       step[:position] = step_position.to_s
       step_position = step_position + 1
     }

@@ -11,7 +11,7 @@ module AasmEvent
       # turn it into a symbol
       event_symbol = object.aasm_event.to_sym
       # get the official event
-      event = obj_class.aasm.events[event_symbol]
+      event = obj_class.aasm.events.detect{|event| event.name == event_symbol}
       # check if it is one of our supported events and the event object is exists
       supported_events = get_supported_events
       if supported_events.include?(event_symbol) && event
@@ -38,7 +38,7 @@ module AasmEvent
     end
 
     def get_supported_events
-      obj_class.aasm.events.keys.reject { |k| rejected_events.include?(k) }
+      obj_class.aasm.events.map(&:name).reject { |event_name| rejected_events.include?(event_name) }
     end
 
     def rejected_events

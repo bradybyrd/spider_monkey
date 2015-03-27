@@ -114,9 +114,9 @@ class ScriptsController < ApplicationController
 
   def render_automation_form
     if params[:script_hash]
-      ignore_elements = ["created_at", "id", "updated_at"]
+      ignore_elements = %w(created_at id updated_at aasm_state)
       ignore_elements.each do |element|
-        params[:script_hash].delete_if {|key, value| (key == element || value == "null") }
+        params[:script_hash].delete_if {|key, value| (key == element || value == 'null') }
       end
       if params[:script_hash].present?
         @script = Script.new(params[:script_hash])
@@ -124,13 +124,14 @@ class ScriptsController < ApplicationController
       end
     end
     @script = params[:script_hash].present? ? @script : Script.new
+
     case params[:automation_type]
-    when "Automation"
-      render :partial => "shared_scripts/automation_form", :locals => { :script => @script }
-    when "ResourceAutomation"
-      render :partial => "scripted_resources/form", :locals => { :script => @script }
+    when 'Automation'
+      render partial: 'shared_scripts/automation_form', locals: { script: @script }
+    when 'ResourceAutomation'
+      render partial: 'scripted_resources/form', locals: { script: @script }
     else
-      render :partial => "shared_scripts/automation_form", :locals => { :script => @script }
+      render partial: 'shared_scripts/automation_form', locals: { script: @script }
     end
   end
 

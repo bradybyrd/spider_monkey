@@ -1353,6 +1353,9 @@ describe Request do
     it 'returns true when request have no apps' do
       request = Request.new
       user = create :user, :non_root
+      expect(user).to receive(:can?).
+                          with(:view_created_requests_list, request).
+                          and_return(true)
 
       expect(request.is_visible?(user)).to be_truthy
     end

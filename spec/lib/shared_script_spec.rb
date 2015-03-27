@@ -70,6 +70,7 @@ describe SharedScript do
     end
 
     def logger
+      Rails.logger
     end
 
     def content
@@ -78,6 +79,10 @@ describe SharedScript do
 
     def wr_parse_arguments
       parse_arguments
+    end
+
+    def id
+      rand 2**31
     end
   end
 
@@ -210,6 +215,9 @@ describe SharedScript do
                     'SS_api_token' => 'some api key'}}
 
     before(:each) do
+      allow(Request).to receive(:background).and_return Request
+      allow(JobRun).to receive(:log_job).and_return job_run
+
       step.script = create(:general_script)
       step.save
       request.plan_it!
@@ -230,8 +238,7 @@ describe SharedScript do
     it "returns 'encountered a problem'" do
       AutomationCommon.stub(:error_in?).and_return(true)
       wrapper.background_run(params)
-      job_run.reload
-      job_run.status.should eql('Problem')
+      job_run.reload.status.should eql('Problem')
     end
 
     it "returns 'Complete'" do
@@ -258,7 +265,7 @@ describe SharedScript do
   end
 
   it '#step_automation_delay' do
-    wrapper.step_automation_delay.should eql(6)
+    expect(wrapper).not_to respond_to(:step_automation_delay)
   end
 
   describe '#set_values_from_script' do
@@ -267,7 +274,6 @@ describe SharedScript do
     end
 
     it 'returns list objects' do
-      wrapper.instance_variable_set('@log', AutomationLog.new)
       wrapper.stub(:process_script_list).and_return('')
       result = wrapper.set_values_from_script("\$\$SS_Set_{ObjectSS_Set_{property1}\$\$")
       result.should include('Found 1 entries')
@@ -332,7 +338,6 @@ describe SharedScript do
 
     before(:each) do
       wrapper.instance_variable_set('@step', step)
-      wrapper.instance_variable_set('@log', AutomationLog.new)
       create_installed_component
       step.app_id = @app.id
     end

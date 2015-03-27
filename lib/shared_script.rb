@@ -11,7 +11,6 @@ module SharedScript
   include AutomationBackgroundable
   require 'net/http'
   require 'uri'
-  require 'automation_log'
   require 'automation_common'
 
   def self.included(base)
@@ -131,6 +130,8 @@ module SharedScript
     User.current_user = User.find_by_login(params["request_login"])
     @step = Step.find(params["step_id"])
 
+    return 'Attempt to run script on a completed step - Denied' if @step.complete?
+
     run_params = {
         "job_type" => "automation",
         "step_id" => @step.id,
@@ -143,10 +144,8 @@ module SharedScript
     jr = JobRun.log_job(run_params)
 
     @request = @step.request
-    @log = AutomationLog.new
     tstamp = Time.now.localtime
-    @log.append "=== Request: #{@request.id.to_s} - Step(#{@step.id.to_s}): #{@step.name} "
-    @log.append "\tRunning: #{@step.script.get_script_type} - #{@step.script.name}"
+    logger.info "=== Request: #{@request.id.to_s} - Step(#{@step.id.to_s}): #{@step.name} "
     script_result = choose_run_script(params)
     finish_time = Time.now.localtime
     jr.process_id = params["SS_process_pid"]
@@ -154,10 +153,8 @@ module SharedScript
     jr.updated_at = finish_time
     jr.results_path = params["SS_output_file"]
     #AutomationCommon.append_output_file(params,script_result)
-    @log.append "Finished: #{finish_time.to_s}"
-    @log.append "--------  Output ---------\n#{script_result.slice(0..4000)}"
-    @log.append "Waiting for remote signal" unless params["SS_wait_for_signal"].nil?
-    @log.append "--------  End Output -----\n"
+    logger.info "Finished: #{finish_time.to_s}"
+    logger.info "--------  Output ---------\n#{script_result.slice(0..4000)}"
     # BJB 12-8-11 Add Job Run ID to the note
     @step.notes.create(content: "\nScript Results:\n#{script_result.split("\n").last(20).join("\n")}\n\n",
                        user_id: params['step_user_id'],
@@ -168,15 +165,14 @@ module SharedScript
     AutomationQueueData.clear_queue_data @step.id
 
     if AutomationCommon.error_in?(script_result)
-      @log.append "Script encountered a problem - setting step status"
+      logger.info "Script encountered a problem - setting step status"
       @step.problem!
       @step.update_script_arguments_for_pack_response(script_result) unless @step.script.class.to_s == "BladelogicScript"
       jr.status = "Problem"
     else
-      @log.append "Testing for set values"
       set_values_from_script(script_result)
       if params["SS_wait_for_signal"].nil?
-        @log.append "Script successful - now completing step #{@step.name}"
+        logger.info "Script successful - now completing step id##{@step.id}name##{@step.name}"
         jr.status = "Complete"
         # Adding method for updating the pack response
         @step.update_script_arguments_for_pack_response(script_result) unless @step.script.class.to_s == "BladelogicScript"
@@ -186,17 +182,7 @@ module SharedScript
         logger.error("Error: failed to switch automation Step##{@step.id} to `completed` state
                       from `#{@step.aasm_state}` after the script ran. Step => #{@step.inspect}") unless @step.complete?
 
-        should_finish = @request.steps.reload.all? { |step| step.complete_or_not_executable? }
-        @log.append "Should Finish? #{should_finish.to_s}"
-        if should_finish # && false
-          token = AutomationCommon::decrypt(params["SS_api_token"])
-          rest_url = "#{params["SS_base_url"]}/REST/requests/#{@request.number}/update_state?token=#{token}&transition=finish"
-          #@step.request.finish!
-          # Broke the method flow
-          # NB: Process within current thread in case of problems
-          Thread.new{ fetch_url(rest_url) }
-        end
-      end # Waiting for remote signal leave in-process
+      end
     end
     jr.save
     pre_info = "Step #{@step.position}: ID #{@step.id}:"
@@ -206,14 +192,8 @@ module SharedScript
       message = "#{pre_info} Automation for staying in-process waiting for remote signal - job run id: #{jr.id}"
     end
     RequestActivity::ActivityMessage.new(@step, params["step_user_id"].to_i).log_activity(message)
-    @log.close
 
     script_result.slice(0..500)
-  end
-
-  def step_automation_delay
-    # Make this defer to a system setting for optimized performance
-    6
   end
 
   def set_values_from_script(results)
@@ -230,7 +210,7 @@ module SharedScript
         msg += process_script_list(obj_name, list_item)
       end
     end
-    @log.append msg
+    logger.info msg
     msg
   end
 
@@ -284,7 +264,7 @@ module SharedScript
     is_private = (prop_details["private"] == "true") if prop_details.has_key?("private")
     component = @step.component if component.nil?
     env_id = @step.request.environment_id if env_id.nil?
-    @log.append "SS__ Setting: Prop: #{prop_name}, #{prop_value}, #{component.id.to_s}, #{env_id.to_s}\n#{item.inspect}"
+    logger.info "SS__ Setting: Prop: #{prop_name}, #{prop_value}, #{component.id.to_s}, #{env_id.to_s}\n#{item.inspect}"
     ic = InstalledComponent.find_by_app_comp_env(@step.app_id, component.id,env_id)
     if property.nil? && !ic.nil?
       msg += "Creating new property: #{prop_name}\n"
@@ -500,7 +480,7 @@ module SharedScript
   def fetch_url(path, testing=false)
     tmp = "#{path}".gsub(" ", "%20") #.gsub("&", "&amp;")
     jobUri = URI.parse(tmp)
-    @log.append "Fetching: #{jobUri}"
+    logger.info "Fetching: #{jobUri}"
     Net::HTTP.get(jobUri) unless testing
   end
 

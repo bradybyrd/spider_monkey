@@ -168,7 +168,7 @@ class RunsController < ApplicationController
     if run.requests_have_notices?
       render json: {errors: run.requests_notices_message.split("\n")}
     else
-      if run.update_attributes(aasm_event: 'start')
+      if run.start!
         render json: {url: plan_path(@plan, :run_id => run.id)}
       else
         render json: {errors: run.errors.messages.to_a}

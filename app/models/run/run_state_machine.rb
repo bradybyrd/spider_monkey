@@ -29,7 +29,7 @@ class Run < ActiveRecord::Base
       transitions :to => :planned, :from => [:created, :cancelled]
     end
 
-    event :start, :success => [:start_next_eligible_request, :push_msg] do
+    event :start, :success => [:push_msg], after_commit: [:start_next_eligible_request] do
       transitions :to => :started, :from => [:held, :planned, :blocked]
     end
 
@@ -41,7 +41,7 @@ class Run < ActiveRecord::Base
       transitions :to => :held, :from => [:started]
     end
 
-    event :complete, :success => [:check_for_auto_promote, :push_msg] do
+    event :complete, :success => [:push_msg], after_commit: [:check_for_auto_promote] do
       transitions :to => :completed, :from => [:started]
     end
 
@@ -81,7 +81,7 @@ class Run < ActiveRecord::Base
   def plan_requests
     self.plan_members.run_execution_order.each do |lm|
       request = lm.request
-      request.plan_it! if request && request.aasm.events(request.aasm.current_state).include?(:plan_it)
+      request.plan_it! if request && request.may_plan_it?
     end
   end
 
@@ -89,7 +89,7 @@ class Run < ActiveRecord::Base
   def cancel_requests
     self.plan_members.run_execution_order.each do |lm|
       request = lm.request
-      if request && request.aasm.events(request.aasm.current_state).include?(:cancel)
+      if request && request.may_cancel?
         @request = request
         @request.cancel!
       end
@@ -151,7 +151,7 @@ class Run < ActiveRecord::Base
     self.plan_members.run_execution_order.each do |lm|
     # see if the current request state can handle this event
       request = lm.request
-      if request.aasm.events(request.aasm.current_state).include?(request_event)
+      if request.send("may_#{request_event}?")
         results = request unless previous_lm && previous_lm.request.try(:aasm_state) == 'started' && lm.different_level_from_previous
         break
       else
@@ -180,7 +180,7 @@ class Run < ActiveRecord::Base
     if self.running?
       # first check to see if anyone is blocked
       total_blocked = blocked_requests_count
-      if total_blocked > 0 && self.aasm.events(self.aasm.current_state).include?(:block)
+      if total_blocked > 0 && self.may_block?
         self.block!
       elsif total_blocked == 0 && self.blocked?
         self.start!
@@ -188,7 +188,7 @@ class Run < ActiveRecord::Base
         # check for all complete
         total_members     = self.plan_members.count
         completed_members = self.requests.complete.count
-        if total_members == completed_members && self.aasm.events(self.aasm.current_state).include?(:complete)
+        if total_members == completed_members && self.may_complete?
           self.complete!
         else
           #check for others to start up

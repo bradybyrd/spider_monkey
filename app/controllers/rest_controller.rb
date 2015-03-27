@@ -537,7 +537,6 @@ class RestController < ApplicationController
         @request.update_attribute :notify_on_request_start, false
         @request.plan_it! if @request.aasm_state.to_s == "created"
         @request.start_request!
-        @request.steps.anytime_steps.collect { |s| s.ready_for_work! if s.should_execute? }
       when 'hold'
         @request.put_on_hold!
       when 'problem'
