@@ -1,9 +1,0 @@
-<% if GlobalSettings.bladelogic_ready? %>
-  <% if @error && (@error == true) %>
-    alert("Sync Operation failed!.\nPlease check following file to see commands executed and parameters passed: \n <%= @output_file %>")
-  <% else %>
-    alert("Sync Operation successful!.\nPlease check following file to see commands executed and parameters passed: \n <%= @output_file %>")
-  <% end %>
-<% else %>
-  alert('Bladelogic is not enabled. Please configure it from Environment -> BMC BladeLogic menu');
-<% end %>

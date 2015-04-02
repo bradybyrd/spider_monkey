@@ -1,7 +1,0 @@
-<%= render partial: 'deployment_window/events/edit_form', locals: { event: @deployment_window_event } %>
-
-<%= javascript_tag do %>
-  if($('#deployment_window_series_list').length) {
-    $('#edit-series-link').hide()
-  }
-<% end %>

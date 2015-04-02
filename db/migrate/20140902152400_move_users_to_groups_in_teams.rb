@@ -1,6 +1,5 @@
 require 'yaml'
 require 'migration/sql_helpers'
-require File.join(File.dirname(__FILE__), '20140829075903_migrate_app_assignments_to_teams')
 require File.join(File.dirname(__FILE__), '/../migration_handlers/20140902152400/load_handlers')
 
 class MoveUsersToGroupsInTeams < ActiveRecord::Migration
@@ -10,7 +9,6 @@ class MoveUsersToGroupsInTeams < ActiveRecord::Migration
       SiteAdminGroupHandler.new.apply
       RootGroupHandler.new.apply
       TeamGroupsHandler.new.apply
-      TeamGroupsHandler.new.remove_assigned_app_dublicates
     end
 
     drop_table :teams_roles

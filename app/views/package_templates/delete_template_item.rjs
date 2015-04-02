@@ -1,1 +1,0 @@
-page.remove("packageTemplate_#{@package_template.id}_template_#{params[:item_id]}")

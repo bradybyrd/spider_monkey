@@ -1,3 +1,0 @@
-<%= select :script, "template_script", Script.tagged_as_template(automation_category, @automation_type).collect{|s| [s.name, "#{automation_category}Script_#{s.id}"]}, :include_blank => "Select" %>
-&nbsp;
-<%= select :script, :integration_id, ProjectServer.select_list(automation_category.try(:downcase)), :include_blank => "Select" %>

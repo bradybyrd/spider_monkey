@@ -20,11 +20,9 @@ class Group < ActiveRecord::Base
   has_many :placeholder_resources, :class_name => 'PlaceholderResource', :through => :user_groups, :source => :user
   has_many :team_groups
   has_many :teams, through: :team_groups
-  has_many :apps, through: :teams
   has_many :group_roles, dependent: :destroy
   has_many :roles, through: :group_roles
   has_many :permissions, through: :roles
-  has_many :steps, :as => :owner
 
   attr_accessible :name, :email, :resources, :resource_ids, :active, :team_ids, :role_ids, :root, :updated_at
 

@@ -1,8 +1,0 @@
-<% page_settings :title => "Application: #{app.name} - #{subtitle || 'App Model'}", :custom_heading => true %>
-<% content_for :head do %>
-    <%= static_javascript_include_tag 'ie/resolution_fixes', 'shared_resource_automation' %>
-<% end %>
-
-<% content_for :page_section do %>
-    <%= render 'apps/tabs', :selected => 'applications' %>
-<% end %>

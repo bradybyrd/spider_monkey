@@ -1,13 +1,5 @@
 class RenameRedundantRolesColumnFromUsers < ActiveRecord::Migration
   def up
-    begin
-      handle_frozen_users_for_up(Request.where('FROZEN_DEPLOYMENT_COORDINATOR IS NOT NULL'), :deployment_coordinator)
-      handle_frozen_users_for_up(Request.where('FROZEN_REQUESTOR IS NOT NULL'), :requestor)
-      handle_frozen_users_for_up(Step.where('FROZEN_OWNER IS NOT NULL'), :owner)
-    rescue => e
-      say "ERROR: #{e}"
-      raise FrozenUpdateFailed, "Failed to update frozen objects. #{e.backtrace}"
-    end
 
     rename_column :users, :roles, :old_roles
 
@@ -19,14 +11,6 @@ class RenameRedundantRolesColumnFromUsers < ActiveRecord::Migration
   end
 
   def down
-    begin
-      handle_frozen_users_for_down(Request.where('FROZEN_DEPLOYMENT_COORDINATOR IS NOT NULL'), :deployment_coordinator)
-      handle_frozen_users_for_down(Request.where('FROZEN_REQUESTOR IS NOT NULL'), :requestor)
-      handle_frozen_users_for_down(Step.where('FROZEN_OWNER IS NOT NULL'), :owner)
-    rescue => e
-      say "ERROR: #{e}"
-      raise FrozenUpdateFailed, "Failed to update frozen objects. #{e.backtrace}"
-    end
 
     rename_column :users, :old_roles, :roles
 

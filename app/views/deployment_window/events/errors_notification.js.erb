@@ -1,2 +1,0 @@
-$('#facebox .event_popups_container .error-messages').
-html("<p>This form contains <%= pluralize(@deployment_window_event.errors.count, 'error') %>:</p> <%= @deployment_window_event.errors.full_messages.map {|m| content_tag(:li, m) }.join(' ').html_safe %>");

@@ -1,5 +1,0 @@
-<% if @warning.present? %>
-    <%= content_tag(:div, content_tag(:p, @warning, class: 'bold'), id: "#{@type}_warning", class: 'bg-warning') %>
-<% else %>
-    <%= content_tag(:div,'', id: "#{@type}_warning") %>
-<% end %>

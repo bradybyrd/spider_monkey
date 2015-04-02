@@ -1,7 +1,0 @@
-$('#ticket_selection_sections').attr('class', '');
-$('#ticket_selection_sections').html("<%= escape_javascript(render :partial => "tickets/select_tickets_list_in_facebox", :locals => {:tickets => @tickets })%>");
-$('li#st_tickets a').attr('href','javascript:void(0)');
-$('li#st_tickets a').removeAttr('data-remote');
-
-
-

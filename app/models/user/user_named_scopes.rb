@@ -42,23 +42,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.managed_by_including_placeholders_orphan(manager)
-    if manager.admin?
-      self.where('users.id <> ?', manager)
-    else
-      if OracleAdapter
-        self.joins('INNER JOIN user_groups ON users.id = user_groups.user_id').
-            joins('INNER JOIN group_management ON user_groups.group_id = group_management.group_id').
-            where('users.id = group_management.manager_id AND users.id = ?', manager)
-      else
-        self.joins('INNER JOIN user_groups ON users.id = user_groups.user_id').
-            joins('INNER JOIN group_management ON user_groups.group_id = group_management.group_id').
-            joins('INNER JOIN users AS managers ON managers.id = group_management.manager_id').
-            where('managers.id = group_management.manager_id AND managers.id = ?', manager)
-      end
-    end
-  end
-
   # BJB 3/30/10 Reworked to be compatible with both oracle and mysql
   def self.managed_by_including_placeholders(manager)
     if manager.admin?

@@ -1,5 +1,0 @@
-<div id="create_request_<%= passed_obj.id %>">
-  <% unless passed_obj.draft? %>
-    <%= submit_tag I18n.t(:create_request), class: "templ_button choose_template", data: {id: passed_obj.id} %>
-  <% end %>
-</div>

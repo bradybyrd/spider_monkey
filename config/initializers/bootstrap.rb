@@ -33,17 +33,6 @@ DEFAULT_DATE_FORMATS_FOR_DATEPICKER = {
 }
 
 
-# make customizations to the automation configuration
-# created during the install process.
-automation_settings_config_file = File.join(Rails.root, 'config', 'automation_settings.rb')
-if File.exist?(automation_settings_config_file)
-  load automation_settings_config_file
-else
-  # if there is no user defined automation_settings_config_file.rb, then load the default
-  load File.join(Rails.root, 'config', 'automation_settings.default.rb')
-end
-$OUTPUT_BASE_PATH = File.join($OUTPUT_BASE_PATH, "automation_results")
-
 # Fixme: This was changed on 1/13/13 and caused os x machines (at least) not to start
 # I do not have time to check why this is needed (it is not typically needed) but
 # this revised code at least restores the old behavior if the environmental variable

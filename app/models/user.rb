@@ -44,7 +44,6 @@ class User < ActiveRecord::Base
   include QueryHelper
   include ActiveRecordAssociationsExtensions
 
-  concerned_with :request_stats
   concerned_with :visibility
   concerned_with :user_named_scopes
 
@@ -69,20 +68,14 @@ class User < ActiveRecord::Base
   has_many :activities, through: :workstreams
   has_many :resource_allocations, through: :workstreams
 
-  has_many :owning_requests, class_name: 'Request', foreign_key: :deployment_coordinator_id, conditions: 'requests.request_template_id IS NULL'
-  has_many :as_requestor_requests, class_name: 'Request', foreign_key: :requestor_id, conditions: 'requests.request_template_id IS NULL'
-
-  has_many :steps, as: :owner, conditions: 'steps.parent_id IS NOT NULL OR steps.request_id IS NOT NULL'
-
+  
   has_many :logs, class_name: 'ActivityLog', order: 'created_at DESC, usec_created_at DESC', dependent: :destroy
   has_many :notes, dependent: :destroy
 
   has_many :managed_activities, class_name: 'Activity', foreign_key: 'manager_id'
 
   has_many :calendar_reports
-  has_one  :bladelogic_user, foreign_key: 'streamdeploy_user_id'
   has_one  :default_tab, dependent: :destroy
-  has_many :plans, foreign_key: 'release_manager_id'
   has_many :calendar_reports
 
   has_many :user_groups, dependent: :destroy
@@ -90,50 +83,10 @@ class User < ActiveRecord::Base
 
   has_many :teams,                  through: :groups, order: 'teams.name ASC'
   has_many :roles,                  through: :groups, uniq: true
-  has_many :roles_on_environments,  through: :teams, source: :roles_per_app_env #, conditions: ->(*args) { ['team_group_app_env_role.application_environment_id IN (?)', self.environment_ids] }
   has_many :permissions,            through: :groups # TODO: permissions on envs should be considered
 
-  has_many :assigned_apps, dependent: :destroy
-  has_many :apps, through: :assigned_apps, uniq: true
-  has_many :team_apps, source: :app, through: :assigned_apps, conditions: ['assigned_apps.team_id IS NOT NULL']
-
-  has_many :apps_from_team, source: :apps, through: :teams
-
-  has_many :application_environments, through: :apps
-  has_many :environments, through: :application_environments
-
-  has_many :direct_assigned_apps,
-    source: :app,
-    through: :assigned_apps,
-    conditions: ['assigned_apps.team_id IS NULL'],
-    order: 'apps.name ASC'
-
-  has_many :apps_via_team,
-    source: :app,
-    through: :assigned_apps,
-    conditions: ['assigned_apps.team_id IS NOT NULL'],
-    order: 'apps.name ASC'
-
-  has_many :teams_through_assigned_apps,
-    source: :team,
-    through: :assigned_apps,
-    uniq: true,
-    order: 'teams.name ASC'
 
   has_many :activity_deliverables, foreign_key: 'deployment_contact_id'
-  has_many :queries, foreign_key: 'last_run_by'
-
-  has_many :request_list_preferences,
-    dependent: :destroy,
-    class_name: 'Preference',
-    conditions: ['preference_type = ?', 'Request'],
-    order: 'preferences.position ASC'
-
-  has_many :step_list_preferences,
-    dependent: :destroy,
-    class_name: 'Preference',
-    conditions: ['preference_type = ?', 'Step'],
-    order: 'preferences.position ASC'
 
   has_many :integration_csvs, dependent: :nullify
 
@@ -470,11 +423,6 @@ class User < ActiveRecord::Base
       user
     end
 
-    def script_authentication_encode(auth_string)
-      # Place encryption routine here to mask the script arguments on the command line
-      Base64.encode64(auth_string.reverse).reverse
-    end
-
     # removed password salt compatibility
     def api_key_authentication(token)
       encoded_api_key = User.encode_api_key(token) if token
@@ -807,83 +755,6 @@ class User < ActiveRecord::Base
 
   def sr_default_role
     roles.first
-  end
-
-  def related_recent_activity
-    if admin?
-      RecentActivity.descend_by_id
-    else
-      RecentActivity.find_by_sql <<-SQL
-
-        (SELECT recent_activities.id AS order_col, recent_activities.* FROM recent_activities
-        INNER JOIN requests ON requests.id = recent_activities.object_id
-        INNER JOIN apps_requests ON apps_requests.request_id = requests.id
-        INNER JOIN assigned_apps ON assigned_apps.app_id =  apps_requests.app_id AND assigned_apps.user_id = #{id}
-        WHERE object_type = 'Request' AND requests.environment_id IS NULL)
-
-        UNION
-
-        (SELECT recent_activities.id AS order_col, recent_activities.* FROM recent_activities
-        INNER JOIN requests ON requests.id = recent_activities.object_id
-        INNER JOIN assigned_apps ON assigned_apps.app_id = requests.app_id AND assigned_apps.user_id = #{id}
-        INNER JOIN application_environments ON assigned_apps.id = application_environments.app_id AND
-        application_environments.environment_id = requests.environment_id
-        WHERE object_type = 'Request')
-
-        UNION
-
-        (SELECT recent_activities.id AS order_col, recent_activities.* FROM recent_activities
-        INNER JOIN application_components ON application_components.component_id = recent_activities.object_id
-        INNER JOIN assigned_apps ON assigned_apps.app_id = application_components.app_id AND assigned_apps.user_id = #{id}
-        WHERE object_type = 'Component' AND application_components.app_id = assigned_apps.app_id)
-
-        UNION
-
-        (SELECT recent_activities.id AS order_col, recent_activities.* FROM recent_activities
-        INNER JOIN assigned_apps ON assigned_apps.user_id = #{id}
-        INNER JOIN application_environments ON application_environments.app_id = assigned_apps.id and application_environments.environment_id = recent_activities.object_id
-        WHERE object_type = 'Environment' AND application_environments.app_id = assigned_apps.app_id)
-
-        UNION
-
-        (SELECT recent_activities.id AS order_col, recent_activities.* FROM recent_activities
-        INNER JOIN environment_servers ON environment_servers.server_id = recent_activities.object_id
-        INNER JOIN application_environments ON application_environments.environment_id = environment_servers.environment_id
-        INNER JOIN assigned_apps ON assigned_apps.app_id = application_environments.app_id AND assigned_apps.user_id = #{id}
-        WHERE object_type = 'Server')
-
-        ORDER BY order_col DESC
-
-      SQL
-    end
-  end
-
-  def active_apps
-    apps_from_team.where(groups: { active: true }, teams: { active: true }).uniq
-  end
-
-  def update_assigned_apps
-    active_app_ids = active_apps.pluck(:id)
-    assigned_apps.where(AssignedApp.arel_table[:app_id].not_in(active_app_ids)).destroy_all
-
-    assigned_app_ids = assigned_apps.pluck(:app_id)
-    active_app_ids.each do |app_id|
-      assigned_apps.create(app_id: app_id) unless assigned_app_ids.include?(app_id)
-    end
-  end
-
-  def headers_for_user
-    # CF Returns a hash of values for automation scripts
-    {
-      'SS_user_login' => self.login || self.email,
-      'SS_user_email' => self.email,
-      'SS_user_first_name' => self.first_name,
-      'SS_user_last_name' => self.last_name,
-      'SS_user_employment_type' => self.employment_type,
-      'SS_user_location' => self.location,
-      'SS_user_time_zone' => self.time_zone,
-      'SS_user_password' => self.password
-    }
   end
 
   def reset_password!

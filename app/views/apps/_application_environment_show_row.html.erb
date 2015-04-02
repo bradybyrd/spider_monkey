@@ -1,6 +1,0 @@
-<td title="<%= application_environment.name %>">
-  <%= link_to "&nbsp;#{index_title(truncate(application_environment.name, :length => 15))}".html_safe, edit_app_application_environment_path(app, application_environment, :page => params[:page], :key => params[:key]), :class => "edit_row_twiddle" %>
-</td>
-<td>
-  <%= application_environment.installed_components.map { |ic| installed_component_name(ic) }.join(', ').html_safe %>
-</td>

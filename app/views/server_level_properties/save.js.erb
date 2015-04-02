@@ -1,7 +1,0 @@
-<% if @property.valid? %>
-  <%= close_facebox %>
-  <%= click_server_tab tab_for_server_level(@server_level) %>
-<% else %>
-  <%= load_partial_into_facebox('server_level_properties/form') %>
-<% end %>
-

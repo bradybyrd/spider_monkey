@@ -1,5 +1,0 @@
-<% if @request.errors.blank? %>
-  window.location.href="<%= edit_request_path(@request) %>";
-<% else %>
-  $("#errorExplanation h2").html("<%= @request.errors.full_messages.join(' <br />').html_safe %>").show();
-<% end %>

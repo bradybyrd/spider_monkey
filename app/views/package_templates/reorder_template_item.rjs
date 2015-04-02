@@ -1,1 +1,0 @@
-page.replace_html "reorder_package_template_items", :partial => 'package_templates/template_items'

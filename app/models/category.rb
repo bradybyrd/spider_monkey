@@ -10,8 +10,6 @@ class Category < ActiveRecord::Base
 
   normalize_attributes :name
 
-  has_many :steps, :dependent => :nullify
-  has_many :requests, :dependent => :nullify
 
   validates :name,
             :presence => true,
@@ -22,8 +20,6 @@ class Category < ActiveRecord::Base
 
   attr_accessible :name, :categorized_type, :associated_events, :step_ids, :request_ids
 
-  scope :step, where(:categorized_type => 'step')
-  scope :request, where(:categorized_type => 'request')
   scope :name_order, order(:name)
 
   scope :filter_by_name, lambda { |filter_value| where(:name => filter_value) }

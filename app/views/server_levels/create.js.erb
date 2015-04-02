@@ -1,5 +1,0 @@
-<% if @server_level.valid? %>
-  <%= server_level_after_create_actions(@server_level) %>
-<% else %>
-  $("form#new_server_level").parent().html("<%= escape_javascript(render(:partial => 'form')) %>");
-<% end %>

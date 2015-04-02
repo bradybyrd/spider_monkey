@@ -22,8 +22,6 @@ class Activity < ActiveRecord::Base
     :manager => [:first_name, :last_name]
   }.with_indifferent_access
 
-  belongs_to :app
-  belongs_to :release
   belongs_to :user
   belongs_to :plan_stage
   belongs_to :activity_category
@@ -31,7 +29,6 @@ class Activity < ActiveRecord::Base
   belongs_to :manager, :class_name => "User"
   belongs_to :leading_group, :class_name => "Group"
 
-  has_many :requests, :dependent => :nullify, :conditions => ["requests.request_template_id IS NULL AND requests.aasm_state <> ?", 'deleted']
   has_many :uploads, :as => :owner, :dependent => :destroy
 
   # allow for uploads (a.k.a. assets) to be set through a nested form and updated without special
