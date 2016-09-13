@@ -23,7 +23,6 @@ class Activity < ActiveRecord::Base
   }.with_indifferent_access
 
   belongs_to :user
-  belongs_to :plan_stage
   belongs_to :activity_category
   belongs_to :current_phase, :class_name => "ActivityPhase"
   belongs_to :manager, :class_name => "User"
@@ -52,6 +51,8 @@ class Activity < ActiveRecord::Base
   # This is necessary because if notes/updates are built on a new record, they won't pass validation because their activity_id is nil.
   has_many :notes,   :class_name => "ActivityNote", :conditions => { :generic => true },  :validate => false, :dependent => :destroy
   has_many :updates, :class_name => "ActivityNote", :conditions => { :generic => false }, :validate => false, :dependent => :destroy
+  has_many :parent_activities, :dependent => :destroy
+  has_many :parents, :through => :parent_activities, :source => :container
 
   has_many :index_columns, :through => :activity_category, :order => :position do
     def each
@@ -137,6 +138,31 @@ class Activity < ActiveRecord::Base
 
   scope :filtered_by_column, lambda { |column, value| where(column => value) }
 
+  scope :filter_by, lambda { |filters_hash,role|
+    filters_hash = filters_hash.stringify_keys
+    parent_ids = filters_hash.delete('parent_ids')
+    opts = {}
+    if parent_ids
+      filters_hash['parent_activities.container_id'] = parent_ids
+      opts[:include] = :parent_activities
+    end
+    if OracleAdapter
+      problem_opportunity = filters_hash.delete('problem_opportunity')
+      if problem_opportunity
+        filters_hash['DBMS_LOB.SUBSTR(activities.problem_opportunity, 4000)'] = problem_opportunity
+      end
+    end
+    if filters_hash.present?
+      if filters_hash.key?("status") && OracleAdapter
+        status_values = filters_hash["status"]
+        filters_hash.delete_if{|key, value| key == "status"}
+        filters_hash.merge!({"LOWER(activities.status)"=> status_values.map(&:downcase)})
+      end
+      opts[:conditions] = filters_hash
+    end
+    opts
+  }
+
 #  named_scope :filter_by, proc { |filters_hash,role|
 #    filters_hash = filters_hash.stringify_keys
 #    opts = {}
@@ -190,9 +216,9 @@ class Activity < ActiveRecord::Base
 
   scope :in_category, lambda { |cat| where(:activity_category_id => cat) }
 
-  #serialize :theme,    Array
-  #serialize :blockers, Array
-  #serialize :phase_start_dates, Hash
+  serialize :theme,    Array
+  serialize :blockers, Array
+  serialize :phase_start_dates, Hash
 
   delegate :activity_attributes, :to => :activity_category
   delegate :creation_attributes, :to => :activity_category
@@ -346,6 +372,10 @@ class Activity < ActiveRecord::Base
 
   def is_closed?
     self.status.nil? ? false : !/terminate|complete|consolidate/.match(self.status.downcase).nil?
+  end
+
+  def parent_names
+    parents.map(&:name).join(', ')
   end
 
   private

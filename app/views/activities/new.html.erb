@@ -57,18 +57,6 @@
     <%= render 'form', :f => f %>
     <div class='activity_customer_fields' <%= tag_options({:style => (params[:activity_creation_type] != "activity_and_customer") ? "display: none" :""}, false) %>>
       <div class='field'>
-        <label for='app_id_to_copy'>
-          Application
-        </label>
-        <%= select_tag 'app_id_to_copy', options_from_collection_for_select(App.active.name_order, :id, :name) %>
-      </div>
-      <div class='field'>
-        <label for='app_name_for_copy'>
-          New Application Name
-        </label>
-        <%= text_field_tag "app_name_for_copy", '', :class => "app_name_for_copy" %>
-      </div>
-      <div class='field'>
         <label for='shared_infrastructure'>
           Shared Infrastructure
         </label>

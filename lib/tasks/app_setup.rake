@@ -10,7 +10,7 @@ namespace :app do
     Dir[Rails.root + 'data/csv/*.csv'].each do |csv|
       template = File.basename(csv, '_template.csv')
       desc "Load the #{template} CSV"
-      task template do
+      task template => :environment do
         puts "-------------- Loading #{template}_template.csv --------------"
         CSVImporter.import("#{template}_template")
       end

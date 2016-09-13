@@ -137,8 +137,11 @@ module ApplicationHelper
   end
 
   def sub_tab_with_model(model, options)
-    options[:selected] = model == @selected_sub_tab
+    Rails.logger.info "SubTab: #{@selected_sub_tab.inspect}, Model: #{model.inspect}, url: #{url_for(model)}\nOptions #{options.inspect}"
+    options[:selected] = true #(model == @selected_sub_tab)
+    Rails.logger.info "SubTab2"
     options[:path] ||= url_for(model)
+    Rails.logger.info "SubTab3"
     name = model.name.pluralize
     sub_tab_html(name, options)
   end
@@ -683,6 +686,19 @@ end
       next if line.start_with?('#')
       return line.split('=')[1].strip if line.include?('$VERSION')
     end
+  end
+
+  def stomp_js_path
+    endpoint = if defined?(TorqueBox) && TorqueBox.fetch('stomp-endpoint')
+                 if request.protocol =~ /https/
+                   TorqueBox.fetch('stomp-endpoint-secure')
+                 else
+                   TorqueBox.fetch('stomp-endpoint')
+                 end
+               else
+                 OpenStruct.new(host: 'localhost', port: 8435)
+               end
+    "#{request.protocol}#{endpoint.host}:#{endpoint.port}/stomp.js"
   end
 
 end

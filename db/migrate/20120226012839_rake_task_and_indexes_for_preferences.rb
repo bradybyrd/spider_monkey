@@ -10,7 +10,7 @@ class RakeTaskAndIndexesForPreferences < ActiveRecord::Migration
         
     # fixes renamed table column headings and resets users with existing preferences
     # there is no meaningful undo of this rake task as the bad values will cause a crash
-    Rake::Task['app:data_repairs:repair_legacy_request_list_preferences'].invoke
+    #Rake::Task['app:data_repairs:repair_legacy_request_list_preferences'].invoke
   end
 
   def self.down

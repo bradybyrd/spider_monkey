@@ -88,11 +88,7 @@ class User < ActiveRecord::Base
 
   has_many :activity_deliverables, foreign_key: 'deployment_contact_id'
 
-  has_many :integration_csvs, dependent: :nullify
-
   has_one :security_answer
-
-  has_many :scheduled_jobs, foreign_key: :owner_id, dependent: :destroy
 
   validates :first_name,
             presence: true,
@@ -137,7 +133,6 @@ class User < ActiveRecord::Base
   after_create :send_welcome_email
   before_save :encrypt_password, :ensure_api_key, :set_reset_password_token, :ensure_default_group
   after_update :send_notification_email
-  after_save :update_assigned_apps
   before_validation :prevent_update, on: :update, unless: :active_during_update?
 
   accepts_nested_attributes_for :security_answer
@@ -145,7 +140,9 @@ class User < ActiveRecord::Base
   acts_as_audited protect: false
 
   scope :admins, lambda { where(id: UserGroup.root_user_ids) }
-
+  EmploymentTypes = List.get_list_items("EmploymentTypes")
+  Locations       = List.get_list_items("Locations").sort
+  
   def ability
     @ability ||= Ability.new(self)
   end
@@ -191,15 +188,6 @@ class User < ActiveRecord::Base
       end
     end
   end
-
-  def environments_with_roles
-    if admin?
-      Environment.scoped
-    else
-      environments_without_roles
-    end
-  end
-  alias_method_chain :environments, :roles
 
   class << self
 
@@ -753,6 +741,18 @@ class User < ActiveRecord::Base
     self.class.all(conditions: { id: groups.map(&:resource_manager_ids ).flatten })
   end
 
+  def resource_manager?
+    true
+  end
+
+  def is_fm?
+    true
+  end
+
+  def is_pm?
+    true
+  end
+  
   def sr_default_role
     roles.first
   end
@@ -815,6 +815,13 @@ class User < ActiveRecord::Base
 
   def query_object
     UserQuery.new(self)
+  end
+  def related_recent_activity
+    if has_global_access?
+      RecentActivity.descend_by_id
+    else
+      []
+    end
   end
 
   protected

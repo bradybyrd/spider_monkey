@@ -191,7 +191,7 @@ module SharedScript
     else
       message = "#{pre_info} Automation for staying in-process waiting for remote signal - job run id: #{jr.id}"
     end
-    RequestActivity::ActivityMessage.new(@step, params["step_user_id"].to_i).log_activity(message)
+    LogActivity::ActivityMessage.new(@step, params["step_user_id"].to_i).log_activity(message)
 
     script_result.slice(0..500)
   end

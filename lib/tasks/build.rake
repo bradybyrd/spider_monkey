@@ -41,9 +41,9 @@ namespace :build do
 
   task :move_assets_to_build_dir do
     puts '*** Moving assets to build dir ***'
-    sh "rm -rf #{tmp_dir}/public/brpm/assets"
-    sh "mkdir -p #{tmp_dir}/public/brpm/"
-    sh "mv -f public/brpm/assets #{tmp_dir}/public/brpm/"
+    sh "rm -rf #{tmp_dir}/public/portfolio/assets"
+    sh "mkdir -p #{tmp_dir}/public/portfolio/"
+    sh "mv -f public/portfolio/assets #{tmp_dir}/public/portfolio/"
   end
  
   task :compile_ruby_files do

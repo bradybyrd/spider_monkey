@@ -1,0 +1,33 @@
+- if SystemSetting.requests_enabled?
+  %h4= "Choose new #{activity_or_project?.downcase} type:"
+  %label
+    = radio_button_tag 'activity_creation_type', 'activity_only', params[:activity_creation_type].nil? || params[:activity_creation_type] == "activity_only", :id => 'hide_activity_customer_fields', :class => 'radio'
+    = "Create New #{activity_or_project?}"
+  %br
+  %label
+    = radio_button_tag 'activity_creation_type', 'activity_and_customer', params[:activity_creation_type] == "activity_and_customer", :id => 'show_activity_customer_fields', :class => 'radio'
+    = "Create New Application and #{activity_or_project?}"
+  %br
+  %br
+
+= render 'form', :f => f
+
+.activity_customer_fields{:style => (params[:activity_creation_type] != "activity_and_customer") ? "display: none" : ""}
+  .field
+    %label{ :for => "app_id_to_copy" }
+      Application
+    = select_tag 'app_id_to_copy', options_from_collection_for_select(App.active.name_order, :id, :name)
+  .field
+    %label{ :for => "app_name_for_copy" }
+      New Application Name
+    = text_field_tag "app_name_for_copy", '', :class => "app_name_for_copy"
+  .field
+    %label{ :for => "shared_infrastructure" }
+      Shared Infrastructure
+    = check_box_tag :shared_infrastructure, 1, false, :class => 'checkbox'
+
+.field
+  %br
+  = f.submit "Create #{activity_or_project?}"
+  or
+  = link_to "cancel", activities_path

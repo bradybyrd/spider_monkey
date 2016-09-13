@@ -7,6 +7,7 @@
 ################################################################################
 %>
 <span class='selected_values' <%= tag_options({:id => "selected_values_#{attr.id}"}, false) %>>
+	<% Rails.logger.info "DEBUG: field:  #{field_name}" %>
   <span class='selected' <%= tag_options({:title => field_name.include?('deliverable') ? @deliverable.custom_attrs_array.join(', ') : field_value.map { |val| h custom_value_name(val) }.join(', ')}, false) %>>
     <% if field_name.include?('deliverable') %>
       <%= truncate(@deliverable.custom_attrs_array.join(', '), :length => 50) %>

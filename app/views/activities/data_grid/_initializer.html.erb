@@ -1,0 +1,90 @@
+<style>
+	.hover {
+		background-color: #FFFFCC;
+	}
+</style>
+<div class="facebox_hide facebox_overlayBG" id="facebox_overlay" style="display: block; opacity: 0;"></div>
+<div class="grid-loader"><img src="/images/loader.gif"> Loading Data...</div>
+<div id="custom_div" style="height:auto;"><div id="gridbox" style='border:none;'></div></div>
+<%= hidden_field_tag "stopInterval", "0" %>
+<%= hidden_field_tag "activity_category_id", @activity_category.id %>
+
+<script type="text/javascript">
+  mygrid = new dhtmlXGridObject('gridbox');
+  mygrid.selMultiRows = true;
+  mygrid.enableAutoHeight(true);
+  mygrid.imgURL = "/portfolio/dhtmlxgrid/imgs/icons_greenfolders/";
+  mygrid.setHeader("<%= grid_column_names.join(',') %>");
+  mygrid.setInitWidths("<%= grid_column_widths.join(',') %>, 20, 30");
+  mygrid.setColAlign("<%= grid_column_alignments.join(',') %>, left, right");
+  mygrid.setColTypes("<%= grid_column_types.join(',') %>");
+  mygrid.setColSorting("<%= grid_column_sorting.join(',') %>");
+  mygrid.setNoHeader(true);
+  mygrid.init();
+  mygrid.setSkin("dhx_custom");
+  mygrid.enableCollSpan(true);
+  mygrid.enableRowsHover(true,"hover");
+  mygrid.enableEditEvents(false,false,false);
+
+  mygrid.attachEvent("onXLE", function(grid_obj,count){
+		$('.grid-loader').hide();
+		$('#wait').hide();
+		$('#facebox_overlay').hide(); 
+    if ($('#ExpandAll').val() != '' ) {
+    	expand_all_sub();
+			expand_all_sub();
+    }
+		showSearchWarningMessage();
+  });
+	
+	mygrid.attachEvent("onDynXLS",function(){
+  	$('#wait').show();
+		$('#facebox_overlay').show();  
+    return true;
+  });
+
+  var state = 'close'
+  function doOnRowSelected(id){
+    if(state == 'close'){
+      mygrid.openItem(id);
+      state = 'open';
+    }else{
+      mygrid.closeItem(id);
+      state = 'close';
+    }
+  }
+  mygrid.attachEvent("onRowSelect", doOnRowSelected);
+	
+	function adjustGrid(){
+		if ($("#stopInterval").val() == '0') {
+			$("#stopInterval").val('1');
+			var last_row = $("table.obj").find("tr:last").find("td:first").find('.treegrid_cell').find('img:first');
+			last_row.trigger('onclick');
+			last_row.trigger('onclick');
+		}
+	}  
+
+  function expand_all_sub(){
+    mygrid.expandAll()   
+    $('a.explode_all').hide();
+    $('a.collapse_all').show();
+  }
+  function collapse_all_sub(){
+    mygrid.collapseAll()
+    $('a.explode_all').show();
+    $('a.collapse_all').hide();
+  }
+
+  var selectedId = 0;
+  	mygrid.attachEvent("onMouseOver", function(id,ind){
+    selectedId = id;
+  });
+	 var activity_category_id = "activity_category_id=" + $("#activity_category_id").val();
+	 
+   if ($('#ExpandAll').val() == '') {
+     mygrid.loadXML("<%=ContextRoot.context_root %>/activities.xml?" + activity_category_id);
+   } else {
+     mygrid.load("<%=ContextRoot.context_root %>/activities.xml?" + activity_category_id + '&expandAll=expand', expand_all_sub());
+   }
+	mygrid.kidsXmlFile = "<%=ContextRoot.context_root %>/activities/load_activities_grid.xml?" + activity_category_id;
+</script>

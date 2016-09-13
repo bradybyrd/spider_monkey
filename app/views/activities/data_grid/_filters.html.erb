@@ -1,0 +1,33 @@
+<div class='financials_filters alt'>
+  <h3>Filters:</h3>
+  <br>
+  <%=form_tag activities_path, :id => 'filter_form', :method => :get, :style => 'display: inline' do %>
+    <table cellspacing="0" cellpadding="0" class="flt_activities">
+      <tr>
+        <% @activity_category.index_columns.in_groups(4, nil).each do |columns| %>
+          <td width="25%">
+            <% columns.each do |column| %>
+              <% unless column.blank? %>
+                <%=label "filters_#{column.id}", "#{column.filter_label}:" %>
+				filter
+			 <% end %>
+		   <% end %>
+		 </td>
+		<% end %>
+	  </tr>
+      <tr>
+        <td colspan=4 style="text-align: right" class="clear_all_filter">
+			<%= link_to "#", "clear" %>
+		</td>
+	 </tr>
+	</table>
+    <%= hidden_field_tag "expandAll", params[:expandAll] %>
+    <%= hidden_field_tag "activity_category_id", @activity_category.id %>
+  <% end %>
+</div>
+<%=javascript_tag("setHealthFilters()") %>
+
+<%=javascript_tag("setSelectedFilters(#{session["activity_filters_#{@activity_category.id}".to_sym].to_json})") %>
+
+<%=javascript_tag("selectBooleanOptions()") %>
+

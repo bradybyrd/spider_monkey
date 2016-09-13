@@ -16,7 +16,7 @@ class Audit < ActiveRecord::Base
   # after_create :log_entry_in_activity_logs, :if => Proc.new {|a| a[:audited_changes].respond_to?(:keys) ? a[:audited_changes].keys.include?('rescheduled') : false}
   after_create { |record|
     unless record.auditable_type == 'App'
-      RequestActivity::AuditActivityMessage.new(record).log_modification
+      LogActivity::AuditActivityMessage.new(record).log_modification
     end
   }
   

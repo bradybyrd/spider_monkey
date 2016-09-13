@@ -1,0 +1,12 @@
+<div style="float:right">
+  <% unless params[:controller] == 'activities' && params[:action] == 'request_projects' %>
+    <%= render :partial => 'search' %>
+  <% end %>
+</div>
+<% draw_tabs :selected => selected do %>
+  <% if true %>
+    <% ActivityCategory.name_order.each do |category| %>
+      <%= sub_tab category, {:path => activities_path(:activity_category_id => category.id)} %>
+	<% end %>
+  <% end %>
+<% end %>

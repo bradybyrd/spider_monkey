@@ -36,7 +36,7 @@ class Group < ActiveRecord::Base
   validate :group_is_not_stolen, if: :updated_at_changed?
   after_save :update_date
 
-  validates_with GroupNameRootValidator, name: ROOT_NAME
+  #validates_with GroupNameRootValidator, name: ROOT_NAME
 
   before_destroy :prevent_destroying_with_name_root
   before_validation :prevent_update, on: :update, unless: proc { active_was || active_changed? }
@@ -91,7 +91,7 @@ class Group < ActiveRecord::Base
   end
 
   def before_deactivate_hook
-    GroupDeactivationPolicy.new(self).can_be_deactivated?
+    true
   end
   alias :can_be_deactivated? :before_deactivate_hook
 

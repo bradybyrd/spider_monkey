@@ -175,3 +175,17 @@ $(function() {
 	function hideUpdateButton(){
 	  $('#update_button').hide();
 	}
+
+	function selectBooleanOptions(){
+		boolean_options = $("select").find("option[value='yes or no']");
+		boolean_select_list = boolean_options.parents("select:first");
+		boolean_select_list.html("<option value='true'>Yes</option><option value='false'>No</option>");
+	}
+
+	function financials_select_list_width() {
+		var financials_select_width = document.getElementById('financials_filters');
+		if(financials_select_width) {
+			var width_apply = financials_select_width.offsetWidth/5.12;
+		} 
+		$(".budget_line_items #filter_form select").css('width',width_apply-18);
+	}

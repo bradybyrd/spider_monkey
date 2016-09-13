@@ -12,6 +12,7 @@ class PermissionPersister
 
   def initialize_tree(permissions, collection = [])
     permissions.each do |permission_attrs|
+      puts "TREE: #{permission_attrs.inspect}"
       unless permission_attrs['id'].blank?
         permission = Permission.new(permission_attrs.except('items'))
         permission.id = permission_attrs['id']

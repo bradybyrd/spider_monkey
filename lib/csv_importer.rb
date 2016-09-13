@@ -29,8 +29,9 @@ class CSVImporter
 
       category_name = lines.first[1]
       phase_names = lines[1][1].split(';').map &:strip
+      puts "Creating: #{category_name}"
       category = ActivityCategory.find_or_initialize_by_name(category_name)
-      category.update_attributes!(:request_compatible => ((lines.first[2] =~ /^\s*request/).to_int >= 0))
+      category.update_attributes!(:request_compatible => false)
       phase_names.each do |phase|
         category.activity_phases.find_or_create_by_name(phase)
       end

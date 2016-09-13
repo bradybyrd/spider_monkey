@@ -57,7 +57,6 @@ class SessionsController < ApplicationController
     # nullify the last_response_at so we know they are gone
     if signed_in?
       current_user.update_attributes(last_response_at: nil)
-      PermissionMap.instance.clean(current_user)
     end
 
     #sign_out_all_scopes

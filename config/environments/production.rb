@@ -29,8 +29,8 @@ Brpm::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
-  config.assets.prefix = '/brpm/assets'
-  config.action_controller.relative_url_root = "/brpm"
+  config.assets.prefix = '/portfolio/assets'
+  config.action_controller.relative_url_root = "/portfolio"
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH

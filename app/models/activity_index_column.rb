@@ -67,6 +67,14 @@ class ActivityIndexColumn < ActiveRecord::Base
     ! %w(problem_opportunity current_update service_description theme blockers goal).include? activity_attribute_column
   end
 
+  def filter_label
+    if false #activity_attribute_id.present?
+      ActivityAttribute.find(activity_attribute_id).name
+    else
+      name
+    end
+  end
+
   def using activity
     self.activity = activity
     yield self if block_given?

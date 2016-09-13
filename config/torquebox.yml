@@ -1,5 +1,5 @@
 web:
-  context: "/brpm"
+  context: "/portfolio"
 
 topics:
   /topics/stomplets/event_bindable:
@@ -23,7 +23,7 @@ stomp:
 messaging:
   /queues/backgroundable/automation:
     AutomationHandler:
-      concurrency: 3
+      concurrency: 0
 
 jobs:
   audit.storage:

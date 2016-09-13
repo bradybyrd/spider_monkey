@@ -11,8 +11,8 @@ class DashboardController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:self_services]
 
   def self_services
-    authorize! :view, :dashboard_tab
-    index
+    #authorize! :view, :dashboard_tab
+    redirect_to activities_path
   end
 
   def recent_activities
@@ -32,7 +32,7 @@ class DashboardController < ApplicationController
   end
 
   def index
-    recent_activities
+    self_services
   end
 
   private

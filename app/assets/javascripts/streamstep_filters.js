@@ -93,3 +93,27 @@ function mergeFilters(filterForm){
     }
   });
 }
+
+function showSearchWarningMessage(){
+	if (mygrid.getRowsNum() == 0){
+		$("#expand_collapse").hide();
+		if ($("#key").val() != "" ){
+			if ($(".multivalues").length > 0){
+				$("#search_warning_without_f").addClass("dn");
+				$("#search_warning_with_f").removeClass("dn");
+				$("#search_warning_with_f").append("<b>" + $("#key").val() + "</b>");
+			} else {
+				$("#search_warning_with_f").addClass("dn")
+				var url = window.location.href;
+				if (url.indexOf("activities") > 0){
+					categories = [];
+					$.each($(".pageSection div ul li").not(document.getElementsByClassName('selected')), function(){
+						categories.push($(this).text());
+					});
+					$("#search_warning_without_f span").html(categories.join(", "));
+				}
+				$("#search_warning_without_f").removeClass("dn");
+			}
+		}
+	}
+}

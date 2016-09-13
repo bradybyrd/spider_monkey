@@ -18,7 +18,7 @@ module ActsAsAudited
 
           message = audit.attributes.except(*ignored_audit_attributes)
           self.class.publish_message(message)
-          RequestActivity::ActivityMessage.publish(message)
+          LogActivity::ActivityMessage.publish(message)
         end
       end
 

@@ -1,0 +1,45 @@
+<%= hidden_field_tag "ExpandAll", params[:expandAll] %>
+
+<!-- This gets displayed for editable activities - list.html.haml for read-only -->
+<%=page_settings :title => h(@activity_category.name.pluralize) %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "activity_index_columns", "stdlib" %>
+  <%= stylesheet_link_tag "financials" %>
+  <%= render :partial => "shared/grid_head" %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <% if true #authorize %>
+    <p>
+      <%= link_to activity_or_project_image?, new_activity_path(@activity_category) %>
+	</p>
+  <% end %>
+<% end %>
+
+<% content_for :page_section do %>
+  <%= render 'tabs', :selected => @activity_category %>
+<% end %>
+
+<div id='budget_line_items_wrapper'>
+  <div id ="header_totals" class ="filter_tbl" >
+    <%= render 'activities/data_grid/filters' %>
+  </div>
+</div>
+<p>
+  <div id='search_warning_with_f.fl dn'>
+	  <%= "Search operation has not returned any results as there are some filters applied. #{link_to_clear_activity_filters('Click')} here to clear filters and search again using keyword=" %>
+  </div>
+</p>
+  <div id='search_warning_without_f.fl dn'>
+	  <%= "Search operation has not returned any results. There are no filters applied. Try searching activity under <span></span>" %>
+  </div>
+  <p id='expand_collapse clear'>
+    [
+    <%= link_to 'expand all', '#', :class => "explode_all", :onclick => "expand_all_leading_groups('#{request.url}'); return false;" %>
+    <%= link_to 'collapse all', '#', :class => "collapse_all", :style => "display:none", :onclick => "collapse_all_sub(); return false;" %>
+    ]  
+ </p>
+  <div id='activities_table'>
+    <%= render 'activities/data_grid/initializer' %>
+  </div>
